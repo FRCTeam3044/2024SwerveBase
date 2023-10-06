@@ -4,9 +4,8 @@
 
 package frc.robot;
 
-import com.revrobotics.REVPhysicsSim;
+import org.littletonrobotics.junction.LoggedRobot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -16,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -101,7 +100,5 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {
-    REVPhysicsSim.getInstance().run();
-  }
+  public void simulationPeriodic() {}
 }
