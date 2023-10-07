@@ -2,10 +2,16 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Pigeon 2 [13]": "Gyro"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "XModules": {
+          "style": "Hidden"
+        },
+        "height": 8.0,
+        "width": 16.5,
         "window": {
           "visible": true
         }
