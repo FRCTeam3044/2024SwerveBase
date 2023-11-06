@@ -7,24 +7,9 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
-        "XModules": {
-          "style": "Hidden"
-        },
-        "height": 8.0,
-        "width": 16.5,
         "window": {
           "visible": true
         }
-      }
-    }
-  },
-  "NetworkTables": {
-    "transitory": {
-      "SmartDashboard": {
-        "Field": {
-          "open": true
-        },
-        "open": true
       }
     }
   }
