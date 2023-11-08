@@ -3,6 +3,7 @@
     "name": "YAGSL",
     "version": "2023.0.6",
     "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
+    "frcYear": "2024",
     "mavenUrls": [
         "https://broncbotz3481.github.io/YAGSL-Lib/yagsl/repos"
     ],
