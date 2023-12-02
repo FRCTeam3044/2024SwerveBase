@@ -6,6 +6,8 @@ package frc.robot;
 
 import org.littletonrobotics.junction.LoggedRobot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -45,6 +47,13 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    double leftJoystickY = m_robotContainer.m_driverController.getLeftY();
+    double rightJoystickX = m_robotContainer.m_driverController.getRightX();
+    double rightJoystickY = m_robotContainer.m_driverController.getRightY();
+    Rotation2d desiredRotation = Rotation2d.fromRadians(Math.atan2(rightJoystickX, rightJoystickY));
+    SwerveModuleState desiredState = new SwerveModuleState(leftJoystickY, desiredRotation);
+    m_robotContainer.m_testSwerveModule.setDesiredState(desiredState);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
