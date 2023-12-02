@@ -33,8 +33,8 @@ public class RobotContainer {
   public final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   public final MAXSwerveModule m_testSwerveModule = new MAXSwerveModule(
-      0,
-      1,
+      12,
+      22,
       0);
 
   /**
