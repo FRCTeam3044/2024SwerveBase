@@ -49,7 +49,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     double leftJoystickY = m_robotContainer.m_driverController.getLeftY();
-    leftJoystickY = leftJoystickY * leftJoystickY;
+    leftJoystickY = leftJoystickY * leftJoystickY * Math.signum(leftJoystickY);
     double rightJoystickX = m_robotContainer.m_driverController.getRightX();
     double rightJoystickY = m_robotContainer.m_driverController.getRightY();
     Rotation2d desiredRotation = Rotation2d.fromRadians(Math.atan2(rightJoystickX, rightJoystickY));
