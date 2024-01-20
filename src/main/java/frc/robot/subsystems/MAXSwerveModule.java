@@ -143,7 +143,7 @@ public class MAXSwerveModule extends SubsystemBase {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(RobotBase.isReal() ? m_drivingEncoder.getVelocity() : m_simDriveEncoderVelocity,
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d(RobotBase.isReal() ? (m_turningEncoder.getPosition() - m_chassisAngularOffset) : (m_currentAngle)));
   }
 
   /**
@@ -156,8 +156,11 @@ public class MAXSwerveModule extends SubsystemBase {
     // relative to the chassis.
     return new SwerveModulePosition(
         RobotBase.isReal() ? m_drivingEncoder.getPosition() : m_simDriveEncoderPosition,
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d(RobotBase.isReal() ? (m_turningEncoder.getPosition() - m_chassisAngularOffset) : (m_currentAngle - m_chassisAngularOffset)));
   }
+
+  // i just need to look through on my computer because theres probably a couple methods i forgot to simify
+
 
   /**
    * Sets the desired state for the module.
