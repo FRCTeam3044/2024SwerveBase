@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,7 +20,7 @@ import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants.ModuleConstants;
 
-public class MAXSwerveModule extends SubsystemBase {
+public class MAXSwerveModule {
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
@@ -37,9 +36,7 @@ public class MAXSwerveModule extends SubsystemBase {
   // Values for simulation.
   private double m_simDriveEncoderPosition;
   private double m_simDriveEncoderVelocity;
-  double m_angleOffset;
-  double m_currentAngle;
-  double m_lastAngle;
+  private double m_currentAngle;
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
@@ -76,7 +73,8 @@ public class MAXSwerveModule extends SubsystemBase {
     m_turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositionFactor);
     m_turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderVelocityFactor);
 
-    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // Invert the turning encoder, since the output shaft rotates in the opposite
+    // direction of
     // the steering motor in the MAXSwerve Module.
     m_turningEncoder.setInverted(ModuleConstants.kTurningEncoderInverted);
 
@@ -88,7 +86,8 @@ public class MAXSwerveModule extends SubsystemBase {
     m_turningPIDController.setPositionPIDWrappingMinInput(ModuleConstants.kTurningEncoderPositionPIDMinInput);
     m_turningPIDController.setPositionPIDWrappingMaxInput(ModuleConstants.kTurningEncoderPositionPIDMaxInput);
 
-    // Set the PID gains for the driving motor. Note these are example gains, and you
+    // Set the PID gains for the driving motor. Note these are example gains, and
+    // you
     // may need to tune them for your own robot!
     m_drivingPIDController.setP(ModuleConstants.kDrivingP);
     m_drivingPIDController.setI(ModuleConstants.kDrivingI);
@@ -97,7 +96,8 @@ public class MAXSwerveModule extends SubsystemBase {
     m_drivingPIDController.setOutputRange(ModuleConstants.kDrivingMinOutput,
         ModuleConstants.kDrivingMaxOutput);
 
-    // Set the PID gains for the turning motor. Note these are example gains, and you
+    // Set the PID gains for the turning motor. Note these are example gains, and
+    // you
     // may need to tune them for your own robot!
     m_turningPIDController.setP(ModuleConstants.kTurningP);
     m_turningPIDController.setI(ModuleConstants.kTurningI);
@@ -122,7 +122,7 @@ public class MAXSwerveModule extends SubsystemBase {
 
     if (RobotBase.isSimulation()) {
       REVPhysicsSim.getInstance().addSparkMax(m_drivingSparkMax, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNeo550(1));
+      REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNEO(1));
       m_drivingPIDController.setP(10);
     }
   }
@@ -142,8 +142,15 @@ public class MAXSwerveModule extends SubsystemBase {
   public SwerveModuleState getState() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
-    return new SwerveModuleState(RobotBase.isReal() ? m_drivingEncoder.getVelocity() : m_simDriveEncoderVelocity,
-        new Rotation2d(RobotBase.isReal() ? (m_turningEncoder.getPosition() - m_chassisAngularOffset) : (m_currentAngle)));
+    if (RobotBase.isSimulation()) {
+      return getSimState();
+    }
+    return new SwerveModuleState(m_drivingEncoder.getVelocity(),
+        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+  }
+
+  private SwerveModuleState getSimState() {
+    return new SwerveModuleState(m_simDriveEncoderVelocity, new Rotation2d(m_currentAngle - m_chassisAngularOffset));
   }
 
   /**
@@ -154,13 +161,17 @@ public class MAXSwerveModule extends SubsystemBase {
   public SwerveModulePosition getPosition() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
+    if (RobotBase.isSimulation()) {
+      return getSimPosition();
+    }
     return new SwerveModulePosition(
-        RobotBase.isReal() ? m_drivingEncoder.getPosition() : m_simDriveEncoderPosition,
-        new Rotation2d(RobotBase.isReal() ? (m_turningEncoder.getPosition() - m_chassisAngularOffset) : (m_currentAngle - m_chassisAngularOffset)));
+        m_drivingEncoder.getPosition(),
+        new Rotation2d((m_turningEncoder.getPosition() - m_chassisAngularOffset)));
   }
 
-  // i just need to look through on my computer because theres probably a couple methods i forgot to simify
-
+  private SwerveModulePosition getSimPosition() {
+    return new SwerveModulePosition(m_simDriveEncoderPosition, new Rotation2d(m_currentAngle - m_chassisAngularOffset));
+  }
 
   /**
    * Sets the desired state for the module.
@@ -175,7 +186,7 @@ public class MAXSwerveModule extends SubsystemBase {
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-        new Rotation2d(m_turningEncoder.getPosition()));
+        new Rotation2d(RobotBase.isReal() ? m_turningEncoder.getPosition() : m_currentAngle));
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
@@ -184,8 +195,11 @@ public class MAXSwerveModule extends SubsystemBase {
     m_desiredState = desiredState;
 
     if (RobotBase.isSimulation()) {
+      System.out.println("Desired State: " + optimizedDesiredState.angle.getDegrees() + " "
+          + optimizedDesiredState.speedMetersPerSecond);
+      SwerveModuleState currentState = getState();
+      System.out.println("Current State: " + currentState.angle.getDegrees() + " " + currentState.speedMetersPerSecond);
       simUpdateDrivePosition(desiredState);
-      //      simTurnPosition(angle);
       m_currentAngle = optimizedDesiredState.angle.getRadians();
     }
   }
@@ -193,11 +207,5 @@ public class MAXSwerveModule extends SubsystemBase {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
-
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    REVPhysicsSim.getInstance().run();
   }
 }
