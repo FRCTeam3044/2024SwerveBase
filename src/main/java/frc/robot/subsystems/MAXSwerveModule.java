@@ -25,9 +25,6 @@ public class MAXSwerveModule {
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
-  ConfigurableSparkPIDController m_drivingSparkController;
-  ConfigurableSparkPIDController m_turningSparkController;
-
   private final RelativeEncoder m_drivingEncoder;
   private final AbsoluteEncoder m_turningEncoder;
 
@@ -67,8 +64,6 @@ public class MAXSwerveModule {
     m_drivingPIDController.setFeedbackDevice(m_drivingEncoder);
     m_turningPIDController.setFeedbackDevice(m_turningEncoder);
 
-    m_drivingSparkController = new ConfigurableSparkPIDController(m_drivingPIDController, moduleName + "/driving");
-    m_turningSparkController = new ConfigurableSparkPIDController(m_turningPIDController, moduleName + "/turning");
     // Apply position and velocity conversion factors for the driving encoder. The
     // native units for position and velocity are rotations and RPM, respectively,
     // but we want meters and meters per second to use with WPILib's swerve APIs.
@@ -114,6 +109,13 @@ public class MAXSwerveModule {
     m_turningPIDController.setOutputRange(ModuleConstants.kTurningMinOutput,
         ModuleConstants.kTurningMaxOutput);
 
+    new ConfigurableSparkPIDController(m_drivingPIDController,
+        moduleName + "/driving",
+        moduleName + " driving");
+    new ConfigurableSparkPIDController(m_turningPIDController,
+        moduleName + "/turning",
+        moduleName + " turning");
+
     m_drivingSparkMax.setIdleMode(ModuleConstants.kDrivingMotorIdleMode);
     m_turningSparkMax.setIdleMode(ModuleConstants.kTurningMotorIdleMode);
     m_drivingSparkMax.setSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
@@ -137,7 +139,6 @@ public class MAXSwerveModule {
       // However, it does NOT support kPosition mode for the turning motor, so we use
       // the m_simCurrentAngle variable to keep track of the angle.
       REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNeo550(1));
-      m_drivingPIDController.setP(1);
     }
   }
 
