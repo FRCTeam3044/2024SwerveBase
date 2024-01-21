@@ -7,11 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.RobotBase;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.REVPhysicsSim;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
@@ -28,11 +31,18 @@ public class MAXSwerveModule {
   private final RelativeEncoder m_drivingEncoder;
   private final AbsoluteEncoder m_turningEncoder;
 
-  private final SparkMaxPIDController m_drivingPIDController;
-  private final SparkMaxPIDController m_turningPIDController;
+  private final SparkPIDController m_drivingPIDController;
+  private final SparkPIDController m_turningPIDController;
 
   private double m_chassisAngularOffset = 0;
+
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
+
+  // Values for simulation
+  private double m_simDriveEncoderPosition;
+  private double m_simDriveEncoderVelocity;
+  // In radians
+  private double m_simCurrentAngle;
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
@@ -115,8 +125,26 @@ public class MAXSwerveModule {
     m_turningSparkMax.burnFlash();
 
     m_chassisAngularOffset = chassisAngularOffset;
-    m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+    if (RobotBase.isReal()) {
+      m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+    }
+
     m_drivingEncoder.setPosition(0);
+
+    if (RobotBase.isSimulation()) {
+      // The rev physics sim will handle changing the encoder readings.
+      REVPhysicsSim.getInstance().addSparkMax(m_drivingSparkMax, DCMotor.getNEO(1));
+      // However, it does NOT support kPosition mode for the turning motor, so we use
+      // the m_simCurrentAngle variable to keep track of the angle.
+      REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNeo550(1));
+      m_drivingPIDController.setP(1);
+    }
+  }
+
+  private void simUpdateDrivePosition(SwerveModuleState state) {
+    m_simDriveEncoderVelocity = state.speedMetersPerSecond;
+    // Loop time is 20ms, so we convert by dividing by 50.
+    m_simDriveEncoderPosition += m_simDriveEncoderVelocity / 50.0;
   }
 
   /**
@@ -127,8 +155,25 @@ public class MAXSwerveModule {
   public SwerveModuleState getState() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
+    if (RobotBase.isSimulation()) {
+      return getSimState();
+    }
     return new SwerveModuleState(m_drivingEncoder.getVelocity(),
         new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+  }
+
+  private SwerveModuleState getSimState() {
+    return new SwerveModuleState(m_simDriveEncoderVelocity, new Rotation2d(m_simCurrentAngle - m_chassisAngularOffset));
+  }
+
+  /**
+   * Get the desired state of the module as commanded by the last call to {@link
+   * #setDesiredState(SwerveModuleState)}.
+   * 
+   * @return The desired state of the module.
+   */
+  public SwerveModuleState getDesiredState() {
+    return m_desiredState;
   }
 
   /**
@@ -139,9 +184,24 @@ public class MAXSwerveModule {
   public SwerveModulePosition getPosition() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
+    if (RobotBase.isSimulation()) {
+      return getSimPosition();
+    }
     return new SwerveModulePosition(
         m_drivingEncoder.getPosition(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d((m_turningEncoder.getPosition() - m_chassisAngularOffset)));
+  }
+
+  private SwerveModulePosition getSimPosition() {
+    return new SwerveModulePosition(m_simDriveEncoderPosition,
+        new Rotation2d(m_simCurrentAngle - m_chassisAngularOffset));
+  }
+
+  private Rotation2d getRotation() {
+    if (RobotBase.isSimulation()) {
+      return new Rotation2d(m_simCurrentAngle);
+    }
+    return new Rotation2d(m_turningEncoder.getPosition());
   }
 
   /**
@@ -156,14 +216,18 @@ public class MAXSwerveModule {
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
-    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-        new Rotation2d(m_turningEncoder.getPosition()));
+    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState, getRotation());
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     m_desiredState = desiredState;
+
+    if (RobotBase.isSimulation()) {
+      simUpdateDrivePosition(optimizedDesiredState);
+      m_simCurrentAngle = optimizedDesiredState.angle.getRadians();
+    }
   }
 
   /** Zeroes all the SwerveModule encoders. */

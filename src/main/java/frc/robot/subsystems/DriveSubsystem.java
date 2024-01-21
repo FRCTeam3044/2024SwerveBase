@@ -4,6 +4,13 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.REVPhysicsSim;
+
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,7 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -46,9 +53,8 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset,
       "rearRightModule");
 
-  // The gyro sensor
-  private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
-
+  // The gyro sensor (NavX)
+  private final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
@@ -60,16 +66,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   public final Field2d field = new Field2d();
 
+  // Sim values
+  private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+  private SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
+  // In radians
+  private double m_simYaw;
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(m_gyro.getAngle()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+      getModulePositions());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -78,14 +85,10 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        });
+    m_odometry.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
+
+    Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
+    Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
   }
 
   /**
@@ -98,6 +101,51 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Returns the module states of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModuleState[] getModuleStates() {
+    return new SwerveModuleState[] {
+        m_frontLeft.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState()
+    };
+  }
+
+  /**
+   * Returns the desired module states of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModuleState[] getDesiredModuleStates() {
+    return new SwerveModuleState[] {
+        m_frontLeft.getDesiredState(),
+        m_frontRight.getDesiredState(),
+        m_rearLeft.getDesiredState(),
+        m_rearRight.getDesiredState()
+    };
+  }
+
+  /**
+   * Returns the module positions of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_rearLeft.getPosition(),
+        m_rearRight.getPosition()
+    };
+  }
+
+  /**
    * Resets the odometry to the specified pose.
    *
    * @param pose The pose to which to set the odometry.
@@ -105,12 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         Rotation2d.fromDegrees(m_gyro.getAngle()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
+        getModulePositions(),
         pose);
   }
 
@@ -252,5 +295,12 @@ public class DriveSubsystem extends SubsystemBase {
     field.setRobotPose(getPose());
 
     SmartDashboard.putData("Field", field);
+    SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
+
+    ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+    m_simYaw += chassisSpeed.omegaRadiansPerSecond * 0.02;
+    angle.set(Math.toDegrees(m_simYaw));
+
+    REVPhysicsSim.getInstance().run();
   }
 }
