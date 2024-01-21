@@ -12,7 +12,6 @@ import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -70,12 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(m_gyro.getAngle()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+      getModulePositions());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -84,14 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        });
+    m_odometry.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
   }
 
   /**
@@ -111,12 +98,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         Rotation2d.fromDegrees(m_gyro.getAngle()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
+        getModulePositions(),
         pose);
   }
 
@@ -253,12 +235,33 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  private SwerveModuleState[] getModuleStates() {
+  /**
+   * Returns the module states of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModuleState[] getModuleStates() {
     return new SwerveModuleState[] {
         m_frontLeft.getState(),
         m_frontRight.getState(),
         m_rearLeft.getState(),
         m_rearRight.getState()
+    };
+  }
+
+  /**
+   * Returns the module positions of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_rearLeft.getPosition(),
+        m_rearRight.getPosition()
     };
   }
 
@@ -269,7 +272,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", field);
 
     ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-    m_simYaw += chassisSpeed.omegaRadiansPerSecond * 0.02;
+    m_simYaw += chassisSpeed.omegaRadiansPerSecond;
     angle.set(m_simYaw);
 
     REVPhysicsSim.getInstance().run();

@@ -31,12 +31,11 @@ public class MAXSwerveModule {
   private final SparkPIDController m_turningPIDController;
 
   private double m_chassisAngularOffset = 0;
-  private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
-
-  // Values for simulation.
+  // Values for simulation
   private double m_simDriveEncoderPosition;
   private double m_simDriveEncoderVelocity;
-  private double m_currentAngle;
+  // In radians
+  private double m_simCurrentAngle;
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
@@ -117,21 +116,22 @@ public class MAXSwerveModule {
     m_turningSparkMax.burnFlash();
 
     m_chassisAngularOffset = chassisAngularOffset;
-    m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
     m_drivingEncoder.setPosition(0);
 
     if (RobotBase.isSimulation()) {
+      // The rev physics sim will handle changing the encoder readings.
       REVPhysicsSim.getInstance().addSparkMax(m_drivingSparkMax, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNEO(1));
-      m_drivingPIDController.setP(10);
+      // However, it does NOT support kPosition mode for the turning motor, so we use
+      // the m_simCurrentAngle variable to keep track of the angle.
+      REVPhysicsSim.getInstance().addSparkMax(m_turningSparkMax, DCMotor.getNeo550(1));
+      m_drivingPIDController.setP(1);
     }
   }
 
   private void simUpdateDrivePosition(SwerveModuleState state) {
     m_simDriveEncoderVelocity = state.speedMetersPerSecond;
-    double distancePer20Ms = m_simDriveEncoderVelocity / 50.0;
-
-    m_simDriveEncoderPosition += distancePer20Ms;
+    // Loop time is 20ms, so we convert by dividing by 50.
+    m_simDriveEncoderPosition += m_simDriveEncoderVelocity / 50.0;
   }
 
   /**
@@ -150,7 +150,7 @@ public class MAXSwerveModule {
   }
 
   private SwerveModuleState getSimState() {
-    return new SwerveModuleState(m_simDriveEncoderVelocity, new Rotation2d(m_currentAngle - m_chassisAngularOffset));
+    return new SwerveModuleState(m_simDriveEncoderVelocity, new Rotation2d(m_simCurrentAngle - m_chassisAngularOffset));
   }
 
   /**
@@ -170,7 +170,15 @@ public class MAXSwerveModule {
   }
 
   private SwerveModulePosition getSimPosition() {
-    return new SwerveModulePosition(m_simDriveEncoderPosition, new Rotation2d(m_currentAngle - m_chassisAngularOffset));
+    return new SwerveModulePosition(m_simDriveEncoderPosition,
+        new Rotation2d(m_simCurrentAngle - m_chassisAngularOffset));
+  }
+
+  private Rotation2d getRotation() {
+    if (RobotBase.isSimulation()) {
+      return new Rotation2d(m_simCurrentAngle);
+    }
+    return new Rotation2d(m_turningEncoder.getPosition());
   }
 
   /**
@@ -185,22 +193,15 @@ public class MAXSwerveModule {
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
-    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-        new Rotation2d(RobotBase.isReal() ? m_turningEncoder.getPosition() : m_currentAngle));
+    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState, getRotation());
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
-    m_desiredState = desiredState;
-
     if (RobotBase.isSimulation()) {
-      System.out.println("Desired State: " + optimizedDesiredState.angle.getDegrees() + " "
-          + optimizedDesiredState.speedMetersPerSecond);
-      SwerveModuleState currentState = getState();
-      System.out.println("Current State: " + currentState.angle.getDegrees() + " " + currentState.speedMetersPerSecond);
-      simUpdateDrivePosition(desiredState);
-      m_currentAngle = optimizedDesiredState.angle.getRadians();
+      simUpdateDrivePosition(optimizedDesiredState);
+      m_simCurrentAngle = optimizedDesiredState.angle.getRadians();
     }
   }
 
