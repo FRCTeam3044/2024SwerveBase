@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.REVPhysicsSim;
 
@@ -63,6 +65,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Sim values
   private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
   private SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
+  // In radians
   private double m_simYaw;
 
   // Odometry class for tracking robot pose
@@ -79,6 +82,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
+
+    Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
+    Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
   }
 
   /**
@@ -88,6 +94,51 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  /**
+   * Returns the module states of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModuleState[] getModuleStates() {
+    return new SwerveModuleState[] {
+        m_frontLeft.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState()
+    };
+  }
+
+  /**
+   * Returns the desired module states of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModuleState[] getDesiredModuleStates() {
+    return new SwerveModuleState[] {
+        m_frontLeft.getDesiredState(),
+        m_frontRight.getDesiredState(),
+        m_rearLeft.getDesiredState(),
+        m_rearRight.getDesiredState()
+    };
+  }
+
+  /**
+   * Returns the module positions of the swerve drive.
+   * 
+   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
+   *         front right, index 2 is rear left, and index 3 is rear right.
+   */
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_rearLeft.getPosition(),
+        m_rearRight.getPosition()
+    };
   }
 
   /**
@@ -235,45 +286,16 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  /**
-   * Returns the module states of the swerve drive.
-   * 
-   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
-   *         front right, index 2 is rear left, and index 3 is rear right.
-   */
-  public SwerveModuleState[] getModuleStates() {
-    return new SwerveModuleState[] {
-        m_frontLeft.getState(),
-        m_frontRight.getState(),
-        m_rearLeft.getState(),
-        m_rearRight.getState()
-    };
-  }
-
-  /**
-   * Returns the module positions of the swerve drive.
-   * 
-   * @return An array of SwerveModuleStates. Index 0 is front left, index 1 is
-   *         front right, index 2 is rear left, and index 3 is rear right.
-   */
-  public SwerveModulePosition[] getModulePositions() {
-    return new SwerveModulePosition[] {
-        m_frontLeft.getPosition(),
-        m_frontRight.getPosition(),
-        m_rearLeft.getPosition(),
-        m_rearRight.getPosition()
-    };
-  }
-
   @Override
   public void simulationPeriodic() {
     field.setRobotPose(getPose());
 
     SmartDashboard.putData("Field", field);
+    SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
 
     ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-    m_simYaw += chassisSpeed.omegaRadiansPerSecond;
-    angle.set(m_simYaw);
+    m_simYaw += chassisSpeed.omegaRadiansPerSecond * 0.02;
+    angle.set(Math.toDegrees(m_simYaw));
 
     REVPhysicsSim.getInstance().run();
   }

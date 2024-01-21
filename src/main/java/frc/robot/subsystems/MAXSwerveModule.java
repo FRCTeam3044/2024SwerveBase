@@ -31,6 +31,9 @@ public class MAXSwerveModule {
   private final SparkPIDController m_turningPIDController;
 
   private double m_chassisAngularOffset = 0;
+
+  private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
+
   // Values for simulation
   private double m_simDriveEncoderPosition;
   private double m_simDriveEncoderVelocity;
@@ -116,6 +119,10 @@ public class MAXSwerveModule {
     m_turningSparkMax.burnFlash();
 
     m_chassisAngularOffset = chassisAngularOffset;
+    if (RobotBase.isReal()) {
+      m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+    }
+
     m_drivingEncoder.setPosition(0);
 
     if (RobotBase.isSimulation()) {
@@ -151,6 +158,16 @@ public class MAXSwerveModule {
 
   private SwerveModuleState getSimState() {
     return new SwerveModuleState(m_simDriveEncoderVelocity, new Rotation2d(m_simCurrentAngle - m_chassisAngularOffset));
+  }
+
+  /**
+   * Get the desired state of the module as commanded by the last call to {@link
+   * #setDesiredState(SwerveModuleState)}.
+   * 
+   * @return The desired state of the module.
+   */
+  public SwerveModuleState getDesiredState() {
+    return m_desiredState;
   }
 
   /**
@@ -198,6 +215,8 @@ public class MAXSwerveModule {
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+
+    m_desiredState = desiredState;
 
     if (RobotBase.isSimulation()) {
       simUpdateDrivePosition(optimizedDesiredState);
