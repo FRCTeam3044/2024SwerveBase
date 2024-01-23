@@ -10,20 +10,17 @@ public class ClimberSubsystem {
     Encoder leftClimberEncoder = new Encoder(null, null);
     Encoder rightClimberEncoder = new Encoder(null, null);
 
-    // varible for determining whether or not the arm is up or down
-    int armposition = 0;
-
     // power going into each of the motors
     int leftMotorPower = 0;
     int rightMotorPower = 0;
 
     // raises the arm
-    public void raiseArm() {
+    public void raiseArms() {
 
     }
 
     // lowers the arm
-    public void lowerArm() {
-
+    public void lowerArms() {
+        //
     }
 }
