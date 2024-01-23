@@ -12,7 +12,9 @@ public class TransitSubsystem {
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
+    boolean isIntakeRunning = false;
 
+    // change this to change the speed of the motor
     double motorSpeed = 0;
 
     // Use this to make the transit move
