@@ -45,6 +45,8 @@ public class ShooterSubsystem {
      */
     double shooterAngle = 0;
 
+    boolean isShooterRunning = false;
+
     public void shooterFiring(double motorRPM) {
 
     };
