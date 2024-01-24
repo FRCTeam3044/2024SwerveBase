@@ -8,8 +8,9 @@ public class TransitSubsystem {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(0);
-    Ultrasonic noteDetection = new Ultrasonic(null, null);
-
+    Ultrasonic noteDetectionSensorOne = new Ultrasonic(null, null);
+    Ultrasonic noteDetectionSensorTwo = new Ultrasonic(null, null);
+    
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
     boolean isIntakeRunning = false;
