@@ -13,5 +13,11 @@ public class IntakeSubsystem {
     // Use this to run intake
     public void runIntake() {
 
-    };
+    }
+
+    // Updates the intake's information
+    public void updatePeriodic() {
+
+    }
+
 }
