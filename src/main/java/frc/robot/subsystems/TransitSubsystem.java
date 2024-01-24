@@ -18,15 +18,15 @@ public class TransitSubsystem {
     // change this to change the speed of the motor
     double motorSpeed = 0;
 
-    // Use this to make the transit move
+    // Use this to get the note from the intake system
     public void getNoteFromIntake() {
 
     }
-
+    // Use this to send the note to the shooter
     public void sendNoteToShooter() {
 
     }
-
+    // Updates the transit's information
     public void updatePeriodic() {
 
     };
