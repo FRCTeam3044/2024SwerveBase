@@ -22,11 +22,13 @@ public class TransitSubsystem {
     public void getNoteFromIntake() {
 
     }
+
     // Use this to send the note to the shooter
     public void sendNoteToShooter() {
 
     }
-    // Updates the transit's information
+
+    // Checks the sensors every second it updates
     public void updatePeriodic() {
 
     };
