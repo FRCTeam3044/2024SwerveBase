@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.REVPhysicsSim;
@@ -28,6 +31,9 @@ import frc.robot.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+  // PhotonVision
+  private PhotonCameraWrapper camera1Vision = new PhotonCameraWrapper();
+
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -82,6 +88,12 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
+    Optional<EstimatedRobotPose> result1 = camera1Vision.getEstimatedGlobalPose1(getPose());
+    if (result1.isPresent()) {
+      EstimatedRobotPose camPose = result1.get();
+      Pose2d pose = camPose.estimatedPose.toPose2d();
+      // how add pose???
+  }
 
     Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
     Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
