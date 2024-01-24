@@ -15,9 +15,8 @@ public class IntakeSubsystem {
 
     }
 
-    // Updates the intake's information
-    public void updatePeriodic() {
+    // Stops intake
+    public void stopIntake() {
 
     }
-
 }
