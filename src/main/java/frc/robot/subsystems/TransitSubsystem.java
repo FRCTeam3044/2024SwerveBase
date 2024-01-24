@@ -10,7 +10,7 @@ public class TransitSubsystem {
     TalonSRX transitMotor = new TalonSRX(0);
     Ultrasonic noteDetectionSensorOne = new Ultrasonic(null, null);
     Ultrasonic noteDetectionSensorTwo = new Ultrasonic(null, null);
-    
+
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
     boolean isIntakeRunning = false;
@@ -19,7 +19,15 @@ public class TransitSubsystem {
     double motorSpeed = 0;
 
     // Use this to make the transit move
-    public void startTransit() {
+    public void getNoteFromIntake() {
+
+    }
+
+    public void sendNoteToShooter() {
+
+    }
+
+    public void updatePeriodic() {
 
     };
 }
