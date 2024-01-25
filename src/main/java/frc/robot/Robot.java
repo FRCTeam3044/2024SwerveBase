@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import me.nabdev.oxconfig.OxConfig;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,17 +32,14 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    Logger.addDataReceiver(new NT4Publisher());
 
-    // See http://bit.ly/3YIzFZ6 for more information on timestamps in AdvantageKit.
-    // Logger.disableDeterministicTimestamps()
+    Logger.addDataReceiver(new NT4Publisher());
 
     // Start AdvantageKit logger
     Logger.start();
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our
-    // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    OxConfig.initialize();
   }
 
   /**
