@@ -78,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      Rotation2d.fromDegrees(getGyroAngleDegrees()),
       getModulePositions());
 
   /** Creates a new DriveSubsystem. */
@@ -100,11 +100,16 @@ public class DriveSubsystem extends SubsystemBase {
         visionStdDevs);
   }
 
+  private double getGyroAngleDegrees() {
+    return -m_gyro.getAngle();
+  }
+
   @Override
   public void periodic() {
     // Update the pose estimator in the periodic block
     poseEstimator.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
-
+    Logger.recordOutput("gyro", getGyroAngleDegrees());
+    Logger.recordOutput("gyroRad", Math.toRadians(getGyroAngleDegrees()));
     Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
     Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
   }
@@ -170,7 +175,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(getGyroAngleDegrees()),
         getModulePositions(),
         pose);
   }
@@ -243,7 +248,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(m_gyro.getAngle()))
+                Rotation2d.fromDegrees(getGyroAngleDegrees()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -295,6 +300,7 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
+
   public Rotation2d getHeading() {
     return getPose().getRotation();
   }
