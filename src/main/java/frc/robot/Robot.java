@@ -10,7 +10,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import me.nabdev.oxconfig.OxConfig;
-import me.nabdev.oxconfig.OxConfig.FastMode;
 import me.nabdev.oxconfig.OxConfig.LoggingMode;
 
 /**
@@ -42,7 +41,6 @@ public class Robot extends LoggedRobot {
     m_robotContainer = new RobotContainer();
 
     OxConfig.setLoggingMode(LoggingMode.Info);
-    OxConfig.setFastMode(FastMode.Fast);
     OxConfig.enableProfiling(true);
     OxConfig.initialize();
   }
