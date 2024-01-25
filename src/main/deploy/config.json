@@ -12,6 +12,10 @@
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Direction Slew rate": {
+            "comment": "Radians per second",
+            "value": "1.2"
+        },
         "frontLeftModule/driving/Max": "1.0",
         "frontLeftModule/turning/IZone": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -69,7 +73,7 @@
         "rearRightModule/turning/D": "0.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         }
     },
@@ -87,6 +91,10 @@
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Direction Slew rate": {
+            "comment": "Radians per second",
+            "value": "1.2"
+        },
         "frontLeftModule/driving/Max": "1.0",
         "frontLeftModule/turning/IZone": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -144,7 +152,7 @@
         "rearRightModule/turning/D": "0.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         }
     },
@@ -161,6 +169,10 @@
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Direction Slew rate": {
+            "comment": "Radians per second",
+            "value": "1.2"
+        },
         "frontLeftModule/driving/Max": "1.0",
         "frontLeftModule/turning/IZone": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -218,7 +230,7 @@
         "rearRightModule/turning/D": "0.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         }
     },
@@ -235,6 +247,10 @@
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Direction Slew rate": {
+            "comment": "Radians per second",
+            "value": "1.2"
+        },
         "frontLeftModule/driving/Max": "1.0",
         "frontLeftModule/turning/IZone": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -292,7 +308,7 @@
         "rearRightModule/turning/D": "0.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         }
     }
