@@ -1,14 +1,18 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Vision;
 
 public class VisionSubsystem extends SubsystemBase {
-    private DriveSubsystem driveSubsystem = new DriveSubsystem();
     private Vision vision;
     public VisionSubsystem() {
         vision = new Vision();
+        RobotContainer.m_robotDrive.addVisionMeasurement(new Pose2d(0, 0, new Rotation2d(0)), 0);
     }
 
     @Override
@@ -22,9 +26,13 @@ public class VisionSubsystem extends SubsystemBase {
                     // Change our trust in the measurement based on the tags we can see
                     var estStdDevs = vision.getEstimationStdDevs(estPose, camera);
 
-                    driveSubsystem.addVisionMeasurement(
+                    RobotContainer.m_robotDrive.addVisionMeasurement(
                         est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
                 });
         }
+
+        double[] pose = {RobotContainer.m_robotDrive.getPose().getX(), RobotContainer.m_robotDrive.getPose().getY(), RobotContainer.m_robotDrive.getPose().getRotation().getDegrees()};
+
+        SmartDashboard.putNumberArray("Robot Pose", pose);
     }
 }

@@ -158,9 +158,9 @@ public final class Constants {
     // array of active cameras
     public final static String[] activeCameras = {
       "front",
-      "back",
-      "left",
-      "right"
+      // "back",
+      // "left",
+      // "right"
     };
     // array of camera transforms
     public final static Transform3d[] cameraTransforms = {
