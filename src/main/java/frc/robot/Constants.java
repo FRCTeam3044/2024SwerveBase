@@ -6,11 +6,15 @@ package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -148,18 +152,54 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    //robot to cam
-    // +x is forward
-    // +y is left
-    public final static Transform3d robotToCam1 = //front camera
-            new Transform3d(
-                new Translation3d(
-                    0,
-                    0,
-                    0),
-                new Rotation3d(
-                    0,
-                    0,
-                    0));
-  }
+    // TODO: Update these values
+    public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
+    public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
+    // array of active cameras
+    public final static String[] activeCameras = {
+      "front",
+      "back",
+      "left",
+      "right"
+    };
+    // array of camera transforms
+    public final static Transform3d[] cameraTransforms = {
+      new Transform3d( // front
+        new Translation3d(
+          0,
+          0,
+          0),
+        new Rotation3d(
+          0,
+          0,
+          0)),
+      new Transform3d( // back
+        new Translation3d(
+          0,
+          0,
+          0),
+        new Rotation3d(
+          0,
+          0,
+          0)),
+      new Transform3d( // left
+        new Translation3d(
+          0,
+          0,
+          0),
+        new Rotation3d(
+          0,
+          0,
+          0)),
+      new Transform3d( // right
+        new Translation3d(
+          0,
+          0,
+          0),
+        new Rotation3d(
+          0,
+          0,
+          0))
+    };
+}
 }
