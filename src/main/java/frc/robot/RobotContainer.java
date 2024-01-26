@@ -4,11 +4,31 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.FollowTrajectory;
 import frc.robot.subsystems.DriveSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
+import me.nabdev.pathfinding.Pathfinder;
+import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.structures.ImpossiblePathException;
+import me.nabdev.pathfinding.utilities.FieldLoader.Field;
+
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,12 +54,21 @@ public class RobotContainer {
       "Field Relative");
   private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
+  private final Pathfinder m_pathfinder;
+
+  private final PIDController m_xController = new ConfigurablePIDController(1, 0, 0, "X Controller");
+  private final PIDController m_yController = new ConfigurablePIDController(1, 0, 0, "Y Controller");
+  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(1, 0, 0.01,
+      new TrapezoidProfile.Constraints(6.28, 3.14), "Theta Controller");
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    m_pathfinder = new PathfinderBuilder(Field.CHARGED_UP_2023).setInjectPoints(true).build();
+    m_robotDrive.resetOdometry(new Pose2d(2, 2, new Rotation2d(0)));
 
     if (RobotBase.isReal()) {
       m_robotDrive.setDefaultCommand(
@@ -92,6 +121,22 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    try {
+      TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
+          AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      Trajectory myPath = m_pathfinder.generateTrajectory(m_robotDrive.getPose(), new Pose2d(13, 4, new Rotation2d(0)),
+          config);
+      m_robotDrive.field.getObject("Path").setTrajectory(myPath);
+      HolonomicDriveController controller = new HolonomicDriveController(m_xController, m_yController,
+          m_thetaController);
+
+      Timer timer = new Timer();
+      timer.start();
+      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(180);
+      return new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive, m_robotDrive);
+    } catch (ImpossiblePathException e) {
+      System.out.println("Impossible path");
+      return null;
+    }
   }
 }
