@@ -49,9 +49,9 @@ public class ShooterSubsystem {
 
     public void shooterFiring(double motorRPM) {
 
-    };
+    }
 
     public void shooterAngleAdjustment(double shooterAngle) {
 
-    };
+    }
 }
