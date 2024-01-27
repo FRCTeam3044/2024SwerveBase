@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
+
+import edu.wpi.first.math.controller.PIDController;
 
 public class ShooterSubsystem {
     /*
@@ -36,6 +38,11 @@ public class ShooterSubsystem {
     AbsoluteEncoder shooterAngleMotorTwoEncoder = shooterAngleMotorTwo.getAbsoluteEncoder(Type.kDutyCycle);
 
     /*
+     * Creates a new PID controller
+     */
+    PIDController pid = new PIDController(0, 0, 0);
+
+    /*
      * Change this to change the power of the motors
      */
     double motorRPM = 0;
@@ -43,37 +50,15 @@ public class ShooterSubsystem {
     /*
      * Change this to change the angles of the shooters
      */
-    double desiredShooterAngle = 0;
-    /*
-     * Base rotations per minute
-     */
-    double targetRPM = 0;
+    double shooterAngle = 0;
 
-    /*
-     * Sets the rpm
-     */
-    public void setTargetRPM(double motorRPM) {
+    boolean isShooterRunning = false;
+
+    public void shooterFiring(double motorRPM) {
 
     }
 
-<<<<<<< HEAD
-    }
-=======
-    /*
-     * Sets the angle of the shooter for shooting
-     */
-    public void setShooterAngle(double shooterAngle) {
->>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
+    public void shooterAngleAdjustment(double shooterAngle) {
 
-    }
-
-<<<<<<< HEAD
-=======
-    /*
-     * Updates the shooter's information
-     */
-    public void updatePeriodic() {
-
->>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
     }
 }
