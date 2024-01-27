@@ -12,9 +12,11 @@ import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.structures.Edge;
 import me.nabdev.pathfinding.structures.ImpossiblePathException;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -66,7 +68,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    m_pathfinder = new PathfinderBuilder(Field.CHARGED_UP_2023).setInjectPoints(true).setPointSpacing(0.25).build();
+    m_pathfinder = new PathfinderBuilder(
+        "C:\\Users\\robot\\Documents\\2024\\oxplorer\\Pathfinding\\src\\main\\resources\\crescendo_2024.json")
+        .setInjectPoints(true).setPointSpacing(0.25).build();
+    ArrayList<Edge> edges = m_pathfinder.visualizeEdges();
+    DebugUtils.drawLines("Field Map", edges, m_pathfinder.visualizeVertices());
 
     if (RobotBase.isReal()) {
       m_robotDrive.setDefaultCommand(
