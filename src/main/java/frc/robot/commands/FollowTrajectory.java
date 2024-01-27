@@ -98,6 +98,7 @@ public class FollowTrajectory extends Command {
         SmartDashboard.putNumber("Desired Rotation", desiredRotation.getDegrees());
         ChassisSpeeds targetChassisSpeeds = m_controller.calculate(m_driveSubsystem.getPose(), desiredState,
                 desiredRotation);
+        targetChassisSpeeds.omegaRadiansPerSecond *= -1;
         SmartDashboard.putNumber("Target Rotation Speed", targetChassisSpeeds.omegaRadiansPerSecond);
         var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
         m_driveSubsystem.setModuleStates(targetModuleStates);

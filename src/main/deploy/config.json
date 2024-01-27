@@ -286,7 +286,7 @@
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
-        "Theta Controller/D": "0.01",
+        "Theta Controller/D": "0.0",
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.08"
@@ -299,7 +299,7 @@
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
-        "Theta Controller/P": "1.0",
+        "Theta Controller/P": "5.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "Y Controller/P": "1.0",
         "rearRightModule/turning/FF": "0.0",

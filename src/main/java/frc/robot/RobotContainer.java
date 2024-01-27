@@ -13,6 +13,7 @@ import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.structures.Edge;
 import me.nabdev.pathfinding.structures.ImpossiblePathException;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
@@ -58,7 +59,7 @@ public class RobotContainer {
 
   private final PIDController m_xController = new ConfigurablePIDController(1, 0, 0, "X Controller");
   private final PIDController m_yController = new ConfigurablePIDController(1, 0, 0, "Y Controller");
-  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(1, 0, 0.01,
+  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(10, 0, 0,
       new TrapezoidProfile.Constraints(6.28, 3.14), "Theta Controller");
 
   /**
@@ -132,7 +133,7 @@ public class RobotContainer {
 
       Timer timer = new Timer();
       timer.start();
-      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(180);
+      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(timer.get() * 180);
       return new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive, m_robotDrive);
     } catch (ImpossiblePathException e) {
       System.out.println("Impossible path");
