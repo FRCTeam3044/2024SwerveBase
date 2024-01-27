@@ -43,15 +43,37 @@ public class ShooterSubsystem {
     /*
      * Change this to change the angles of the shooters
      */
-    double shooterAngle = 0;
+    double desiredShooterAngle = 0;
+    /*
+     * Base rotations per minute
+     */
+    double targetRPM = 0;
 
-    boolean isShooterRunning = false;
-
-    public void shooterFiring(double motorRPM) {
+    /*
+     * Sets the rpm
+     */
+    public void setTargetRPM(double motorRPM) {
 
     }
 
-    public void shooterAngleAdjustment(double shooterAngle) {
+<<<<<<< HEAD
+    }
+=======
+    /*
+     * Sets the angle of the shooter for shooting
+     */
+    public void setShooterAngle(double shooterAngle) {
+>>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
 
+    }
+
+<<<<<<< HEAD
+=======
+    /*
+     * Updates the shooter's information
+     */
+    public void updatePeriodic() {
+
+>>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
     }
 }
