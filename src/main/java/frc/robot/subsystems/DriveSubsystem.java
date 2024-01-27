@@ -11,6 +11,9 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +22,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -66,6 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public final Field2d field = new Field2d();
 
+  private final SwerveDrivePoseEstimator poseEstimator;
+
   // Sim values
   private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
   private SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
@@ -80,7 +87,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    // Define the standard deviations for the pose estimator, which determine how fast the pose
+    // estimate converges to the vision measurement. This should depend on the vision measurement
+    // noise
+    // and how many or how frequently vision measurements are applied to the pose estimator.
 
+    var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+    var visionStdDevs = VecBuilder.fill(1, 1, 1);
+    poseEstimator =
+      new SwerveDrivePoseEstimator(
+        DriveConstants.kDriveKinematics,
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        getModulePositions(),
+        new Pose2d(),
+        stateStdDevs,
+        visionStdDevs);
   }
 
   private double getGyroAngleDegrees() {
@@ -89,11 +110,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-    m_odometry.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
+    // Update the pose estimator in the periodic block
+    poseEstimator.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
     Logger.recordOutput("gyro", getGyroAngleDegrees());
     Logger.recordOutput("gyroRad", Math.toRadians(getGyroAngleDegrees()));
-
     Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
     Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
   }
@@ -104,7 +124,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -284,8 +304,9 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return Rotation2d.fromDegrees(getGyroAngleDegrees()).getDegrees();
+
+  public Rotation2d getHeading() {
+    return getPose().getRotation();
   }
 
   /**
@@ -295,6 +316,17 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+  
+  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}. */
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+      poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+  }
+
+  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)}. */
+  public void addVisionMeasurement(
+          Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+      poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
   }
 
   @Override

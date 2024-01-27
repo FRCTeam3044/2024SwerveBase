@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.VisionSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -22,7 +23,7 @@ import me.nabdev.oxconfig.OxConfig;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-
+  private VisionSubsystem m_VisionSubsystem;
   private RobotContainer m_robotContainer;
 
   /**
@@ -38,7 +39,7 @@ public class Robot extends LoggedRobot {
     // Start AdvantageKit logger
     Logger.start();
     m_robotContainer = new RobotContainer();
-
+    m_VisionSubsystem = new VisionSubsystem();
     OxConfig.initialize();
   }
 
@@ -62,6 +63,7 @@ public class Robot extends LoggedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_VisionSubsystem.periodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
