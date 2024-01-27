@@ -11,6 +11,7 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -87,17 +88,19 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    // Define the standard deviations for the pose estimator, which determine how fast the pose
-    // estimate converges to the vision measurement. This should depend on the vision measurement
+    // Define the standard deviations for the pose estimator, which determine how
+    // fast the pose
+    // estimate converges to the vision measurement. This should depend on the
+    // vision measurement
     // noise
-    // and how many or how frequently vision measurements are applied to the pose estimator.
+    // and how many or how frequently vision measurements are applied to the pose
+    // estimator.
 
     var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
     var visionStdDevs = VecBuilder.fill(1, 1, 1);
-    poseEstimator =
-      new SwerveDrivePoseEstimator(
+    poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(getGyroAngleDegrees()),
         getModulePositions(),
         new Pose2d(),
         stateStdDevs,
@@ -105,17 +108,22 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private double getGyroAngleDegrees() {
-    return -m_gyro.getAngle();
+    double gyroRadians = Math.toRadians(-m_gyro.getAngle());
+    return Math.toDegrees(MathUtil.angleModulus(gyroRadians +
+        Math.PI / 2));
   }
 
   @Override
   public void periodic() {
     // Update the pose estimator in the periodic block
-    poseEstimator.update(Rotation2d.fromDegrees(m_gyro.getAngle()), getModulePositions());
+    poseEstimator.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
     Logger.recordOutput("gyro", getGyroAngleDegrees());
     Logger.recordOutput("gyroRad", Math.toRadians(getGyroAngleDegrees()));
     Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
     Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
+    field.setRobotPose(getPose());
+
+    SmartDashboard.putData("Field", field);
   }
 
   /**
@@ -317,23 +325,25 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
-  
-  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}. */
+
+  /**
+   * See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}.
+   */
   public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
-      poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+    poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
   }
 
-  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)}. */
+  /**
+   * See
+   * {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)}.
+   */
   public void addVisionMeasurement(
-          Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
-      poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+      Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+    poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
   }
 
   @Override
   public void simulationPeriodic() {
-    field.setRobotPose(getPose());
-
-    SmartDashboard.putData("Field", field);
     SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
 
     ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
@@ -342,4 +352,5 @@ public class DriveSubsystem extends SubsystemBase {
 
     REVPhysicsSim.getInstance().run();
   }
+
 }

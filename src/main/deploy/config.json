@@ -299,7 +299,7 @@
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
-        "Theta Controller/P": "5.0",
+        "Theta Controller/P": "0.1",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "Y Controller/P": "1.0",
         "rearRightModule/turning/FF": "0.0",

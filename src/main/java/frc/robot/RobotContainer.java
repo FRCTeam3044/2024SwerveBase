@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.FollowTrajectory;
 import frc.robot.subsystems.DriveSubsystem;
@@ -13,7 +12,6 @@ import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
-import me.nabdev.pathfinding.structures.Edge;
 import me.nabdev.pathfinding.structures.ImpossiblePathException;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
@@ -59,8 +57,8 @@ public class RobotContainer {
 
   private final PIDController m_xController = new ConfigurablePIDController(1, 0, 0, "X Controller");
   private final PIDController m_yController = new ConfigurablePIDController(1, 0, 0, "Y Controller");
-  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(10, 0, 0,
-      new TrapezoidProfile.Constraints(6.28, 3.14), "Theta Controller");
+  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(1, 0, 0,
+      new TrapezoidProfile.Constraints(Math.PI, Math.PI / 2), "Theta Controller");
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,7 +67,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     m_pathfinder = new PathfinderBuilder(Field.CHARGED_UP_2023).setInjectPoints(true).setPointSpacing(0.25).build();
-    m_robotDrive.resetOdometry(new Pose2d(2, 2, new Rotation2d(0)));
 
     if (RobotBase.isReal()) {
       m_robotDrive.setDefaultCommand(
@@ -123,17 +120,18 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     try {
-      TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-          AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      TrajectoryConfig config = new TrajectoryConfig(0.5,
+          0.5);
       Trajectory myPath = m_pathfinder.generateTrajectory(m_robotDrive.getPose(), new Pose2d(13, 4, new Rotation2d(0)),
           config);
       m_robotDrive.field.getObject("Path").setTrajectory(myPath);
+
       HolonomicDriveController controller = new HolonomicDriveController(m_xController, m_yController,
           m_thetaController);
 
       Timer timer = new Timer();
       timer.start();
-      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(timer.get() * 180);
+      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(0);
       return new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive, m_robotDrive);
     } catch (ImpossiblePathException e) {
       System.out.println("Impossible path");
