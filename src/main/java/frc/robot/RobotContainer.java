@@ -68,7 +68,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    m_pathfinder = new PathfinderBuilder(Field.CHARGED_UP_2023).setInjectPoints(true).build();
+    m_pathfinder = new PathfinderBuilder(Field.CHARGED_UP_2023).setInjectPoints(true).setPointSpacing(0.25).build();
     m_robotDrive.resetOdometry(new Pose2d(2, 2, new Rotation2d(0)));
 
     if (RobotBase.isReal()) {
