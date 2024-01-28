@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,6 +20,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -136,22 +140,26 @@ public final class Constants {
         "Driver Deadband");
   }
 
-  /*
-   * This could be replace by oxconfig
-   */
-  public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+  public static final class PathfindingConstants {
+    public static final ConfigurableParameter<Double> kMaxSpeedMetersPerSecond = new ConfigurableParameter<Double>(3.0,
+        "Pathfinding Max Speed");
+    public static final ConfigurableParameter<Double> kMaxAccelerationMetersPerSecondSquared = new ConfigurableParameter<Double>(
+        3.0, "Pathfinding Max Acceleration");
+    // BOTH MAX ANGULAR SPEED & ACCEL REQUIRE CODE REBOOT TO CHANGE!!!
+    public static final ConfigurableParameter<Double> kMaxAngularSpeedRadiansPerSecond = new ConfigurableParameter<Double>(
+        Math.PI, "Pathfinding Max Angular Speed");
+    public static final ConfigurableParameter<Double> kMaxAngularAccelerationRadiansPerSecondSquared = new ConfigurableParameter<Double>(
+        Math.PI, "Pathfinding Max Angular Acceleration");
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
-
-    // Constraint for the motion profiled robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    public static final PIDController kPathfindingXController = new ConfigurablePIDController(1, 0, 0,
+        "Pathfinding X Controller");
+    public static final PIDController kPathfindingYController = new ConfigurablePIDController(1, 0, 0,
+        "Pathfinding Y Controller");
+    public static final ProfiledPIDController kPathfindingThetaController = new ConfigurableProfiledPIDController(1, 0,
+        0,
+        new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
+            kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+        "Pathfinding Theta Controller");
   }
 
   public static final class NeoMotorConstants {
@@ -164,49 +172,49 @@ public final class Constants {
     public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
     // array of active cameras
     public final static String[] activeCameras = {
-      "front",
-      // "back",
-      // "left",
-      // "right"
+        "front",
+        // "back",
+        // "left",
+        // "right"
     };
     // array of camera transforms
     public final static Transform3d[] cameraTransforms = {
-      new Transform3d( // front
-        new Translation3d(
-          0,
-          0,
-          0),
-        new Rotation3d(
-          0,
-          0,
-          0)),
-      new Transform3d( // back
-        new Translation3d(
-          0,
-          0,
-          0),
-        new Rotation3d(
-          0,
-          0,
-          0)),
-      new Transform3d( // left
-        new Translation3d(
-          0,
-          0,
-          0),
-        new Rotation3d(
-          0,
-          0,
-          0)),
-      new Transform3d( // right
-        new Translation3d(
-          0,
-          0,
-          0),
-        new Rotation3d(
-          0,
-          0,
-          0))
+        new Transform3d( // front
+            new Translation3d(
+                0,
+                0,
+                0),
+            new Rotation3d(
+                0,
+                0,
+                0)),
+        new Transform3d( // back
+            new Translation3d(
+                0,
+                0,
+                0),
+            new Rotation3d(
+                0,
+                0,
+                0)),
+        new Transform3d( // left
+            new Translation3d(
+                0,
+                0,
+                0),
+            new Rotation3d(
+                0,
+                0,
+                0)),
+        new Transform3d( // right
+            new Translation3d(
+                0,
+                0,
+                0),
+            new Rotation3d(
+                0,
+                0,
+                0))
     };
-}
+  }
 }

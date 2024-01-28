@@ -5,31 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.FollowTrajectory;
+import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.DriveSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
-import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
-import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
-import me.nabdev.pathfinding.Pathfinder;
-import me.nabdev.pathfinding.PathfinderBuilder;
-import me.nabdev.pathfinding.structures.Edge;
-import me.nabdev.pathfinding.structures.ImpossiblePathException;
-import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -55,24 +40,12 @@ public class RobotContainer {
       "Field Relative");
   private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
-  private final Pathfinder m_pathfinder;
-
-  private final PIDController m_xController = new ConfigurablePIDController(1, 0, 0, "X Controller");
-  private final PIDController m_yController = new ConfigurablePIDController(1, 0, 0, "Y Controller");
-  private final ProfiledPIDController m_thetaController = new ConfigurableProfiledPIDController(1, 0, 0,
-      new TrapezoidProfile.Constraints(Math.PI, Math.PI / 2), "Theta Controller");
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    m_pathfinder = new PathfinderBuilder(
-        "C:\\Users\\robot\\Documents\\2024\\oxplorer\\Pathfinding\\src\\main\\resources\\crescendo_2024.json")
-        .setInjectPoints(true).setPointSpacing(0.25).build();
-    ArrayList<Edge> edges = m_pathfinder.visualizeEdges();
-    DebugUtils.drawLines("Field Map", edges, m_pathfinder.visualizeVertices());
 
     if (RobotBase.isReal()) {
       m_robotDrive.setDefaultCommand(
@@ -92,8 +65,8 @@ public class RobotContainer {
           // Turning is controlled by the X axis of the right stick.
           new RunCommand(
               () -> m_robotDrive.drive(
+                  MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
                   MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
                   -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
 
                   m_fieldRelative.get(), m_rateLimit.get()),
@@ -125,23 +98,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    try {
-      TrajectoryConfig config = new TrajectoryConfig(0.5,
-          0.5);
-      Trajectory myPath = m_pathfinder.generateTrajectory(m_robotDrive.getPose(), new Pose2d(13, 4, new Rotation2d(0)),
-          config);
-      m_robotDrive.field.getObject("Path").setTrajectory(myPath);
-
-      HolonomicDriveController controller = new HolonomicDriveController(m_xController, m_yController,
-          m_thetaController);
-
-      Timer timer = new Timer();
-      timer.start();
-      Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(0);
-      return new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive, m_robotDrive);
-    } catch (ImpossiblePathException e) {
-      System.out.println("Impossible path");
-      return null;
-    }
+    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+    waypoints.add(new Pose2d(12, 6, new Rotation2d()));
+    waypoints.add(new Pose2d(13, 5, new Rotation2d()));
+    waypoints.add(new Pose2d(3, 3, new Rotation2d()));
+    return new GoToPoints(waypoints, m_robotDrive);
   }
 }

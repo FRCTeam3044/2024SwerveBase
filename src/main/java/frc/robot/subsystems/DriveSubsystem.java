@@ -31,6 +31,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.utils.SwerveUtils;
+import me.nabdev.pathfinding.Pathfinder;
+import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -72,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public final Field2d field = new Field2d();
 
+  public final Pathfinder pathfinder;
+
   private final SwerveDrivePoseEstimator poseEstimator;
 
   // Sim values
@@ -105,6 +110,19 @@ public class DriveSubsystem extends SubsystemBase {
         new Pose2d(),
         stateStdDevs,
         visionStdDevs);
+
+    pathfinder = new PathfinderBuilder(Field.CRESCENDO_2024)
+        .setInjectPoints(true)
+        .setPointSpacing(0.25)
+        .setRobotLength(DriveConstants.kWheelBase)
+        .setRobotWidth(DriveConstants.kTrackWidth)
+        .build();
+
+    // ArrayList<Edge> edges = m_pathfinder.visualizeEdges();
+    // PathfindingDebugUtils.drawLines("Field Map", edges,
+    // m_pathfinder.visualizeVertices());
+    // PathfindingDebugUtils.drawLines("Field Map Inflated", edges,
+    // m_pathfinder.visualizeInflatedVertices());
   }
 
   private double getGyroAngleDegrees() {

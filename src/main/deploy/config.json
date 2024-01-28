@@ -10,6 +10,8 @@
         "frontRightModule/turning/I": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "rearRightModule/driving/D": "0.0",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
         "Theta Controller/D": "0.01",
@@ -22,6 +24,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -39,6 +45,10 @@
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "rearLeftModule/turning/P": "1.0",
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -49,10 +59,14 @@
         "rearLeftModule/turning/Max": "1.0",
         "rearLeftModule/turning/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
+        "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/driving/FF": "0.2081708461046219",
+        "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
+        "Pathfinding Theta Controller/P": "1.0",
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/D": "0.0",
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -64,11 +78,16 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "frontRightModule/turning/Max": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "frontRightModule/driving/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
+        "Pathfinding Max Angular Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
@@ -81,16 +100,22 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Pathfinding Max Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "frontLeftModule/turning/P": "1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/P": "1.0",
         "rearRightModule/turning/D": "0.0",
+        "Pathfinding X Controller/P": "1.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Meters per second",
             "value": "4.8"
         }
     },
-    "mode": "competition",
+    "mode": "testing",
     "simulation": {
         "frontRightModule/turning/D": "0.0",
         "frontRightModule/turning/FF": "0.0",
@@ -102,6 +127,8 @@
         "frontRightModule/turning/I": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "rearRightModule/driving/D": "0.0",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
         "Theta Controller/D": "0.01",
@@ -114,6 +141,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -131,6 +162,10 @@
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "rearLeftModule/turning/P": "1.0",
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -141,10 +176,14 @@
         "rearLeftModule/turning/Max": "1.0",
         "rearLeftModule/turning/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
+        "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/driving/FF": "0.2081708461046219",
+        "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
+        "Pathfinding Theta Controller/P": "1.0",
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/D": "0.0",
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -156,11 +195,16 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "frontRightModule/turning/Max": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "frontRightModule/driving/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
+        "Pathfinding Max Angular Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
@@ -173,9 +217,15 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Pathfinding Max Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "frontLeftModule/turning/P": "1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/P": "1.0",
         "rearRightModule/turning/D": "0.0",
+        "Pathfinding X Controller/P": "1.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Meters per second",
@@ -193,6 +243,8 @@
         "frontRightModule/turning/I": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "rearRightModule/driving/D": "0.0",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
         "Theta Controller/D": "0.01",
@@ -205,6 +257,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -222,6 +278,10 @@
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "rearLeftModule/turning/P": "1.0",
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -232,10 +292,14 @@
         "rearLeftModule/turning/Max": "1.0",
         "rearLeftModule/turning/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
+        "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/driving/FF": "0.2081708461046219",
+        "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
+        "Pathfinding Theta Controller/P": "0.1",
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/D": "0.0",
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -245,13 +309,18 @@
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
-            "value": "6.283185307179586"
+            "value": "3.141592653589793"
         },
+        "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "frontRightModule/turning/Max": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "frontRightModule/driving/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
+        "Pathfinding Max Angular Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "1.5707"
+        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
@@ -264,13 +333,19 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Pathfinding Max Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontLeftModule/turning/P": "1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/P": "1.0",
         "rearRightModule/turning/D": "0.0",
+        "Pathfinding X Controller/P": "1.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Meters per second",
-            "value": "4.8"
+            "value": "2.4"
         }
     },
     "competition": {
@@ -284,6 +359,8 @@
         "frontRightModule/turning/I": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "rearRightModule/driving/D": "0.0",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
         "Theta Controller/D": "0.0",
@@ -296,6 +373,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "frontRightModule/turning/P": "1.0",
@@ -313,6 +394,10 @@
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "rearLeftModule/turning/P": "1.0",
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -323,10 +408,14 @@
         "rearLeftModule/turning/Max": "1.0",
         "rearLeftModule/turning/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
+        "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/driving/FF": "0.2081708461046219",
+        "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
+        "Pathfinding Theta Controller/P": "1.0",
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/D": "0.0",
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -338,11 +427,16 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "frontRightModule/turning/Max": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "frontRightModule/driving/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
+        "Pathfinding Max Angular Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
@@ -355,9 +449,15 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Pathfinding Max Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "frontLeftModule/turning/P": "1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/P": "1.0",
         "rearRightModule/turning/D": "0.0",
+        "Pathfinding X Controller/P": "1.0",
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Meters per second",
