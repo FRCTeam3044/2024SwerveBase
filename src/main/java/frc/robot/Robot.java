@@ -7,8 +7,13 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.VisionSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -105,9 +110,16 @@ public class Robot extends LoggedRobot {
     }
   }
 
+  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+    if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+      (new GoToPoints(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive)).schedule();
+      lastClick = click;
+    }
   }
 
   @Override
