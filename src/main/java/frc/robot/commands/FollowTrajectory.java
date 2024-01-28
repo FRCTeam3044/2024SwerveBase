@@ -50,11 +50,10 @@ public class FollowTrajectory extends Command {
     private final DriveSubsystem m_driveSubsystem;
 
     /**
-     * Constructs a new SwerveControllerCommand that when executed will follow the
-     * provided
-     * trajectory. This command will not return output voltages but rather raw
-     * module states from the
-     * position controllers which need to be put into a velocity PID.
+     * Constructs a new FollowTrajectory command that when executed will follow the
+     * provided trajectory. This command will not return output voltages but rather
+     * raw module states from the position controllers which need to be put into a
+     * velocity PID.
      *
      * <p>
      * Note: The controllers will *not* set the outputVolts to zero upon completion
