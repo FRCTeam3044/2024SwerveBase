@@ -64,7 +64,7 @@ public class ShooterSubsystem {
     }
 
     /*
-     * Updates the shooter's information
+     * Updates the shooters information on what the current angle of the robot is
      */
     public void updatePeriodic() {
 
