@@ -56,24 +56,17 @@ public class ShooterSubsystem {
 
     }
 
-<<<<<<< HEAD
-    }
-=======
     /*
      * Sets the angle of the shooter for shooting
      */
     public void setShooterAngle(double shooterAngle) {
->>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
 
     }
 
-<<<<<<< HEAD
-=======
     /*
      * Updates the shooters information on what the current angle of the robot is
      */
     public void updatePeriodic() {
 
->>>>>>> e4d0ef73e10f0ebfe2797328b6c47f7656e4c523
     }
 }
