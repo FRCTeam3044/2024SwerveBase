@@ -4,19 +4,17 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.PathfindingConstants;
 
 public class TargetRotationController {
-    private final double kFF;
-    private final double timestep;
     private final ProfiledPIDController pidController;
 
     private final double targetX;
     private final double targetY;
 
-    public TargetRotationController(double kFF, double timestep, ProfiledPIDController pidController, double targetX,
+    public TargetRotationController(ProfiledPIDController pidController, double targetX,
             double targetY) {
-        this.kFF = kFF;
-        this.timestep = timestep;
         this.pidController = pidController;
         this.targetX = targetX;
         this.targetY = targetY;
@@ -43,6 +41,7 @@ public class TargetRotationController {
      * @return The next rotation output
      */
     public double calculate(Pose2d position, ChassisSpeeds currentSpeeds) {
+        double timestep = PathfindingConstants.kRotationTimestep.get();
         double targetAngle = Math.atan2(position.getX() - targetX, position.getY() - targetY);
         double e1 = calculateError(targetAngle, position.getRotation().getRadians());
 
@@ -52,7 +51,9 @@ public class TargetRotationController {
 
         double e2 = calculateError(predictedRot, position.getRotation().getRadians());
         double deltaE = e2 - e1;
-        return pidController.calculate(e1) - (kFF * (deltaE / timestep));
+        double pidOut = pidController.calculate(e1);
+        SmartDashboard.putNumber("PID Out", pidOut);
+        return pidOut - (PathfindingConstants.kRotationFF.get() * (deltaE / timestep));
     }
 
     /**

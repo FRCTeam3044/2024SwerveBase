@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -52,17 +53,31 @@ public class RobotContainer {
     configureBindings();
 
     if (RobotBase.isReal()) {
+      TargetRotationController rotationController = new TargetRotationController(
+          PathfindingConstants.kPathfindingThetaController, 1, 0);
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
-          new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
+          // new RunCommand(
+          // () -> m_robotDrive.drive(
+          // -MathUtil.applyDeadband(m_driverController.getLeftY(),
+          // OIConstants.kDriveDeadband.get()),
+          // -MathUtil.applyDeadband(m_driverController.getLeftX(),
+          // OIConstants.kDriveDeadband.get()),
+          // -MathUtil.applyDeadband(m_driverController.getRightX(),
+          // OIConstants.kDriveDeadband.get()),
 
-                  m_fieldRelative.get(), m_rateLimit.get()),
-              m_robotDrive));
+          // m_fieldRelative.get(), m_rateLimit.get()),
+          // m_robotDrive));
+          new RunCommand(() -> {
+            double rotOutput = rotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+            SmartDashboard.putNumber("Rotation controller output", rotOutput);
+            ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
+                MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
+            var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
+            m_robotDrive.setModuleStates(targetModuleStates);
+          }, m_robotDrive));
     } else {
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
@@ -107,11 +122,13 @@ public class RobotContainer {
     // waypoints.add(new Pose2d(13, 5, new Rotation2d()));
     // waypoints.add(new Pose2d(3, 3, new Rotation2d()));
     // return new GoToPoints(waypoints, m_robotDrive);
-    TargetRotationController rotationController = new TargetRotationController(PathfindingConstants.kRotationFF.get(),
-        PathfindingConstants.kRotationTimestep.get(), PathfindingConstants.kPathfindingThetaController, 0, 0);
+    TargetRotationController rotationController = new TargetRotationController(
+        PathfindingConstants.kPathfindingThetaController, 1, 0);
     return new RunCommand(() -> {
       double rotOutput = rotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
-      ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(0, 0, rotOutput);
+      ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
+          -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
+          MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()), rotOutput);
       var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
       m_robotDrive.setModuleStates(targetModuleStates);
     }, m_robotDrive);
