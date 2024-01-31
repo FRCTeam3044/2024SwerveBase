@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utils.TargetRotationController;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -98,10 +102,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-    waypoints.add(new Pose2d(12, 6, new Rotation2d()));
-    waypoints.add(new Pose2d(13, 5, new Rotation2d()));
-    waypoints.add(new Pose2d(3, 3, new Rotation2d()));
-    return new GoToPoints(waypoints, m_robotDrive);
+    // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+    // waypoints.add(new Pose2d(12, 6, new Rotation2d()));
+    // waypoints.add(new Pose2d(13, 5, new Rotation2d()));
+    // waypoints.add(new Pose2d(3, 3, new Rotation2d()));
+    // return new GoToPoints(waypoints, m_robotDrive);
+    TargetRotationController rotationController = new TargetRotationController(PathfindingConstants.kRotationFF.get(),
+        PathfindingConstants.kRotationTimestep.get(), PathfindingConstants.kPathfindingThetaController, 0, 0);
+    return new RunCommand(() -> {
+      double rotOutput = rotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+      ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(0, 0, rotOutput);
+      var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
+      m_robotDrive.setModuleStates(targetModuleStates);
+    }, m_robotDrive);
   }
 }

@@ -360,6 +360,13 @@ public class DriveSubsystem extends SubsystemBase {
     poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
   }
 
+  /**
+   * Returns the currently estimated pose of the robot.
+   */
+  public ChassisSpeeds getChassisSpeeds() {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
   @Override
   public void simulationPeriodic() {
     SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
