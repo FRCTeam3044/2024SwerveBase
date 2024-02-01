@@ -5,11 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,10 +26,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+
+  private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
+      "Field Relative");
+  private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -39,16 +41,31 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                false, true),
-            m_robotDrive));
+    if (RobotBase.isReal()) {
+      m_robotDrive.setDefaultCommand(
+          // The left stick controls translation of the robot.
+          // Turning is controlled by the X axis of the right stick.
+          new RunCommand(
+              () -> m_robotDrive.drive(
+                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
+                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
+                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
+
+                  m_fieldRelative.get(), m_rateLimit.get()),
+              m_robotDrive));
+    } else {
+      m_robotDrive.setDefaultCommand(
+          // The left stick controls translation of the robot.
+          // Turning is controlled by the X axis of the right stick.
+          new RunCommand(
+              () -> m_robotDrive.drive(
+                  MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
+                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
+                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
+
+                  m_fieldRelative.get(), m_rateLimit.get()),
+              m_robotDrive));
+    }
   }
 
   /**
@@ -66,14 +83,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
@@ -82,7 +92,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -27,11 +28,13 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
-
-    public static final double kDirectionSlewRate = 1.2; // radians per second
-    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
+    public static final ConfigurableParameter<Double> kMaxSpeedMetersPerSecond = new ConfigurableParameter<Double>(4.8,
+        "Max Speed");
+    public static final ConfigurableParameter<Double> kMaxAngularSpeed = new ConfigurableParameter<Double>(2 * Math.PI,
+        "Max Angular Speed");
+    public static final ConfigurableParameter<Double> kDirectionSlewRate = new ConfigurableParameter<Double>(1.2,
+        "Direction Slew rate"); // radians per second
+    public static final double kMagnitudeSlewRate = 1.8; // radians per second
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
     // Chassis configuration
@@ -122,9 +125,13 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;
+    public static final ConfigurableParameter<Double> kDriveDeadband = new ConfigurableParameter<Double>(0.05,
+        "Driver Deadband");
   }
 
+  /*
+   * This could be replace by oxconfig
+   */
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
