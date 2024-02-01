@@ -54,7 +54,10 @@ public class RobotContainer {
 
     if (RobotBase.isReal()) {
       TargetRotationController rotationController = new TargetRotationController(
-          PathfindingConstants.kPathfindingThetaController, 1, 0);
+          PathfindingConstants.kPathfindingThetaController, 0, 0);
+      new ConfigurableParameter<Double>(1.0, "Target X", rotationController::setTargetX);
+      new ConfigurableParameter<Double>(0.0, "Target Y", rotationController::setTargetY);
+
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
@@ -79,6 +82,7 @@ public class RobotContainer {
             m_robotDrive.setModuleStates(targetModuleStates);
           }, m_robotDrive));
     } else {
+
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
@@ -117,20 +121,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-    // waypoints.add(new Pose2d(12, 6, new Rotation2d()));
-    // waypoints.add(new Pose2d(13, 5, new Rotation2d()));
-    // waypoints.add(new Pose2d(3, 3, new Rotation2d()));
-    // return new GoToPoints(waypoints, m_robotDrive);
-    TargetRotationController rotationController = new TargetRotationController(
-        PathfindingConstants.kPathfindingThetaController, 1, 0);
-    return new RunCommand(() -> {
-      double rotOutput = rotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
-      ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
-          -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
-          MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()), rotOutput);
-      var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-      m_robotDrive.setModuleStates(targetModuleStates);
-    }, m_robotDrive);
+    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+    waypoints.add(new Pose2d(12, 6, new Rotation2d()));
+    waypoints.add(new Pose2d(13, 5, new Rotation2d()));
+    waypoints.add(new Pose2d(3, 3, new Rotation2d()));
+    return new GoToPoints(waypoints, m_robotDrive);
   }
 }

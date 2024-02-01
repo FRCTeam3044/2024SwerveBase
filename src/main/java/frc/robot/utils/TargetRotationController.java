@@ -10,14 +10,17 @@ import frc.robot.Constants.PathfindingConstants;
 public class TargetRotationController {
     private final ProfiledPIDController pidController;
 
-    private final double targetX;
-    private final double targetY;
+    private double targetX;
+    private double targetY;
+
+    private double[] targetPose;
 
     public TargetRotationController(ProfiledPIDController pidController, double targetX,
             double targetY) {
         this.pidController = pidController;
         this.targetX = targetX;
         this.targetY = targetY;
+        this.targetPose = new double[] { targetX, targetY, 0 };
     }
 
     /*
@@ -42,18 +45,25 @@ public class TargetRotationController {
      */
     public double calculate(Pose2d position, ChassisSpeeds currentSpeeds) {
         double timestep = PathfindingConstants.kRotationTimestep.get();
-        double targetAngle = Math.atan2(position.getX() - targetX, position.getY() - targetY);
+        double targetAngle = Math.atan2(position.getY() - targetY, position.getX() - targetX);
+        SmartDashboard.putNumber("Target Angle", targetAngle);
         double e1 = calculateError(targetAngle, position.getRotation().getRadians());
 
         double predictedX = position.getX() + (currentSpeeds.vxMetersPerSecond * timestep);
         double predictedY = position.getY() + (currentSpeeds.vyMetersPerSecond * timestep);
-        double predictedRot = Math.atan2(predictedX - targetX, predictedY - targetY);
+        double predictedRot = Math.atan2(predictedY - targetY, predictedX - targetX);
 
         double e2 = calculateError(predictedRot, position.getRotation().getRadians());
         double deltaE = e2 - e1;
         double pidOut = pidController.calculate(e1);
         SmartDashboard.putNumber("PID Out", pidOut);
-        return pidOut - (PathfindingConstants.kRotationFF.get() * (deltaE / timestep));
+        SmartDashboard.putNumberArray("Rotation Target", targetPose);
+
+        double ffTerm = MathUtil.applyDeadband(PathfindingConstants.kRotationFF.get() * (deltaE / timestep), 0.01);
+        SmartDashboard.putNumber("Rotation FF Output", ffTerm);
+        SmartDashboard.putNumber("kF", PathfindingConstants.kRotationFF.get());
+        pidOut = MathUtil.applyDeadband(pidOut, 0.01);
+        return pidOut - (ffTerm);
     }
 
     /**
@@ -72,5 +82,25 @@ public class TargetRotationController {
             error += 2 * Math.PI;
         }
         return MathUtil.angleModulus(error);
+    }
+
+    /**
+     * Set the target position
+     * 
+     * @param targetX The target X position
+     */
+    public void setTargetX(double targetX) {
+        this.targetX = targetX;
+        this.targetPose[0] = targetX;
+    }
+
+    /**
+     * Set the target position
+     * 
+     * @param targetY The target Y position
+     */
+    public void setTargetY(double targetY) {
+        this.targetY = targetY;
+        this.targetPose[1] = targetY;
     }
 }

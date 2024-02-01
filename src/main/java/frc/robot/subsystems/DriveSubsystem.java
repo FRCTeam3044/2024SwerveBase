@@ -85,6 +85,9 @@ public class DriveSubsystem extends SubsystemBase {
   // In radians
   private double m_simYaw;
 
+  private ChassisSpeeds m_desiredChassisSpeeds;
+
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
@@ -118,6 +121,7 @@ public class DriveSubsystem extends SubsystemBase {
         .setRobotWidth(DriveConstants.kTrackWidth)
         .build();
 
+
     // ArrayList<Edge> edges = m_pathfinder.visualizeEdges();
     // PathfindingDebugUtils.drawLines("Field Map", edges,
     // m_pathfinder.visualizeVertices());
@@ -127,8 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private double getGyroAngleDegrees() {
     double gyroRadians = Math.toRadians(-m_gyro.getAngle());
-    return Math.toDegrees(MathUtil.angleModulus(gyroRadians +
-        Math.PI / 2));
+    return Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI / 2));
   }
 
   @Override
@@ -209,6 +212,7 @@ public class DriveSubsystem extends SubsystemBase {
         getModulePositions(),
         pose);
   }
+
 
   /**
    * Method to drive the robot using joystick info.

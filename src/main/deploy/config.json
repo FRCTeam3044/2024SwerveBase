@@ -45,7 +45,15 @@
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Y Controller/I": "0.0",
+        "Target Y": {
+            "comment": "Auto-Generated",
+            "value": "8.2042"
+        },
         "frontRightModule/turning/IZone": "0.0",
+        "Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.8415"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
@@ -170,7 +178,15 @@
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Y Controller/I": "0.0",
+        "Target Y": {
+            "comment": "Auto-Generated",
+            "value": "8.2042"
+        },
         "frontRightModule/turning/IZone": "0.0",
+        "Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.8415"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
@@ -294,7 +310,15 @@
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Y Controller/I": "0.0",
+        "Target Y": {
+            "comment": "Auto-Generated",
+            "value": "8.2042"
+        },
         "frontRightModule/turning/IZone": "0.0",
+        "Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.8415"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
@@ -418,7 +442,15 @@
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Y Controller/I": "0.0",
+        "Target Y": {
+            "comment": "Auto-Generated",
+            "value": "8.2042"
+        },
         "frontRightModule/turning/IZone": "0.0",
+        "Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.8415"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/Max": "1.0",
