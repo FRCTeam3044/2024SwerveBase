@@ -15,19 +15,19 @@ public class ElevatorSubsystem {
     AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
     AbsoluteEncoder shooterEncoderTwo = elevatorMotorTwo.getAbsoluteEncoder(Type.kDutyCycle);
 
-    // Could cange depending on which switch is used
+    // Could change depending on which switch is used
     DigitalInput elevatorLimitSwitch = new DigitalInput(0);
 
     PIDController pid = new PIDController(0, 0, 0);
-
+    // Sets the intake, shooter, and transit to the postion that we want it to be int
     public void setAngleAdjustment() {
 
     }
-
+    // Shifts the intake, shooter, and transit to the default postion that makes it easier pick up notes
     public void setToIntakeMode() {
 
     }
-
+    //// Shifts the intake, shooter, and transit to the default postion that makes it easier shoot notes
     public void setToShooterMode() {
         
     }
