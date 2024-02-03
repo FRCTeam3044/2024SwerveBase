@@ -10,9 +10,11 @@ import frc.robot.Vision;
 
 public class VisionSubsystem extends SubsystemBase {
     private Vision vision;
+
     public VisionSubsystem() {
+
         vision = new Vision();
-        RobotContainer.m_robotDrive.addVisionMeasurement(new Pose2d(0, 0, new Rotation2d(0)), 0);
+        RobotContainer.m_robotDrive.addVisionMeasurement(new Pose2d(1.8415, 0, new Rotation2d(90)), 0);
     }
 
     @Override
@@ -21,17 +23,18 @@ public class VisionSubsystem extends SubsystemBase {
             final int camera = i;
             var visionEst = vision.getEstimatedGlobalPose(i);
             visionEst.ifPresent(
-                est -> {
-                    var estPose = est.estimatedPose.toPose2d();
-                    // Change our trust in the measurement based on the tags we can see
-                    var estStdDevs = vision.getEstimationStdDevs(estPose, camera);
+                    est -> {
+                        var estPose = est.estimatedPose.toPose2d();
+                        // Change our trust in the measurement based on the tags we can see
+                        var estStdDevs = vision.getEstimationStdDevs(estPose, camera);
 
-                    RobotContainer.m_robotDrive.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-                });
+                        RobotContainer.m_robotDrive.addVisionMeasurement(
+                                est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                    });
         }
 
-        double[] pose = {RobotContainer.m_robotDrive.getPose().getX(), RobotContainer.m_robotDrive.getPose().getY(), RobotContainer.m_robotDrive.getPose().getRotation().getDegrees()};
+        double[] pose = { RobotContainer.m_robotDrive.getPose().getX(), RobotContainer.m_robotDrive.getPose().getY(),
+                RobotContainer.m_robotDrive.getPose().getRotation().getDegrees() };
 
         SmartDashboard.putNumberArray("Robot Pose", pose);
     }

@@ -45,18 +45,20 @@ public class RobotContainer {
       "Field Relative");
   private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
+  private final TargetRotationController m_targetRotController;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    m_targetRotController = new TargetRotationController(
+        PathfindingConstants.kPathfindingThetaController, 0, 0);
+    new ConfigurableParameter<Double>(1.0, "Target X", m_targetRotController::setTargetX);
+    new ConfigurableParameter<Double>(0.0, "Target Y", m_targetRotController::setTargetY);
 
     if (RobotBase.isReal()) {
-      TargetRotationController rotationController = new TargetRotationController(
-          PathfindingConstants.kPathfindingThetaController, 0, 0);
-      new ConfigurableParameter<Double>(1.0, "Target X", rotationController::setTargetX);
-      new ConfigurableParameter<Double>(0.0, "Target Y", rotationController::setTargetY);
 
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
@@ -73,11 +75,13 @@ public class RobotContainer {
           // m_fieldRelative.get(), m_rateLimit.get()),
           // m_robotDrive));
           new RunCommand(() -> {
-            double rotOutput = rotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+            double rotOutput = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
             SmartDashboard.putNumber("Rotation controller output", rotOutput);
             ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
                 MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
+            targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(targetChassisSpeeds,
+                m_robotDrive.getPose().getRotation());
             var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
             m_robotDrive.setModuleStates(targetModuleStates);
           }, m_robotDrive));
@@ -88,12 +92,16 @@ public class RobotContainer {
           // Turning is controlled by the X axis of the right stick.
           new RunCommand(
               () -> m_robotDrive.drive(
-                  MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
-                  MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
-                  MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
+                  MathUtil.applyDeadband(m_driverController.getLeftY(),
+                      OIConstants.kDriveDeadband.get()),
+                  MathUtil.applyDeadband(m_driverController.getLeftX(),
+                      OIConstants.kDriveDeadband.get()),
+                  MathUtil.applyDeadband(m_driverController.getRightX(),
+                      OIConstants.kDriveDeadband.get()),
 
                   m_fieldRelative.get(), m_rateLimit.get()),
               m_robotDrive));
+
     }
   }
 
@@ -121,10 +129,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-    waypoints.add(new Pose2d(12, 6, new Rotation2d()));
+    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>(); // waypoints.add(new Pose2d(12, 6, new Rotation2d()));
     waypoints.add(new Pose2d(13, 5, new Rotation2d()));
     waypoints.add(new Pose2d(3, 3, new Rotation2d()));
     return new GoToPoints(waypoints, m_robotDrive);
+
   }
 }

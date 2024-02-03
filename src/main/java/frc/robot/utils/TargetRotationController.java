@@ -6,12 +6,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.PathfindingConstants;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class TargetRotationController {
     private final ProfiledPIDController pidController;
 
     private double targetX;
     private double targetY;
+
+    private ConfigurableParameter<Double> pidDeadband = new ConfigurableParameter<Double>(0.05, "PID Deadband");
+    private ConfigurableParameter<Double> ffDeadband = new ConfigurableParameter<Double>(0.05, "FF Deadband");
+    private ConfigurableParameter<Double> overallDeadband = new ConfigurableParameter<Double>(0.05, "Overall Deadband");
 
     private double[] targetPose;
 
@@ -49,6 +54,7 @@ public class TargetRotationController {
         SmartDashboard.putNumber("Target Angle", targetAngle);
         double e1 = calculateError(targetAngle, position.getRotation().getRadians());
 
+        currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, position.getRotation());
         double predictedX = position.getX() + (currentSpeeds.vxMetersPerSecond * timestep);
         double predictedY = position.getY() + (currentSpeeds.vyMetersPerSecond * timestep);
         double predictedRot = Math.atan2(predictedY - targetY, predictedX - targetX);
@@ -59,11 +65,12 @@ public class TargetRotationController {
         SmartDashboard.putNumber("PID Out", pidOut);
         SmartDashboard.putNumberArray("Rotation Target", targetPose);
 
-        double ffTerm = MathUtil.applyDeadband(PathfindingConstants.kRotationFF.get() * (deltaE / timestep), 0.01);
+        double ffTerm = MathUtil.applyDeadband(PathfindingConstants.kRotationFF.get() * (deltaE / timestep),
+                ffDeadband.get());
         SmartDashboard.putNumber("Rotation FF Output", ffTerm);
         SmartDashboard.putNumber("kF", PathfindingConstants.kRotationFF.get());
-        pidOut = MathUtil.applyDeadband(pidOut, 0.01);
-        return pidOut - (ffTerm);
+        pidOut = -MathUtil.applyDeadband(pidOut, pidDeadband.get());
+        return MathUtil.applyDeadband(pidOut - (ffTerm), overallDeadband.get());
     }
 
     /**
