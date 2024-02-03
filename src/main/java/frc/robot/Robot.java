@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.IntakeSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -114,12 +115,7 @@ public class Robot extends LoggedRobot {
 
     boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
 
-    if (isBButtonPressed == true) {
-      m_robotContainer.intake.runIntake();
-    }
-    if (isBButtonPressed) {
-      m_robotContainer.intake.stopIntake();
-    }
+    m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
   }
 
   @Override
