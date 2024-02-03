@@ -23,7 +23,7 @@ public class ShooterSubsystem {
     /*
      * Encoders for Shooter wheels
      */
-    RelativeEncoder rightFrontMotorEncoder = TopMotor.getEncoder();
+    RelativeEncoder rightFrontMotorEncoder = topMotor.getEncoder();
     RelativeEncoder rightBottomkMotorEncoder = bottomMotor.getEncoder();
 
     /*
@@ -53,7 +53,6 @@ public class ShooterSubsystem {
 
     }
 
-
     /*
      * Sets the angle of the shooter for shooting
      */
@@ -74,15 +73,14 @@ public class ShooterSubsystem {
     }
 
     private void stopShooter() {
-        TopMotor.set(0);
+        topMotor.set(0);
         bottomMotor.set(0);
     }
 
     public void consumeShooterInput(boolean isTheAButtonPressed) {
         if (isTheAButtonPressed) {
             runShooter();
-        }
-        else {
+        } else {
             stopShooter();
         }
     }
