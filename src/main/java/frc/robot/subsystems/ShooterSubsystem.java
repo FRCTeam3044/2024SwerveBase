@@ -12,11 +12,8 @@ public class ShooterSubsystem {
     /*
      * Defines the motors that shoot the notes
      */
-    CANSparkMax rightMotorFront = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax rightMotorBottom = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax leftMotorFront = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax leftMotorBottom = new CANSparkMax(0, MotorType.kBrushless);
-
+    CANSparkMax topMotor = new CANSparkMax(0, MotorType.kBrushless);
+    CANSparkMax bottomMotor = new CANSparkMax(0, MotorType.kBrushless);
     /*
      * Defines the motors that change the angle of the shooter
      */
@@ -26,10 +23,8 @@ public class ShooterSubsystem {
     /*
      * Encoders for Shooter wheels
      */
-    RelativeEncoder rightFrontMotorEncoder = rightMotorFront.getEncoder();
-    RelativeEncoder rightBottomkMotorEncoder = rightMotorBottom.getEncoder();
-    RelativeEncoder leftFrontMotorEncoder = leftMotorFront.getEncoder();
-    RelativeEncoder leftBottomMotorEncoder = leftMotorBottom.getEncoder();
+    RelativeEncoder rightFrontMotorEncoder = TopMotor.getEncoder();
+    RelativeEncoder rightBottomkMotorEncoder = bottomMotor.getEncoder();
 
     /*
      * Encoders for the angle control
@@ -73,5 +68,22 @@ public class ShooterSubsystem {
 
     }
 
-    
+    private void runShooter() {
+        topMotor.set(motorRPM);
+        bottomMotor.set(-motorRPM);
+    }
+
+    private void stopShooter() {
+        TopMotor.set(0);
+        bottomMotor.set(0);
+    }
+
+    public void consumeShooterInput(boolean isTheAButtonPressed) {
+        if (isTheAButtonPressed) {
+            runShooter();
+        }
+        else {
+            stopShooter();
+        }
+    }
 }

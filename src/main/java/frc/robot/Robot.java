@@ -124,6 +124,10 @@ public class Robot extends LoggedRobot {
     boolean isXButtonPressed = m_robotContainer.m_operatorController.getXButtonPressed();
 
     m_robotContainer.transit.consumeTransitInput(isXButtonPressed);
+
+    boolean isAButtonPressed = m_robotContainer.m_operatorController.getAButtonPressed();
+
+    m_robotContainer.shooter.consumeShooterInput(isAButtonPressed);
   }
 
   @Override
