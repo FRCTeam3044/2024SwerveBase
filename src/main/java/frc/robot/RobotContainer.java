@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import edu.wpi.first.math.MathUtil;
@@ -29,10 +30,14 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController = new CommandXboxController(
+      OIConstants.kOperatorControllerPort);
 
   private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
       "Field Relative");
   private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
+
+  public final ClimberSubsystem climber = new ClimberSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,16 +12,18 @@ public class ClimberSubsystem {
     Encoder rightClimberEncoder = new Encoder(null, null);
 
     // power going into each of the motors
-    int leftMotorPower = 0;
-    int rightMotorPower = 0;
+    double leftMotorPower = 0;
+    double rightMotorPower = 0;
 
-    // raises the arm
-    public void raiseArms() {
-
+    // controls right arm
+    public void rightArm(double moveRightMotorPower) {
+        moveRightMotorPower = rightMotorPower;
+        rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
     }
 
-    // lowers the arm
-    public void lowerArms() {
-        //
+    // contorls left arm
+    public void leftArm(double moveLeftMotorPower) {
+        moveLeftMotorPower = leftMotorPower;
+        rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
     }
 }

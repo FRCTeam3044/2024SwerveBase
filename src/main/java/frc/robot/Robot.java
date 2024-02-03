@@ -106,6 +106,9 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    m_robotContainer.climber.leftArm(0);
+    m_robotContainer.climber.rightArm(0);
+    m_robotContainer.m_operatorController.;
   }
 
   @Override
