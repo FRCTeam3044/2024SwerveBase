@@ -376,7 +376,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
 
     ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-    m_simYaw += chassisSpeed.omegaRadiansPerSecond * 0.02;
+    m_simYaw -= chassisSpeed.omegaRadiansPerSecond * 0.02;
     angle.set(Math.toDegrees(m_simYaw));
 
     REVPhysicsSim.getInstance().run();

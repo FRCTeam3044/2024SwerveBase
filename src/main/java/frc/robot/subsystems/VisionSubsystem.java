@@ -14,7 +14,7 @@ public class VisionSubsystem extends SubsystemBase {
     public VisionSubsystem() {
 
         vision = new Vision();
-        RobotContainer.m_robotDrive.addVisionMeasurement(new Pose2d(1.8415, 0, new Rotation2d(90)), 0);
+        RobotContainer.m_robotDrive.addVisionMeasurement(new Pose2d(0, 0, new Rotation2d(0)), 0);
     }
 
     @Override

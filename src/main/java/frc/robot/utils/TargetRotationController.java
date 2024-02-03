@@ -50,17 +50,20 @@ public class TargetRotationController {
      */
     public double calculate(Pose2d position, ChassisSpeeds currentSpeeds) {
         double timestep = PathfindingConstants.kRotationTimestep.get();
-        double targetAngle = Math.atan2(position.getY() - targetY, position.getX() - targetX);
+        double targetAngle = Math.atan2(targetY - position.getY(), targetX - position.getX());
+        SmartDashboard.putNumber("Current Angle", position.getRotation().getRadians());
         SmartDashboard.putNumber("Target Angle", targetAngle);
         double e1 = calculateError(targetAngle, position.getRotation().getRadians());
+        SmartDashboard.putNumber("Current Rot Error", e1);
 
         currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, position.getRotation());
         double predictedX = position.getX() + (currentSpeeds.vxMetersPerSecond * timestep);
         double predictedY = position.getY() + (currentSpeeds.vyMetersPerSecond * timestep);
-        double predictedRot = Math.atan2(predictedY - targetY, predictedX - targetX);
+        double predictedRot = Math.atan2(targetY - predictedY, targetX - predictedX);
 
         double e2 = calculateError(predictedRot, position.getRotation().getRadians());
         double deltaE = e2 - e1;
+        SmartDashboard.putNumber("Delta e", deltaE);
         double pidOut = pidController.calculate(e1);
         SmartDashboard.putNumber("PID Out", pidOut);
         SmartDashboard.putNumberArray("Rotation Target", targetPose);
@@ -69,8 +72,9 @@ public class TargetRotationController {
                 ffDeadband.get());
         SmartDashboard.putNumber("Rotation FF Output", ffTerm);
         SmartDashboard.putNumber("kF", PathfindingConstants.kRotationFF.get());
-        pidOut = -MathUtil.applyDeadband(pidOut, pidDeadband.get());
-        return MathUtil.applyDeadband(pidOut - (ffTerm), overallDeadband.get());
+        pidOut = MathUtil.applyDeadband(pidOut, pidDeadband.get());
+
+        return -MathUtil.applyDeadband(pidOut - (ffTerm), overallDeadband.get());
     }
 
     /**
