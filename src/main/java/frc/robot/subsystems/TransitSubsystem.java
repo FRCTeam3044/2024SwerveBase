@@ -46,8 +46,7 @@ public class TransitSubsystem {
     public void consumeTransitInput(boolean isTheBButtonPressed) {
         if (isTheBButtonPressed) {
             runTransit();
-        }
-        else {
+        } else {
             stopTransit();
         }
     }

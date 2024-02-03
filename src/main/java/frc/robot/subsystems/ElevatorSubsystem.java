@@ -25,8 +25,9 @@ public class ElevatorSubsystem {
     double ampAngle = 0;
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
-    public void setShooterAngle(double angleDegrees) {
-
+    public void moveElevator(double motorSpeed) {
+        elevatorMotorOne.set(motorSpeed));
+        elevatorMotorTwo.set(motorSpeed));
     }
 
     // Shifts the intake, shooter, and transit to the default postion that makes it
@@ -49,5 +50,9 @@ public class ElevatorSubsystem {
     // Tells us when the elevator has hit the bottom of it's height
     public void readBottomLimitSwitch() {
 
+    }
+
+    public void consumeElevatorInput(double elevatorSpeed) {
+        moveElevator(elevatorSpeed);
     }
 }

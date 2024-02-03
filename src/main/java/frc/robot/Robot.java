@@ -128,6 +128,12 @@ public class Robot extends LoggedRobot {
     boolean isAButtonPressed = m_robotContainer.m_operatorController.getAButtonPressed();
 
     m_robotContainer.shooter.consumeShooterInput(isAButtonPressed);
+
+    m_robotContainer.m_operatorController.getLeftY();
+
+    double leftYValue = m_robotContainer.m_operatorController.getLeftY();
+
+    m_robotContainer.elevator.consumeElevatorInput(leftYValue);
   }
 
   @Override
