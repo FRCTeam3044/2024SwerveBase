@@ -12,13 +12,13 @@ public class IntakeSubsystem {
     boolean isIntakeRunning = false;
 
     // Use this to run intake
-    public void runIntake() {
+    private void runIntake() {
         intakeTopMotor.set(1);
         intakeBottomMotor.set(-1);
     }
 
     // Stops intake
-    public void stopIntake() {
+    private void stopIntake() {
         intakeTopMotor.set(0);
         intakeBottomMotor.set(0);
     }
@@ -26,9 +26,9 @@ public class IntakeSubsystem {
     public void consumeIntakeInput(boolean isTheBButtonPressed) {
         if (isTheBButtonPressed) {
             runIntake();
-          }
-          else {
+        }
+        else {
             stopIntake();
-          }
+        }
     }
 }

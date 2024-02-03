@@ -1,15 +1,16 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class TransitSubsystem {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(0);
-    Ultrasonic noteDetectionSensorOne = new Ultrasonic(null, null);
-    Ultrasonic noteDetectionSensorTwo = new Ultrasonic(null, null);
+    DigitalInput intakeSensorOne = new DigitalInput(0);
+    DigitalInput intakeSnsorTwo = new DigitalInput(0);
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
@@ -30,6 +31,24 @@ public class TransitSubsystem {
 
     // Checks the sensors every second it updates
     public void updatePeriodic() {
+        boolean hasNoteHitFirstSensor = intakeSensorOne.get();
+        boolean hasNoteHitSecondSensor = intakeSnsorTwo.get();
+    }
 
-    };
+    private void runTransit() {
+        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
+    }
+
+    private void stopTransit() {
+        transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
+    }
+
+    public void consumeTransitInput(boolean isTheBButtonPressed) {
+        if (isTheBButtonPressed) {
+            runTransit();
+        }
+        else {
+            stopTransit();
+        }
+    }
 }
