@@ -228,7 +228,7 @@
     "rearRightModule/driving/FF": "0.2081708461046219",
     "Pathfinding Theta Controller/I": "0.0",
     "rearLeftModule/driving/Min": "-1.0",
-    "Pathfinding Theta Controller/P": "0.0",
+    "Pathfinding Theta Controller/P": "1.0",
     "rearLeftModule/turning/Min": "-1.0",
     "rearLeftModule/driving/P": "0.03999999910593033",
     "Pathfinding Y Controller/D": "0.0",

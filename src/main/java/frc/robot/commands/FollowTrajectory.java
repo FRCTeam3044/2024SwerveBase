@@ -47,7 +47,9 @@ public class FollowTrajectory extends Command {
     private final Trajectory m_trajectory;
     private final HolonomicDriveController m_controller;
     private final Supplier<Rotation2d> m_desiredRotation;
+    private final Supplier<Double> m_desiredRotationSpeed;
     private final DriveSubsystem m_driveSubsystem;
+    private final boolean useSuppliedRotSpeed;
 
     /**
      * Constructs a new FollowTrajectory command that when executed will follow the
@@ -79,7 +81,43 @@ public class FollowTrajectory extends Command {
         m_controller = requireNonNullParam(controller, "controller", "SwerveControllerCommand");
         m_driveSubsystem = requireNonNullParam(driveSubsystem, "driveSubsystem", "SwerveControllerCommand");
         m_desiredRotation = requireNonNullParam(desiredRotation, "desiredRotation", "SwerveControllerCommand");
+        m_desiredRotationSpeed = null;
+        useSuppliedRotSpeed = false;
+        addRequirements(requirements);
+    }
 
+    /**
+     * Constructs a new FollowTrajectory command that when executed will follow the
+     * provided trajectory. This command will not return output voltages but rather
+     * raw module states from the position controllers which need to be put into a
+     * velocity PID.
+     *
+     * <p>
+     * Note: The controllers will *not* set the outputVolts to zero upon completion
+     * of the path-
+     * this is left to the user, since it is not appropriate for paths with
+     * nonstationary endstates.
+     *
+     * @param trajectory           The trajectory to follow.
+     * @param desiredRotationSpeed The speed that the drivetrain should be rotating.
+     *                             This is sampled at each time step.
+     * @param controller           The HolonomicDriveController for the drivetrain.
+     * @param driveSubsystem       The subsystem to use to drive the robot.
+     * @param requirements         The subsystems to require.
+     */
+    public FollowTrajectory(
+            Trajectory trajectory,
+            Supplier<Double> desiredRotationSpeed,
+            HolonomicDriveController controller,
+            DriveSubsystem driveSubsystem,
+            SubsystemBase... requirements) {
+        m_trajectory = requireNonNullParam(trajectory, "trajectory", "SwerveControllerCommand");
+        m_controller = requireNonNullParam(controller, "controller", "SwerveControllerCommand");
+        m_driveSubsystem = requireNonNullParam(driveSubsystem, "driveSubsystem", "SwerveControllerCommand");
+        m_desiredRotationSpeed = requireNonNullParam(desiredRotationSpeed, "desiredRotationSpeed",
+                "SwerveControllerCommand");
+        m_desiredRotation = () -> new Rotation2d();
+        useSuppliedRotSpeed = true;
         addRequirements(requirements);
     }
 
@@ -95,7 +133,11 @@ public class FollowTrajectory extends Command {
         Rotation2d desiredRotation = m_desiredRotation.get();
         ChassisSpeeds targetChassisSpeeds = m_controller.calculate(m_driveSubsystem.getPose(), desiredState,
                 desiredRotation);
-        targetChassisSpeeds.omegaRadiansPerSecond *= -1;
+        if (useSuppliedRotSpeed) {
+            targetChassisSpeeds.omegaRadiansPerSecond = m_desiredRotationSpeed.get();
+        } else {
+            targetChassisSpeeds.omegaRadiansPerSecond *= -1;
+        }
         var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
         m_driveSubsystem.setModuleStates(targetModuleStates);
     }
