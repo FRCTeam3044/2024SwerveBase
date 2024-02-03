@@ -110,6 +110,10 @@ public class Robot extends LoggedRobot {
     m_robotContainer.climber.rightArm(0);
     m_robotContainer.m_operatorController.getLeftBumper();
     m_robotContainer.m_operatorController.getRightBumper();
+
+    boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
+
+    m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
   }
 
   @Override

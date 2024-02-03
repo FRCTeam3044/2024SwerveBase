@@ -22,4 +22,13 @@ public class IntakeSubsystem {
         intakeTopMotor.set(0);
         intakeBottomMotor.set(0);
     }
+
+    public void consumeIntakeInput(boolean isTheBButtonPressed) {
+        if (isTheBButtonPressed) {
+            runIntake();
+          }
+          else {
+            stopIntake();
+          }
+    }
 }

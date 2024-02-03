@@ -32,7 +32,8 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  public final XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+  public final XboxController m_operatorController = new XboxController(
+      OIConstants.kOperatorControllerPort);
 
   private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
       "Field Relative");
