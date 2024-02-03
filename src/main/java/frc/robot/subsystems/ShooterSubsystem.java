@@ -23,8 +23,8 @@ public class ShooterSubsystem {
     /*
      * Encoders for Shooter wheels
      */
-    RelativeEncoder rightFrontMotorEncoder = topMotor.getEncoder();
-    RelativeEncoder rightBottomkMotorEncoder = bottomMotor.getEncoder();
+    RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
+    RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
 
     /*
      * Encoders for the angle control
