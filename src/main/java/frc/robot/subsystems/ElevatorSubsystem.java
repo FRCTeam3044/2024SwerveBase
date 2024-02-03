@@ -26,8 +26,8 @@ public class ElevatorSubsystem {
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
     public void moveElevator(double motorSpeed) {
-        elevatorMotorOne.set(motorSpeed));
-        elevatorMotorTwo.set(motorSpeed));
+        elevatorMotorOne.set(motorSpeed);
+        elevatorMotorTwo.set(motorSpeed);
     }
 
     // Shifts the intake, shooter, and transit to the default postion that makes it
