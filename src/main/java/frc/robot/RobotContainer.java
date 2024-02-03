@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.TargetRotationController;
@@ -53,8 +52,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    m_targetRotController = new TargetRotationController(
-        PathfindingConstants.kPathfindingThetaController, 0, 0);
+    m_targetRotController = new TargetRotationController(0, 0);
     new ConfigurableParameter<Double>(1.0, "Target X", m_targetRotController::setTargetX);
     new ConfigurableParameter<Double>(0.0, "Target Y", m_targetRotController::setTargetY);
 
@@ -154,6 +152,5 @@ public class RobotContainer {
     waypoints.add(new Pose2d(13, 5, new Rotation2d()));
     waypoints.add(new Pose2d(3, 3, new Rotation2d()));
     return new GoToPoints(waypoints, m_robotDrive);
-
   }
 }
