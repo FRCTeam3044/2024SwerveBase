@@ -108,8 +108,8 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     m_robotContainer.climber.leftArm(0);
     m_robotContainer.climber.rightArm(0);
-    m_robotContainer.m_operatorController.getLeftBumper();
-    m_robotContainer.m_operatorController.getRightBumper();
+    m_robotContainer.m_operatorController.getLeftTriggerAxis();
+    m_robotContainer.m_operatorController.getRightTriggerAxis();
 
     boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
 
