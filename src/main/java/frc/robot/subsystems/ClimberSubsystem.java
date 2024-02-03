@@ -15,15 +15,15 @@ public class ClimberSubsystem {
     double leftMotorPower = 0;
     double rightMotorPower = 0;
 
-    // controls right arm
-    public void rightArm(double moveRightMotorPower) {
-        moveRightMotorPower = rightMotorPower;
-        rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
-    }
-
     // contorls left arm
     public void leftArm(double moveLeftMotorPower) {
         moveLeftMotorPower = leftMotorPower;
         rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
+    }
+
+    // controls right arm
+    public void rightArm(double moveRightMotorPower) {
+        moveRightMotorPower = rightMotorPower;
+        rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
     }
 }

@@ -11,6 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,9 +31,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  public final CommandXboxController m_operatorController = new CommandXboxController(
-      OIConstants.kOperatorControllerPort);
+  public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  public final XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
       "Field Relative");

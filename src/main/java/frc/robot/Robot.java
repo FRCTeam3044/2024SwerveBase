@@ -9,7 +9,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -109,17 +108,8 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     m_robotContainer.climber.leftArm(0);
     m_robotContainer.climber.rightArm(0);
-    m_robotContainer.m_operatorController.getLeftTriggerAxis();
-    m_robotContainer.m_operatorController.getRightTriggerAxis();
-
-    Trigger isAButtonPressed = m_robotContainer.m_operatorController.b()
-
-    if (m_robotContainer.m_operatorController.) {
-      m_robotContainer.intake.runIntake();
-    }
-    if (isLeftTriggerPressed == 0) {
-      m_robotContainer.intake.stopIntake();
-    }
+    m_robotContainer.m_operatorController.getLeftBumper();
+    m_robotContainer.m_operatorController.getRightBumper();
   }
 
   @Override
