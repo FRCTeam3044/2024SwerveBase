@@ -5,18 +5,21 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeSubsystem {
     // Defines the motor
-    CANSparkMax intakeMotor = new CANSparkMax(0, MotorType.kBrushless);
+    CANSparkMax intakeTopMotor = new CANSparkMax(0, MotorType.kBrushless);
+    CANSparkMax intakeBottomMotor = new CANSparkMax(0, MotorType.kBrushless);
 
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
 
     // Use this to run intake
     public void runIntake() {
-
+        intakeTopMotor.set(1);
+        intakeBottomMotor.set(-1);
     }
 
     // Stops intake
     public void stopIntake() {
-
+        intakeTopMotor.set(0);
+        intakeBottomMotor.set(0);
     }
 }
