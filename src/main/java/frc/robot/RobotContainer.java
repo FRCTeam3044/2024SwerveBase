@@ -7,10 +7,10 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,8 +30,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  public final XboxController m_operatorController = new XboxController(
+  public final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public final CommandXboxController m_operatorController = new CommandXboxController(
       OIConstants.kOperatorControllerPort);
 
   private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
@@ -39,6 +39,7 @@ public class RobotContainer {
   private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
   public final ClimberSubsystem climber = new ClimberSubsystem();
+  public final IntakeSubsystem intake = new IntakeSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
