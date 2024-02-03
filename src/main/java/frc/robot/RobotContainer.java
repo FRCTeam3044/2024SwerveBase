@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import edu.wpi.first.math.MathUtil;
@@ -43,6 +45,8 @@ public class RobotContainer {
   public final ClimberSubsystem climber = new ClimberSubsystem();
   public final IntakeSubsystem intake = new IntakeSubsystem();
   public final TransitSubsystem transit = new TransitSubsystem();
+  public final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public final ShooterSubsystem shooter = new ShooterSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
