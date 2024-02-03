@@ -112,12 +112,12 @@ public class Robot extends LoggedRobot {
     m_robotContainer.m_operatorController.getLeftTriggerAxis();
     m_robotContainer.m_operatorController.getRightTriggerAxis();
 
-    Trigger isAButtonPressed = m_robotContainer.m_operatorController.b()
+    boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
 
-    if (m_robotContainer.m_operatorController.) {
+    if (isBButtonPressed == true) {
       m_robotContainer.intake.runIntake();
     }
-    if (isLeftTriggerPressed == 0) {
+    if (isBButtonPressed) {
       m_robotContainer.intake.stopIntake();
     }
   }
