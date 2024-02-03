@@ -115,18 +115,7 @@ public class Robot extends LoggedRobot {
     boolean isLeftBumperPressed = m_robotContainer.m_operatorController.getLeftBumper();
     boolean isRightBumperPressed = m_robotContainer.m_operatorController.getRightBumper();
     double rightYValue = m_robotContainer.m_operatorController.getRightY();
-
-    if (isLeftBumperPressed) {
-      m_robotContainer.climber.leftArm(rightYValue);
-    } else {
-      m_robotContainer.climber.leftArm(0);
-    }
-
-    if (isRightBumperPressed) {
-      m_robotContainer.climber.rightArm(rightYValue);
-    } else {
-      m_robotContainer.climber.rightArm(0);
-    }
+    m_robotContainer.climber.consumeClimberInput(isLeftBumperPressed, isRightBumperPressed, rightYValue);
 
     boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
 

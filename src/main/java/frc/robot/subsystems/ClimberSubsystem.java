@@ -26,4 +26,18 @@ public class ClimberSubsystem {
         moveRightMotorPower = rightMotorPower;
         rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
     }
+
+    public void consumeClimberInput(boolean isLeftBumperPressed, boolean isRightBumperPressed, double rightYValue) {
+        if (isLeftBumperPressed) {
+            leftArm(rightYValue);
+        } else {
+            leftArm(0);
+        }
+
+        if (isRightBumperPressed) {
+            rightArm(rightYValue);
+        } else {
+            rightArm(0);
+        }
+    }
 }
