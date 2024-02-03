@@ -29,8 +29,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private final CommandXboxController m_operatorController = new CommandXboxController(
+  public final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public final CommandXboxController m_operatorController = new CommandXboxController(
       OIConstants.kOperatorControllerPort);
 
   private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
