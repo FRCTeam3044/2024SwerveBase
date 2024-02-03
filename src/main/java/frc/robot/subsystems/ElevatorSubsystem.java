@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.jni.CANSparkMaxJNI;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,7 +24,6 @@ public class ElevatorSubsystem {
     double maxVel = 0;
     double maxAccel = 0;
 
-
     PIDController pid = new PIDController(0, 0, 0);
 
     // The angle for shooting in the amp (currently set to 0)
@@ -33,12 +31,12 @@ public class ElevatorSubsystem {
 
     public ElevatorSubsystem() {
         // PID coefficients
-        kP = 0.1; 
+        kP = 0.1;
         kI = 0;
-        kD = 1; 
-        kIz = 0; 
-        kFF = 0; 
-        kMaxOutput = 0.1; 
+        kD = 1;
+        kIz = 0;
+        kFF = 0;
+        kMaxOutput = 0.1;
         kMinOutput = -0.1;
 
         m_pidController = elevatorMotorOne.getPIDController();

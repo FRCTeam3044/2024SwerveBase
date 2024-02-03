@@ -1,12 +1,9 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-
-import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.SparkPIDController;
 
 public class ShooterSubsystem {
     /*
@@ -14,28 +11,12 @@ public class ShooterSubsystem {
      */
     CANSparkMax topMotor = new CANSparkMax(0, MotorType.kBrushless);
     CANSparkMax bottomMotor = new CANSparkMax(0, MotorType.kBrushless);
-    /*
-     * Defines the motors that change the angle of the shooter
-     */
-    CANSparkMax shooterAngleMotorOne = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax shooterAngleMotorTwo = new CANSparkMax(0, MotorType.kBrushless);
 
     /*
      * Encoders for Shooter wheels
      */
     RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
     RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
-
-    /*
-     * Encoders for the angle control
-     */
-    AbsoluteEncoder shooterAngleMotorOneEncoder = shooterAngleMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
-    AbsoluteEncoder shooterAngleMotorTwoEncoder = shooterAngleMotorTwo.getAbsoluteEncoder(Type.kDutyCycle);
-
-    /*
-     * Creates a new PID controller
-     */
-    PIDController pid = new PIDController(0, 0, 0);
 
     /*
      * Change this to change the power of the motors
@@ -49,14 +30,12 @@ public class ShooterSubsystem {
 
     boolean isShooterRunning = false;
 
-    public void shooterFiring(double motorRPM) {
+    private SparkPIDController m_pidController;
+    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+    double maxVel = 0;
+    double maxAccel = 0;
 
-    }
-
-    /*
-     * Sets the angle of the shooter for shooting
-     */
-    public void setShooterAngle(double shooterAngle) {
+    public void setShooterRPM(double motorRPM) {
 
     }
 
@@ -83,5 +62,29 @@ public class ShooterSubsystem {
         } else {
             stopShooter();
         }
+    }
+
+    public ShooterSubsystem() {
+        // PID Coedficients
+        kP = 6e-5;
+        kI = 0;
+        kD = 0;
+        kIz = 0;
+        kFF = 0;
+        kMaxOutput = 1;
+        kMinOutput = -1;
+        maxRPM = 5700;
+
+        m_pidController = topMotor.getPIDController();
+        m_pidController = bottomMotor.getPIDController();
+
+        m_pidController.setP(kP);
+        m_pidController.setI(kI);
+        m_pidController.setD(kD);
+        m_pidController.setIZone(kIz);
+        m_pidController.setFF(kFF);
+        m_pidController.setOutputRange(kMinOutput, kMaxOutput);
+        m_pidController.setSmartMotionMaxVelocity(maxVel, 0);
+        m_pidController.setSmartMotionMaxAccel(maxAccel, 0);
     }
 }
