@@ -27,6 +27,15 @@ public class GoToAndTrackPoint extends Command {
         addRequirements(m_robotDrive);
     }
 
+
+    // Tracks a different target than the path target
+    public GoToAndTrackPoint(Pose2d target, Pose2d track, DriveSubsystem m_robotDrive) {
+        this.target = target;
+        this.m_robotDrive = m_robotDrive;
+        targetRotationController = new TargetRotationController(track.getX(), track.getY());
+        addRequirements(m_robotDrive);
+    }
+
     @Override
     public void initialize() {
         try {
