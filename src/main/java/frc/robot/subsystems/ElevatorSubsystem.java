@@ -83,7 +83,8 @@ public class ElevatorSubsystem {
         moveElevator(elevatorSpeed);
     }
 
-    public void pidHandler(double rotations) {
+    public void pidHandler(double meters) {
+        double rotations = meters; // needs math to convert meters to rotation
         m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }
