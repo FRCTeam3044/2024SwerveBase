@@ -12,13 +12,22 @@ public class IntakeCommand extends Command {
         m_intake = intake;
         m_controller = controller;
     }
-    
+
     @Override
-    public void initialize(){
+    public void initialize() {
 
     }
 
     @Override
-    public 
+    public boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    public void execute() {
+        boolean isBButtonPressed = m_controller.getBButtonPressed();
+
+        m_intake.consumeIntakeInput(isBButtonPressed);
+    }
 
 }

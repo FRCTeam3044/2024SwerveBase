@@ -131,9 +131,6 @@ public class Robot extends LoggedRobot {
 
     m_robotContainer.m_operatorController.getLeftY();
 
-    double leftYValue = m_robotContainer.m_operatorController.getLeftY();
-
-    m_robotContainer.elevator.consumeElevatorInput(leftYValue);
   }
 
   @Override
