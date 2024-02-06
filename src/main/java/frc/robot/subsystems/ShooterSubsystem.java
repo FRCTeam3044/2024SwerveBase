@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,8 +13,8 @@ public class ShooterSubsystem extends SubsystemBase {
     /*
      * Defines the motors that shoot the notes
      */
-    CANSparkMax topMotor = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax bottomMotor = new CANSparkMax(0, MotorType.kBrushless);
+    CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushless);
+    CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
 
     /*
      * Encoders for Shooter wheels

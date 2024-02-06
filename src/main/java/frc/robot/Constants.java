@@ -130,6 +130,22 @@ public final class Constants {
         "Driver Deadband");
   }
 
+  public static final class CANConstants {
+    public static final int kShooterTopMotorPort = 0;
+    public static final int kShooterBottomMotorPort = 0;
+
+    public static final int kTransitTransitMotorPort = 0;
+    public static final int kTransitIntakeSnsorOnePort = 0;
+    public static final int kTransitIntakeSnsorTwoPort = 0;
+
+    public static final int kIntakeTopMotorPort = 0;
+    public static final int kIntakeBottomMotorPort = 0;
+
+    public static final int kClimberLeftClimberMotor = 0;
+    public static final int kClimberRightClimberMotor = 0;
+
+  }
+
   /*
    * This could be replace by oxconfig
    */

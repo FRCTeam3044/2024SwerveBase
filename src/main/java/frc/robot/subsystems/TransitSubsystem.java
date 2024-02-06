@@ -5,13 +5,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANConstants;
 
 public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
-    TalonSRX transitMotor = new TalonSRX(0);
-    DigitalInput intakeSensorOne = new DigitalInput(0);
-    DigitalInput intakeSnsorTwo = new DigitalInput(0);
+    TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitTransitMotorPort);
+    DigitalInput intakeSensorOne = new DigitalInput(CANConstants.kTransitIntakeSnsorOnePort);
+    DigitalInput intakeSnsorTwo = new DigitalInput(CANConstants.kTransitIntakeSnsorTwoPort);
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
