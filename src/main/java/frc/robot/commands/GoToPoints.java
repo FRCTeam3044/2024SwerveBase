@@ -16,18 +16,17 @@ import me.nabdev.pathfinding.structures.ImpossiblePathException;
 public class GoToPoints extends Command {
     private final DriveSubsystem m_robotDrive;
     private final ArrayList<Pose2d> target;
+    private FollowTrajectory nextCommand;
 
     public GoToPoints(Pose2d target, DriveSubsystem m_robotDrive) {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        addRequirements(m_robotDrive);
     }
 
     public GoToPoints(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
-        addRequirements(m_robotDrive);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class GoToPoints extends Command {
                     PathfindingConstants.kPathfindingThetaController);
 
             Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(0);
-            FollowTrajectory nextCommand = new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive,
+            nextCommand = new FollowTrajectory(myPath, controller, targetRotSupplier, m_robotDrive,
                     m_robotDrive);
             nextCommand.schedule();
         } catch (ImpossiblePathException e) {
@@ -53,6 +52,6 @@ public class GoToPoints extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return nextCommand.isFinished();
     }
 }

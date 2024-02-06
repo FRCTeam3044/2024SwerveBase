@@ -27,7 +27,6 @@ public class GoToAndTrackPoint extends Command {
         addRequirements(m_robotDrive);
     }
 
-
     // Tracks a different target than the path target
     public GoToAndTrackPoint(Pose2d target, Pose2d track, DriveSubsystem m_robotDrive) {
         this.target = target;
@@ -39,8 +38,8 @@ public class GoToAndTrackPoint extends Command {
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
-                    PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
+            TrajectoryConfig config = new TrajectoryConfig(0.5,
+                    0.5);
             Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
@@ -48,7 +47,8 @@ public class GoToAndTrackPoint extends Command {
                     PathfindingConstants.kPathfindingXController, PathfindingConstants.kPathfindingYController,
                     PathfindingConstants.kPathfindingThetaController);
 
-            Supplier<Double> targetRotSpeed = () -> targetRotationController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+            Supplier<Double> targetRotSpeed = () -> targetRotationController.calculate(m_robotDrive.getPose(),
+                    m_robotDrive.getChassisSpeeds());
 
             FollowTrajectory nextCommand = new FollowTrajectory(myPath, targetRotSpeed, controller, m_robotDrive,
                     m_robotDrive);

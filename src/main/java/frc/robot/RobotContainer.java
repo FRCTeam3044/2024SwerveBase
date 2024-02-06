@@ -11,14 +11,21 @@ import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.TargetRotationController;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.pathfinding.autos.AutoParser;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.function.Function;
+
+import org.json.JSONObject;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -151,11 +158,45 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>(); 
-    // waypoints.add(new Pose2d(12, 6, new Rotation2d()));
-    // waypoints.add(new Pose2d(13, 5, new Rotation2d()));
-    // waypoints.add(new Pose2d(3, 3, new Rotation2d()));
-    // return new GoToPoints(waypoints, m_robotDrive);
-    return new GoToAndTrackPoint(new Pose2d(4, 3, new Rotation2d()), m_robotDrive);
+    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+    waypoints.add(new Pose2d(0, 1, new Rotation2d()));
+    waypoints.add(new Pose2d(1, 1, new Rotation2d()));
+    waypoints.add(new Pose2d(1, 0, new Rotation2d()));
+    waypoints.add(new Pose2d(0, 0, new Rotation2d()));
+    // return new GoToAndTrackPoint(new Pose2d(4, 3, new Rotation2d()),
+    // m_robotDrive);
+    try {
+      Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
+      AutoParser.registerCommand("wait_for_note", genWaitForNote);
+      Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPoints(waypoints, m_robotDrive);
+      AutoParser.registerCommand("follow_path", genFollowPath);
+      Command auto = AutoParser
+          .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");
+      return auto;
+    } catch (FileNotFoundException e) {
+      System.out.println("Couldnt find file");
+      return null;
+    }
+  }
+
+  public static class WaitForNoteCommand extends Command {
+    private Timer mTimer = new Timer();
+
+    @Override
+    public void initialize() {
+      System.out.println("Waiting For Note!");
+      mTimer.reset();
+      mTimer.start();
+    }
+
+    @Override
+    public void execute() {
+      System.out.println("Timer: " + mTimer.get());
+    }
+
+    @Override
+    public boolean isFinished() {
+      return mTimer.get() > 3;
+    }
   }
 }

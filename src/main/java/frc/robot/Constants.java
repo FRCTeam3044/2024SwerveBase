@@ -165,8 +165,9 @@ public final class Constants {
                                 1,
                                 0,
                                 0,
-                                new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
-                                                kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+                                // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
+                                // kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+                                new TrapezoidProfile.Constraints(0, 0),
                                 "Pathfinding Theta Controller");
 
                 public static final ConfigurableParameter<Double> kRotationTimestep = new ConfigurableParameter<Double>(

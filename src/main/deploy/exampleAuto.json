@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Get To Note",
+    "type": "group",
+    "id": "deadline",
+    "children": [
+      {
+        "type": "command",
+        "id": "follow_path",
+        "parameters": {
+          "targetX": "5",
+          "targetY": "5"
+        }
+      }
+    ]
+  }
+]

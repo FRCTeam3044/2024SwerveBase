@@ -87,7 +87,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_desiredChassisSpeeds;
 
-
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
@@ -114,13 +113,12 @@ public class DriveSubsystem extends SubsystemBase {
         stateStdDevs,
         visionStdDevs);
 
-    pathfinder = new PathfinderBuilder(Field.CRESCENDO_2024)
+    pathfinder = new PathfinderBuilder(Field.EMPTY_FIELD)
         .setInjectPoints(true)
         .setPointSpacing(0.25)
         .setRobotLength(DriveConstants.kWheelBase)
         .setRobotWidth(DriveConstants.kTrackWidth)
         .build();
-
 
     // ArrayList<Edge> edges = m_pathfinder.visualizeEdges();
     // PathfindingDebugUtils.drawLines("Field Map", edges,
@@ -212,7 +210,6 @@ public class DriveSubsystem extends SubsystemBase {
         getModulePositions(),
         pose);
   }
-
 
   /**
    * Method to drive the robot using joystick info.
