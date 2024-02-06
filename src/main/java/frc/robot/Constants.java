@@ -144,6 +144,10 @@ public final class Constants {
     public static final int kClimberLeftClimberMotor = 0;
     public static final int kClimberRightClimberMotor = 0;
 
+    public static final int kElevatorMotorOnePort = 0;
+    public static final int kElevatorMotorTwoPort = 0;
+    public static final int kElevatorTopLimitSwitch = 0;
+    public static final int kElevatorBottomLimitSwitch = 0;
   }
 
   /*

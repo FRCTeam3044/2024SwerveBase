@@ -9,16 +9,17 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    CANSparkMax elevatorMotorOne = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax elevatorMotorTwo = new CANSparkMax(0, MotorType.kBrushless);
+    CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
+    CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
     AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
 
-    DigitalInput elevatorTopLimitSwitch = new DigitalInput(0);
+    DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
-    DigitalInput elevatorBottomLimitSwitch = new DigitalInput(0);
+    DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
     private SparkPIDController m_pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
