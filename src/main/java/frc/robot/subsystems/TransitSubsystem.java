@@ -4,8 +4,9 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class TransitSubsystem {
+public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(0);

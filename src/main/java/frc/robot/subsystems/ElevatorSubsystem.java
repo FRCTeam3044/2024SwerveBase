@@ -8,8 +8,9 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ElevatorSubsystem {
+public class ElevatorSubsystem extends SubsystemBase {
     CANSparkMax elevatorMotorOne = new CANSparkMax(0, MotorType.kBrushless);
     CANSparkMax elevatorMotorTwo = new CANSparkMax(0, MotorType.kBrushless);
 
