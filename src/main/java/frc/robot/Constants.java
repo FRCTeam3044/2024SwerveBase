@@ -185,14 +185,10 @@ public final class Constants {
         public static final class VisionConstants {
                 // TODO: Update these values
                 public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
-                public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT
-                                                                                                   // CORRECT
+                public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
                                 "front",
-                                // "back",
-                                // "left",
-                                // "right"
                 };
                 // array of camera transforms
                 public final static Transform3d[] cameraTransforms = {
@@ -205,33 +201,21 @@ public final class Constants {
                                                                 0,
                                                                 0,
                                                                 0)),
-                                new Transform3d( // back
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0)),
-                                new Transform3d( // left
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0)),
-                                new Transform3d( // right
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0))
+                };
+        }
+
+        public static final class DetectorConstants {
+                public static double[][] cameraPointsArray = {
+                        {621, 538},
+                        {625, 438},
+                        {93, 450},
+                        {1163, 469}
+                };
+                public static double[][] fieldPointsArray = {
+                        {0.91, 0},
+                        {1.82, 0},
+                        {1.82, 0.91},
+                        {1.82, -0.92}
                 };
         }
 }
