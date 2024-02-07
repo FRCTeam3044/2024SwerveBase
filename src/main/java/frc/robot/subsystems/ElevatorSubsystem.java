@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
     CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
@@ -26,7 +27,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     double maxVel = 0;
     double maxAccel = 0;
 
-    PIDController pid = new PIDController(0, 0, 0);
+    PIDController pid = new ConfigurablePIDController(0, 0, 0, "Elevator PID");
 
     // The angle for shooting in the amp (currently set to 0)
     double ampAngle = 0;
@@ -62,7 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-
+        
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
@@ -85,8 +86,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         moveElevator(elevatorSpeed);
     }
 
+    public double getAngle() {
+        double currentAngle = shooterEncoderOne.getPosition();
+        return currentAngle;
+    }
+
     public void pidHandler(double meters) {
-        double rotations = meters; // needs math to convert meters to rotation
+        // TODO: convert meters to rotation
+        double rotations = meters;
         m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }
