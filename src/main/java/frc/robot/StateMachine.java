@@ -3,6 +3,7 @@ package frc.robot;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShooterConstants;
 
 public class StateMachine {
@@ -71,6 +72,9 @@ public class StateMachine {
                 currentState = State.NO_NOTE;
                 break;
         }
+
+        SmartDashboard.putString("State", currentState.toString());
+
     }
 
     public State getState() {
