@@ -188,7 +188,7 @@ public final class Constants {
                 public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
-                                "front",
+                                // "front",
                 };
                 // array of camera transforms
                 public final static Transform3d[] cameraTransforms = {
