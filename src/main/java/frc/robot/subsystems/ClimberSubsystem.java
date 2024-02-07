@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-    TalonSRX leftClimberMotor = new TalonSRX(CANConstants.kClimberLeftClimberMotor);
-    TalonSRX rightClimberMotor = new TalonSRX(CANConstants.kClimberRightClimberMotor);
+    TalonSRX leftClimberMotor = new TalonSRX(CANConstants.kClimberLeftClimberMotorPort);
+    TalonSRX rightClimberMotor = new TalonSRX(CANConstants.kClimberRightClimberMotorPort);
     // Encoder leftClimberEncoder = new Encoder(null, null);
     // Encoder rightClimberEncoder = new Encoder(null, null);
     

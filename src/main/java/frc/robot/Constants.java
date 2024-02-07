@@ -135,8 +135,8 @@ public final class Constants {
     public static final int kShooterBottomMotorPort = 0;
 
     public static final int kTransitMotorPort = 0;
-    public static final int kTransitIntakeSensorOnePort = 0;
-    public static final int kTransitIntakeSensorTwoPort = 0;
+    public static final int kTransitIntakeSnsorOnePort = 0;
+    public static final int kTransitIntakeSnsorTwoPort = 0;
 
     public static final int kIntakeTopMotorPort = 0;
     public static final int kIntakeBottomMotorPort = 0;
@@ -146,9 +146,8 @@ public final class Constants {
 
     public static final int kElevatorMotorOnePort = 0;
     public static final int kElevatorMotorTwoPort = 0;
-
-    public static final int kElevatorTopLimitSwitchPort = 0;
-    public static final int kElevatorBottomLimitSwitchPort = 0;
+    public static final int kElevatorTopLimitSwitch = 0;
+    public static final int kElevatorBottomLimitSwitch = 0;
   }
 
   /*

@@ -10,7 +10,7 @@ import frc.robot.Constants.CANConstants;
 public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
-    TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitTransitMotorPort);
+    TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
     DigitalInput intakeSensorOne = new DigitalInput(CANConstants.kTransitIntakeSnsorOnePort);
     DigitalInput intakeSnsorTwo = new DigitalInput(CANConstants.kTransitIntakeSnsorTwoPort);
 
