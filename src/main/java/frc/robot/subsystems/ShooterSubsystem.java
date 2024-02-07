@@ -36,7 +36,6 @@ public class ShooterSubsystem {
     double maxAccel = 0;
 
     public void setShooterRPM(double motorRPM) {
-
     }
 
     /*

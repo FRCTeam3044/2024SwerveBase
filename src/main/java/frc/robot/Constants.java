@@ -151,4 +151,11 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  public static final class ShooterConstants {
+    public static final ConfigurableParameter<Integer> kShooterTargetRPM = new ConfigurableParameter<Integer>(5000,
+        "Shooter Target RPM");
+    public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(100.0,
+        "Shooter Tolerance RPM");
+  }
 }
