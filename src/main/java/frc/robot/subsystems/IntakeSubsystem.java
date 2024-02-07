@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
@@ -9,6 +12,7 @@ public class IntakeSubsystem {
     // Defines the motor
     CANSparkMax intakeTopMotor = new CANSparkMax(CANConstants.kIntakeTopMotorPort, MotorType.kBrushless);
     CANSparkMax intakeBottomMotor = new CANSparkMax(CANConstants.kIntakeBottomMotorPort, MotorType.kBrushless);
+    DigitalInput intakeSensor = new DigitalInput(CANConstants.kIntakeSensorPort);
 
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
@@ -23,6 +27,10 @@ public class IntakeSubsystem {
     private void stopIntake() {
         intakeTopMotor.set(0);
         intakeBottomMotor.set(0);
+    }
+
+    public boolean readIntakeLimitSwitch() {
+        return intakeSensor.get();
     }
 
     public void consumeIntakeInput(boolean isTheBButtonPressed) {
