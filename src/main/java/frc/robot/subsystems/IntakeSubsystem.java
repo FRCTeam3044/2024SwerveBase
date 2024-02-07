@@ -28,8 +28,7 @@ public class IntakeSubsystem {
     public void consumeIntakeInput(boolean isTheBButtonPressed) {
         if (isTheBButtonPressed) {
             runIntake();
-        }
-        else {
+        } else {
             stopIntake();
         }
     }

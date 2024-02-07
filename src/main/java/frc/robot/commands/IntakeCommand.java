@@ -29,5 +29,4 @@ public class IntakeCommand extends Command {
 
         m_intake.consumeIntakeInput(isBButtonPressed);
     }
-
 }
