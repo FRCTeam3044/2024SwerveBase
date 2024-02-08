@@ -136,10 +136,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the pose estimator in the periodic block
     poseEstimator.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
-    Logger.recordOutput("gyro", getGyroAngleDegrees());
-    Logger.recordOutput("gyroRad", Math.toRadians(getGyroAngleDegrees()));
-    Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
-    Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
+    Logger.recordOutput("ModuleState", getModuleStates());
+    // Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
     field.setRobotPose(getPose());
 
     SmartDashboard.putData("Field", field);
@@ -276,17 +274,11 @@ public class DriveSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
 
-    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(getGyroAngleDegrees()))
-            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
+    ChassisSpeeds chassisSpeeds = fieldRelative
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
+            Rotation2d.fromDegrees(getPose().getRotation().getDegrees()))
+        : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+    setDesiredChassisSpeeds(chassisSpeeds);
   }
 
   /**
@@ -297,6 +289,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
+  public void setDesiredChassisSpeeds(ChassisSpeeds speeds) {
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
+    setModuleStates(swerveModuleStates);
   }
 
   /**
@@ -378,5 +377,4 @@ public class DriveSubsystem extends SubsystemBase {
 
     REVPhysicsSim.getInstance().run();
   }
-
 }

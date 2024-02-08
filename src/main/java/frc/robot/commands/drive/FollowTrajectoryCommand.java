@@ -138,8 +138,7 @@ public class FollowTrajectoryCommand extends Command {
         } else {
             targetChassisSpeeds.omegaRadiansPerSecond *= -1;
         }
-        var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-        m_driveSubsystem.setModuleStates(targetModuleStates);
+        m_driveSubsystem.setDesiredChassisSpeeds(targetChassisSpeeds);
     }
 
     @Override
