@@ -80,6 +80,11 @@ public final class Constants {
                 public static final int kRearRightTurningCanId = 14;
 
                 public static final boolean kGyroReversed = false;
+
+                public static final ConfigurableParameter<Boolean> kFieldRelative = new ConfigurableParameter<Boolean>(true,
+            "Field Relative");
+                public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
+
         }
 
         public static final class ModuleConstants {

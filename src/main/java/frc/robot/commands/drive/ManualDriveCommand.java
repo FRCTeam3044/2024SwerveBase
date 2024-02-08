@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.Constants.DriveConstants;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 /**
@@ -15,10 +16,6 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class ManualDriveCommand extends Command {
     private final CommandXboxController m_driverController;
     private final DriveSubsystem m_robotDrive;
-
-    private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
-            "Field Relative");
-    private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
     private final boolean isSimulation;
 
@@ -43,9 +40,9 @@ public class ManualDriveCommand extends Command {
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
 
         if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, -inputRot, m_fieldRelative.get(), m_rateLimit.get());
+            m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
         } else {
-            m_robotDrive.drive(-inputY, -inputX, -inputRot, m_fieldRelative.get(), m_rateLimit.get());
+            m_robotDrive.drive(-inputY, -inputX, -inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
         }
     }
 }
