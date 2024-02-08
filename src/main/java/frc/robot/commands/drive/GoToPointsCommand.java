@@ -1,45 +1,39 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.utils.TargetRotationController;
 import me.nabdev.pathfinding.structures.ImpossiblePathException;
 
-/**
- * Goes to a point while looking at it
- */
-public class GoToAndTrackPoint extends Command {
+public class GoToPointsCommand extends Command {
     private final DriveSubsystem m_robotDrive;
-    private final TargetRotationController targetRotationController;
-    private final Pose2d target;
+    private final ArrayList<Pose2d> target;
+    private FollowTrajectoryCommand nextCommand;
 
-    public GoToAndTrackPoint(Pose2d target, DriveSubsystem m_robotDrive) {
-        this.target = target;
+    public GoToPointsCommand(Pose2d target, DriveSubsystem m_robotDrive) {
+        this.target = new ArrayList<Pose2d>();
+        this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        targetRotationController = new TargetRotationController(target.getX(), target.getY());
-        addRequirements(m_robotDrive);
     }
 
-    // Tracks a different target than the path target
-    public GoToAndTrackPoint(Pose2d target, Pose2d track, DriveSubsystem m_robotDrive) {
+    public GoToPointsCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
-        targetRotationController = new TargetRotationController(track.getX(), track.getY());
-        addRequirements(m_robotDrive);
     }
 
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(0.5,
-                    0.5);
+            TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+                    PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
             Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
@@ -47,10 +41,8 @@ public class GoToAndTrackPoint extends Command {
                     PathfindingConstants.kPathfindingXController, PathfindingConstants.kPathfindingYController,
                     PathfindingConstants.kPathfindingThetaController);
 
-            Supplier<Double> targetRotSpeed = () -> targetRotationController.calculate(m_robotDrive.getPose(),
-                    m_robotDrive.getChassisSpeeds());
-
-            FollowTrajectory nextCommand = new FollowTrajectory(myPath, targetRotSpeed, controller, m_robotDrive,
+            Supplier<Rotation2d> targetRotSupplier = () -> Rotation2d.fromDegrees(0);
+            nextCommand = new FollowTrajectoryCommand(myPath, controller, targetRotSupplier, m_robotDrive,
                     m_robotDrive);
             nextCommand.schedule();
         } catch (ImpossiblePathException e) {
@@ -60,6 +52,6 @@ public class GoToAndTrackPoint extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return nextCommand.isFinished();
     }
 }

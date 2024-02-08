@@ -4,13 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.GoToAndTrackPoint;
-import frc.robot.commands.GoToPoints;
+import frc.robot.commands.drive.GoToPointsCommand;
+import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.utils.TargetRotationController;
-import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -19,16 +16,11 @@ import java.util.function.Function;
 
 import org.json.JSONObject;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -48,95 +40,16 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
-  private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
-      "Field Relative");
-  private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
-
-  private final TargetRotationController m_targetRotController;
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    m_targetRotController = new TargetRotationController(0, 0);
-    new ConfigurableParameter<Double>(1.0, "Target X", m_targetRotController::setTargetX);
-    new ConfigurableParameter<Double>(0.0, "Target Y", m_targetRotController::setTargetY);
 
-    if (RobotBase.isReal()) {
+    ManualDriveCommand manualDriveCommand = new ManualDriveCommand(m_robotDrive, m_driverController);
 
-      m_robotDrive.setDefaultCommand(
-          // The left stick controls translation of the robot.
-          // Turning is controlled by the X axis of the right stick.
-          new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(),
-                      OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(),
-                      OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(),
-                      OIConstants.kDriveDeadband.get()),
-
-                  m_fieldRelative.get(), m_rateLimit.get()),
-              m_robotDrive));
-      // new RunCommand(() -> {
-      // double rotOutput = -MathUtil.applyDeadband(m_driverController.getRightX(),
-      // OIConstants.kDriveDeadband.get());
-      // if (m_driverController.getRightTriggerAxis() > 0.5) {
-      // rotOutput = m_targetRotController.calculate(m_robotDrive.getPose(),
-      // m_robotDrive.getChassisSpeeds());
-      // }
-      // SmartDashboard.putNumber("Rotation controller output", rotOutput);
-      // ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
-      // -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
-      // MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
-      // targetChassisSpeeds =
-      // ChassisSpeeds.fromFieldRelativeSpeeds(targetChassisSpeeds,
-      // m_robotDrive.getPose().getRotation());
-      // var targetModuleStates =
-      // DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-      // m_robotDrive.setModuleStates(targetModuleStates);
-      // }, m_robotDrive));
-    } else {
-
-      m_robotDrive.setDefaultCommand(
-          // The left stick controls translation of the robot.
-          // Turning is controlled by the X axis of the right stick.
-          new RunCommand(
-              () -> m_robotDrive.drive(
-                  MathUtil.applyDeadband(m_driverController.getLeftY(),
-                      OIConstants.kDriveDeadband.get()),
-                  MathUtil.applyDeadband(m_driverController.getLeftX(),
-                      OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(),
-                      OIConstants.kDriveDeadband.get()),
-
-                  m_fieldRelative.get(), m_rateLimit.get()),
-              m_robotDrive));
-
-      // m_fieldRelative.get(), m_rateLimit.get()),
-      // m_robotDrive));
-      // new RunCommand(() -> {
-      // double rotOutput = -MathUtil.applyDeadband(m_driverController.getRightX(),
-      // OIConstants.kDriveDeadband.get());
-      // if (m_driverController.getRightTriggerAxis() > 0.5) {
-      // rotOutput = m_targetRotController.calculate(m_robotDrive.getPose(),
-      // m_robotDrive.getChassisSpeeds());
-      // }
-      // SmartDashboard.putNumber("Rotation controller output", rotOutput);
-      // ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
-      // -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
-      // MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
-      // targetChassisSpeeds =
-      // ChassisSpeeds.fromFieldRelativeSpeeds(targetChassisSpeeds,
-      // m_robotDrive.getPose().getRotation());
-      // var targetModuleStates =
-      // DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-      // m_robotDrive.setModuleStates(targetModuleStates);
-      // }, m_robotDrive));
-
-    }
+    m_robotDrive.setDefaultCommand(manualDriveCommand);
   }
 
   /**
@@ -173,7 +86,8 @@ public class RobotContainer {
     try {
       Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
       AutoParser.registerCommand("wait_for_note", genWaitForNote);
-      Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPoints(waypoints, m_robotDrive);
+      Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPointsCommand(waypoints,
+          m_robotDrive);
       AutoParser.registerCommand("follow_path", genFollowPath);
       Command auto = AutoParser
           .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");

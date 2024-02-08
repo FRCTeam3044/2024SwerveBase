@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
@@ -42,7 +42,7 @@ import java.util.function.Supplier;
  * <p>
  * This class is provided by the NewCommands VendorDep
  */
-public class FollowTrajectory extends Command {
+public class FollowTrajectoryCommand extends Command {
     private final Timer m_timer = new Timer();
     private final Trajectory m_trajectory;
     private final HolonomicDriveController m_controller;
@@ -71,7 +71,7 @@ public class FollowTrajectory extends Command {
      * @param driveSubsystem  The subsystem to use to drive the robot.
      * @param requirements    The subsystems to require.
      */
-    public FollowTrajectory(
+    public FollowTrajectoryCommand(
             Trajectory trajectory,
             HolonomicDriveController controller,
             Supplier<Rotation2d> desiredRotation,
@@ -105,7 +105,7 @@ public class FollowTrajectory extends Command {
      * @param driveSubsystem       The subsystem to use to drive the robot.
      * @param requirements         The subsystems to require.
      */
-    public FollowTrajectory(
+    public FollowTrajectoryCommand(
             Trajectory trajectory,
             Supplier<Double> desiredRotationSpeed,
             HolonomicDriveController controller,
