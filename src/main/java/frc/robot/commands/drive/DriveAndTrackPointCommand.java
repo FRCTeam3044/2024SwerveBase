@@ -47,11 +47,10 @@ public class DriveAndTrackPointCommand extends Command {
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
 
-        // TODO: Needs to command rotation speed, right now input rot is expected to be a controller input
         if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
+            m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(), true);
         } else {
-            m_robotDrive.drive(-inputY, -inputX, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
+            m_robotDrive.drive(-inputY, -inputX, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(), true);
         }
     }
 }

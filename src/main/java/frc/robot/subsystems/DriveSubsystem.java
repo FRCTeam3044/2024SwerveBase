@@ -209,7 +209,7 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
-  /**
+/**
    * Method to drive the robot using joystick info.
    *
    * @param xSpeed        Speed of the robot in the x direction (forward).
@@ -220,6 +220,20 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+    drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false);
+  }
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed        Speed of the robot in the x direction (forward).
+   * @param ySpeed        Speed of the robot in the y direction (sideways).
+   * @param rot           Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the
+   *                      field.
+   * @param rateLimit     Whether to enable rate limiting for smoother control.
+   * @param absoluteRotSpeed If true, rot is interpreted directly as omega radians per second.
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit, boolean absoluteRotSpeed) {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -273,7 +287,9 @@ public class DriveSubsystem extends SubsystemBase {
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
-
+    if(absoluteRotSpeed){
+      rotDelivered = rot;
+    }
     ChassisSpeeds chassisSpeeds = fieldRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
             Rotation2d.fromDegrees(getPose().getRotation().getDegrees()))
