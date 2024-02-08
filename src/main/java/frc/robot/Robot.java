@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
-import frc.robot.commands.drive.GoToPointsCommand;
+import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.subsystems.VisionSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -120,7 +120,7 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
     if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-      (new GoToPointsCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive)).schedule();
+      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive, m_robotContainer.m_driverController)).schedule();
       lastClick = click;
     }
   }

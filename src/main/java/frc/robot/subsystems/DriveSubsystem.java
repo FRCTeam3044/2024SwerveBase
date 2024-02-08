@@ -275,26 +275,29 @@ public class DriveSubsystem extends SubsystemBase {
 
       xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
       ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
-      m_currentRotation = m_rotLimiter.calculate(rot);
-
     } else {
       xSpeedCommanded = xSpeed;
       ySpeedCommanded = ySpeed;
-      m_currentRotation = rot;
     }
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
-    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
-    if(absoluteRotSpeed){
-      rotDelivered = rot;
-    }
+    double rotDelivered = absoluteRotSpeed ? rot : rotSpeedFromJoystick(rot, rateLimit);
     ChassisSpeeds chassisSpeeds = fieldRelative
         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
             Rotation2d.fromDegrees(getPose().getRotation().getDegrees()))
         : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
     setDesiredChassisSpeeds(chassisSpeeds);
+  }
+
+  public double rotSpeedFromJoystick(double joystick, boolean rateLimit){
+    if(rateLimit){
+      m_currentRotation = m_rotLimiter.calculate(joystick);
+    } else {
+      m_currentRotation = joystick; 
+    }
+    return m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
   }
 
   /**
