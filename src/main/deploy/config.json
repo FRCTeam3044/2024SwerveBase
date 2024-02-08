@@ -39,8 +39,16 @@
             "value": "0.05"
         },
         "rearRightModule/turning/FF": "0.0",
+        "Drive & Track Target Y": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Controller/I": "0.0",
         "Y Controller/D": "0.0",
+        "Drive & Track Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
@@ -184,8 +192,16 @@
             "value": "0.05"
         },
         "rearRightModule/turning/FF": "0.0",
+        "Drive & Track Target Y": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Controller/I": "0.0",
         "Y Controller/D": "0.0",
+        "Drive & Track Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
@@ -328,8 +344,16 @@
             "value": "0.05"
         },
         "rearRightModule/turning/FF": "0.0",
+        "Drive & Track Target Y": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Controller/I": "0.0",
         "Y Controller/D": "0.0",
+        "Drive & Track Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
@@ -472,8 +496,16 @@
             "value": "0.05"
         },
         "rearRightModule/turning/FF": "0.0",
+        "Drive & Track Target Y": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Controller/I": "0.0",
         "Y Controller/D": "0.0",
+        "Drive & Track Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",

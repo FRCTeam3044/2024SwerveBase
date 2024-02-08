@@ -291,6 +291,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
+  /**
+   * Sets the module states to attempt to get the robot to the specified speeds.
+   * 
+   * @param speeds The desired chassis speeds, ROBOT RELATIVE.
+   */
   public void setDesiredChassisSpeeds(ChassisSpeeds speeds) {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(

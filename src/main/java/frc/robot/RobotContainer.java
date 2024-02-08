@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToPointsCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -47,9 +48,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    ManualDriveCommand manualDriveCommand = new ManualDriveCommand(m_robotDrive, m_driverController);
-
-    m_robotDrive.setDefaultCommand(manualDriveCommand);
+    m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
   }
 
   /**
@@ -67,7 +66,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    m_driverController.rightTrigger().whileTrue(new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
   }
 
   /**
