@@ -103,33 +103,38 @@ public class RobotContainer {
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
-          // new RunCommand(
-          // () -> m_robotDrive.drive(
-          // MathUtil.applyDeadband(m_driverController.getLeftY(),
-          // OIConstants.kDriveDeadband.get()),
-          // MathUtil.applyDeadband(m_driverController.getLeftX(),
-          // OIConstants.kDriveDeadband.get()),
-          // -MathUtil.applyDeadband(m_driverController.getRightX(),
-          // OIConstants.kDriveDeadband.get()),
+          new RunCommand(
+              () -> m_robotDrive.drive(
+                  MathUtil.applyDeadband(m_driverController.getLeftY(),
+                      OIConstants.kDriveDeadband.get()),
+                  MathUtil.applyDeadband(m_driverController.getLeftX(),
+                      OIConstants.kDriveDeadband.get()),
+                  -MathUtil.applyDeadband(m_driverController.getRightX(),
+                      OIConstants.kDriveDeadband.get()),
 
-          // m_fieldRelative.get(), m_rateLimit.get()),
-          // m_robotDrive));
-          new RunCommand(() -> {
-            double rotOutput = -MathUtil.applyDeadband(m_driverController.getRightX(),
-                OIConstants.kDriveDeadband.get());
-            if (m_driverController.getRightTriggerAxis() > 0.5) {
-              rotOutput = m_targetRotController.calculate(m_robotDrive.getPose(),
-                  m_robotDrive.getChassisSpeeds());
-            }
-            SmartDashboard.putNumber("Rotation controller output", rotOutput);
-            ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
-                MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
-            targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(targetChassisSpeeds,
-                m_robotDrive.getPose().getRotation());
-            var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
-            m_robotDrive.setModuleStates(targetModuleStates);
-          }, m_robotDrive));
+                  m_fieldRelative.get(), m_rateLimit.get()),
+              m_robotDrive));
+
+      // m_fieldRelative.get(), m_rateLimit.get()),
+      // m_robotDrive));
+      // new RunCommand(() -> {
+      // double rotOutput = -MathUtil.applyDeadband(m_driverController.getRightX(),
+      // OIConstants.kDriveDeadband.get());
+      // if (m_driverController.getRightTriggerAxis() > 0.5) {
+      // rotOutput = m_targetRotController.calculate(m_robotDrive.getPose(),
+      // m_robotDrive.getChassisSpeeds());
+      // }
+      // SmartDashboard.putNumber("Rotation controller output", rotOutput);
+      // ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds(
+      // -MathUtil.applyDeadband(m_driverController.getLeftY(), 0.15),
+      // MathUtil.applyDeadband(m_driverController.getLeftX(), 0.15), rotOutput);
+      // targetChassisSpeeds =
+      // ChassisSpeeds.fromFieldRelativeSpeeds(targetChassisSpeeds,
+      // m_robotDrive.getPose().getRotation());
+      // var targetModuleStates =
+      // DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
+      // m_robotDrive.setModuleStates(targetModuleStates);
+      // }, m_robotDrive));
 
     }
   }

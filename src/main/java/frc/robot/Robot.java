@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.GoToPoints;
 import frc.robot.subsystems.VisionSubsystem;
 import me.nabdev.oxconfig.OxConfig;
@@ -38,6 +39,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    PathfindingConstants.initialize();
 
     Logger.addDataReceiver(new NT4Publisher());
 

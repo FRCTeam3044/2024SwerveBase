@@ -146,6 +146,13 @@ public final class Constants {
         }
 
         public static final class PathfindingConstants {
+                // I hate this. Java sucks
+                public static void initialize() {
+                        // This method does nothing but touch the ConfigurableParameter objects,
+                        // forcing the class to be loaded and the objects to be initialized.
+                        System.out.println(kMaxSpeedMetersPerSecond);
+                }
+
                 public static final ConfigurableParameter<Double> kMaxSpeedMetersPerSecond = new ConfigurableParameter<Double>(
                                 3.0,
                                 "Pathfinding Max Speed");
