@@ -101,6 +101,8 @@ public class Robot extends LoggedRobot {
   public void autonomousPeriodic() {
   }
 
+  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
@@ -110,10 +112,9 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    RobotContainer.m_robotDrive.resetOdometry(new Pose2d(1.8415, 0, new Rotation2d(90)));
-  }
 
-  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+    lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+  }
 
   /** This function is called periodically during operator control. */
   @Override
