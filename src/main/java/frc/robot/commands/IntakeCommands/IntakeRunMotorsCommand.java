@@ -20,6 +20,9 @@ public class IntakeRunMotorsCommand extends Command {
         m_intake.runIntake();
     }
 
+    /*
+     * If true imediately flip limit switch output
+     */
     @Override
     public boolean isFinished() {
         return m_intake.readIntakeLimitSwitch();
