@@ -35,7 +35,7 @@ public class TransitSubsystem extends SubsystemBase {
         return transitSensor.get();
     }
 
-    private void runTransit() {
+    public void runTransit() {
         transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
     }
 
