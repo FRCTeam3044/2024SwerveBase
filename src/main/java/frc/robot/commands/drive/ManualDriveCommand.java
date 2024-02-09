@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.DriveConstants;
-import me.nabdev.oxconfig.ConfigurableParameter;
 
 /**
  * A command that allows the driver to control the drivebase using the
@@ -40,9 +39,11 @@ public class ManualDriveCommand extends Command {
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
 
         if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
+            m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get());
         } else {
-            m_robotDrive.drive(-inputY, -inputX, -inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get());
+            m_robotDrive.drive(-inputY, -inputX, -inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get());
         }
     }
 }

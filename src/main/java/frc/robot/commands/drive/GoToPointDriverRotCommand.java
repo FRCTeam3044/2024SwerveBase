@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,14 +21,16 @@ public class GoToPointDriverRotCommand extends Command {
     private FollowTrajectoryCommand nextCommand;
     private CommandXboxController m_driverController;
 
-    public GoToPointDriverRotCommand(Pose2d target, DriveSubsystem m_robotDrive, CommandXboxController m_driverController) {
+    public GoToPointDriverRotCommand(Pose2d target, DriveSubsystem m_robotDrive,
+            CommandXboxController m_driverController) {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
         this.m_driverController = m_driverController;
     }
 
-    public GoToPointDriverRotCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive, CommandXboxController m_driverController) {
+    public GoToPointDriverRotCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive,
+            CommandXboxController m_driverController) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         this.m_driverController = m_driverController;
@@ -46,8 +47,10 @@ public class GoToPointDriverRotCommand extends Command {
             HolonomicDriveController controller = new HolonomicDriveController(
                     PathfindingConstants.kPathfindingXController, PathfindingConstants.kPathfindingYController,
                     PathfindingConstants.kPathfindingThetaController);
-            Supplier<Double> targetRotSpeedSupplier = () -> m_robotDrive.rotSpeedFromJoystick(MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()), true);
-            nextCommand = new FollowTrajectoryCommand(myPath, targetRotSpeedSupplier, controller, m_robotDrive, m_robotDrive);
+            Supplier<Double> targetRotSpeedSupplier = () -> m_robotDrive.rotSpeedFromJoystick(
+                    -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()), true);
+            nextCommand = new FollowTrajectoryCommand(myPath, targetRotSpeedSupplier, controller, m_robotDrive,
+                    m_robotDrive);
             nextCommand.schedule();
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");

@@ -81,9 +81,11 @@ public final class Constants {
 
                 public static final boolean kGyroReversed = false;
 
-                public static final ConfigurableParameter<Boolean> kFieldRelative = new ConfigurableParameter<Boolean>(true,
-            "Field Relative");
-                public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
+                public static final ConfigurableParameter<Boolean> kFieldRelative = new ConfigurableParameter<Boolean>(
+                                true,
+                                "Field Relative");
+                public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true,
+                                "Rate Limit");
 
         }
 
@@ -201,7 +203,7 @@ public final class Constants {
                                                                                                    // CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
-                                "front",
+                                // "front",
                                 // "back",
                                 // "left",
                                 // "right"

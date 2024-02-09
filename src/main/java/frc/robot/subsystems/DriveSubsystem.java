@@ -85,8 +85,6 @@ public class DriveSubsystem extends SubsystemBase {
   // In radians
   private double m_simYaw;
 
-  private ChassisSpeeds m_desiredChassisSpeeds;
-
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
@@ -209,7 +207,7 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
-/**
+  /**
    * Method to drive the robot using joystick info.
    *
    * @param xSpeed        Speed of the robot in the x direction (forward).
@@ -222,18 +220,22 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
     drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false);
   }
+
   /**
    * Method to drive the robot using joystick info.
    *
-   * @param xSpeed        Speed of the robot in the x direction (forward).
-   * @param ySpeed        Speed of the robot in the y direction (sideways).
-   * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the
-   *                      field.
-   * @param rateLimit     Whether to enable rate limiting for smoother control.
-   * @param absoluteRotSpeed If true, rot is interpreted directly as omega radians per second.
+   * @param xSpeed           Speed of the robot in the x direction (forward).
+   * @param ySpeed           Speed of the robot in the y direction (sideways).
+   * @param rot              Angular rate of the robot.
+   * @param fieldRelative    Whether the provided x and y speeds are relative to
+   *                         the
+   *                         field.
+   * @param rateLimit        Whether to enable rate limiting for smoother control.
+   * @param absoluteRotSpeed If true, rot is interpreted directly as omega radians
+   *                         per second.
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit, boolean absoluteRotSpeed) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
+      boolean absoluteRotSpeed) {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -291,11 +293,11 @@ public class DriveSubsystem extends SubsystemBase {
     setDesiredChassisSpeeds(chassisSpeeds);
   }
 
-  public double rotSpeedFromJoystick(double joystick, boolean rateLimit){
-    if(rateLimit){
+  public double rotSpeedFromJoystick(double joystick, boolean rateLimit) {
+    if (rateLimit) {
       m_currentRotation = m_rotLimiter.calculate(joystick);
     } else {
-      m_currentRotation = joystick; 
+      m_currentRotation = joystick;
     }
     return m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
   }

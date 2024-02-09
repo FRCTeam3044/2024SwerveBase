@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
-import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import me.nabdev.pathfinding.autos.AutoParser;
@@ -81,21 +80,21 @@ public class RobotContainer {
     waypoints.add(new Pose2d(1, 1, new Rotation2d()));
     waypoints.add(new Pose2d(1, 0, new Rotation2d()));
     waypoints.add(new Pose2d(0, 0, new Rotation2d()));
-    return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
-    m_robotDrive);
-    // try {
-    //   Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
-    //   AutoParser.registerCommand("wait_for_note", genWaitForNote);
-    //   Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPointDriverRotCommand(waypoints,
-    //       m_robotDrive);
-    //   AutoParser.registerCommand("follow_path", genFollowPath);
-    //   Command auto = AutoParser
-    //       .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");
-    //   return auto;
-    // } catch (FileNotFoundException e) {
-    //   System.out.println("Couldnt find file");
-    //   return null;
-    // }
+    // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
+    // m_robotDrive);
+    try {
+      Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
+      AutoParser.registerCommand("wait_for_note", genWaitForNote);
+      Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPointDriverRotCommand(waypoints,
+          m_robotDrive, m_driverController);
+      AutoParser.registerCommand("follow_path", genFollowPath);
+      Command auto = AutoParser
+          .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");
+      return auto;
+    } catch (FileNotFoundException e) {
+      System.out.println("Couldnt find file");
+      return null;
+    }
   }
 
   public static class WaitForNoteCommand extends Command {

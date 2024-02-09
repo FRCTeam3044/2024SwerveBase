@@ -59,10 +59,10 @@ repositories {
     }
     maven {
         url = uri("https://maven.pkg.github.com/FRCTeam3044/Oxplorer")
-    credentials {
-        username = "3044-Packages-Bot"
-        password = "\u0067\u0068\u0070\u005f\u0038\u0055\u0068\u0037\u0061\u004f\u0062\u0049\u004a\u0041\u005a\u0045\u0059\u0073\u0041\u0055\u0033\u0063\u0041\u0037\u004f\u0065\u0070\u0037\u0053\u0074\u0073\u0058\u0058\u0059\u0031\u004e\u006e\u0056\u0030\u004a"
-    }
+        credentials {
+            username = "3044-Packages-Bot"
+            password = "\u0067\u0068\u0070\u005f\u0038\u0055\u0068\u0037\u0061\u004f\u0062\u0049\u004a\u0041\u005a\u0045\u0059\u0073\u0041\u0055\u0033\u0063\u0041\u0037\u004f\u0065\u0070\u0037\u0053\u0074\u0073\u0058\u0058\u0059\u0031\u004e\u006e\u0056\u0030\u004a"
+        }
     }
     maven {
         url = uri("https://maven.pkg.github.com/FRCTeam3044/OxConfig")
@@ -71,6 +71,7 @@ repositories {
             password = "\u0067\u0068\u0070\u005f\u0038\u0055\u0068\u0037\u0061\u004f\u0062\u0049\u004a\u0041\u005a\u0045\u0059\u0073\u0041\u0055\u0033\u0063\u0041\u0037\u004f\u0065\u0070\u0037\u0053\u0074\u0073\u0058\u0058\u0059\u0031\u004e\u006e\u0056\u0030\u004a"
         }
     }
+    mavenLocal()
 }
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
@@ -97,7 +98,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
 
-    implementation 'me.nabdev.pathfinding:oxplorer:0.8.5'
+    implementation 'me.nabdev.pathfinding:oxplorer:0.8.6'
     implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.2.4-SNAPSHOT'
     implementation 'org.json:json:20231013' 
 }
