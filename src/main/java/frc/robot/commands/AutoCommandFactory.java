@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
+import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,8 +18,22 @@ public final class AutoCommandFactory {
     throw new UnsupportedOperationException("This is a utility class!");
   }
 
-  public static GoToPointSuppliedRotCommand goToPoint(JSONObject parameters) {
+  public static registerCommands(){
+    
+  }
+
+  public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {
     Pose2d target = new Pose2d(parameters.getDouble("targetX"), parameters.getDouble("targetY"), new Rotation2d());
-    return new GoToPointSuppliedRotCommand(target, RobotContainer.m_robotDrive, new Rotation2d());
+    return new GoToPointSuppliedRotCommand(target, RobotContainer.m_robotDrive, Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
+  }
+
+  public static GoToPointSuppliedRotCommand goToPointsConstantRot(JSONObject parameters){
+    JSONArray waypoints = parameters.getJSONArray("waypoints");
+    ArrayList<Pose2d> targets = new ArrayList<Pose2d>();
+    for(int i = 0; i < waypoints.length(); i++){
+      JSONObject waypoint = waypoints.getJSONObject(i);
+      targets.add(new Pose2d(waypoint.getDouble("x"), waypoint.getDouble("y"), new Rotation2d()));
+    }
+    return new GoToPointSuppliedRotCommand(targets, RobotContainer.m_robotDrive, Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
   }
 }
