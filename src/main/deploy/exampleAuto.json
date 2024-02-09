@@ -8,8 +8,8 @@
         "type": "command",
         "id": "follow_path",
         "parameters": {
-          "targetX": "5",
-          "targetY": "5"
+          "targetX": "1",
+          "targetY": "1"
         }
       }
     ]

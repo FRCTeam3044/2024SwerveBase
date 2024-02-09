@@ -120,7 +120,8 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
     if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive, m_robotContainer.m_driverController)).schedule();
+      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive,
+          RobotContainer.m_driverController)).schedule();
       lastClick = click;
     }
   }

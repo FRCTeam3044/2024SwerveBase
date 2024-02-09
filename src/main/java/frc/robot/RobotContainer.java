@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
@@ -39,7 +40,8 @@ public class RobotContainer {
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public static final CommandXboxController m_driverController = new CommandXboxController(
+      OIConstants.kDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,9 +87,7 @@ public class RobotContainer {
     try {
       Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
       AutoParser.registerCommand("wait_for_note", genWaitForNote);
-      Function<JSONObject, Command> genFollowPath = (JSONObject params) -> new GoToPointDriverRotCommand(waypoints,
-          m_robotDrive, m_driverController);
-      AutoParser.registerCommand("follow_path", genFollowPath);
+      AutoParser.registerCommand("follow_path", AutoCommandFactory::goToPoint);
       Command auto = AutoParser
           .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");
       return auto;
