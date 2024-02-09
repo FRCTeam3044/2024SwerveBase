@@ -453,7 +453,7 @@
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Meters per second",
-            "value": "2.4"
+            "value": "1.2"
         }
     },
     "competition": {
