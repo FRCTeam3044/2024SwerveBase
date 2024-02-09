@@ -13,8 +13,8 @@ import frc.robot.Constants.CANConstants;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
-    CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
+    public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
+    public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
     AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
 
@@ -22,7 +22,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
-    private SparkPIDController m_pidController;
+    private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     double maxVel = 0;
     double maxAccel = 0;
@@ -30,7 +30,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     PIDController pid = new ConfigurablePIDController(0, 0, 0, "Elevator PID");
 
     // The angle for shooting in the amp (currently set to 0)
-    double ampAngle = 0;
+    public double ampAngle = 0;
+    public double intakeAngle = 0;
 
     public ElevatorSubsystem() {
         // PID coefficients
@@ -42,16 +43,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         kMaxOutput = 0.1;
         kMinOutput = -0.1;
 
-        m_pidController = elevatorMotorOne.getPIDController();
+        pidController = elevatorMotorOne.getPIDController();
 
-        m_pidController.setP(kP);
-        m_pidController.setI(kI);
-        m_pidController.setD(kD);
-        m_pidController.setIZone(kIz);
-        m_pidController.setFF(kFF);
-        m_pidController.setOutputRange(kMinOutput, kMaxOutput);
-        m_pidController.setSmartMotionMaxVelocity(maxVel, 0);
-        m_pidController.setSmartMotionMaxAccel(maxAccel, 0);
+        pidController.setP(kP);
+        pidController.setI(kI);
+        pidController.setD(kD);
+        pidController.setIZone(kIz);
+        pidController.setFF(kFF);
+        pidController.setOutputRange(kMinOutput, kMaxOutput);
+        pidController.setSmartMotionMaxVelocity(maxVel, 0);
+        pidController.setSmartMotionMaxAccel(maxAccel, 0);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
@@ -94,6 +95,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void pidHandler(double meters) {
         // TODO: convert meters to rotation
         double rotations = meters;
-        m_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }
