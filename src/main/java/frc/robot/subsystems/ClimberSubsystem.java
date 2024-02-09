@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 
@@ -13,7 +11,7 @@ public class ClimberSubsystem extends SubsystemBase {
     TalonSRX rightClimberMotor = new TalonSRX(CANConstants.kClimberRightClimberMotorPort);
     // Encoder leftClimberEncoder = new Encoder(null, null);
     // Encoder rightClimberEncoder = new Encoder(null, null);
-    
+
     // power going into each of the motors
     double leftMotorPower = 0;
     double rightMotorPower = 0;
