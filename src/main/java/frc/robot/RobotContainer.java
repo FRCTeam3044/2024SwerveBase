@@ -87,8 +87,8 @@ public class RobotContainer {
     try {
       Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
       AutoParser.registerCommand("wait_for_note", genWaitForNote);
-      Command auto = AutoParser
-          .loadAuto(Filesystem.getDeployDirectory() + "/exampleAuto.json");
+      AutoCommandFactory.registerCommands();
+      Command auto = AutoParser.loadAuto("exampleAuto.json");
       return auto;
     } catch (FileNotFoundException e) {
       System.out.println("Couldn't find file");

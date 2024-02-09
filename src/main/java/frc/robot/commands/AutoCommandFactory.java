@@ -12,14 +12,16 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
+import me.nabdev.pathfinding.autos.AutoParser;
 
 public final class AutoCommandFactory {
   private AutoCommandFactory() {
     throw new UnsupportedOperationException("This is a utility class!");
   }
 
-  public static registerCommands(){
-    
+  public static void registerCommands(){
+    AutoParser.registerCommand("go_to_point", AutoCommandFactory::goToPointConstantRot);
+    AutoParser.registerCommand("go_to_waypoints", AutoCommandFactory::goToPointsConstantRot);
   }
 
   public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {
