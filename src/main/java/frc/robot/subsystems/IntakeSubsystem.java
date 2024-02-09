@@ -3,12 +3,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
 
-public class IntakeSubsystem {
+public class IntakeSubsystem extends SubsystemBase {
     // Defines the motor
     CANSparkMax intakeTopMotor = new CANSparkMax(CANConstants.kIntakeTopMotorPort, MotorType.kBrushless);
     CANSparkMax intakeBottomMotor = new CANSparkMax(CANConstants.kIntakeBottomMotorPort, MotorType.kBrushless);
@@ -18,7 +19,7 @@ public class IntakeSubsystem {
     boolean isIntakeRunning = false;
 
     // Use this to run intake
-    private void runIntake() {
+    public void runIntake() {
         intakeTopMotor.set(1);
         intakeBottomMotor.set(-1);
     }

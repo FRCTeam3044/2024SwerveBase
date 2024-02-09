@@ -17,7 +17,7 @@ public class IntakeRunMotorsCommand extends Command {
 
     @Override
     public void execute() {
-
+        m_intake.runIntake();
     }
 
     @Override
