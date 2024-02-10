@@ -60,9 +60,11 @@ public class TrackerSubsystem {
 
     /*
      * Match the notes by saying this note is this note because it has the shortest
-     * difference from it
+     * difference from this note
      */
-    public void mergeShortestDistances(double[][] distances) {
+    public void mergeSmallestDistances(double[][] distances) {
+        findSmallestDistanceIndicies(distances);
+        int[] smallestDistanceIndicies = findSmallestDistanceIndicies(distances);
 
     }
 }
