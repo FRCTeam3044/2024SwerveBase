@@ -23,6 +23,11 @@ import org.json.JSONObject;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -45,6 +50,14 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort);
+  public static final CommandXboxController m_operatorController = new CommandXboxController(
+      OIConstants.kOperatorControllerPort);
+
+  public final ClimberSubsystem climber = new ClimberSubsystem();
+  public final IntakeSubsystem intake = new IntakeSubsystem();
+  public final TransitSubsystem transit = new TransitSubsystem();
+  public final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public final ShooterSubsystem shooter = new ShooterSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
