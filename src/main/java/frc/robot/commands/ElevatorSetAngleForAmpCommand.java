@@ -8,11 +8,9 @@
 
     public class ElevatorSetAngleForAmpCommand extends Command {
         private final ElevatorSubsystem m_elevator;
-        public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-        public SparkPIDController pidController;
+        public double ampAngle;
 
-
-        public ElevatorSetAngleForAmpCommand(ElevatorSubsystem elevator, XboxController controller, SparkPIDController pidController) {
+        public ElevatorSetAngleForAmpCommand(ElevatorSubsystem elevator, XboxController controller) {
             m_elevator = elevator;
             addRequirements(m_elevator);
         }
@@ -23,7 +21,12 @@
         }
 
         @Override
+        public void initialize() {
+            ampAngle = m_elevator.ampAngle;
+        }
+
+        @Override
         public void execute() {
-            m_elevator.pidHandler(m_elevator.ampAngle);
+            m_elevator.pidHandler(ampAngle);
         }
     }
