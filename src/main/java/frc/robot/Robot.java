@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
+import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -31,6 +32,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private VisionSubsystem m_VisionSubsystem;
   private RobotContainer m_robotContainer;
+  private NoteDetection m_NoteDetection;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -47,6 +49,7 @@ public class Robot extends LoggedRobot {
     Logger.start();
     m_robotContainer = new RobotContainer();
     m_VisionSubsystem = new VisionSubsystem();
+    m_NoteDetection = new NoteDetection();
     OxConfig.initialize();
   }
 
@@ -71,6 +74,7 @@ public class Robot extends LoggedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     m_VisionSubsystem.periodic();
+    m_NoteDetection.periodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

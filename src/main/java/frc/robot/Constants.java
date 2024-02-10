@@ -219,33 +219,21 @@ public final class Constants {
                                                                 0,
                                                                 0,
                                                                 0)),
-                                new Transform3d( // back
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0)),
-                                new Transform3d( // left
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0)),
-                                new Transform3d( // right
-                                                new Translation3d(
-                                                                0,
-                                                                0,
-                                                                0),
-                                                new Rotation3d(
-                                                                0,
-                                                                0,
-                                                                0))
+                };
+        }
+
+        public static final class DetectorConstants {
+                public static double[][] cameraPointsArray = {
+                                { 621, 538 },
+                                { 625, 438 },
+                                { 93, 450 },
+                                { 1163, 469 }
+                };
+                public static double[][] fieldPointsArray = {
+                                { 0.91, 0 },
+                                { 1.82, 0 },
+                                { 1.82, 0.91 },
+                                { 1.82, -0.92 }
                 };
         }
 }
