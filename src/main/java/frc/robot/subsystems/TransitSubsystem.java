@@ -11,8 +11,7 @@ public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
-    DigitalInput intakeSensorOne = new DigitalInput(CANConstants.kTransitIntakeSnsorOnePort);
-    DigitalInput intakeSnsorTwo = new DigitalInput(CANConstants.kTransitIntakeSnsorTwoPort);
+    DigitalInput transitSensor = new DigitalInput(CANConstants.kTransitSensorPort);
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
@@ -32,12 +31,11 @@ public class TransitSubsystem extends SubsystemBase {
     }
 
     // Checks the sensors every second it updates
-    public void updatePeriodic() {
-        boolean hasNoteHitFirstSensor = intakeSensorOne.get();
-        boolean hasNoteHitSecondSensor = intakeSnsorTwo.get();
+    public boolean readTransitLimitSwitch() {
+        return transitSensor.get();
     }
 
-    private void runTransit() {
+    public void runTransit() {
         transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
     }
 

@@ -135,9 +135,9 @@ public final class Constants {
     public static final int kShooterBottomMotorPort = 2;
 
     public static final int kTransitMotorPort = 3;
-    public static final int kTransitIntakeSnsorOnePort = 4;
-    public static final int kTransitIntakeSnsorTwoPort = 5;
+    public static final int kTransitSensorPort = 4;
 
+    public static final int kIntakeSensorPort = 5;
     public static final int kIntakeTopMotorPort = 6;
     public static final int kIntakeBottomMotorPort = 7;
 

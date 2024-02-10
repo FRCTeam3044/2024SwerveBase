@@ -11,7 +11,7 @@ public class ClimberSubsystem extends SubsystemBase {
     TalonSRX rightClimberMotor = new TalonSRX(CANConstants.kClimberRightClimberMotorPort);
     // Encoder leftClimberEncoder = new Encoder(null, null);
     // Encoder rightClimberEncoder = new Encoder(null, null);
-    
+
     // power going into each of the motors
     double leftMotorPower = 0;
     double rightMotorPower = 0;
