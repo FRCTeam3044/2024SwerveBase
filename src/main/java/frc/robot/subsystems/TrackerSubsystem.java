@@ -41,6 +41,23 @@ public class TrackerSubsystem {
         return Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
     }
 
+    public int[] findSmallestDistanceIndicies(double[][] distances) {
+        double currentSmallestDistance = Double.MAX_VALUE;
+        int detectionIndex = 0;
+        int noteIndex = 0;
+        for (int i = 0; i < distances.length; i++) {
+            for (int j = 0; j < distances[0].length; j++) {
+                if (distances[i][j] < currentSmallestDistance) {
+                    currentSmallestDistance = distances[i][j];
+                    detectionIndex = i;
+                    noteIndex = j;
+                }
+            }
+        }
+        int[] ret = { detectionIndex, noteIndex };
+        return ret;
+    }
+
     /*
      * Match the notes by saying this note is this note because it has the shortest
      * difference from it
