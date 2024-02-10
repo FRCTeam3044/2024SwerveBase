@@ -29,7 +29,7 @@ import me.nabdev.oxconfig.OxConfig;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-  private RobotContainer m_robotContainer;
+  public RobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -128,33 +128,11 @@ public class Robot extends LoggedRobot {
     m_robotContainer.climber.leftArm(0);
     m_robotContainer.climber.rightArm(0);
 
-    XboxController operatorController = RobotContainer.m_operatorController.getHID();
-    operatorController.getLeftBumper();
-    operatorController.getRightBumper();
-    operatorController.getRightY();
-
-    boolean isLeftBumperPressed = operatorController.getLeftBumper();
-    boolean isRightBumperPressed = operatorController.getRightBumper();
-    double rightYValue = operatorController.getRightY();
-    m_robotContainer.climber.consumeClimberInput(isLeftBumperPressed, isRightBumperPressed, rightYValue);
-
-    boolean isBButtonPressed = operatorController.getBButtonPressed();
+    boolean isBButtonPressed = RobotContainer.m_operatorController.getHID().getBButtonPressed();
 
     m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
 
-    boolean isXButtonPressed = operatorController.getXButtonPressed();
-
-    m_robotContainer.transit.consumeTransitInput(isXButtonPressed);
-
-    boolean isAButtonPressed = operatorController.getAButtonPressed();
-
-    m_robotContainer.shooter.consumeShooterInput(isAButtonPressed);
-
-    operatorController.getLeftY();
-
-    double leftYValue = operatorController.getLeftY();
-
-    m_robotContainer.elevator.consumeElevatorInput(leftYValue);
+    RobotContainer.m_operatorController.getHID().getLeftY();
   }
 
   @Override

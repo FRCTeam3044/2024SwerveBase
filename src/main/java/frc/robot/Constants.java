@@ -145,6 +145,26 @@ public final class Constants {
                 public static final int kTurningMotorCurrentLimit = 20; // amps
         }
 
+        public static final class CANConstants {
+                public static final int kShooterTopMotorPort = 1;
+                public static final int kShooterBottomMotorPort = 2;
+
+                public static final int kTransitMotorPort = 3;
+                public static final int kTransitSensorPort = 4;
+
+                public static final int kIntakeSensorPort = 5;
+                public static final int kIntakeTopMotorPort = 6;
+                public static final int kIntakeBottomMotorPort = 7;
+
+                public static final int kClimberLeftClimberMotorPort = 8;
+                public static final int kClimberRightClimberMotorPort = 9;
+
+                public static final int kElevatorMotorOnePort = 21;
+                public static final int kElevatorMotorTwoPort = 20;
+                public static final int kElevatorTopLimitSwitch = 23;
+                public static final int kElevatorBottomLimitSwitch = 22;
+        }
+
         public static final class OIConstants {
                 public static final int kDriverControllerPort = 0;
                 public static final int kOperatorControllerPort = 1;
