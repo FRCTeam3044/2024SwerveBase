@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -118,43 +119,42 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-<<<<<<< HEAD
     double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
     if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
       (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive,
           RobotContainer.m_driverController)).schedule();
       lastClick = click;
     }
-=======
     m_robotContainer.climber.leftArm(0);
     m_robotContainer.climber.rightArm(0);
-    m_robotContainer.m_operatorController.getLeftBumper();
-    m_robotContainer.m_operatorController.getRightBumper();
-    m_robotContainer.m_operatorController.getRightY();
 
-    boolean isLeftBumperPressed = m_robotContainer.m_operatorController.getLeftBumper();
-    boolean isRightBumperPressed = m_robotContainer.m_operatorController.getRightBumper();
-    double rightYValue = m_robotContainer.m_operatorController.getRightY();
+    XboxController operatorController = RobotContainer.m_operatorController.getHID();
+    operatorController.getLeftBumper();
+    operatorController.getRightBumper();
+    operatorController.getRightY();
+
+    boolean isLeftBumperPressed = operatorController.getLeftBumper();
+    boolean isRightBumperPressed = operatorController.getRightBumper();
+    double rightYValue = operatorController.getRightY();
     m_robotContainer.climber.consumeClimberInput(isLeftBumperPressed, isRightBumperPressed, rightYValue);
 
-    boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
+    boolean isBButtonPressed = operatorController.getBButtonPressed();
 
     m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
 
-    boolean isXButtonPressed = m_robotContainer.m_operatorController.getXButtonPressed();
+    boolean isXButtonPressed = operatorController.getXButtonPressed();
 
     m_robotContainer.transit.consumeTransitInput(isXButtonPressed);
 
-    boolean isAButtonPressed = m_robotContainer.m_operatorController.getAButtonPressed();
+    boolean isAButtonPressed = operatorController.getAButtonPressed();
 
     m_robotContainer.shooter.consumeShooterInput(isAButtonPressed);
 
-    m_robotContainer.m_operatorController.getLeftY();
+    operatorController.getLeftY();
 
-    double leftYValue = m_robotContainer.m_operatorController.getLeftY();
+    double leftYValue = operatorController.getLeftY();
 
     m_robotContainer.elevator.consumeElevatorInput(leftYValue);
->>>>>>> main
   }
 
   @Override
