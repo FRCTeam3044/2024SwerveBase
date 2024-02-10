@@ -31,17 +31,17 @@ public class NoteDetection extends SubsystemBase {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         MatOfPoint2f cameraPoints = new MatOfPoint2f(
-            new Point(621, 538),
-            new Point(625, 438),
-            new Point(93, 450),
-            new Point(1163, 469)
+            new Point(501,638),
+            new Point(789,643),
+            new Point(755,587),
+            new Point(524,579)
         );
 
         MatOfPoint2f fieldPoints = new MatOfPoint2f(
-            new Point(0.91, 0),
-            new Point(1.82, 0),
-            new Point(1.82, 0.91),
-            new Point(1.82, -0.91)
+            new Point(0.61595,0.08255),
+            new Point(0.61595,-0.08255),
+            new Point(0.78105,-0.08255),
+            new Point(0.78105,0.08255)
         );
 
         // Mat test = new Mat(3, 1, CvType.CV_64FC1);
