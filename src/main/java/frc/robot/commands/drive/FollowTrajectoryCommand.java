@@ -44,7 +44,7 @@ import java.util.function.Supplier;
  */
 public class FollowTrajectoryCommand extends Command {
     private final Timer m_timer = new Timer();
-    private final Trajectory m_trajectory;
+    private Trajectory m_trajectory;
     private final HolonomicDriveController m_controller;
     private final Supplier<Rotation2d> m_desiredRotation;
     private final Supplier<Double> m_desiredRotationSpeed;
@@ -119,6 +119,10 @@ public class FollowTrajectoryCommand extends Command {
         m_desiredRotation = () -> new Rotation2d();
         useSuppliedRotSpeed = true;
         addRequirements(requirements);
+    }
+
+    public void setTrajectory(Trajectory newTraj) {
+        m_trajectory = newTraj;
     }
 
     @Override

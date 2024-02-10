@@ -119,27 +119,27 @@ public class NoteDetection extends SubsystemBase {
 
         SmartDashboard.putString("Test result", res.dump());
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
-        notePose = new Pose2d(
+        Pose2d robotRelativeNotePose = new Pose2d(
                 (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.3937 /* TODO: Move camera offset to constants */
                         + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
         // Translate the note pose to the field (rotate by the robot's rotation)
         double robotRotationRad = currentPose.getRotation().getRadians();
-        double noteX = notePose.getX();
-        double noteY = notePose.getY();
+        double noteX = robotRelativeNotePose.getX();
+        double noteY = robotRelativeNotePose.getY();
 
         Pose2d rotatedNotePose = new Pose2d(
                 noteX * Math.cos(robotRotationRad) - noteY * Math.sin(robotRotationRad),
                 noteX * Math.sin(robotRotationRad) + noteY * Math.cos(robotRotationRad),
                 new Rotation2d());
 
-        Pose2d fieldFrameNotePose = new Pose2d(
+        notePose = new Pose2d(
                 rotatedNotePose.getX() + currentPose.getX(),
                 rotatedNotePose.getY() + currentPose.getY(),
                 new Rotation2d());
-        double[] notePoseDouble = { fieldFrameNotePose.getX(), fieldFrameNotePose.getY(),
-                fieldFrameNotePose.getRotation().getDegrees() };
+        double[] notePoseDouble = { notePose.getX(), notePose.getY(),
+                notePose.getRotation().getDegrees() };
         SmartDashboard.putNumberArray("Note pose", notePoseDouble);
     }
 }
