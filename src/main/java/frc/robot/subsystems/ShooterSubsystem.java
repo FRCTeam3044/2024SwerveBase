@@ -22,19 +22,14 @@ public class ShooterSubsystem extends SubsystemBase {
     RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
     RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
 
-    /*
-     * Change this to change the power of the motors
-     */
     double motorRPM = 0;
 
-    /*
-     * Change this to change the angles of the shooters
-     */
-    double shooterAngle = 0;
+    public double speakerRPM = 0;
+    public double ampRPM = 0;
 
     boolean isShooterRunning = false;
 
-    private SparkPIDController m_pidController;
+    private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
     double maxVel = 0;
     double maxAccel = 0;
@@ -70,7 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
         // PID Coedficients
-        kP = 6e-5;
+        kP = 0.1;
         kI = 0;
         kD = 0;
         kIz = 0;
@@ -79,16 +74,28 @@ public class ShooterSubsystem extends SubsystemBase {
         kMinOutput = -1;
         maxRPM = 5700;
 
-        m_pidController = topMotor.getPIDController();
-        m_pidController = bottomMotor.getPIDController();
+        pidController = topMotor.getPIDController();
 
-        m_pidController.setP(kP);
-        m_pidController.setI(kI);
-        m_pidController.setD(kD);
-        m_pidController.setIZone(kIz);
-        m_pidController.setFF(kFF);
-        m_pidController.setOutputRange(kMinOutput, kMaxOutput);
-        m_pidController.setSmartMotionMaxVelocity(maxVel, 0);
-        m_pidController.setSmartMotionMaxAccel(maxAccel, 0);
+        pidController = topMotor.getPIDController();
+        pidController = bottomMotor.getPIDController();
+
+        pidController.setP(kP);
+        pidController.setI(kI);
+        pidController.setD(kD);
+        pidController.setIZone(kIz);
+        pidController.setFF(kFF);
+        pidController.setOutputRange(kMinOutput, kMaxOutput);
+        pidController.setSmartMotionMaxVelocity(maxVel, 0);
+        pidController.setSmartMotionMaxAccel(maxAccel, 0);
+    }
+
+    public void speakerPidHandler(double speed) {
+        double rotations = speed;
+        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void ampPidHandler(double speed) {
+        double rotations = speed;
+        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }
