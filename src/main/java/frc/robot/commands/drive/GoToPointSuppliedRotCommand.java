@@ -9,11 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.Constants.OIConstants;
-import edu.wpi.first.math.MathUtil;
 import me.nabdev.pathfinding.structures.ImpossiblePathException;
 
 public class GoToPointSuppliedRotCommand extends Command {
@@ -29,7 +26,8 @@ public class GoToPointSuppliedRotCommand extends Command {
         this.rotSupplier = rotSupplier;
     }
 
-    public GoToPointSuppliedRotCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive, Supplier<Rotation2d> rotSupplier) {
+    public GoToPointSuppliedRotCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive,
+            Supplier<Rotation2d> rotSupplier) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         this.rotSupplier = rotSupplier;
@@ -47,6 +45,7 @@ public class GoToPointSuppliedRotCommand extends Command {
         this.m_robotDrive = m_robotDrive;
         this.rotSupplier = () -> rot;
     }
+
     @Override
     public void initialize() {
         try {

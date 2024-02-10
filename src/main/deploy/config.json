@@ -331,7 +331,7 @@
         "frontLeftModule/driving/Max": "1.0",
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",
-            "value": "3.141592653589793"
+            "value": "0.5"
         },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
@@ -423,7 +423,7 @@
         "rearRightModule/driving/IZone": "0.0",
         "Pathfinding Max Angular Acceleration": {
             "comment": "Auto-Generated",
-            "value": "3.141592653589793"
+            "value": "1.570796"
         },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",

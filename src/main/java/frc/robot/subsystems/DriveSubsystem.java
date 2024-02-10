@@ -113,9 +113,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     pathfinder = new PathfinderBuilder(Field.EMPTY_FIELD)
         .setInjectPoints(true)
-        .setPointSpacing(0.25)
+        .setPointSpacing(0.5)
+        .setCornerPointSpacing(0.15)
         .setRobotLength(DriveConstants.kWheelBase)
         .setRobotWidth(DriveConstants.kTrackWidth)
+        .setCornerDist(0.3)
         .build();
 
     // ArrayList<Edge> edges = m_pathfinder.visualizeEdges();

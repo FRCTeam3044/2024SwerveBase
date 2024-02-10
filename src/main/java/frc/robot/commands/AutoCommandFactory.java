@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
 import me.nabdev.pathfinding.autos.AutoParser;
 
@@ -19,23 +21,49 @@ public final class AutoCommandFactory {
     throw new UnsupportedOperationException("This is a utility class!");
   }
 
-  public static void registerCommands(){
+  public static void registerCommands() {
     AutoParser.registerCommand("go_to_point", AutoCommandFactory::goToPointConstantRot);
     AutoParser.registerCommand("go_to_waypoints", AutoCommandFactory::goToPointsConstantRot);
+    AutoParser.registerCommand("go_to_waypoints_and_track", AutoCommandFactory::goToPointsAndTrack);
+    AutoParser.registerCommand("go_to_and_track_point", AutoCommandFactory::goToAndTrackPoint);
   }
 
   public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {
     Pose2d target = new Pose2d(parameters.getDouble("targetX"), parameters.getDouble("targetY"), new Rotation2d());
-    return new GoToPointSuppliedRotCommand(target, RobotContainer.m_robotDrive, Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
+    return new GoToPointSuppliedRotCommand(target, RobotContainer.m_robotDrive,
+        Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
   }
 
-  public static GoToPointSuppliedRotCommand goToPointsConstantRot(JSONObject parameters){
+  public static GoToPointSuppliedRotCommand goToPointsConstantRot(JSONObject parameters) {
     JSONArray waypoints = parameters.getJSONArray("waypoints");
     ArrayList<Pose2d> targets = new ArrayList<Pose2d>();
-    for(int i = 0; i < waypoints.length(); i++){
+    for (int i = 0; i < waypoints.length(); i++) {
       JSONObject waypoint = waypoints.getJSONObject(i);
-      targets.add(new Pose2d(waypoint.getDouble("x"), waypoint.getDouble("y"), new Rotation2d()));
+      Pose2d waypointPose = new Pose2d(waypoint.getDouble("x"), waypoint.getDouble("y"), new Rotation2d());
+      targets.add(waypointPose);
+      System.out.println(waypointPose);
     }
-    return new GoToPointSuppliedRotCommand(targets, RobotContainer.m_robotDrive, Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
+    return new GoToPointSuppliedRotCommand(targets, RobotContainer.m_robotDrive,
+        Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
+  }
+
+  public static GoToAndTrackPointCommand goToPointsAndTrack(JSONObject parameters) {
+    JSONArray waypoints = parameters.getJSONArray("waypoints");
+    ArrayList<Pose2d> targets = new ArrayList<Pose2d>();
+    for (int i = 0; i < waypoints.length(); i++) {
+      JSONObject waypoint = waypoints.getJSONObject(i);
+      Pose2d waypointPose = new Pose2d(waypoint.getDouble("x"), waypoint.getDouble("y"), new Rotation2d());
+      targets.add(waypointPose);
+      System.out.println(waypointPose);
+    }
+    Pose2d trackTarget = new Pose2d(parameters.getDouble("trackX"), parameters.getDouble("trackY"), new Rotation2d());
+    SmartDashboard.putNumberArray("track target", new double[] { trackTarget.getX(), trackTarget.getY() });
+    return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive);
+  }
+
+  public static GoToAndTrackPointCommand goToAndTrackPoint(JSONObject parameters) {
+    Pose2d target = new Pose2d(parameters.getDouble("targetX"), parameters.getDouble("targetY"), new Rotation2d());
+    Pose2d trackTarget = new Pose2d(parameters.getDouble("trackX"), parameters.getDouble("trackY"), new Rotation2d());
+    return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive);
   }
 }

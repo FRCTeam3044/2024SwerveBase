@@ -135,8 +135,6 @@ public class FollowTrajectoryCommand extends Command {
                 desiredRotation);
         if (useSuppliedRotSpeed) {
             targetChassisSpeeds.omegaRadiansPerSecond = m_desiredRotationSpeed.get();
-        } else {
-            targetChassisSpeeds.omegaRadiansPerSecond *= -1;
         }
         m_driveSubsystem.setDesiredChassisSpeeds(targetChassisSpeeds);
     }

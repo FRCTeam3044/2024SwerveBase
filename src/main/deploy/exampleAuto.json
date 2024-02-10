@@ -1,23 +1,7 @@
 [
   {
-    "name": "Get To Note",
-    "type": "group",
-    "id": "deadline",
-    "children": [
-      {
-        "type": "command",
-        "id": "go_to_point",
-        "parameters": {
-          "targetX": "1",
-          "targetY": "1",
-          "rotDegrees": "0"
-        }
-      }
-    ]
-  },
-  {
     "type": "command",
-    "id": "go_to_waypoints",
+    "id": "go_to_waypoints_and_track",
     "parameters": {
       "waypoints": [
         {
@@ -26,18 +10,19 @@
         },
         {
           "x": 1,
-          "y": 1
+          "y": 2
         },
         {
           "x": 0,
-          "y": 1
+          "y": 2
         },
         {
           "x": 0,
           "y": 0
         }
       ],
-      "rotDegrees": "0"
+      "trackX": 0.5,
+      "trackY": 1
     }
   }
 ]
