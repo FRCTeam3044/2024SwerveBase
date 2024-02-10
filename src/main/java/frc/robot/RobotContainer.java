@@ -8,7 +8,6 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
-import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -42,7 +40,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-  public final NoteDetection m_noteDetection = new NoteDetection();
+  public static final NoteDetection m_noteDetection = new NoteDetection();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController m_driverController = new CommandXboxController(
@@ -96,7 +94,6 @@ public class RobotContainer {
       AutoParser.registerCommand("wait_for_note", genWaitForNote);
       AutoCommandFactory.registerCommands();
       Command auto = AutoParser.loadAuto("exampleAuto.json");
-      auto = new GoToNoteCommand(m_robotDrive, m_noteDetection);
       return auto;
     } catch (FileNotFoundException e) {
       System.out.println("Couldn't find file");

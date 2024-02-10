@@ -1,8 +1,6 @@
 package frc.robot.commands.drive;
 
 import java.util.function.Supplier;
-import java.lang.annotation.Target;
-import java.util.ArrayList;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -72,11 +70,13 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return m_followCommand.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_followCommand.cancel();
+        if (m_followCommand != null) {
+            m_followCommand.cancel();
+        }
     }
 }

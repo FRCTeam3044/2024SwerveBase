@@ -13,7 +13,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
+import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
+import frc.robot.commands.drive.WaitForNoteCommand;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 public final class AutoCommandFactory {
@@ -26,6 +28,16 @@ public final class AutoCommandFactory {
     AutoParser.registerCommand("go_to_waypoints", AutoCommandFactory::goToPointsConstantRot);
     AutoParser.registerCommand("go_to_waypoints_and_track", AutoCommandFactory::goToPointsAndTrack);
     AutoParser.registerCommand("go_to_and_track_point", AutoCommandFactory::goToAndTrackPoint);
+    AutoParser.registerCommand("wait_for_note", AutoCommandFactory::waitForNote);
+    AutoParser.registerCommand("go_to_note", AutoCommandFactory::goToNote);
+  }
+
+  public static GoToNoteCommand goToNote(JSONObject parameters) {
+    return new GoToNoteCommand(RobotContainer.m_robotDrive, RobotContainer.m_noteDetection);
+  }
+
+  public static WaitForNoteCommand waitForNote(JSONObject parameters) {
+    return new WaitForNoteCommand(RobotContainer.m_noteDetection);
   }
 
   public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {

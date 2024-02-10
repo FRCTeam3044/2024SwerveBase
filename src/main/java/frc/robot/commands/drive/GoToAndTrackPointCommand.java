@@ -20,13 +20,13 @@ public class GoToAndTrackPointCommand extends Command {
     private final DriveSubsystem m_robotDrive;
     private final TargetRotationController targetRotationController;
     private final ArrayList<Pose2d> target;
+    private FollowTrajectoryCommand m_followTrajectoryCommand;
 
     public GoToAndTrackPointCommand(Pose2d target, DriveSubsystem m_robotDrive) {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
         targetRotationController = new TargetRotationController(target.getX(), target.getY());
-        addRequirements(m_robotDrive);
     }
 
     // Tracks a different target than the path target
@@ -35,15 +35,15 @@ public class GoToAndTrackPointCommand extends Command {
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
         targetRotationController = new TargetRotationController(track.getX(), track.getY());
-        addRequirements(m_robotDrive);
+
     }
 
-        public GoToAndTrackPointCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive) {
+    public GoToAndTrackPointCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         Pose2d finalTarget = target.get(target.size() - 1);
         targetRotationController = new TargetRotationController(finalTarget.getX(), finalTarget.getY());
-        addRequirements(m_robotDrive);
+
     }
 
     // Tracks a different target than the path target
@@ -51,7 +51,7 @@ public class GoToAndTrackPointCommand extends Command {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         targetRotationController = new TargetRotationController(track.getX(), track.getY());
-        addRequirements(m_robotDrive);
+
     }
 
     @Override
@@ -69,9 +69,9 @@ public class GoToAndTrackPointCommand extends Command {
             Supplier<Double> targetRotSpeed = () -> targetRotationController.calculate(m_robotDrive.getPose(),
                     m_robotDrive.getChassisSpeeds());
 
-            FollowTrajectoryCommand nextCommand = new FollowTrajectoryCommand(myPath, targetRotSpeed, controller,
+            m_followTrajectoryCommand = new FollowTrajectoryCommand(myPath, targetRotSpeed, controller,
                     m_robotDrive, m_robotDrive);
-            nextCommand.schedule();
+            m_followTrajectoryCommand.schedule();
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
         }
@@ -79,6 +79,9 @@ public class GoToAndTrackPointCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        if (m_followTrajectoryCommand == null) {
+            return false;
+        }
+        return m_followTrajectoryCommand.isFinished();
     }
 }
