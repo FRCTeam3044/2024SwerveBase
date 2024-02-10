@@ -1,0 +1,29 @@
+[
+  {
+    "type": "group",
+    "id": "deadline",
+    "name": "Drive Until Note",
+    "children": [
+      {
+        "type": "command",
+        "id": "wait_for_note",
+        "parameters": {}
+      },
+      {
+        "type": "command",
+        "id": "go_to_and_track_point",
+        "parameters": {
+          "targetX": 3,
+          "targetY": 0,
+          "trackX": 0,
+          "trackY": 3
+        }
+      }
+    ]
+  },
+  {
+    "type": "command",
+    "id": "go_to_note",
+    "parameters": {}
+  }
+]
