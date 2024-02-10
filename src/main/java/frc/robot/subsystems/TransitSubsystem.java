@@ -4,13 +4,14 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANConstants;
 
-public class TransitSubsystem {
+public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
-    TalonSRX transitMotor = new TalonSRX(0);
-    DigitalInput intakeSensorOne = new DigitalInput(0);
-    DigitalInput intakeSnsorTwo = new DigitalInput(0);
+    TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
+    DigitalInput transitSensor = new DigitalInput(CANConstants.kTransitSensorPort);
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
@@ -30,12 +31,11 @@ public class TransitSubsystem {
     }
 
     // Checks the sensors every second it updates
-    public void updatePeriodic() {
-        boolean hasNoteHitFirstSensor = intakeSensorOne.get();
-        boolean hasNoteHitSecondSensor = intakeSnsorTwo.get();
+    public boolean readTransitLimitSwitch() {
+        return transitSensor.get();
     }
 
-    private void runTransit() {
+    public void runTransit() {
         transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
     }
 
