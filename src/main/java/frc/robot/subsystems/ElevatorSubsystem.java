@@ -98,11 +98,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 
-    public void consumeElevatorInput() {
-        double controllerStickInput = m_robotContainer.m_operatorController.getLeftY();
+    public void consumeElevatorInput(double leftStickY) {
 
-        if (Math.abs(controllerStickInput) > 0.1) {
-            elevatorMotorOne.set(controllerStickInput * Math.abs(controllerStickInput));
+        if (Math.abs(leftStickY) > 0.1) {
+            elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
         }
     }
 }
