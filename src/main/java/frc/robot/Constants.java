@@ -52,9 +52,9 @@ public final class Constants {
                 public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
                 // Chassis configuration
-                public static final double kTrackWidth = Units.inchesToMeters(30);
+                public static final double kTrackWidth = Units.inchesToMeters(37);
                 // Distance between centers of right and left wheels on robot
-                public static final double kWheelBase = Units.inchesToMeters(30);
+                public static final double kWheelBase = Units.inchesToMeters(37);
                 // Distance between front and back wheels on robot
                 public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                                 new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -224,7 +224,7 @@ public final class Constants {
                                                                                                    // CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
-                                // "front",
+                                "front",
                                 // "back",
                                 // "left",
                                 // "right"

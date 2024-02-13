@@ -16,13 +16,9 @@ import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.function.Function;
-
-import org.json.JSONObject;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -103,8 +99,6 @@ public class RobotContainer {
     // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
     // m_robotDrive);
     try {
-      Function<JSONObject, Command> genWaitForNote = (JSONObject params) -> new WaitForNoteCommand();
-      AutoParser.registerCommand("wait_for_note", genWaitForNote);
       AutoCommandFactory.registerCommands();
       Command auto = AutoParser.loadAuto("exampleAuto.json");
       return auto;
@@ -114,24 +108,4 @@ public class RobotContainer {
     }
   }
 
-  public static class WaitForNoteCommand extends Command {
-    private Timer mTimer = new Timer();
-
-    @Override
-    public void initialize() {
-      System.out.println("Waiting For Note!");
-      mTimer.reset();
-      mTimer.start();
-    }
-
-    @Override
-    public void execute() {
-      System.out.println("Timer: " + mTimer.get());
-    }
-
-    @Override
-    public boolean isFinished() {
-      return mTimer.get() > 3;
-    }
-  }
 }

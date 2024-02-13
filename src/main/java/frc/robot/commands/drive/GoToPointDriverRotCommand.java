@@ -59,6 +59,9 @@ public class GoToPointDriverRotCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return nextCommand.isFinished();
+        if(nextCommand != null){
+            return nextCommand.isFinished();
+        }
+        return false;
     }
 }
