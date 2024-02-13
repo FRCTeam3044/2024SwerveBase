@@ -25,6 +25,6 @@ public class SpeakerShooterCommand extends Command {
 
     @Override
     public void execute() {
-        m_shooter.speakerPidHandler(speakerRPM);
+        m_shooter.speakerPidHandler();
     }
 }
