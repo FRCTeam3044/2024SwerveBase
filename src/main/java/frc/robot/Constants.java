@@ -87,6 +87,8 @@ public final class Constants {
                 public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true,
                                 "Rate Limit");
 
+                public static final ConfigurableParameter<Double> kStatemachineDebounce = new ConfigurableParameter<Double>(
+                                0.1, "Statemachine Debounce");
         }
 
         public static final class ModuleConstants {
