@@ -89,13 +89,13 @@ public class ShooterSubsystem extends SubsystemBase {
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
     }
 
-    public void speakerPidHandler(double speed) {
-        double rotations = speed;
+    public void speakerPidHandler() {
+        double rotations = speakerRPM;
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 
-    public void ampPidHandler(double speed) {
-        double rotations = speed;
+    public void ampPidHandler() {
+        double rotations = ampRPM;
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }

@@ -92,13 +92,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         return currentAngle;
     }
 
-    public void pidHandler(double meters) {
+    public void ampPidHandler() {
         // TODO: convert meters to rotation
-        double rotations = meters;
+        double rotations = ampAngle;
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 
-    public void consumeElevatorInput(double leftStickY) {
+    public void intakePidHandler() {
+        // TODO: convert meters to rotation
+        double rotations = intakeAngle;
+        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void consumeElevatorInput() {
+        double leftStickY = m_robotContainer.m_operatorController.getLeftY();
 
         if (Math.abs(leftStickY) > 0.1) {
             elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
