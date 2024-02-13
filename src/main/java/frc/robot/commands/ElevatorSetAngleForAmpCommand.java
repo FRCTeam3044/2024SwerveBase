@@ -6,7 +6,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 public class ElevatorSetAngleForAmpCommand extends Command {
     private final ElevatorSubsystem m_elevator;
-    public double ampAngle;
 
     public ElevatorSetAngleForAmpCommand(ElevatorSubsystem elevator, XboxController controller) {
         m_elevator = elevator;
@@ -19,12 +18,7 @@ public class ElevatorSetAngleForAmpCommand extends Command {
     }
 
     @Override
-    public void initialize() {
-        ampAngle = m_elevator.ampAngle;
-    }
-
-    @Override
     public void execute() {
-        m_elevator.pidHandler(ampAngle);
+        m_elevator.pidHandler(m_elevator.ampAngle);
     }
 }
