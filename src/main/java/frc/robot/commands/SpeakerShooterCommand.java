@@ -6,7 +6,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class SpeakerShooterCommand extends Command {
     private final ShooterSubsystem m_shooter;
 
-    public double ampSpeed;
+    public double speakerSpeed;
 
     public SpeakerShooterCommand(ShooterSubsystem shooter) {
         m_shooter = shooter;
@@ -15,7 +15,7 @@ public class SpeakerShooterCommand extends Command {
 
     @Override
     public void initialize() {
-        ampSpeed = m_shooter.ampRPM;
+        speakerSpeed = m_shooter.ampRPM;
     }
 
     @Override
