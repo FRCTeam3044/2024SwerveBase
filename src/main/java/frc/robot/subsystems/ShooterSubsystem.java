@@ -99,3 +99,4 @@ public class ShooterSubsystem extends SubsystemBase {
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }
+
