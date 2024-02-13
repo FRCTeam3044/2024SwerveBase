@@ -19,6 +19,6 @@ public class ElevatorSetAngleForIntakeCommand extends Command {
 
     @Override
     public void execute() {
-        m_elevator.pidHandler(m_elevator.intakeAngle);
+        m_elevator.intakePidHandler();
     }
 }
