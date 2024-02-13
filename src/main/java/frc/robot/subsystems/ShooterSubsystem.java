@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.ShooterConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -33,6 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
     double maxVel = 0;
     double maxAccel = 0;
+
+    private double currentTargetRPM = 0;
 
     public void setShooterRPM(double motorRPM) {
     }
@@ -89,12 +92,26 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void speakerPidHandler() {
-        double rotations = speakerRPM;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        currentTargetRPM = speakerRPM;
+        pidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kPosition);
     }
 
     public void ampPidHandler() {
-        double rotations = ampRPM;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        currentTargetRPM = ampRPM;
+        pidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kPosition);
+    }
+
+    public double getTopMotorRPM() {
+        return topShooterMoterEncoder.getVelocity();
+    }
+
+    public double getBottomMotorRPM() {
+        return bottomShooterMotorEncoder.getVelocity();
+    }
+
+    public boolean shooterAtSpeed() {
+        double tolerance = ShooterConstants.kShooterToleranceRPM.get();
+        return Math.abs(topShooterMoterEncoder.getVelocity() - currentTargetRPM) < tolerance
+                && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) < tolerance;
     }
 }
