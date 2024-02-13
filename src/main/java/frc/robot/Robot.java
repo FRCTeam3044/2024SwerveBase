@@ -7,8 +7,14 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.PathfindingConstants;
+import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -22,8 +28,7 @@ import me.nabdev.oxconfig.OxConfig;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-
-  private RobotContainer m_robotContainer;
+  public RobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -32,13 +37,13 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    PathfindingConstants.initialize();
 
     Logger.addDataReceiver(new NT4Publisher());
 
     // Start AdvantageKit logger
     Logger.start();
     m_robotContainer = new RobotContainer();
-
     OxConfig.initialize();
   }
 
@@ -62,6 +67,9 @@ public class Robot extends LoggedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_robotContainer.m_visionSubsystem.periodic();
+    RobotContainer.m_noteDetection.periodic();
+    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -92,6 +100,8 @@ public class Robot extends LoggedRobot {
   public void autonomousPeriodic() {
   }
 
+  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
@@ -101,39 +111,27 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+    if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive,
+          RobotContainer.m_driverController)).schedule();
+      lastClick = click;
+    }
     m_robotContainer.climber.leftArm(0);
     m_robotContainer.climber.rightArm(0);
-    m_robotContainer.m_operatorController.getLeftBumper();
-    m_robotContainer.m_operatorController.getRightBumper();
-    m_robotContainer.m_operatorController.getRightY();
 
-    boolean isLeftBumperPressed = m_robotContainer.m_operatorController.getLeftBumper();
-    boolean isRightBumperPressed = m_robotContainer.m_operatorController.getRightBumper();
-    double rightYValue = m_robotContainer.m_operatorController.getRightY();
-    m_robotContainer.climber.consumeClimberInput(isLeftBumperPressed, isRightBumperPressed, rightYValue);
-
-    boolean isBButtonPressed = m_robotContainer.m_operatorController.getBButtonPressed();
+    boolean isBButtonPressed = RobotContainer.m_operatorController.getHID().getBButtonPressed();
 
     m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
 
-    boolean isXButtonPressed = m_robotContainer.m_operatorController.getXButtonPressed();
-
-    m_robotContainer.transit.consumeTransitInput(isXButtonPressed);
-
-    boolean isAButtonPressed = m_robotContainer.m_operatorController.getAButtonPressed();
-
-    m_robotContainer.shooter.consumeShooterInput(isAButtonPressed);
-
-    m_robotContainer.m_operatorController.getLeftY();
-
-    double leftYValue = m_robotContainer.m_operatorController.getLeftY();
-
-    m_robotContainer.elevator.consumeElevatorInput(leftYValue);
+    RobotContainer.m_operatorController.getHID().getLeftY();
   }
 
   @Override

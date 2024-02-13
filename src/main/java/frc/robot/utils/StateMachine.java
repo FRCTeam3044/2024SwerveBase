@@ -1,10 +1,9 @@
-package frc.robot;
+package frc.robot.utils;
 
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.ShooterConstants;
 
 public class StateMachine {
     public enum State {
@@ -35,15 +34,9 @@ public class StateMachine {
     private final DigitalInput intakeLimitSwitch;
     private final DigitalInput transitLimitSwitch;
 
-    private final RelativeEncoder shooterTopEncoder;
-    private final RelativeEncoder shooterBottomEncoder;
-
-    public StateMachine(DigitalInput intakeLimitSwitch, DigitalInput transitLimitSwitch,
-            RelativeEncoder shooterTopEncoder, RelativeEncoder shooterBottomEncoder) {
+    public StateMachine(DigitalInput intakeLimitSwitch, DigitalInput transitLimitSwitch) {
         this.intakeLimitSwitch = intakeLimitSwitch;
         this.transitLimitSwitch = transitLimitSwitch;
-        this.shooterTopEncoder = shooterTopEncoder;
-        this.shooterBottomEncoder = shooterBottomEncoder;
     }
 
     public void periodic() {
@@ -62,9 +55,9 @@ public class StateMachine {
                 }
                 break;
             case NOTE_LOADED:
-                if (shooterAtSpeed()) {
-                    currentState = State.READY_TO_SHOOT;
-                }
+                // if (shooterAtSpeed()) {
+                // currentState = State.READY_TO_SHOOT;
+                // }
                 break;
             case READY_TO_SHOOT:
                 break;
@@ -79,12 +72,5 @@ public class StateMachine {
 
     public State getState() {
         return currentState;
-    }
-
-    private boolean shooterAtSpeed() {
-        int targetVel = ShooterConstants.kShooterTargetRPM.get();
-        double tolerance = ShooterConstants.kShooterToleranceRPM.get();
-        return Math.abs(shooterTopEncoder.getVelocity() - targetVel) < tolerance
-                && Math.abs(shooterBottomEncoder.getVelocity() - targetVel) < tolerance;
     }
 }

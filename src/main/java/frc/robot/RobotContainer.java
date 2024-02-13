@@ -5,18 +5,26 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.AutoCommandFactory;
+import frc.robot.commands.drive.DriveAndTrackPointCommand;
+import frc.robot.commands.drive.GoToNoteCommand;
+import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.NoteDetection;
+import frc.robot.subsystems.VisionSubsystem;
+import me.nabdev.pathfinding.autos.AutoParser;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
-import me.nabdev.oxconfig.ConfigurableParameter;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -31,16 +39,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  public static final NoteDetection m_noteDetection = new NoteDetection();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  public final XboxController m_operatorController = new XboxController(
+  public static final CommandXboxController m_driverController = new CommandXboxController(
+      OIConstants.kDriverControllerPort);
+  public static final CommandXboxController m_operatorController = new CommandXboxController(
       OIConstants.kOperatorControllerPort);
-
-  private final ConfigurableParameter<Boolean> m_fieldRelative = new ConfigurableParameter<Boolean>(true,
-      "Field Relative");
-  private final ConfigurableParameter<Boolean> m_rateLimit = new ConfigurableParameter<Boolean>(true, "Rate Limit");
 
   public final ClimberSubsystem climber = new ClimberSubsystem();
   public final IntakeSubsystem intake = new IntakeSubsystem();
@@ -55,31 +62,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    if (RobotBase.isReal()) {
-      m_robotDrive.setDefaultCommand(
-          // The left stick controls translation of the robot.
-          // Turning is controlled by the X axis of the right stick.
-          new RunCommand(
-              () -> m_robotDrive.drive(
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
-
-                  m_fieldRelative.get(), m_rateLimit.get()),
-              m_robotDrive));
-    } else {
-      m_robotDrive.setDefaultCommand(
-          // The left stick controls translation of the robot.
-          // Turning is controlled by the X axis of the right stick.
-          new RunCommand(
-              () -> m_robotDrive.drive(
-                  MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get()),
-                  -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get()),
-
-                  m_fieldRelative.get(), m_rateLimit.get()),
-              m_robotDrive));
-    }
+    m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
   }
 
   /**
@@ -97,6 +80,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    m_driverController.rightTrigger().whileTrue(new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
+    m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
 
   }
 
@@ -106,6 +91,21 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+    waypoints.add(new Pose2d(0, 1, new Rotation2d()));
+    waypoints.add(new Pose2d(1, 1, new Rotation2d()));
+    waypoints.add(new Pose2d(1, 0, new Rotation2d()));
+    waypoints.add(new Pose2d(0, 0, new Rotation2d()));
+    // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
+    // m_robotDrive);
+    try {
+      AutoCommandFactory.registerCommands();
+      Command auto = AutoParser.loadAuto("exampleAuto.json");
+      return auto;
+    } catch (FileNotFoundException e) {
+      System.out.println("Couldn't find file");
+      return null;
+    }
   }
+
 }
