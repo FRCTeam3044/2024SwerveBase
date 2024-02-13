@@ -7,6 +7,7 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -38,12 +39,37 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    PathfindingConstants.initialize();
+    // Record metadata
+    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+    switch (BuildConstants.DIRTY) {
+      case 0:
+        Logger.recordMetadata("GitDirty", "All changes committed");
+        break;
+      case 1:
+        Logger.recordMetadata("GitDirty", "Uncomitted changes");
+        break;
+      default:
+        Logger.recordMetadata("GitDirty", "Unknown");
+        break;
+    }
 
-    Logger.addDataReceiver(new NT4Publisher());
+    // Set up data receivers & replay source
+    if (isReal()) {
+        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new NT4Publisher());
+    } else if(isSimulation()) {
+      Logger.addDataReceiver(new NT4Publisher());
+    } else {
+      return;
+    }
 
-    // Start AdvantageKit logger
     Logger.start();
+
+    PathfindingConstants.initialize();
     m_robotContainer = new RobotContainer();
     OxConfig.initialize();
   }
