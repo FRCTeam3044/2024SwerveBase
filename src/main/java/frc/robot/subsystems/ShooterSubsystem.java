@@ -46,8 +46,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void runShooter() {
-        topMotor.set(motorRPM);
-        bottomMotor.set(-motorRPM);
+        topMotor.set(1);
+        bottomMotor.set(-1);
     }
 
     private void stopShooter() {
