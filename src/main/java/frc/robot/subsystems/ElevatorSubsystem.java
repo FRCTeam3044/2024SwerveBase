@@ -10,9 +10,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+    public RobotContainer m_robotContainer;
+
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
@@ -83,10 +87,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public void consumeElevatorInput(double elevatorSpeed) {
-        moveElevator(elevatorSpeed);
-    }
-
     public double getAngle() {
         double currentAngle = shooterEncoderOne.getPosition();
         return currentAngle;
@@ -96,5 +96,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         // TODO: convert meters to rotation
         double rotations = meters;
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void consumeElevatorInput() {
+        double controllerStickInput = m_robotContainer.m_operatorController.getLeftY();
+
+        if (Math.abs(controllerStickInput) > 0.1) {
+            elevatorMotorOne.set(controllerStickInput * Math.abs(controllerStickInput));
+        }
     }
 }
