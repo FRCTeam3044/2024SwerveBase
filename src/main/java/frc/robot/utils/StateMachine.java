@@ -46,10 +46,16 @@ public class StateMachine {
     private NoteDetection m_noteDetection;
     private DriveSubsystem m_driveSubsystem;
 
-    Debouncer m_noteDetectionDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(), DebounceType.kBoth);
-    Debouncer m_intakeLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(), DebounceType.kBoth);
-    Debouncer m_transitLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(), DebounceType.kBoth);
-    Debouncer m_shooterSpeedDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(), DebounceType.kBoth);
+    private Debouncer m_noteDetectionDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+            DebounceType.kBoth);
+    private Debouncer m_intakeLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+            DebounceType.kBoth);
+    private Debouncer m_transitLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+            DebounceType.kBoth);
+    private Debouncer m_shooterSpeedDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+            DebounceType.kBoth);
+    private Debouncer m_elevatorAngleDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+            DebounceType.kBoth);
 
     public StateMachine(ShooterSubsystem shooterSubsystem, ElevatorSubsystem elevatorSubsystem,
             TransitSubsystem transitSubsystem, ClimberSubsystem climberSubsystem, IntakeSubsystem intakeSubsystem,
@@ -82,7 +88,9 @@ public class StateMachine {
                 }
                 break;
             case NOTE_LOADED:
-                if (m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed())) {
+                boolean shooterAtSpeed = m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed());
+                boolean shooterAtAngle = m_elevatorAngleDebouncer.calculate(m_elevatorSubsystem.elevatorAtAngle());
+                if (shooterAtSpeed && shooterAtAngle) {
                     currentState = State.READY_TO_SHOOT;
                 }
                 break;
