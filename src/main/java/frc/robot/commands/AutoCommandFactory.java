@@ -31,6 +31,7 @@ public final class AutoCommandFactory {
     AutoParser.registerCommand("wait_for_note", AutoCommandFactory::waitForNote);
     AutoParser.registerCommand("go_to_note", AutoCommandFactory::goToNote);
     AutoParser.registerCommand("set_intake_angle", AutoCommandFactory::elevatorSetAngleForIntakeCommand);
+    AutoParser.registerCommand("set_amp_angle", AutoCommandFactory::elevatorSetAngleForAmpCommand);
   }
 
   public static GoToNoteCommand goToNote(JSONObject parameters) {
@@ -82,5 +83,9 @@ public final class AutoCommandFactory {
 
   public static ElevatorSetAngleForIntakeCommand elevatorSetAngleForIntakeCommand(JSONObject parameters) {
     return new ElevatorSetAngleForIntakeCommand(RobotContainer.elevator);
+  }
+
+  public static ElevatorSetAngleForAmpCommand elevatorSetAngleForAmpCommand(JSONObject parameters) {
+    return new ElevatorSetAngleForAmpCommand(RobotContainer.elevator);
   }
 }
