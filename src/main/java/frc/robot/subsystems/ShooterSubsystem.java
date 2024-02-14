@@ -24,8 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     double motorRPM = 0;
 
-    public double speakerSpeedPercentage = 0;
-    public double ampSpeedPercentage = 0;
+    public double speakerRPM = 0;
+    public double ampRPM = 0;
 
     boolean isShooterRunning = false;
 
@@ -90,12 +90,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void speakerPidHandler() {
-        double rotations = speakerSpeedPercentage;
+        double rotations = speakerRPM;
         pidController.setReference(rotations, CANSparkMax.ControlType.kVelocity);
     }
 
     public void ampPidHandler() {
-        double rotations = ampSpeedPercentage;
+        double rotations = ampRPM;
         pidController.setReference(rotations, CANSparkMax.ControlType.kVelocity);
     }
 }
