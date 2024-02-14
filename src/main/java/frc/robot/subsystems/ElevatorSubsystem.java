@@ -57,6 +57,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setOutputRange(kMinOutput, kMaxOutput);
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        elevatorMotorOne.follow(elevatorMotorTwo);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
@@ -104,11 +106,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 
-    public void consumeElevatorInput() {
-        double leftStickY = m_robotContainer.m_operatorController.getLeftY();
-
+    public void consumeElevatorInput(double leftStickY) {
         if (Math.abs(leftStickY) > 0.1) {
             elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
+        }
+        else {
+            elevatorMotorOne.set(0);
         }
     }
 }
