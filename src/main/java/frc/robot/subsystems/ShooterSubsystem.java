@@ -45,11 +45,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
-    private void runShooter() {
-        topMotor.set(1);
-        bottomMotor.set(-1);
-    }
-
     private void stopShooter() {
         topMotor.set(0);
         bottomMotor.set(0);
@@ -57,7 +52,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void consumeShooterInput(boolean isTheAButtonPressed) {
         if (isTheAButtonPressed) {
-            runShooter();
+            speakerPidHandler();
         } else {
             stopShooter();
         }
