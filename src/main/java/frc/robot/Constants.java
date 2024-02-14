@@ -10,6 +10,8 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -212,6 +214,13 @@ public final class Constants {
                                 "Rotation FF Timestep");
                 public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(0.1,
                                 "Rotation FF");
+
+        }
+
+        // TODO: Get real values for these
+        public static final class PathfindingTargets {
+                public static final Pose2d RED_SOURCE = new Pose2d(1, 1, new Rotation2d(0));
+                public static final Pose2d BLUE_SOURCE = new Pose2d(1, 15.5, new Rotation2d(0));
 
         }
 

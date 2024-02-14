@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
