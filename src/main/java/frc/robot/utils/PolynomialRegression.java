@@ -224,6 +224,7 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
         return 0;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     /**
@@ -241,4 +242,6 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
         System.out.println(regression);
     }
 >>>>>>> d303b4a (Start Auto aiming)
+=======
+>>>>>>> f4108ca (Start auto aiming calculator)
 }
