@@ -1,14 +1,16 @@
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ElevatorSubsystem;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ElevatorManualControlCommand  extends Command {
     private final ElevatorSubsystem m_elevator;
+    private final RobotContainer m_robotContainer;
 
-    public ElevatorManualControlCommand(ElevatorSubsystem elevator) {
+    public ElevatorManualControlCommand(ElevatorSubsystem elevator, RobotContainer container) {
         m_elevator = elevator;
+        m_robotContainer = container;
         addRequirements(m_elevator);
     }
 
@@ -19,6 +21,8 @@ public class ElevatorManualControlCommand  extends Command {
 
     @Override
     public void execute() {
-        m_elevator.consumeElevatorInput();
+        double leftStickY = m_robotContainer.m_operatorController.getLeftY();
+
+        m_elevator.consumeElevatorInput(leftStickY);
     }
 }
