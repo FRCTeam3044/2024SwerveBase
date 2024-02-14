@@ -30,6 +30,7 @@ public final class AutoCommandFactory {
     AutoParser.registerCommand("go_to_and_track_point", AutoCommandFactory::goToAndTrackPoint);
     AutoParser.registerCommand("wait_for_note", AutoCommandFactory::waitForNote);
     AutoParser.registerCommand("go_to_note", AutoCommandFactory::goToNote);
+    AutoParser.registerCommand("set_intake_angle", AutoCommandFactory::elevatorSetAngleForIntakeCommand);
   }
 
   public static GoToNoteCommand goToNote(JSONObject parameters) {
@@ -77,5 +78,9 @@ public final class AutoCommandFactory {
     Pose2d target = new Pose2d(parameters.getDouble("targetX"), parameters.getDouble("targetY"), new Rotation2d());
     Pose2d trackTarget = new Pose2d(parameters.getDouble("trackX"), parameters.getDouble("trackY"), new Rotation2d());
     return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive);
+  }
+
+  public static ElevatorSetAngleForIntakeCommand elevatorSetAngleForIntakeCommand(JSONObject parameters) {
+    return new ElevatorSetAngleForIntakeCommand(RobotContainer.elevator);
   }
 }
