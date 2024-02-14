@@ -47,11 +47,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
-    private void runShooter() {
-        topMotor.set(motorRPM);
-        bottomMotor.set(-motorRPM);
-    }
-
     private void stopShooter() {
         topMotor.set(0);
         bottomMotor.set(0);
@@ -59,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void consumeShooterInput(boolean isTheAButtonPressed) {
         if (isTheAButtonPressed) {
-            runShooter();
+            speakerPidHandler();
         } else {
             stopShooter();
         }
@@ -96,11 +91,6 @@ public class ShooterSubsystem extends SubsystemBase {
         pidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kPosition);
     }
 
-    public void ampPidHandler() {
-        currentTargetRPM = ampRPM;
-        pidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kPosition);
-    }
-
     public double getTopMotorRPM() {
         return topShooterMoterEncoder.getVelocity();
     }
@@ -113,5 +103,10 @@ public class ShooterSubsystem extends SubsystemBase {
         double tolerance = ShooterConstants.kShooterToleranceRPM.get();
         return Math.abs(topShooterMoterEncoder.getVelocity() - currentTargetRPM) < tolerance
                 && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) < tolerance;
+    }
+
+    public void ampPidHandler() {
+        currentTargetRPM = ampRPM;
+        pidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kVelocity);
     }
 }
