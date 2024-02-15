@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
@@ -10,9 +11,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+    public RobotContainer m_robotContainer;
+
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
@@ -32,6 +38,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     // The angle for shooting in the amp (currently set to 0)
     public double ampAngle = 0;
     public double intakeAngle = 0;
+
+    RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
+    RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
+    double currentTargetRotations = 0;
 
     public ElevatorSubsystem() {
         elevatorMotorOne.restoreFactoryDefaults();
@@ -56,6 +66,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setOutputRange(kMinOutput, kMaxOutput);
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        elevatorMotorOne.follow(elevatorMotorTwo);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
@@ -86,18 +98,34 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public void consumeElevatorInput(double elevatorSpeed) {
-        moveElevator(elevatorSpeed);
-    }
-
     public double getAngle() {
         double currentAngle = shooterEncoderOne.getPosition();
         return currentAngle;
     }
 
-    public void pidHandler(double meters) {
+    public void ampPidHandler() {
         // TODO: convert meters to rotation
-        double rotations = meters;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        currentTargetRotations = ampAngle;
+        pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void intakePidHandler() {
+        // TODO: convert meters to rotation
+        currentTargetRotations = intakeAngle;
+        pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void consumeElevatorInput(double leftStickY) {
+        if (Math.abs(leftStickY) > 0.1) {
+            elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
+        } else {
+            elevatorMotorOne.set(0);
+        }
+    }
+
+    public boolean elevatorAtAngle() {
+        double tolerance = ElevatorConstants.kElevatorTolerance.get();
+        return Math.abs(motorOneEncoder.getPosition() - currentTargetRotations) < tolerance
+                && Math.abs(motorTwoEncoder.getPosition() - currentTargetRotations) < tolerance;
     }
 }

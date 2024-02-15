@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -11,6 +13,10 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,12 +25,19 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
+import me.nabdev.pathfinding.Pathfinder;
+import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.structures.Edge;
+import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -66,6 +79,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public final Field2d field = new Field2d();
 
+  public final Pathfinder pathfinder;
+
+  private final SwerveDrivePoseEstimator poseEstimator;
+
   // Sim values
   private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
   private SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
@@ -80,22 +97,56 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    // Define the standard deviations for the pose estimator, which determine how
+    // fast the pose
+    // estimate converges to the vision measurement. This should depend on the
+    // vision measurement
+    // noise
+    // and how many or how frequently vision measurements are applied to the pose
+    // estimator.
 
+    var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+    var visionStdDevs = VecBuilder.fill(1, 1, 1);
+    poseEstimator = new SwerveDrivePoseEstimator(
+        DriveConstants.kDriveKinematics,
+        Rotation2d.fromDegrees(getGyroAngleDegrees()),
+        getModulePositions(),
+        new Pose2d(),
+        stateStdDevs,
+        visionStdDevs);
+
+    pathfinder = new PathfinderBuilder(
+        Field.CRESCENDO_2024)
+        .setInjectPoints(true)
+        .setPointSpacing(0.5)
+        .setCornerPointSpacing(0.05)
+        .setRobotLength(DriveConstants.kWheelBase)
+        .setRobotWidth(DriveConstants.kTrackWidth)
+        .setCornerDist(0.3)
+        .setCornerCutDist(0.01)
+        .build();
+
+    ArrayList<Edge> edges = pathfinder.visualizeEdges();
+    PathfindingDebugUtils.drawLines("Field Map", edges,
+        pathfinder.visualizeVertices());
+    PathfindingDebugUtils.drawLines("Field Map Inflated", edges,
+        pathfinder.visualizeInflatedVertices());
   }
 
   private double getGyroAngleDegrees() {
-    return -m_gyro.getAngle();
+    double gyroRadians = Math.toRadians(-m_gyro.getAngle());
+    return Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI / 2));
   }
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-    m_odometry.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
-    Logger.recordOutput("gyro", getGyroAngleDegrees());
-    Logger.recordOutput("gyroRad", Math.toRadians(getGyroAngleDegrees()));
+    // Update the pose estimator in the periodic block
+    poseEstimator.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
+    Logger.recordOutput("ModuleState", getModuleStates());
+    // Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
+    field.setRobotPose(getPose());
 
-    Logger.recordOutput("ModuleStatesMeasured", getModuleStates());
-    Logger.recordOutput("ModuleStatesDesired", getDesiredModuleStates());
+    SmartDashboard.putData("Field", field);
   }
 
   /**
@@ -104,7 +155,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -175,6 +226,24 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+    drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false);
+  }
+
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed           Speed of the robot in the x direction (forward).
+   * @param ySpeed           Speed of the robot in the y direction (sideways).
+   * @param rot              Angular rate of the robot.
+   * @param fieldRelative    Whether the provided x and y speeds are relative to
+   *                         the
+   *                         field.
+   * @param rateLimit        Whether to enable rate limiting for smoother control.
+   * @param absoluteRotSpeed If true, rot is interpreted directly as omega radians
+   *                         per second.
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
+      boolean absoluteRotSpeed) {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -216,30 +285,29 @@ public class DriveSubsystem extends SubsystemBase {
 
       xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
       ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
-      m_currentRotation = m_rotLimiter.calculate(rot);
-
     } else {
       xSpeedCommanded = xSpeed;
       ySpeedCommanded = ySpeed;
-      m_currentRotation = rot;
     }
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
-    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
+    double rotDelivered = absoluteRotSpeed ? rot : rotSpeedFromJoystick(rot, rateLimit);
+    ChassisSpeeds chassisSpeeds = fieldRelative
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
+            Rotation2d.fromDegrees(getPose().getRotation().getDegrees()))
+        : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+    setDesiredChassisSpeeds(chassisSpeeds);
+  }
 
-    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(getGyroAngleDegrees()))
-            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
+  public double rotSpeedFromJoystick(double joystick, boolean rateLimit) {
+    if (rateLimit) {
+      m_currentRotation = m_rotLimiter.calculate(joystick);
+    } else {
+      m_currentRotation = joystick;
+    }
+    return m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
   }
 
   /**
@@ -250,6 +318,18 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
+  /**
+   * Sets the module states to attempt to get the robot to the specified speeds.
+   * 
+   * @param speeds The desired chassis speeds, ROBOT RELATIVE.
+   */
+  public void setDesiredChassisSpeeds(ChassisSpeeds speeds) {
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
+    setModuleStates(swerveModuleStates);
   }
 
   /**
@@ -284,8 +364,9 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return Rotation2d.fromDegrees(getGyroAngleDegrees()).getDegrees();
+
+  public Rotation2d getHeading() {
+    return getPose().getRotation();
   }
 
   /**
@@ -297,15 +378,35 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  /**
+   * See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}.
+   */
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+  }
+
+  /**
+   * See
+   * {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)}.
+   */
+  public void addVisionMeasurement(
+      Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+    poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+  }
+
+  /**
+   * Returns the currently estimated pose of the robot.
+   */
+  public ChassisSpeeds getChassisSpeeds() {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
   @Override
   public void simulationPeriodic() {
-    field.setRobotPose(getPose());
-
-    SmartDashboard.putData("Field", field);
     SmartDashboard.putNumber("Robot Rot (Rad)", getPose().getRotation().getRadians());
 
     ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-    m_simYaw += chassisSpeed.omegaRadiansPerSecond * 0.02;
+    m_simYaw -= chassisSpeed.omegaRadiansPerSecond * 0.02;
     angle.set(Math.toDegrees(m_simYaw));
 
     REVPhysicsSim.getInstance().run();

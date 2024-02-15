@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.ShooterConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -41,20 +42,18 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder m_topAlternateEncoder;
     private RelativeEncoder m_bottomAlternateEncoder;
 
-    public void setShooterRPM(double motorRPM) {
+    private double currentTargetRPM = 0;
 
+    public void setShooterRPM(double motorRPM) {
+        currentTargetRPM = motorRPM;
     }
 
     /*
      * Updates the shooters information on what the current angle of the robot is
      */
-    public void updatePeriodic() {
+    @Override
+    public void periodic() {
 
-    }
-
-    private void runShooter() {
-        topMotor.set(motorRPM);
-        bottomMotor.set(-motorRPM);
     }
 
     private void stopShooter() {
@@ -64,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void consumeShooterInput(boolean isTheAButtonPressed) {
         if (isTheAButtonPressed) {
-            runShooter();
+            handlePID();
         } else {
             stopShooter();
         }
@@ -114,23 +113,30 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
-    public void topSpeakerPidHandler(double speed) {
-        double rotations = speed;
-        topPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    public void handlePID() {
+        topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kVelocity);
+        bottomPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kVelocity);
     }
 
-    public void topAmpPidHandler(double speed) {
-        double rotations = speed;
-        topPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    public void speakerSpeed() {
+        currentTargetRPM = speakerRPM;
     }
 
-    public void bottomSpeakerPidHandler(double speed) {
-        double rotations = speed;
-        bottomPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    public double getTopMotorRPM() {
+        return topShooterMoterEncoder.getVelocity();
     }
 
-    public void bottomAmpPidHandler(double speed) {
-        double rotations = speed;
-        bottomPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    public double getBottomMotorRPM() {
+        return bottomShooterMotorEncoder.getVelocity();
+    }
+
+    public boolean shooterAtSpeed() {
+        double tolerance = ShooterConstants.kShooterToleranceRPM.get();
+        return Math.abs(topShooterMoterEncoder.getVelocity() - currentTargetRPM) < tolerance
+                && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) < tolerance;
+    }
+
+    public void ampSpeed() {
+        currentTargetRPM = ampRPM;
     }
 }
