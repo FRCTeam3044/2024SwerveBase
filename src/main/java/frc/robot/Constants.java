@@ -228,18 +228,20 @@ public final class Constants {
         public static final class ShooterConstants {
                 public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
                                 100.0, "Shooter Tolerance RPM");
+                public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0, "Shooter Manual Control Speed");
         }
 
         public static final class ElevatorConstants {
                 public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
                                 10.0, "Elevator Tolerance");
+                public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0, "Elevator Manual Control Speed");
         }
 
         public static final class VisionConstants {
                 // TODO: Update these values
                 public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
                 public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT
-                                                                                                   // CORRECT
+                // CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
                                 "front",
@@ -281,5 +283,17 @@ public final class Constants {
                                 0.1, "Statemachine Debounce");
                 public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
                                 3.0, "Note Detection Distance");
+        }
+
+        public static final class ClimberConstants {
+                public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(1.0, "Climber Manual Control Speed");
+        }
+
+        public static final class TransitConstants {
+                public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
+        }
+
+        public static final class IntakeConstants {
+                public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
         }
 }

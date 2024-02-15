@@ -6,6 +6,12 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ElevatorManualControlCommand;
+import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
+import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
+import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
@@ -19,6 +25,8 @@ import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.proto.Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -63,6 +71,11 @@ public class RobotContainer {
     configureBindings();
 
     m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
+    intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
+    climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
+    transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
+    elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator, m_driverController.getHID()));
+    shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
   }
 
   /**

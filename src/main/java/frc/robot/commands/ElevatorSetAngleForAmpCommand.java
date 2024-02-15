@@ -18,6 +18,7 @@ public class ElevatorSetAngleForAmpCommand extends Command {
 
     @Override
     public void execute() {
-        m_elevator.ampPidHandler();
+        m_elevator.setToAmpMode();
+        m_elevator.pidHandler();
     }
 }
