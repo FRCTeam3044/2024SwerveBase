@@ -57,11 +57,11 @@ public class RobotContainer {
   public static final CommandXboxController m_operatorController = new CommandXboxController(
       OIConstants.kOperatorControllerPort);
 
-  public final ClimberSubsystem climber = new ClimberSubsystem();
-  public final IntakeSubsystem intake = new IntakeSubsystem();
-  public final TransitSubsystem transit = new TransitSubsystem();
-  public final ElevatorSubsystem elevator = new ElevatorSubsystem();
-  public final ShooterSubsystem shooter = new ShooterSubsystem();
+  public static final ClimberSubsystem climber = new ClimberSubsystem();
+  public static final IntakeSubsystem intake = new IntakeSubsystem();
+  public static final TransitSubsystem transit = new TransitSubsystem();
+  public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public static final ShooterSubsystem shooter = new ShooterSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
