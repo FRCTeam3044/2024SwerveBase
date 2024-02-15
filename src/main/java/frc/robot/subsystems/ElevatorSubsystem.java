@@ -79,23 +79,27 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-
+        currentTargetRotations = intakeAngle;
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
     // into an amp
     public void setToAmpMode() {
+        currentTargetRotations = ampAngle;
+    }
 
+    public void setAngle(double setAngle) {
+        currentTargetRotations = setAngle;
     }
 
     // Tells us when the elevator has hit the top of it's height
-    public void readTopLimitSwitch() {
-
+    public boolean readTopLimitSwitch() {
+        return elevatorTopLimitSwitch.get();
     }
 
     // Tells us when the elevator has hit the bottom of it's height
-    public void readBottomLimitSwitch() {
-
+    public boolean readBottomLimitSwitch() {
+        return elevatorBottomLimitSwitch.get();
     }
 
     public double getAngle() {
@@ -103,15 +107,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         return currentAngle;
     }
 
-    public void ampPidHandler() {
-        // TODO: convert meters to rotation
-        currentTargetRotations = ampAngle;
-        pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
-    }
-
-    public void intakePidHandler() {
-        // TODO: convert meters to rotation
-        currentTargetRotations = intakeAngle;
+    public void pidHandler() {
         pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
     }
 
