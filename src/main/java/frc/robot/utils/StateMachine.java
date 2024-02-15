@@ -154,7 +154,7 @@ public class StateMachine {
                 return getLockinNoteCommand();
             case NOTE_LOADED:
                 // Start Aiming shooter and speeding up wheels
-                // TODO: Auto Aiming
+                return getReadyShooterCommand();
                 return null;
             case READY_TO_SHOOT:
                 // Feed note into shooter and shoot! (while still aiming)
@@ -188,11 +188,12 @@ public class StateMachine {
         return new ParallelCommandGroup(goToNoteCommand, intakeRunMotorsCommand);
     }
 
-    // TODO:
     private Command getLockinNoteCommand() {
         TransitRunMotorCommand transitRunMotorCommand = new TransitRunMotorCommand(m_transitSubsystem);
         return transitRunMotorCommand;
     }
+
+    
 
     public State getState() {
         return currentState;
