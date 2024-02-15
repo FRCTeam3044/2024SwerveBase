@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +24,7 @@ public class ElevatorManualControlCommand extends Command {
     public void execute() {
         double leftStickY = m_controller.getLeftY();
 
+        leftStickY = leftStickY * ElevatorConstants.kElevatorManualSpeed.get();
         m_elevator.consumeElevatorInput(leftStickY);
     }
 }

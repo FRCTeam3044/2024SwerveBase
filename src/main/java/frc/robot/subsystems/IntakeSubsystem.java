@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     // Defines the motor
@@ -25,8 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Use this to run intake
     public void runIntake() {
-        intakeTopMotor.set(1);
-        intakeBottomMotor.set(-1);
+        intakeTopMotor.set(1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeBottomMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     // Stops intake
