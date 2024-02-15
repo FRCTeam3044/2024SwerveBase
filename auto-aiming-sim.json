@@ -1,0 +1,104 @@
+[
+  {
+    "distance": 4,
+    "made": true,
+    "angle": 50,
+    "reviewed": true
+  },
+  {
+    "distance": 5,
+    "made": true,
+    "angle": 60,
+    "reviewed": true
+  },
+  {
+    "distance": 6,
+    "made": true,
+    "angle": 70,
+    "reviewed": true
+  },
+  {
+    "distance": 4,
+    "made": false,
+    "angle": 50,
+    "reviewed": false
+  },
+  {
+    "distance": 5,
+    "made": false,
+    "angle": 60,
+    "reviewed": false
+  },
+  {
+    "distance": 6,
+    "made": false,
+    "angle": 70,
+    "reviewed": false
+  },
+  {
+    "distance": 4,
+    "made": false,
+    "angle": 50,
+    "reviewed": false
+  },
+  {
+    "distance": 5,
+    "made": false,
+    "angle": 60,
+    "reviewed": false
+  },
+  {
+    "distance": 6,
+    "made": false,
+    "angle": 70,
+    "reviewed": false
+  },
+  {
+    "distance": 4,
+    "made": false,
+    "angle": 50,
+    "reviewed": false
+  },
+  {
+    "distance": 5,
+    "made": false,
+    "angle": 60,
+    "reviewed": false
+  },
+  {
+    "distance": 6,
+    "made": false,
+    "angle": 70,
+    "reviewed": false
+  },
+  {
+    "distance": 4,
+    "made": false,
+    "angle": 50,
+    "reviewed": false
+  },
+  {
+    "distance": 5,
+    "made": false,
+    "angle": 60,
+    "reviewed": false
+  },
+  {
+    "distance": 6,
+    "made": false,
+    "angle": 70,
+    "reviewed": false
+  },
+  {
+    "distance": 4,
+    "made": false,
+    "angle": 50,
+    "reviewed": false
+  },
+  {
+    "distance": 5,
+    "made": false,
+    "angle": 60,
+    "reviewed": false
+  }
+]

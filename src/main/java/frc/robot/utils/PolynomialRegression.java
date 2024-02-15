@@ -59,6 +59,10 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
      *                                  equal
      */
     public PolynomialRegression(double[] x, double[] y, int degree, String variableName) {
+        if (x.length != y.length)
+            throw new IllegalArgumentException("array lengths are not equal");
+        if (x.length < degree + 1)
+            throw new IllegalArgumentException("not enough data points for the degree");
         this.degree = degree;
         this.variableName = variableName;
 
