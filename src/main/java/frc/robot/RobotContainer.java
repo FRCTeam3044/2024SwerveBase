@@ -12,6 +12,7 @@ import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -42,6 +44,7 @@ public class RobotContainer {
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   public static final NoteDetection m_noteDetection = new NoteDetection();
+  public static AutoAiming m_autoAiming;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController m_driverController = new CommandXboxController(
@@ -61,6 +64,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    try {
+      m_autoAiming = new AutoAiming();
+    } catch (FileNotFoundException e) {
+      DriverStation.reportError("Unable to load auto aiming data, check that it is in the right path", false);
+      throw new RuntimeException(e);
+    }
 
     m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
   }

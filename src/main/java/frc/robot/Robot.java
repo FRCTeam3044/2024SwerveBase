@@ -44,6 +44,12 @@ public class Robot extends LoggedRobot {
     // Start AdvantageKit logger
     Logger.start();
     m_robotContainer = new RobotContainer();
+
+    RobotContainer.m_autoAiming.addData(4, 50);
+    RobotContainer.m_autoAiming.addData(5, 60);
+    RobotContainer.m_autoAiming.addData(6, 70);
+    System.out.println(RobotContainer.m_autoAiming.getAngle(4));
+    System.out.println(RobotContainer.m_autoAiming.getAngle(4.5));
     OxConfig.initialize();
   }
 
