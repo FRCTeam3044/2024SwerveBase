@@ -11,7 +11,7 @@ public class ElevatorSetAngleForAmpCommand extends Command {
         m_elevator = elevator;
         addRequirements(m_elevator);
     }
-    
+
     @Override
     public boolean isFinished() {
         return false;
@@ -19,6 +19,7 @@ public class ElevatorSetAngleForAmpCommand extends Command {
 
     @Override
     public void execute() {
-        m_elevator.ampPidHandler();
+        m_elevator.setToAmpMode();
+        m_elevator.pidHandler();
     }
 }
