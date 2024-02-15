@@ -30,8 +30,8 @@ public class TargetRotationController {
      * Calculate predicted rotational error in t seconds
      * e2 = atan2(predicted.x - speakerX, predicted.y - speakerY) - rot
      * Calculate change in error
-     * Δe = e2 - e1
-     * Rotation Output: fb(e1) - kF * (Δe/t)
+     * deltae = e2 - e1
+     * Rotation Output: fb(e1) - kF * (deltae/t)
      */
 
     /**
