@@ -7,6 +7,7 @@ import frc.robot.Constants.CANConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -29,10 +30,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     boolean isShooterRunning = false;
 
-    private SparkPIDController pidController;
+    public static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
+    private SparkPIDController topPidController;
+    private SparkPIDController bottomPidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
     double maxVel = 0;
     double maxAccel = 0;
+    public static final int kCPR = 8192;
+
+    private RelativeEncoder m_topAlternateEncoder;
+    private RelativeEncoder m_bottomAlternateEncoder;
 
     public void setShooterRPM(double motorRPM) {
 
@@ -64,6 +71,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public ShooterSubsystem() {
+
+        m_topAlternateEncoder = topMotor.getAlternateEncoder(kAltEncType, kCPR);
+        m_bottomAlternateEncoder = bottomMotor.getAlternateEncoder(kAltEncType, kCPR);
+
         // PID Coedficients
         kP = 0.1;
         kI = 0;
@@ -74,28 +85,50 @@ public class ShooterSubsystem extends SubsystemBase {
         kMinOutput = -1;
         maxRPM = 5700;
 
-        pidController = topMotor.getPIDController();
+        topPidController = topMotor.getPIDController();
 
-        pidController = topMotor.getPIDController();
-        pidController = bottomMotor.getPIDController();
+        bottomPidController = bottomMotor.getPIDController();
 
-        pidController.setP(kP);
-        pidController.setI(kI);
-        pidController.setD(kD);
-        pidController.setIZone(kIz);
-        pidController.setFF(kFF);
-        pidController.setOutputRange(kMinOutput, kMaxOutput);
-        pidController.setSmartMotionMaxVelocity(maxVel, 0);
-        pidController.setSmartMotionMaxAccel(maxAccel, 0);
+        topPidController.setP(kP);
+        topPidController.setI(kI);
+        topPidController.setD(kD);
+        topPidController.setIZone(kIz);
+        topPidController.setFF(kFF);
+        topPidController.setOutputRange(kMinOutput, kMaxOutput);
+        topPidController.setSmartMotionMaxVelocity(maxVel, 0);
+        topPidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        topPidController.setFeedbackDevice(m_topAlternateEncoder);
+        // ----------------------------------------------------------------------------------
+        bottomPidController.setP(kP);
+        bottomPidController.setI(kI);
+        bottomPidController.setD(kD);
+        bottomPidController.setIZone(kIz);
+        bottomPidController.setFF(kFF);
+        bottomPidController.setOutputRange(kMinOutput, kMaxOutput);
+        bottomPidController.setSmartMotionMaxVelocity(maxVel, 0);
+        bottomPidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
-    public void speakerPidHandler(double speed) {
+    public void topSpeakerPidHandler(double speed) {
         double rotations = speed;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        topPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 
-    public void ampPidHandler(double speed) {
+    public void topAmpPidHandler(double speed) {
         double rotations = speed;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+        topPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void bottomSpeakerPidHandler(double speed) {
+        double rotations = speed;
+        bottomPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void bottomAmpPidHandler(double speed) {
+        double rotations = speed;
+        bottomPidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     }
 }

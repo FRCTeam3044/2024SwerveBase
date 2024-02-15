@@ -17,7 +17,7 @@ public class AmpShooterCommand extends Command {
     public void initialize() {
         ampAngle = m_shooter.speakerRPM;
     }
-    
+
     @Override
     public boolean isFinished() {
         return false;
@@ -25,6 +25,7 @@ public class AmpShooterCommand extends Command {
 
     @Override
     public void execute() {
-        m_shooter.speakerPidHandler(ampAngle);
+        m_shooter.topSpeakerPidHandler(ampAngle);
+        m_shooter.bottomSpeakerPidHandler(-ampAngle);
     }
 }
