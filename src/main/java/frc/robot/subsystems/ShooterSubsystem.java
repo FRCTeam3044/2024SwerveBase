@@ -56,13 +56,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
-    private void stopShooter() {
+    public void stopShooter() {
         topMotor.set(0);
         bottomMotor.set(0);
     }
 
     public void consumeShooterInput(boolean isTheAButtonPressed) {
+        motorRPM = motorRPM * ShooterConstants.kShooterManualSpeed.get();
+
         if (isTheAButtonPressed) {
+            setShooterRPM(motorRPM);
             handlePID();
         } else {
             stopShooter();

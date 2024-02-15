@@ -228,6 +228,7 @@ public final class Constants {
         public static final class ShooterConstants {
                 public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
                                 100.0, "Shooter Tolerance RPM");
+                public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0, "Shooter Manual Control Speed");
         }
 
         public static final class ElevatorConstants {
@@ -282,5 +283,17 @@ public final class Constants {
                                 0.1, "Statemachine Debounce");
                 public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
                                 3.0, "Note Detection Distance");
+        }
+
+        public static final class ClimberConstants {
+                public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(1.0, "Climber Manual Control Speed");
+        }
+
+        public static final class TransitConstants {
+                public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
+        }
+
+        public static final class IntakeConstants {
+                public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
         }
 }
