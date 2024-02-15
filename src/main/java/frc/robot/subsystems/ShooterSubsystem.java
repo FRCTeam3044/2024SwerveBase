@@ -71,6 +71,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public ShooterSubsystem() {
+        topMotor.restoreFactoryDefaults();
+        bottomMotor.restoreFactoryDefaults();
 
         m_topAlternateEncoder = topMotor.getAlternateEncoder(kAltEncType, kCPR);
         m_bottomAlternateEncoder = bottomMotor.getAlternateEncoder(kAltEncType, kCPR);

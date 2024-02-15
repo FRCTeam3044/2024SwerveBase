@@ -34,6 +34,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double intakeAngle = 0;
 
     public ElevatorSubsystem() {
+        elevatorMotorOne.restoreFactoryDefaults();
+        elevatorMotorTwo.restoreFactoryDefaults();
+
         // PID coefficients
         kP = 0.1;
         kI = 0;
@@ -64,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-        
+
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
