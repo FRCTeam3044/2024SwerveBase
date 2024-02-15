@@ -88,9 +88,6 @@ public final class Constants {
                                 "Field Relative");
                 public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true,
                                 "Rate Limit");
-
-                public static final ConfigurableParameter<Double> kStatemachineDebounce = new ConfigurableParameter<Double>(
-                                0.1, "Statemachine Debounce");
         }
 
         public static final class ModuleConstants {
@@ -277,5 +274,12 @@ public final class Constants {
                                 { 1.82, 0.91 },
                                 { 1.82, -0.92 }
                 };
+        }
+
+        public static final class StateMachineConstants {
+                public static final ConfigurableParameter<Double> kDebounce = new ConfigurableParameter<Double>(
+                                0.1, "Statemachine Debounce");
+                public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
+                                3.0, "Note Detection Distance");
         }
 }

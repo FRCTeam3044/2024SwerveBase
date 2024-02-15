@@ -7,12 +7,13 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PathfindingTargets;
+import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
@@ -54,31 +55,37 @@ public class StateMachine {
     private ShooterSubsystem m_shooterSubystem;
     private ElevatorSubsystem m_elevatorSubsystem;
     private TransitSubsystem m_transitSubsystem;
-    private ClimberSubsystem m_climberSubsystem;
     private IntakeSubsystem m_intakeSubsystem;
     private NoteDetection m_noteDetection;
     private DriveSubsystem m_driveSubsystem;
 
-    private Debouncer m_noteDetectionDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+    private Debouncer m_intakeLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_intakeLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+    private Debouncer m_transitLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_transitLimitDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+    private Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_shooterSpeedDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
-            DebounceType.kBoth);
-    private Debouncer m_elevatorAngleDebouncer = new Debouncer(DriveConstants.kStatemachineDebounce.get(),
+    private Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
 
     private Command currentDesiredCommand = getCommandForState(currentState);
 
+    /**
+     * Creates a new StateMachine
+     * 
+     * @param shooterSubsystem  The shooter subsystem
+     * @param elevatorSubsystem The elevator subsystem
+     * @param transitSubsystem  The transit subsystem
+     * @param intakeSubsystem   The intake subsystem
+     * @param noteDetection     The note detection subsystem
+     * @param driveSubsystem    The drive subsystem
+     */
     public StateMachine(ShooterSubsystem shooterSubsystem, ElevatorSubsystem elevatorSubsystem,
-            TransitSubsystem transitSubsystem, ClimberSubsystem climberSubsystem, IntakeSubsystem intakeSubsystem,
+            TransitSubsystem transitSubsystem, IntakeSubsystem intakeSubsystem,
             NoteDetection noteDetection, DriveSubsystem driveSubsystem) {
         m_shooterSubystem = shooterSubsystem;
         m_elevatorSubsystem = elevatorSubsystem;
         m_transitSubsystem = transitSubsystem;
-        m_climberSubsystem = climberSubsystem;
         m_intakeSubsystem = intakeSubsystem;
         m_noteDetection = noteDetection;
         m_driveSubsystem = driveSubsystem;
@@ -87,13 +94,22 @@ public class StateMachine {
     public void periodic() {
         switch (currentState) {
             case NO_NOTE:
-                // TODO: This will likely need to change when alex refactors the note detector
-                if (m_noteDetectionDebouncer.calculate(m_noteDetection.hasNote)) {
-                    currentState = State.TARGETING_NOTE;
-                    currentDesiredCommand = getCommandForState(currentState);
+                if (m_noteDetection.hasNote) {
+                    double distance = m_noteDetection.getClosestNoteDistance();
+                    if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
+                        currentState = State.TARGETING_NOTE;
+                        currentDesiredCommand = getCommandForState(currentState);
+                    }
                 }
                 break;
             case TARGETING_NOTE:
+                /*
+                 * TODO: When alex finishes the note detection, we will need a clean way to
+                 * handle resetting the state General plan for that: - If the note is no longer
+                 * detected, reset the state to NO_NOTE, and let it decide if its close enough
+                 * to a note to pickup. Rumble the controller to let the driver know that the
+                 * robot is no longer targeting a note.
+                 */
                 if (m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch())) {
                     currentState = State.OWNS_NOTE;
                     currentDesiredCommand = getCommandForState(currentState);
