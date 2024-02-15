@@ -59,19 +59,10 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
      *                                  equal
      */
     public PolynomialRegression(double[] x, double[] y, int degree, String variableName) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0ca98f8 (Auto aiming data collection)
         if (x.length != y.length)
             throw new IllegalArgumentException("array lengths are not equal");
         if (x.length < degree + 1)
             throw new IllegalArgumentException("not enough data points for the degree");
-<<<<<<< HEAD
-=======
->>>>>>> d303b4a (Start Auto aiming)
-=======
->>>>>>> 0ca98f8 (Auto aiming data collection)
         this.degree = degree;
         this.variableName = variableName;
 
@@ -229,25 +220,4 @@ public class PolynomialRegression implements Comparable<PolynomialRegression> {
         }
         return 0;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-    /**
-     * Unit tests the {@code PolynomialRegression} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        double[] x = { 10, 20, 40, 80, 160, 200 };
-        double[] y = { 100, 350, 1500, 6700, 20160, 40000 };
-        PolynomialRegression regression = new PolynomialRegression(x, y, 3);
-
-        // Use System.out.println() so that it works with either stdlib.jar or algs4.jar
-        // version
-        System.out.println(regression);
-    }
->>>>>>> d303b4a (Start Auto aiming)
-=======
->>>>>>> f4108ca (Start auto aiming calculator)
 }
