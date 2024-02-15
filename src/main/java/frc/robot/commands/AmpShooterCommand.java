@@ -18,6 +18,7 @@ public class AmpShooterCommand extends Command {
 
     @Override
     public void execute() {
-        m_shooter.speakerPidHandler();
+        m_shooter.ampSpeed();
+        m_shooter.handlePID();
     }
 }

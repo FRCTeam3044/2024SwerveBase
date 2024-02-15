@@ -18,6 +18,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
 
+    public IntakeSubsystem() {
+        intakeTopMotor.restoreFactoryDefaults();
+        intakeBottomMotor.restoreFactoryDefaults();
+    }
+
     // Use this to run intake
     public void runIntake() {
         intakeTopMotor.set(1);

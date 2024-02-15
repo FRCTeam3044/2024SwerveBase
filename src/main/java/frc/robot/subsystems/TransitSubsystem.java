@@ -20,6 +20,10 @@ public class TransitSubsystem extends SubsystemBase {
     // change this to change the speed of the motor
     double motorSpeed = 0;
 
+    public TransitSubsystem() {
+        transitMotor.configFactoryDefault();
+    }
+
     // Use this to get the note from the intake system
     public void getNoteFromIntake() {
 
