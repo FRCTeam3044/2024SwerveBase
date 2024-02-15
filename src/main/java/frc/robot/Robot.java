@@ -10,6 +10,10 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -26,7 +30,8 @@ import me.nabdev.oxconfig.OxConfig;
  * build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
+  private static Robot instance;
   private Command m_autonomousCommand;
   public RobotContainer m_robotContainer;
 
@@ -37,6 +42,8 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+    instance = this;
+    addPeriodic(() -> SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime()), 1.0);
     PathfindingConstants.initialize();
 
     Logger.addDataReceiver(new NT4Publisher());
@@ -59,6 +66,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
+    double startTime = Timer.getFPGATimestamp();
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -70,6 +78,11 @@ public class Robot extends LoggedRobot {
     m_robotContainer.m_visionSubsystem.periodic();
     RobotContainer.m_noteDetection.periodic();
     SmartDashboard.putData(CommandScheduler.getInstance());
+
+    SmartDashboard.putNumber("RIOInputVoltage", RobotController.getInputVoltage());
+    SmartDashboard.putNumber("RIOCANUtil", RobotController.getCANStatus().percentBusUtilization * 100);
+    SmartDashboard.putNumber("RobotPeriodicMS", (Timer.getFPGATimestamp() - startTime) * 1000);
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -153,5 +166,15 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
+  }
+
+  public static void addPeriodicCallback(Runnable callback, double periodSeconds) {
+    // Don't add the callback if the instance is null. This is pretty much just to make unit tests
+    // work
+    if (instance == null) {
+      return;
+    }
+
+    instance.addPeriodic(callback, periodSeconds);
   }
 }

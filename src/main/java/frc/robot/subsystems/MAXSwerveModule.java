@@ -9,6 +9,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
@@ -19,6 +21,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Robot;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class MAXSwerveModule {
@@ -132,6 +135,14 @@ public class MAXSwerveModule {
     }
 
     m_drivingEncoder.setPosition(0);
+
+    // Robot.addPeriodicCallback(() -> {
+    //   if (RobotBase.isReal()) {
+    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/drive", m_drivingSparkMax.getMotorTemperature());
+    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/turn", m_turningSparkMax.getMotorTemperature());
+    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/turnAngle", m_turningEncoder.getPosition());
+    //   }
+    // }, 0.5);
 
     if (RobotBase.isSimulation()) {
       // The rev physics sim will handle changing the encoder readings.
