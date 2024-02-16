@@ -6,6 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ElevatorManualControlCommand;
+import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
+import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
@@ -40,81 +45,86 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-  public static final NoteDetection m_noteDetection = new NoteDetection();
-  public static AutoAiming m_autoAiming;
+    // The robot's subsystems and commands are defined here...
+    public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+    public static final NoteDetection m_noteDetection = new NoteDetection();
+    public static AutoAiming m_autoAiming;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  public static final CommandXboxController m_driverController = new CommandXboxController(
-      OIConstants.kDriverControllerPort);
-  public static final CommandXboxController m_operatorController = new CommandXboxController(
-      OIConstants.kOperatorControllerPort);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    public static final CommandXboxController m_driverController = new CommandXboxController(
+            OIConstants.kDriverControllerPort);
+    public static final CommandXboxController m_operatorController = new CommandXboxController(
+            OIConstants.kOperatorControllerPort);
 
-  public final ClimberSubsystem climber = new ClimberSubsystem();
-  public final IntakeSubsystem intake = new IntakeSubsystem();
-  public final TransitSubsystem transit = new TransitSubsystem();
-  public final ElevatorSubsystem elevator = new ElevatorSubsystem();
-  public final ShooterSubsystem shooter = new ShooterSubsystem();
+    public static final ClimberSubsystem climber = new ClimberSubsystem();
+    public static final IntakeSubsystem intake = new IntakeSubsystem();
+    public static final TransitSubsystem transit = new TransitSubsystem();
+    public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
+    public static final ShooterSubsystem shooter = new ShooterSubsystem();
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-    try {
-      m_autoAiming = new AutoAiming();
-    } catch (FileNotFoundException e) {
-      DriverStation.reportError("Unable to load auto aiming data, check that it is in the right path", false);
-      throw new RuntimeException(e);
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the trigger bindings
+        configureBindings();
+        try {
+            m_autoAiming = new AutoAiming();
+        } catch (FileNotFoundException e) {
+            DriverStation.reportError("Unable to load auto aiming data, check that it is in the right path", false);
+            throw new RuntimeException(e);
+        }
+
+        m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
+        intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
+        climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
+        transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
+        elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator, m_driverController.getHID()));
+        shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
     }
 
-    m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
-  }
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        m_driverController.rightTrigger().whileTrue(new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
+        m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    m_driverController.rightTrigger().whileTrue(new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
-    m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
-
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-    waypoints.add(new Pose2d(0, 1, new Rotation2d()));
-    waypoints.add(new Pose2d(1, 1, new Rotation2d()));
-    waypoints.add(new Pose2d(1, 0, new Rotation2d()));
-    waypoints.add(new Pose2d(0, 0, new Rotation2d()));
-    // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
-    // m_robotDrive);
-    try {
-      AutoCommandFactory.registerCommands();
-      Command auto = AutoParser.loadAuto("exampleAuto.json");
-      return auto;
-    } catch (FileNotFoundException e) {
-      System.out.println("Couldn't find file");
-      return null;
     }
-  }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        waypoints.add(new Pose2d(0, 1, new Rotation2d()));
+        waypoints.add(new Pose2d(1, 1, new Rotation2d()));
+        waypoints.add(new Pose2d(1, 0, new Rotation2d()));
+        waypoints.add(new Pose2d(0, 0, new Rotation2d()));
+        // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
+        // m_robotDrive);
+        try {
+            AutoCommandFactory.registerCommands();
+            Command auto = AutoParser.loadAuto("exampleAuto.json");
+            return auto;
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't find file");
+            return null;
+        }
+    }
 
 }

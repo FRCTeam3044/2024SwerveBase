@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.TransitConstants;
 
 public class TransitSubsystem extends SubsystemBase {
 
@@ -40,7 +41,7 @@ public class TransitSubsystem extends SubsystemBase {
     }
 
     public void runTransit() {
-        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
+        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed * TransitConstants.kTransitManualSpeed.get());
     }
 
     private void stopTransit() {

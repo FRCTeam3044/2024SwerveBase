@@ -266,20 +266,6 @@ public final class Constants {
         }
     }
 
-    public static final class NeoMotorConstants {
-        public static final double kFreeSpeedRpm = 5676;
-    }
-
-    public static final class ShooterConstants {
-        public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
-                100.0, "Shooter Tolerance RPM");
-    }
-
-    public static final class ElevatorConstants {
-        public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
-                10.0, "Elevator Tolerance");
-    }
-
     public static final class VisionConstants {
         // TODO: Update these values
         public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
@@ -306,6 +292,31 @@ public final class Constants {
         };
     }
 
+    public static final class StateMachineConstants {
+        public static final ConfigurableParameter<Double> kDebounce = new ConfigurableParameter<Double>(
+                0.1, "Statemachine Debounce");
+        public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
+                3.0, "Note Detection Distance");
+    }
+
+    public static final class NeoMotorConstants {
+        public static final double kFreeSpeedRpm = 5676;
+    }
+
+    public static final class ShooterConstants {
+        public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
+                100.0, "Shooter Tolerance RPM");
+        public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0,
+                "Shooter Manual Control Speed");
+    }
+
+    public static final class ElevatorConstants {
+        public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
+                10.0, "Elevator Tolerance");
+        public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
+                "Elevator Manual Control Speed");
+    }
+
     public static final class DetectorConstants {
         public static double[][] cameraPointsArray = {
                 { 621, 538 },
@@ -321,10 +332,18 @@ public final class Constants {
         };
     }
 
-    public static final class StateMachineConstants {
-        public static final ConfigurableParameter<Double> kDebounce = new ConfigurableParameter<Double>(
-                0.1, "Statemachine Debounce");
-        public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
-                3.0, "Note Detection Distance");
+    public static final class ClimberConstants {
+        public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(1.0,
+                "Climber Manual Control Speed");
+    }
+
+    public static final class TransitConstants {
+        public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(1.0,
+                "Transit Manual Control Speed");
+    }
+
+    public static final class IntakeConstants {
+        public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0,
+                "Transit Manual Control Speed");
     }
 }
