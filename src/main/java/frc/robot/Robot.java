@@ -124,14 +124,6 @@ public class Robot extends LoggedRobot {
           RobotContainer.m_driverController)).schedule();
       lastClick = click;
     }
-    m_robotContainer.climber.leftArm(0);
-    m_robotContainer.climber.rightArm(0);
-
-    boolean isBButtonPressed = RobotContainer.m_operatorController.getHID().getBButtonPressed();
-
-    m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
-
-    RobotContainer.m_operatorController.getHID().getLeftY();
   }
 
   @Override
