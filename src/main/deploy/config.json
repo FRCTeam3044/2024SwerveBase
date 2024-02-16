@@ -43,6 +43,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -98,6 +102,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -223,6 +231,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -278,6 +290,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -402,6 +418,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -458,6 +478,10 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "Field Relative": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -500,7 +524,7 @@
         "rearLeftModule/driving/Max": "1.0",
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "20"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
@@ -581,6 +605,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -636,6 +664,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",

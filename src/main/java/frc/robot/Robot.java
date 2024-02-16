@@ -115,7 +115,9 @@ public class Robot extends LoggedRobot {
 
         lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
         RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
-        RobotContainer.stateMachine.getDesiredCommand().schedule();
+        Command desiredCommand = RobotContainer.stateMachine.getDesiredCommand();
+        if (desiredCommand != null)
+            desiredCommand.schedule();
     }
 
     /** This function is called periodically during operator control. */

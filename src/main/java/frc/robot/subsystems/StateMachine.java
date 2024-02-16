@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
@@ -19,7 +19,8 @@ import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
-import me.nabdev.pathfinding.structures.Obstacle;
+import frc.robot.utils.PathfindingDebugUtils;
+import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
@@ -186,7 +187,7 @@ public class StateMachine extends SubsystemBase {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection);
         IntakeRunMotorsCommand intakeRunMotorsCommand = new IntakeRunMotorsCommand(m_intakeSubsystem);
-        return new ParallelCommandGroup(goToNoteCommand, intakeRunMotorsCommand);
+        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
     }
 
     private Command getLockinNoteCommand() {
@@ -195,7 +196,7 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getReadyShooterCommand() {
-        Obstacle shootingZone = AutoTargetUtils.getShootingZone();
+        ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
         if (shootingZone == null) {
             return null;
         }
@@ -206,14 +207,15 @@ public class StateMachine extends SubsystemBase {
         if (shootingZone.isInside(robotPos)) {
             getToPoint = new GoToAndTrackPointCommand(m_driveSubsystem.getPose(), trackPoint, m_driveSubsystem);
         } else {
-            Vertex closestPoint = shootingZone.calculateNearestPoint(robotPos);
+            Vertex closestPoint = shootingZone.getClosestPoint(robotPos);
+            PathfindingDebugUtils.drawPoint("closet point", closestPoint);
             Pose2d closestPose = new Pose2d(closestPoint.x, closestPoint.y, new Rotation2d());
             getToPoint = new GoToAndTrackPointCommand(closestPose, trackPoint, m_driveSubsystem);
         }
 
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
 
-        return new ParallelCommandGroup(getToPoint, autoAimCommnd);
+        return Commands.parallel(getToPoint, autoAimCommnd);
     }
 
     private Command getShootCommand() {
@@ -222,7 +224,7 @@ public class StateMachine extends SubsystemBase {
                 AutoTargetUtils.getShootingTarget());
         DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
-        return new ParallelCommandGroup(autoAimCommnd, trackPointCommand, driverShootCommand);
+        return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
     }
 
     public State getState() {

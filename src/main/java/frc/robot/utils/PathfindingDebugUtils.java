@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import me.nabdev.pathfinding.structures.Edge;
+import me.nabdev.pathfinding.structures.Obstacle;
+import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 /**
@@ -41,6 +43,10 @@ public class PathfindingDebugUtils {
      * @param vertices The list of vertices to get the vertices from
      */
     public static void drawLines(String key, ArrayList<Edge> edges, ArrayList<Vertex> vertices) {
+        SmartDashboard.putNumberArray(key, getLines(edges, vertices));
+    }
+
+    private static double[] getLines(ArrayList<Edge> edges, ArrayList<Vertex> vertices) {
         double[] arr = new double[edges.size() * 6];
         for (int i = 0; i < edges.size(); i++) {
             Edge e = edges.get(i);
@@ -51,7 +57,7 @@ public class PathfindingDebugUtils {
             arr[i * 6 + 4] = vertices.get(e.getVertexTwo()).y;
             arr[i * 6 + 5] = 0;
         }
-        SmartDashboard.putNumberArray(key, arr);
+        return arr;
     }
 
     /**
@@ -77,6 +83,26 @@ public class PathfindingDebugUtils {
             arr[i * 3] = v.x;
             arr[i * 3 + 1] = v.y;
             arr[i * 3 + 2] = 0;
+        }
+        SmartDashboard.putNumberArray(key, arr);
+    }
+
+    public static void drawObstacle(String key, Obstacle o) {
+        drawLines(key, o.getEdges(), o.getMasterVertices());
+    }
+
+    public static void drawObstacle(String key, ObstacleGroup o) {
+        ArrayList<double[]> arrs = new ArrayList<>();
+        for (Obstacle obstacle : o.getObstacles()) {
+            arrs.add(getLines(obstacle.getEdges(), obstacle.getMasterVertices()));
+        }
+        double[] arr = new double[arrs.stream().mapToInt(a -> a.length).sum()];
+        int index = 0;
+        for (double[] a : arrs) {
+            for (double d : a) {
+                arr[index] = d;
+                index++;
+            }
         }
         SmartDashboard.putNumberArray(key, arr);
     }

@@ -4,18 +4,12 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -28,10 +22,6 @@ import edu.wpi.first.math.util.Units;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
-import me.nabdev.pathfinding.modifiers.ModifierCollection;
-import me.nabdev.pathfinding.structures.Edge;
-import me.nabdev.pathfinding.structures.Obstacle;
-import me.nabdev.pathfinding.structures.Vertex;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -220,50 +210,6 @@ public final class Constants {
         public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(0.1,
                 "Rotation FF");
 
-    }
-
-    // TODO: Get real values for these
-    public static final class PathfindingTargets {
-        public static final Pose2d RED_SOURCE = new Pose2d(1, 1, new Rotation2d(0));
-        public static final Pose2d BLUE_SOURCE = new Pose2d(1, 15.5, new Rotation2d(0));
-
-        public static final Obstacle BLUE_SHOOTING_ZONE;
-        public static final Obstacle RED_SHOOTING_ZONE;
-
-        public static final Pose2d BLUE_SHOOTING_TARGET = new Pose2d(0.1, 5.5478, new Rotation2d());
-        public static final Pose2d RED_SHOOTING_TARGET = new Pose2d(16.45, 5.5478, new Rotation2d());
-
-        static {
-            ArrayList<Vertex> blueShootingVertices = new ArrayList<Vertex>();
-            ArrayList<Edge> blueShootingEdges = new ArrayList<Edge>();
-            blueShootingVertices.add(new Vertex(3, 3));
-            blueShootingVertices.add(new Vertex(3, 7));
-            blueShootingVertices.add(new Vertex(1, 7));
-            blueShootingVertices.add(new Vertex(1, 3));
-            blueShootingEdges.add(new Edge(0, 1));
-            blueShootingEdges.add(new Edge(1, 2));
-            blueShootingEdges.add(new Edge(2, 3));
-            blueShootingEdges.add(new Edge(3, 0));
-
-            BLUE_SHOOTING_ZONE = new Obstacle(blueShootingVertices, blueShootingEdges, "Blue Shooting Zone",
-                    new ModifierCollection(new JSONArray()));
-            BLUE_SHOOTING_ZONE.initialize(blueShootingVertices);
-
-            ArrayList<Vertex> redShootingVertices = new ArrayList<Vertex>();
-            ArrayList<Edge> redShootingEdges = new ArrayList<Edge>();
-            redShootingVertices.add(new Vertex(13.55, 3));
-            redShootingVertices.add(new Vertex(13.55, 7));
-            redShootingVertices.add(new Vertex(15.55, 7));
-            redShootingVertices.add(new Vertex(15.55, 3));
-            redShootingEdges.add(new Edge(0, 1));
-            redShootingEdges.add(new Edge(1, 2));
-            redShootingEdges.add(new Edge(2, 3));
-            redShootingEdges.add(new Edge(3, 0));
-
-            RED_SHOOTING_ZONE = new Obstacle(redShootingVertices, redShootingEdges, "Red Shooting Zone",
-                    new ModifierCollection(new JSONArray()));
-            RED_SHOOTING_ZONE.initialize(redShootingVertices);
-        }
     }
 
     public static final class VisionConstants {

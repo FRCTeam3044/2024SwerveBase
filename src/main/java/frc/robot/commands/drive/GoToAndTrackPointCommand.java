@@ -57,8 +57,8 @@ public class GoToAndTrackPointCommand extends Command {
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(0.5,
-                    0.5);
+            TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+                    PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
             Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
