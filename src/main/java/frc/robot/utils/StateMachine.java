@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
+import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
@@ -60,7 +61,7 @@ public class StateMachine {
 
     private Debouncer m_intakeLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_transitLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+    public Debouncer m_transitLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
     private Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
@@ -123,7 +124,9 @@ public class StateMachine {
             case NOTE_LOADED:
                 boolean shooterAtSpeed = m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed());
                 boolean shooterAtAngle = m_elevatorAngleDebouncer.calculate(m_elevatorSubsystem.elevatorAtAngle());
-                if (shooterAtSpeed && shooterAtAngle) {
+                boolean inShootingZone = AutoTargetUtils.getShootingZone()
+                        .isInside(new Vertex(m_driveSubsystem.getPose()));
+                if (shooterAtSpeed && shooterAtAngle && inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     currentDesiredCommand = getCommandForState(currentState);
                 }
@@ -157,9 +160,8 @@ public class StateMachine {
                 // Start Aiming shooter and speeding up wheels
                 return getReadyShooterCommand();
             case READY_TO_SHOOT:
-                // Feed note into shooter and shoot! (while still aiming)
-                // TODO: Auto Aiming
-                return null;
+                // Feed note into shooter and shoot when driver says! (while still aiming)
+                return getShootCommand();
             default:
                 // Do nothing
                 // TODO: Null Command handling
@@ -194,7 +196,7 @@ public class StateMachine {
         Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
         Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
         if (shootingZone.isInside(robotPos)) {
-            getToPoint = new TrackPointCommand(m_driveSubsystem, trackPoint);
+            getToPoint = new GoToAndTrackPointCommand(m_driveSubsystem.getPose(), trackPoint, m_driveSubsystem);
         } else {
             Vertex closestPoint = shootingZone.calculateNearestPoint(robotPos);
             Pose2d closestPose = new Pose2d(closestPoint.x, closestPoint.y, new Rotation2d());
@@ -204,6 +206,15 @@ public class StateMachine {
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
 
         return new ParallelCommandGroup(getToPoint, autoAimCommnd);
+    }
+
+    private Command getShootCommand() {
+        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
+                AutoTargetUtils.getShootingTarget());
+        DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubystem, m_transitSubsystem,
+                RobotContainer.m_operatorController);
+        return new ParallelCommandGroup(autoAimCommnd, trackPointCommand, driverShootCommand);
     }
 
     public State getState() {
