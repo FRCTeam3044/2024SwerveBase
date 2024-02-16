@@ -78,6 +78,9 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public boolean isFinished() {
+        if (m_followCommand == null) {
+            return false;
+        }
         return m_followCommand.isFinished();
     }
 

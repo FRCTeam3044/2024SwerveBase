@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -118,11 +119,15 @@ public class Robot extends LoggedRobot {
         Command desiredCommand = RobotContainer.stateMachine.getDesiredCommand();
         if (desiredCommand != null)
             desiredCommand.schedule();
+
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
     }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
+
         double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
         if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
             (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()),

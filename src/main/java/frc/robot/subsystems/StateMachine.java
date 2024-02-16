@@ -207,7 +207,7 @@ public class StateMachine extends SubsystemBase {
         if (shootingZone.isInside(robotPos)) {
             getToPoint = new GoToAndTrackPointCommand(m_driveSubsystem.getPose(), trackPoint, m_driveSubsystem);
         } else {
-            Vertex closestPoint = shootingZone.getClosestPoint(robotPos);
+            Vertex closestPoint = shootingZone.calculateNearestPoint(robotPos);
             PathfindingDebugUtils.drawPoint("closet point", closestPoint);
             Pose2d closestPose = new Pose2d(closestPoint.x, closestPoint.y, new Rotation2d());
             getToPoint = new GoToAndTrackPointCommand(closestPose, trackPoint, m_driveSubsystem);

@@ -5,6 +5,7 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import me.nabdev.pathfinding.structures.Obstacle;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
@@ -52,6 +53,9 @@ public class AutoTargetUtils {
     public static Pose2d getShootingTarget() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (!alliance.isPresent()) {
+            if (RobotBase.isSimulation()) {
+                return RED_SHOOTING_TARGET;
+            }
             return null;
         }
         if (alliance.get() == Alliance.Red) {
@@ -64,6 +68,9 @@ public class AutoTargetUtils {
     public static ObstacleGroup getShootingZone() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (!alliance.isPresent()) {
+            if (RobotBase.isSimulation()) {
+                return RED_SHOOTING_ZONE;
+            }
             return null;
         }
         if (alliance.get() == Alliance.Red) {
@@ -74,16 +81,17 @@ public class AutoTargetUtils {
     }
 
     public static Pose2d getSource() {
-        Pose2d target;
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (!alliance.isPresent()) {
+            if (RobotBase.isSimulation()) {
+                return RED_SOURCE;
+            }
             return null;
         }
         if (alliance.get() == Alliance.Red) {
-            target = RED_SOURCE;
+            return RED_SOURCE;
         } else {
-            target = BLUE_SOURCE;
+            return BLUE_SOURCE;
         }
-        return target;
     }
 }
