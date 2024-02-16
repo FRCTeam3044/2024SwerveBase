@@ -1,28 +1,29 @@
 package frc.robot.utils;
 
-import java.util.Optional;
-
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.PathfindingTargets;
 import frc.robot.Constants.StateMachineConstants;
+import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
+import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
+import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
+import me.nabdev.pathfinding.structures.Obstacle;
+import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine {
     public enum State {
@@ -155,7 +156,6 @@ public class StateMachine {
             case NOTE_LOADED:
                 // Start Aiming shooter and speeding up wheels
                 return getReadyShooterCommand();
-                return null;
             case READY_TO_SHOOT:
                 // Feed note into shooter and shoot! (while still aiming)
                 // TODO: Auto Aiming
@@ -168,16 +168,7 @@ public class StateMachine {
     }
 
     private Command getGoToSourceCommand() {
-        Pose2d target;
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (!alliance.isPresent()) {
-            return null;
-        }
-        if (alliance.get() == Alliance.Red) {
-            target = PathfindingTargets.RED_SOURCE;
-        } else {
-            target = PathfindingTargets.BLUE_SOURCE;
-        }
+        Pose2d target = AutoTargetUtils.getSource();
         return new GoToPointDriverRotCommand(target, m_driveSubsystem, RobotContainer.m_driverController);
     }
 
@@ -193,7 +184,27 @@ public class StateMachine {
         return transitRunMotorCommand;
     }
 
-    
+    private Command getReadyShooterCommand() {
+        Obstacle shootingZone = AutoTargetUtils.getShootingZone();
+        if (shootingZone == null) {
+            return null;
+        }
+
+        Command getToPoint;
+        Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
+        Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
+        if (shootingZone.isInside(robotPos)) {
+            getToPoint = new TrackPointCommand(m_driveSubsystem, trackPoint);
+        } else {
+            Vertex closestPoint = shootingZone.calculateNearestPoint(robotPos);
+            Pose2d closestPose = new Pose2d(closestPoint.x, closestPoint.y, new Rotation2d());
+            getToPoint = new GoToAndTrackPointCommand(closestPose, trackPoint, m_driveSubsystem);
+        }
+
+        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+
+        return new ParallelCommandGroup(getToPoint, autoAimCommnd);
+    }
 
     public State getState() {
         return currentState;
