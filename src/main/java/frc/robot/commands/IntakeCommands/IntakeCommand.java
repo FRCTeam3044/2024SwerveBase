@@ -11,6 +11,7 @@ public class IntakeCommand extends Command {
     public IntakeCommand(IntakeSubsystem intake, XboxController controller) {
         m_intake = intake;
         m_controller = controller;
+        addRequirements(m_intake);
     }
 
     @Override
