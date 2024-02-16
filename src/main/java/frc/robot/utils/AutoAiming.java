@@ -36,7 +36,7 @@ public class AutoAiming {
 
     public double getAngle(double distance) {
         if (runningWithoutData) {
-            DriverStation.reportWarning("Auto aiming running with insufficient data", false);
+            DriverStation.reportWarning("Auto aiming running with insufficient data, generated angles invalid", false);
             return 0;
         }
         return polynomialRegression.predict(distance);
@@ -48,18 +48,18 @@ public class AutoAiming {
      * @param distance
      * @param angle
      */
-    public void addData(double distance, double angle) {
+    public void addData(double distance, double angle, double shooterVelocity, double drivebaseVelocity) {
         if (!isCollecting) {
             return;
         }
         JSONObject point = new JSONObject();
         point.put("distance", distance);
         point.put("angle", angle);
+        point.put("shooterVelocity", shooterVelocity);
+        point.put("drivebaseVelocity", drivebaseVelocity);
         point.put("made", false);
-        // Should be set to true if made has been updated manually
         point.put("reviewed", false);
         data.put(point);
-        updateDataFromJSON();
         try {
             File file = new File(getPath());
             file.createNewFile();

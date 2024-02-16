@@ -30,6 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -62,6 +63,8 @@ public class RobotContainer {
     public static final TransitSubsystem transit = new TransitSubsystem();
     public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
+    public static final StateMachine stateMachine = new StateMachine(shooter, elevator, transit, intake,
+            m_noteDetection, m_robotDrive);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

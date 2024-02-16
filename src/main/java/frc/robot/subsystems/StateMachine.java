@@ -1,4 +1,4 @@
-package frc.robot.utils;
+package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
@@ -17,16 +18,11 @@ import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.drive.TrackPointCommand;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.NoteDetection;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TransitSubsystem;
+import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.structures.Obstacle;
 import me.nabdev.pathfinding.structures.Vertex;
 
-public class StateMachine {
+public class StateMachine extends SubsystemBase {
     public enum State {
         /**
          * Close enough to a note to pickup
@@ -91,6 +87,7 @@ public class StateMachine {
         m_driveSubsystem = driveSubsystem;
     }
 
+    @Override
     public void periodic() {
         switch (currentState) {
             case NO_NOTE:
@@ -143,6 +140,17 @@ public class StateMachine {
         }
 
         SmartDashboard.putString("State", currentState.toString());
+    }
+
+    // TODO: In this case, spit out any notes we may have
+    public void reset() {
+        currentState = State.NO_NOTE;
+        currentDesiredCommand = getCommandForState(currentState);
+    }
+
+    public void forceState(State state) {
+        currentState = state;
+        currentDesiredCommand = getCommandForState(currentState);
     }
 
     private Command getCommandForState(State state) {
