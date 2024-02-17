@@ -8,94 +8,88 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class ControllerRumble {
     public static final ConfigurableParameter<Double> kSmallRumbleIntensity = new ConfigurableParameter<Double>(0.5, "Small intensity Of The Rumble");
     public static final ConfigurableParameter<Double> kLargeRumbleIntensity = new ConfigurableParameter<Double>(1.0, "Large intensity Of The Rumble");
-    public static final ConfigurableParameter<Double> kShortTime = new ConfigurableParameter<Double>(0.1, "This is the time the short rumble takes");
-    public static final ConfigurableParameter<Double> kLongTime = new ConfigurableParameter<Double>(0.5, "This is the time the long rumble takes");
-
-    Timer timer = new Timer();
-
-    public void updatePeriodic() {
-        if (timer.hasElapsed(kShortTime.get())) {
-            driverSmallShort();
-            timer.reset();
-
-        }
-
-        if (timer.hasElapsed(kLongTime.get())) {
-            driverSmallLong();
-            timer.reset();
-        }
-
-        if (timer.hasElapsed(kShortTime.get())) {
-            driverBigShort();
-            timer.reset();
-        }
-
-        if (timer.hasElapsed(kLongTime.get())) {
-            driverBigLong();
-            timer.reset();
-        }
-
-        if (timer.hasElapsed(kShortTime.get())) {
-            operatorBigShort();
-            timer.reset();
-            
-        }
-
-        if (timer.hasElapsed(kLongTime.get())) {
-            operatorSmallShort();
-            timer.reset();
-        }
+    public static final ConfigurableParameter<Double> kShortTime = new ConfigurableParameter<Double>(0.25, "Short Rumble Time");
+    public static final ConfigurableParameter<Double> kLongTime = new ConfigurableParameter<Double>(0.5, "Long Rumble Time");
+    public static final ConfigurableParameter<Double> kWavePeriod = new ConfigurableParameter<>(2.0, "The period of the wave in seconds");
 
 
-        if (timer.hasElapsed(kShortTime.get())) {
-            operatorBigLong();
-            timer.reset();
-            
-        }
+    private static double cancelTime;
 
-        if (timer.hasElapsed(kLongTime.get())) {
-            operatorBigShort();
+    public static Timer timer = new Timer();
+
+    private boolean driverRumbleActive = false;
+    private boolean operatorRumbleActive = false;
+
+    public static void updatePeriodic() {
+        double currentTime = timer.get();
+        double waveIntensity = Math.sin(2 * Math.PI * currentTime / kWavePeriod.get());
+
+        if (timer.hasElapsed(cancelTime)) {
+            RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0);
+            waveIntensity = 0.0;
             timer.reset();
         }
     }
 
-    public void driverSmallShort() {
+    public static void driverWave(double intensity) {
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, intensity * kLargeRumbleIntensity.get());
+
+        cancelTime = kLongTime.get();
+    }
+
+    public static void driverSmallShort() {
         RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
-        timer.start();
+        timer.restart();
+
+        cancelTime = kShortTime.get();
     }
 
-    public void driverSmallLong() {
+    public static void driverSmallLong() {
         RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
-        timer.start();
+        timer.restart();
+
+        cancelTime = kLongTime.get();
     }
 
-    public void operatorSmallShort() {
+    public static void operatorSmallShort() {
+        RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
+        timer.restart();
+
+        cancelTime = kShortTime.get();
+    }
+
+    public static void operatorSmallLong() {
+        RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
+        timer.restart();
+
+        cancelTime = kLongTime.get();
+    }
+
+    public static void driverBigShort() {
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, kLargeRumbleIntensity.get());
+        timer.restart();
+
+        cancelTime = kShortTime.get();
+    }
+
+    public static void driverBigLong() {
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
+        timer.restart();
+
+        cancelTime = kLongTime.get();
+    }
+
+    public static void operatorBigShort() {
         RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kLargeRumbleIntensity.get());
-        timer.start();
+        timer.restart();
+
+        cancelTime = kShortTime.get();
     }
 
-    public void operatorSmallLong() {
+    public static void operatorBigLong() {
         RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kLargeRumbleIntensity.get());
-        timer.start();
-    }
+        timer.restart();
 
-    public void driverBigShort() {
-        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
-        timer.start();
-    }
-
-    public void driverBigLong() {
-        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, kSmallRumbleIntensity.get());
-        timer.start();
-    }
-
-    public void operatorBigShort() {
-        RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kLargeRumbleIntensity.get());
-        timer.start();
-    }
-
-    public void operatorBigLong() {
-        RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, kLargeRumbleIntensity.get());
-        timer.start();
+        cancelTime = kLongTime.get();
     }
 }

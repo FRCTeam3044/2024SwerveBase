@@ -10,11 +10,13 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
+import frc.robot.utils.ControllerRumble;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -70,11 +72,13 @@ public class Robot extends LoggedRobot {
     m_robotContainer.m_visionSubsystem.periodic();
     RobotContainer.m_noteDetection.periodic();
     SmartDashboard.putData(CommandScheduler.getInstance());
+    ControllerRumble.updatePeriodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+
   }
 
   @Override
@@ -112,6 +116,8 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
+    
+
     lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
   }
 
@@ -130,14 +136,20 @@ public class Robot extends LoggedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    ControllerRumble.driverBigLong();
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    if(RobotContainer.m_driverController.getHID().getStartButton()) {
+      ControllerRumble.driverBigLong();
+    } else if(RobotContainer.m_driverController.getHID().getBackButton()) {
+      ControllerRumble.driverWave(1);
+    }
   }
 
-  /** This function is called once when the robot is first started up. */
+  // This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
   }
