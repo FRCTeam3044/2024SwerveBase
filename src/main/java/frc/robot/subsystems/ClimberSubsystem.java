@@ -16,6 +16,11 @@ public class ClimberSubsystem extends SubsystemBase {
     double leftMotorPower = 0;
     double rightMotorPower = 0;
 
+    public ClimberSubsystem() {
+        leftClimberMotor.configFactoryDefault();
+        rightClimberMotor.configFactoryDefault();
+    }
+
     // contorls left arm
     public void leftArm(double moveLeftMotorPower) {
         moveLeftMotorPower = leftMotorPower;

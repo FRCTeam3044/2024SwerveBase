@@ -10,6 +10,8 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -86,7 +88,6 @@ public final class Constants {
                                 "Field Relative");
                 public static final ConfigurableParameter<Boolean> kRateLimit = new ConfigurableParameter<Boolean>(true,
                                 "Rate Limit");
-
         }
 
         public static final class ModuleConstants {
@@ -213,6 +214,13 @@ public final class Constants {
 
         }
 
+        // TODO: Get real values for these
+        public static final class PathfindingTargets {
+                public static final Pose2d RED_SOURCE = new Pose2d(1, 1, new Rotation2d(0));
+                public static final Pose2d BLUE_SOURCE = new Pose2d(1, 15.5, new Rotation2d(0));
+
+        }
+
         public static final class NeoMotorConstants {
                 public static final double kFreeSpeedRpm = 5676;
         }
@@ -223,6 +231,18 @@ public final class Constants {
 
         public static final class AutoCheckConstants {
                 public static final int TransitTalonAmps = 3; //TODO need to tune this value but this should be fine default
+        }
+        
+        public static final class ShooterConstants {
+                public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
+                                100.0, "Shooter Tolerance RPM");
+                public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0, "Shooter Manual Control Speed");
+        }
+
+        public static final class ElevatorConstants {
+                public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
+                                10.0, "Elevator Tolerance");
+                public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0, "Elevator Manual Control Speed");
         }
 
         public static final class VisionConstants {
@@ -263,5 +283,24 @@ public final class Constants {
                                 { 1.82, 0.91 },
                                 { 1.82, -0.92 }
                 };
+        }
+
+        public static final class StateMachineConstants {
+                public static final ConfigurableParameter<Double> kDebounce = new ConfigurableParameter<Double>(
+                                0.1, "Statemachine Debounce");
+                public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
+                                3.0, "Note Detection Distance");
+        }
+
+        public static final class ClimberConstants {
+                public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(1.0, "Climber Manual Control Speed");
+        }
+
+        public static final class TransitConstants {
+                public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
+        }
+
+        public static final class IntakeConstants {
+                public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0, "Transit Manual Control Speed");
         }
 }

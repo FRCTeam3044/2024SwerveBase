@@ -27,8 +27,13 @@ public class GoToNoteCommand extends Command {
     public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection) {
         this.m_robotDrive = m_robotDrive;
         this.m_noteDetection = m_noteDetection;
-        targetRotationController = new TargetRotationController(m_noteDetection.notePose.getX(),
-                m_noteDetection.notePose.getY());
+        if (m_noteDetection.hasNote) {
+            Pose2d closestNote = m_noteDetection.getClosestNote();
+            targetRotationController = new TargetRotationController(closestNote.getX(),
+                    closestNote.getY());
+        } else {
+            targetRotationController = new TargetRotationController(0, 0);
+        }
     }
 
     @Override
@@ -41,7 +46,10 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public void execute() {
-        Pose2d notePose = m_noteDetection.notePose;
+        if (!m_noteDetection.hasNote) {
+            return;
+        }
+        Pose2d notePose = m_noteDetection.getClosestNote();
         targetRotationController.setTargetX(notePose.getX());
         targetRotationController.setTargetY(notePose.getY());
 

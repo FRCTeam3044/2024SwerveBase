@@ -138,14 +138,6 @@ public class Robot extends TimedRobot {
           RobotContainer.m_driverController)).schedule();
       lastClick = click;
     }
-    m_robotContainer.climber.leftArm(0);
-    m_robotContainer.climber.rightArm(0);
-
-    boolean isBButtonPressed = RobotContainer.m_operatorController.getHID().getBButtonPressed();
-
-    m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
-
-    RobotContainer.m_operatorController.getHID().getLeftY();
   }
 
   @Override
@@ -157,6 +149,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+
   }
 
   /** This function is called once when the robot is first started up. */

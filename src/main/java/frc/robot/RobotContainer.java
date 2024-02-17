@@ -6,6 +6,12 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ElevatorManualControlCommand;
+import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
+import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
+import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
@@ -20,6 +26,8 @@ import java.util.ArrayList;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.math.proto.Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -52,11 +60,11 @@ public class RobotContainer {
   public static final CommandXboxController m_operatorController = new CommandXboxController(
       OIConstants.kOperatorControllerPort);
 
-  public final ClimberSubsystem climber = new ClimberSubsystem();
-  public final IntakeSubsystem intake = new IntakeSubsystem();
-  public final TransitSubsystem transit = new TransitSubsystem();
-  public final ElevatorSubsystem elevator = new ElevatorSubsystem();
-  public final ShooterSubsystem shooter = new ShooterSubsystem();
+  public static final ClimberSubsystem climber = new ClimberSubsystem();
+  public static final IntakeSubsystem intake = new IntakeSubsystem();
+  public static final TransitSubsystem transit = new TransitSubsystem();
+  public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public static final ShooterSubsystem shooter = new ShooterSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -66,7 +74,11 @@ public class RobotContainer {
     configureBindings();
 
     m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
-    m_transitSubsystem.init();
+    intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
+    climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
+    transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
+    elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator, m_driverController.getHID()));
+    shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
   }
 
   /**

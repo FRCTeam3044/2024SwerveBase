@@ -16,6 +16,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoCheckConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PDHChannelConstants;
+import frc.robot.Constants.TransitConstants;
 
 public class TransitSubsystem extends AdvancedSubsystem {
     // defines the motor and sensor
@@ -29,9 +30,11 @@ public class TransitSubsystem extends AdvancedSubsystem {
     // change this to change the speed of the motor
     double motorSpeed = 0.8;
 
-    public void init() {
+    public TransitSubsystem() {
+        transitMotor.configFactoryDefault();
         registerHardware("Transit Motor", transitMotor);
     }
+
     // Use this to get the note from the intake system
     public void getNoteFromIntake() {
 
@@ -48,7 +51,7 @@ public class TransitSubsystem extends AdvancedSubsystem {
     }
 
     public void runTransit() {
-        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
+        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed * TransitConstants.kTransitManualSpeed.get());
     }
 
     private void stopTransit() {

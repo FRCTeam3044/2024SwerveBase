@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
@@ -10,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
@@ -37,7 +39,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double ampAngle = 0;
     public double intakeAngle = 0;
 
+    RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
+    RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
+    double currentTargetRotations = 0;
+
     public ElevatorSubsystem() {
+        elevatorMotorOne.restoreFactoryDefaults();
+        elevatorMotorTwo.restoreFactoryDefaults();
+
         // PID coefficients
         kP = 0.1;
         kI = 0;
@@ -70,23 +79,27 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-        
+        currentTargetRotations = intakeAngle;
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
     // into an amp
     public void setToAmpMode() {
+        currentTargetRotations = ampAngle;
+    }
 
+    public void setAngle(double setAngle) {
+        currentTargetRotations = setAngle;
     }
 
     // Tells us when the elevator has hit the top of it's height
-    public void readTopLimitSwitch() {
-
+    public boolean readTopLimitSwitch() {
+        return elevatorTopLimitSwitch.get();
     }
 
     // Tells us when the elevator has hit the bottom of it's height
-    public void readBottomLimitSwitch() {
-
+    public boolean readBottomLimitSwitch() {
+        return elevatorBottomLimitSwitch.get();
     }
 
     public double getAngle() {
@@ -94,24 +107,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         return currentAngle;
     }
 
-    public void ampPidHandler() {
-        // TODO: convert meters to rotation
-        double rotations = ampAngle;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-    }
-
-    public void intakePidHandler() {
-        // TODO: convert meters to rotation
-        double rotations = intakeAngle;
-        pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    public void pidHandler() {
+        pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
     }
 
     public void consumeElevatorInput(double leftStickY) {
         if (Math.abs(leftStickY) > 0.1) {
             elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
-        }
-        else {
+        } else {
             elevatorMotorOne.set(0);
         }
+    }
+
+    public boolean elevatorAtAngle() {
+        double tolerance = ElevatorConstants.kElevatorTolerance.get();
+        return Math.abs(motorOneEncoder.getPosition() - currentTargetRotations) < tolerance
+                && Math.abs(motorTwoEncoder.getPosition() - currentTargetRotations) < tolerance;
     }
 }
