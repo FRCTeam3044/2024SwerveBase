@@ -101,7 +101,8 @@ public class Robot extends LoggedRobot {
     public void autonomousPeriodic() {
     }
 
-    private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+    // private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition",
+    // new double[] { 0, 0 });
 
     @Override
     public void teleopInit() {
@@ -113,23 +114,28 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.cancel();
         }
 
-        lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+        // lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0,
+        // 0 });
 
-        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
     }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
 
-        double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-        if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-            (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()),
-                    RobotContainer.m_robotDrive,
-                    RobotContainer.m_driverController)).schedule();
-            lastClick = click;
-        }
+        // double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[]
+        // { 0, 0 });
+        // if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+        // (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new
+        // Rotation2d()),
+        // RobotContainer.m_robotDrive,
+        // RobotContainer.m_driverController)).schedule();
+        // lastClick = click;
+        // }
     }
 
     @Override

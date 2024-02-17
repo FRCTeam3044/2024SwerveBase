@@ -24,17 +24,24 @@ public class DriverShootCommand extends Command {
     }
 
     @Override
+    public void initialize() {
+        hasShot = false;
+    }
+
+    @Override
     public void execute() {
-        if (m_controller.getRightTriggerAxis() > 0.5) {
+        m_shooter.speakerSpeed();
+        m_shooter.handlePID();
+        if (m_controller.getRightTriggerAxis() > 0.5 && !hasShot) {
             hasShot = true;
-            m_shooter.speakerSpeed();
-            m_shooter.handlePID();
+            m_shooter.saveShotData();
+        }
+        if (hasShot) {
             if (m_shooter.shooterAtSpeed()) {
                 m_transit.runTransit();
             }
-        } else {
-            m_shooter.stopShooter();
         }
+
     }
 
     @Override

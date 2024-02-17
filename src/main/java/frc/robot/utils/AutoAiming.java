@@ -49,15 +49,19 @@ public class AutoAiming {
      * @param distance
      * @param angle
      */
-    public void addData(double distance, double angle, double shooterVelocity, double drivebaseVelocity) {
+    public void addData(double distance, double angle, double shooterTopVelocity, double shooterBottomVelocity,
+            double drivebaseVelocityX,
+            double drivebaseVelocityY) {
         if (!isCollecting) {
             return;
         }
         JSONObject point = new JSONObject();
         point.put("distance", distance);
         point.put("angle", angle);
-        point.put("shooterVelocity", shooterVelocity);
-        point.put("drivebaseVelocity", drivebaseVelocity);
+        point.put("shooterTopVelocity", shooterTopVelocity);
+        point.put("shooterBottomVelocity", shooterBottomVelocity);
+        point.put("drivebaseVelocityX", drivebaseVelocityX);
+        point.put("drivebaseVelocityY", drivebaseVelocityY);
         point.put("made", false);
         point.put("reviewed", false);
         data.put(point);

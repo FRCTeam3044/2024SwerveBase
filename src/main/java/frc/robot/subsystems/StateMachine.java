@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
+import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
@@ -224,8 +225,9 @@ public class StateMachine extends SubsystemBase {
         }
 
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubystem);
 
-        return Commands.parallel(getToPoint, autoAimCommnd);
+        return Commands.parallel(getToPoint, autoAimCommnd, speakerShooterCommand);
     }
 
     private Command getShootCommand() {

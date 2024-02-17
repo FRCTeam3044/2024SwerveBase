@@ -22,11 +22,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
-    AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
-
     DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
     DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
+
+    // TODO: Also not how this will be wired
+    public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
 
     private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -39,6 +40,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double ampAngle = 0;
     public double intakeAngle = 0;
 
+    // TODO: This will not be how it is wired, it will be limit switches instead
     RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
     RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
     double currentTargetRotations = 0;
@@ -113,8 +115,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        double currentAngle = shooterEncoderOne.getPosition();
-        return currentAngle;
+        return shooterEncoderOne.getPosition();
     }
 
     public void pidHandler() {
