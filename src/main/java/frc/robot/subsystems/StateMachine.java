@@ -116,29 +116,27 @@ public class StateMachine extends SubsystemBase {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 }
-                if (m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch())) {
+                if (getIntakeLimitSwitch()) {
                     currentState = State.OWNS_NOTE;
                     updateDesiredCommand();
                 }
                 break;
             case OWNS_NOTE:
-                if (m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch())) {
+                if (getTransitLimitSwitch()) {
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                 }
                 break;
             case NOTE_LOADED:
-                boolean shooterAtSpeed = m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed());
-                boolean shooterAtAngle = m_elevatorAngleDebouncer.calculate(m_elevatorSubsystem.elevatorAtAngle());
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
-                if (shooterAtSpeed && shooterAtAngle && inShootingZone) {
+                if (shooterAtSpeed() && shooterAtAngle() && inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     updateDesiredCommand();
                 }
                 break;
             case READY_TO_SHOOT:
-                if (!m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch())) {
+                if (!getTransitLimitSwitch()) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 }
@@ -150,7 +148,6 @@ public class StateMachine extends SubsystemBase {
         }
 
         SmartDashboard.putString("State", currentState.toString());
-
     }
 
     // TODO: In this case, spit out any notes we may have
@@ -162,6 +159,22 @@ public class StateMachine extends SubsystemBase {
     public void forceState(State state) {
         currentState = state;
         updateDesiredCommand();
+    }
+
+    protected boolean getIntakeLimitSwitch() {
+        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch());
+    }
+
+    protected boolean getTransitLimitSwitch() {
+        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch());
+    }
+
+    protected boolean shooterAtSpeed() {
+        return m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed());
+    }
+
+    protected boolean shooterAtAngle() {
+        return m_elevatorAngleDebouncer.calculate(m_elevatorSubsystem.elevatorAtAngle());
     }
 
     private Command getCommandForState(State state) {
