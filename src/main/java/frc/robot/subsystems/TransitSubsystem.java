@@ -18,9 +18,6 @@ public class TransitSubsystem extends SubsystemBase {
     boolean isNoteInTransit = false;
     boolean isIntakeRunning = false;
 
-    // change this to change the speed of the motor
-    double motorSpeed = 0;
-
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
     }
@@ -35,13 +32,17 @@ public class TransitSubsystem extends SubsystemBase {
 
     }
 
-    // Checks the sensors every second it updates
+    /**
+     * Reads the transit limit switch
+     * 
+     * @return true if the transit limit switch is pressed
+     */
     public boolean readTransitLimitSwitch() {
-        return transitSensor.get();
+        return !transitSensor.get();
     }
 
     public void runTransit() {
-        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed * TransitConstants.kTransitManualSpeed.get());
+        transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
     private void stopTransit() {

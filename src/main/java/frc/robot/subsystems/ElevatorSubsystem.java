@@ -92,14 +92,22 @@ public class ElevatorSubsystem extends SubsystemBase {
         currentTargetRotations = setAngle;
     }
 
-    // Tells us when the elevator has hit the top of it's height
+    /**
+     * Read the top limit switch
+     * 
+     * @return true if the top limit switch is pressed
+     */
     public boolean readTopLimitSwitch() {
-        return elevatorTopLimitSwitch.get();
+        return !elevatorTopLimitSwitch.get();
     }
 
-    // Tells us when the elevator has hit the bottom of it's height
+    /**
+     * Read the bottom limit switch
+     * 
+     * @return true if the bottom limit switch is pressed
+     */
     public boolean readBottomLimitSwitch() {
-        return elevatorBottomLimitSwitch.get();
+        return !elevatorBottomLimitSwitch.get();
     }
 
     public double getAngle() {
