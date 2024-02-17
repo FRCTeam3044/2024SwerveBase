@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -38,10 +39,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  public static PowerDistribution m_powerDistroHub = new PowerDistribution();
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   public static final NoteDetection m_noteDetection = new NoteDetection();
+  public final TransitSubsystem m_transitSubsystem = new TransitSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController m_driverController = new CommandXboxController(
@@ -63,6 +66,7 @@ public class RobotContainer {
     configureBindings();
 
     m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
+    m_transitSubsystem.init();
   }
 
   /**

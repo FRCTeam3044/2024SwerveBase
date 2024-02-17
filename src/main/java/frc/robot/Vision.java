@@ -47,7 +47,7 @@ public class Vision {
             visionSim = new VisionSystemSim("main");
             visionSim.addAprilTags(fieldLayout);
             var cameraProp = new SimCameraProperties();
-            cameraProp.setCalibration(1600, 1200, Rotation2d.fromDegrees(0));
+            cameraProp.setCalibration(1600, 1200, Rotation2d.fromDegrees(79));
             cameraProp.setCalibError(0.35, 0.10);
             cameraProp.setFPS(25);
             cameraProp.setAvgLatencyMs(20);

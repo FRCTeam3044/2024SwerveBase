@@ -1,6 +1,7 @@
 package frc.lib.subsystem;
 
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
@@ -130,6 +131,10 @@ public abstract class AdvancedSubsystem extends SubsystemBase {
       }
     }
     return worstStatus;
+  }
+
+  public void registerHardware(String label, TalonSRX talon) {
+    hardware.add(new SelfCheckingTalonSRX(label, talon));
   }
 
   public void registerHardware(String label, BaseMotorController phoenixMotor) {

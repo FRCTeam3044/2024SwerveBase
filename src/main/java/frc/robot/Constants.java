@@ -217,11 +217,18 @@ public final class Constants {
                 public static final double kFreeSpeedRpm = 5676;
         }
 
+        public static final class PDHChannelConstants {
+                public static final int TransitTalonChannel = 16; //TODO: UPDATE THIS
+        }
+
+        public static final class AutoCheckConstants {
+                public static final int TransitTalonAmps = 3; //TODO need to tune this value but this should be fine default
+        }
+
         public static final class VisionConstants {
                 // TODO: Update these values
                 public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
-                public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT
-                                                                                                   // CORRECT
+                public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
                                 "front",
