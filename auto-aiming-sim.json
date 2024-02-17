@@ -1,12 +1,24 @@
 [
   {
-    "distance": 4,
+    "distance": 0.1,
     "made": true,
-    "angle": 50,
+    "angle": 40,
     "reviewed": true
   },
   {
-    "distance": 5,
+    "distance": 0.4,
+    "made": true,
+    "angle": 42,
+    "reviewed": true
+  },
+  {
+    "distance": 0.8,
+    "made": true,
+    "angle": 46,
+    "reviewed": true
+  },
+  {
+    "distance": 1.2,
     "made": true,
     "angle": 60,
     "reviewed": true
