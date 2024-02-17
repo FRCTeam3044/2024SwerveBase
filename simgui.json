@@ -52,13 +52,12 @@
         "PowerDistribution": {
           "double[]##v_/AdvantageKit/PowerDistribution/ChannelCurrent": {
             "open": true
-          }
+          },
+          "open": true
         },
         "RealOutputs": {
           "open": true
-        }
-      },
-      "SmartDashboard": {
+        },
         "open": true
       }
     }
