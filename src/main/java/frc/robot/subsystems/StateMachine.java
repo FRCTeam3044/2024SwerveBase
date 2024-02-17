@@ -249,7 +249,10 @@ public class StateMachine extends SubsystemBase {
     }
 
     public Command getDesiredCommand() {
-        changedDesiredCommand = false;
-        return getCommandForState(currentState);
+        Command cmd = getCommandForState(currentState);
+        if (cmd != null) {
+            changedDesiredCommand = false;
+        }
+        return cmd;
     }
 }
