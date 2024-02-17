@@ -16,6 +16,7 @@ import org.photonvision.targeting.TargetCorner;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +24,8 @@ import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
-    public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,"Filter taps");   
+    public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
+            "Filter taps");
     LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
     LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
 
@@ -52,7 +54,7 @@ public class NoteDetection extends SubsystemBase {
                 new Point(0.61595, -0.08255),
                 new Point(0.78105, -0.08255),
                 new Point(0.78105, 0.08255));
-        
+
         homography = new Mat();
         homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
 
@@ -61,6 +63,11 @@ public class NoteDetection extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (RobotBase.isSimulation()) {
+            hasNote = true;
+            closestPose = new Pose2d(0.5, 2, new Rotation2d());
+            return;
+        }
         notePoses.clear();
 
         var result = detector.getLatestResult();
@@ -94,10 +101,9 @@ public class NoteDetection extends SubsystemBase {
         }
         Pose2d closestRawPose = findClosestNote();
         closestPose = new Pose2d(
-            filterNoteX.calculate(closestRawPose.getX()), 
-            filterNoteY.calculate(closestRawPose.getY()),
-            closestRawPose.getRotation()
-        );
+                filterNoteX.calculate(closestRawPose.getX()),
+                filterNoteY.calculate(closestRawPose.getY()),
+                closestRawPose.getRotation());
         SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
         SmartDashboard.putBoolean("Has note", hasNote);
     }
@@ -115,11 +121,12 @@ public class NoteDetection extends SubsystemBase {
     private Pose2d findClosestNote() {
         Pose2d notePose = new Pose2d();
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
-        for(int i = 0; i < notePoses.size(); i++) {
-            if(i == 0) {
+        for (int i = 0; i < notePoses.size(); i++) {
+            if (i == 0) {
                 notePose = notePoses.get(i);
             } else {
-                if(notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose.getTranslation().getDistance(currentPose.getTranslation())) {
+                if (notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose
+                        .getTranslation().getDistance(currentPose.getTranslation())) {
                     notePose = notePoses.get(i);
                 }
             }

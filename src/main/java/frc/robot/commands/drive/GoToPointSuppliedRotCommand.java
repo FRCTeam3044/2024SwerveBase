@@ -18,6 +18,7 @@ public class GoToPointSuppliedRotCommand extends Command {
     private final ArrayList<Pose2d> target;
     private FollowTrajectoryCommand nextCommand;
     private Supplier<Rotation2d> rotSupplier;
+    private boolean failed = false;
 
     public GoToPointSuppliedRotCommand(Pose2d target, DriveSubsystem m_robotDrive, Supplier<Rotation2d> rotSupplier) {
         this.target = new ArrayList<Pose2d>();
@@ -59,13 +60,25 @@ public class GoToPointSuppliedRotCommand extends Command {
                     PathfindingConstants.kPathfindingThetaController);
             nextCommand = new FollowTrajectoryCommand(myPath, controller, rotSupplier, m_robotDrive, m_robotDrive);
             nextCommand.schedule();
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return nextCommand.isFinished();
+        if (nextCommand != null) {
+            return nextCommand.isFinished();
+        }
+        return failed;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (nextCommand != null) {
+            nextCommand.cancel();
+        }
     }
 }

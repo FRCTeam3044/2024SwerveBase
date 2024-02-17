@@ -20,6 +20,7 @@ public class GoToPointDriverRotCommand extends Command {
     private final ArrayList<Pose2d> target;
     private FollowTrajectoryCommand nextCommand;
     private CommandXboxController m_driverController;
+    private boolean failed = false;
 
     public GoToPointDriverRotCommand(Pose2d target, DriveSubsystem m_robotDrive,
             CommandXboxController m_driverController) {
@@ -52,16 +53,25 @@ public class GoToPointDriverRotCommand extends Command {
             nextCommand = new FollowTrajectoryCommand(myPath, targetRotSpeedSupplier, controller, m_robotDrive,
                     m_robotDrive);
             nextCommand.schedule();
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        if(nextCommand != null){
+        if (nextCommand != null) {
             return nextCommand.isFinished();
         }
-        return false;
+        return failed;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (nextCommand != null) {
+            nextCommand.cancel();
+        }
     }
 }

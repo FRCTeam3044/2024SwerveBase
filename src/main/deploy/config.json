@@ -58,6 +58,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -154,6 +158,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -246,6 +254,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -342,6 +354,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -433,6 +449,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -529,6 +549,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -620,6 +644,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -716,6 +744,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {

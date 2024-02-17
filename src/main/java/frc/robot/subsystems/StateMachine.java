@@ -16,7 +16,6 @@ import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
-import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.PathfindingDebugUtils;
@@ -47,25 +46,27 @@ public class StateMachine extends SubsystemBase {
         NO_NOTE
     }
 
-    private State currentState = State.NO_NOTE;
+    protected State currentState = State.NO_NOTE;
 
-    private ShooterSubsystem m_shooterSubystem;
-    private ElevatorSubsystem m_elevatorSubsystem;
-    private TransitSubsystem m_transitSubsystem;
-    private IntakeSubsystem m_intakeSubsystem;
-    private NoteDetection m_noteDetection;
-    private DriveSubsystem m_driveSubsystem;
+    protected final ShooterSubsystem m_shooterSubystem;
+    protected final ElevatorSubsystem m_elevatorSubsystem;
+    protected final TransitSubsystem m_transitSubsystem;
+    protected final IntakeSubsystem m_intakeSubsystem;
+    protected final NoteDetection m_noteDetection;
+    protected final DriveSubsystem m_driveSubsystem;
 
-    private Debouncer m_intakeLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+    protected Debouncer m_intakeLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
     public Debouncer m_transitLimitDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+    protected Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
-    private Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+    protected Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
 
-    private Command currentDesiredCommand = getCommandForState(currentState);
+    // private Command currentDesiredCommand;
+
+    public boolean changedDesiredCommand;
 
     /**
      * Creates a new StateMachine
@@ -86,6 +87,7 @@ public class StateMachine extends SubsystemBase {
         m_intakeSubsystem = intakeSubsystem;
         m_noteDetection = noteDetection;
         m_driveSubsystem = driveSubsystem;
+        updateDesiredCommand();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class StateMachine extends SubsystemBase {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
                         currentState = State.TARGETING_NOTE;
-                        currentDesiredCommand = getCommandForState(currentState);
+                        updateDesiredCommand();
                     }
                 }
                 break;
@@ -108,15 +110,20 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
+                if (!m_noteDetection.hasNote || m_noteDetection
+                        .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
+                    currentState = State.NO_NOTE;
+                    updateDesiredCommand();
+                }
                 if (m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch())) {
                     currentState = State.OWNS_NOTE;
-                    currentDesiredCommand = getCommandForState(currentState);
+                    updateDesiredCommand();
                 }
                 break;
             case OWNS_NOTE:
                 if (m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch())) {
                     currentState = State.NOTE_LOADED;
-                    currentDesiredCommand = getCommandForState(currentState);
+                    updateDesiredCommand();
                 }
                 break;
             case NOTE_LOADED:
@@ -126,32 +133,34 @@ public class StateMachine extends SubsystemBase {
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
                 if (shooterAtSpeed && shooterAtAngle && inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
-                    currentDesiredCommand = getCommandForState(currentState);
+                    updateDesiredCommand();
                 }
                 break;
             case READY_TO_SHOOT:
                 if (!m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch())) {
                     currentState = State.NO_NOTE;
-                    currentDesiredCommand = getCommandForState(currentState);
+                    updateDesiredCommand();
                 }
+                break;
             default:
                 currentState = State.NO_NOTE;
-                currentDesiredCommand = getCommandForState(currentState);
+                updateDesiredCommand();
                 break;
         }
 
         SmartDashboard.putString("State", currentState.toString());
+
     }
 
     // TODO: In this case, spit out any notes we may have
     public void reset() {
         currentState = State.NO_NOTE;
-        currentDesiredCommand = getCommandForState(currentState);
+        updateDesiredCommand();
     }
 
     public void forceState(State state) {
         currentState = state;
-        currentDesiredCommand = getCommandForState(currentState);
+        updateDesiredCommand();
     }
 
     private Command getCommandForState(State state) {
@@ -180,7 +189,8 @@ public class StateMachine extends SubsystemBase {
 
     private Command getGoToSourceCommand() {
         Pose2d target = AutoTargetUtils.getSource();
-        return new GoToPointDriverRotCommand(target, m_driveSubsystem, RobotContainer.m_driverController);
+        Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
+        return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem);
     }
 
     private Command getPickupNoteCommand() {
@@ -227,11 +237,17 @@ public class StateMachine extends SubsystemBase {
         return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
     }
 
+    protected void updateDesiredCommand() {
+        // currentDesiredCommand = getCommandForState(currentState);
+        changedDesiredCommand = true;
+    }
+
     public State getState() {
         return currentState;
     }
 
     public Command getDesiredCommand() {
-        return currentDesiredCommand;
+        changedDesiredCommand = false;
+        return getCommandForState(currentState);
     }
 }

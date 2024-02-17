@@ -36,8 +36,13 @@ public class TransitSubsystem extends SubsystemBase {
     }
 
     // Checks the sensors every second it updates
+    /**
+     * Reads the transit limit switch
+     * 
+     * @return true if the transit limit switch is pressed
+     */
     public boolean readTransitLimitSwitch() {
-        return transitSensor.get();
+        return !transitSensor.get();
     }
 
     public void runTransit() {

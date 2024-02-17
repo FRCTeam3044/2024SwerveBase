@@ -9,14 +9,15 @@ import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorManualControlCommand;
 import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -63,8 +65,15 @@ public class RobotContainer {
     public static final TransitSubsystem transit = new TransitSubsystem();
     public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
-    public static final StateMachine stateMachine = new StateMachine(shooter, elevator, transit, intake,
-            m_noteDetection, m_robotDrive);
+    public static final StateMachine stateMachine;
+
+    static {
+        if (RobotBase.isSimulation()) {
+            stateMachine = new SimStateMachine(shooter, elevator, transit, intake, m_noteDetection, m_robotDrive);
+        } else {
+            stateMachine = new StateMachine(shooter, elevator, transit, intake, m_noteDetection, m_robotDrive);
+        }
+    }
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -102,7 +111,7 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        m_driverController.rightTrigger().whileTrue(new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
+        m_driverController.rightTrigger().whileTrue(new StateMachineCommand(RobotContainer.stateMachine));
         m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
 
     }

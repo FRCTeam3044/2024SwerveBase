@@ -23,6 +23,7 @@ public class GoToNoteCommand extends Command {
     private TrajectoryConfig config;
     private FollowTrajectoryCommand m_followCommand;
     private Pose2d originalRobotPose;
+    private boolean failed = false;
 
     public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection) {
         this.m_robotDrive = m_robotDrive;
@@ -71,15 +72,17 @@ public class GoToNoteCommand extends Command {
             } else {
                 m_followCommand.setTrajectory(myPath);
             }
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
         if (m_followCommand == null) {
-            return false;
+            return failed;
         }
         return m_followCommand.isFinished();
     }

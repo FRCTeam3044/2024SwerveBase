@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.drive.GoToPointDriverRotCommand;
-import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -115,10 +114,6 @@ public class Robot extends LoggedRobot {
         }
 
         lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-        RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
-        Command desiredCommand = RobotContainer.stateMachine.getDesiredCommand();
-        if (desiredCommand != null)
-            desiredCommand.schedule();
 
         RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1);
     }

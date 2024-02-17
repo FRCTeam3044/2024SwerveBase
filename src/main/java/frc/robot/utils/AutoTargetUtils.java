@@ -80,7 +80,32 @@ public class AutoTargetUtils {
         }
     }
 
+    /**
+     * Get the location where the robot should go to get to the source
+     * 
+     * @return The source location
+     */
     public static Pose2d getSource() {
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+        if (!alliance.isPresent()) {
+            if (RobotBase.isSimulation()) {
+                return RED_SOURCE;
+            }
+            return null;
+        }
+        if (alliance.get() == Alliance.Red) {
+            return RED_SOURCE;
+        } else {
+            return BLUE_SOURCE;
+        }
+    }
+
+    /**
+     * Get the location where the robot should look at to track the source
+     * 
+     * @return The source tracking location
+     */
+    public static Pose2d getSourceTrackTarget() {
         Optional<Alliance> alliance = DriverStation.getAlliance();
         if (!alliance.isPresent()) {
             if (RobotBase.isSimulation()) {

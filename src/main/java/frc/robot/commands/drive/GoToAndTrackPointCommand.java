@@ -21,6 +21,7 @@ public class GoToAndTrackPointCommand extends Command {
     private final TargetRotationController targetRotationController;
     private final ArrayList<Pose2d> target;
     private FollowTrajectoryCommand m_followTrajectoryCommand;
+    private boolean failed = false;
 
     public GoToAndTrackPointCommand(Pose2d target, DriveSubsystem m_robotDrive) {
         this.target = new ArrayList<Pose2d>();
@@ -59,6 +60,8 @@ public class GoToAndTrackPointCommand extends Command {
         try {
             TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
                     PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
+            // TODO: Trajectories have a starting velocity of 0, which is not ideal for
+            // continuous motion.
             Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
@@ -72,16 +75,25 @@ public class GoToAndTrackPointCommand extends Command {
             m_followTrajectoryCommand = new FollowTrajectoryCommand(myPath, targetRotSpeed, controller,
                     m_robotDrive, m_robotDrive);
             m_followTrajectoryCommand.schedule();
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
         if (m_followTrajectoryCommand == null) {
-            return false;
+            return failed;
         }
         return m_followTrajectoryCommand.isFinished();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (m_followTrajectoryCommand != null) {
+            m_followTrajectoryCommand.cancel();
+        }
     }
 }
