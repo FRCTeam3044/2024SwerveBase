@@ -24,4 +24,10 @@ public class AutoAimCommnd extends Command {
         double angle = RobotContainer.m_autoAiming.getAngle(distance);
         m_elevator.setAngle(angle);
     }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
 }

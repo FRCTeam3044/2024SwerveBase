@@ -13,7 +13,7 @@ import me.nabdev.pathfinding.structures.Vertex;
 
 public class AutoTargetUtils {
     public static final Pose2d RED_SOURCE = new Pose2d(1, 1, new Rotation2d(0));
-    public static final Pose2d BLUE_SOURCE = new Pose2d(1, 15.5, new Rotation2d(0));
+    public static final Pose2d BLUE_SOURCE = new Pose2d(15.55, 1, new Rotation2d(0));
 
     public static final ObstacleGroup BLUE_SHOOTING_ZONE;
     public static final ObstacleGroup RED_SHOOTING_ZONE;
@@ -46,8 +46,8 @@ public class AutoTargetUtils {
                 new Vertex(11.55, 5.9));
         RED_SHOOTING_ZONE = new ObstacleGroup(redShootingZoneOne, redShootingZoneTwo);
 
-        PathfindingDebugUtils.drawObstacle("Red Shooting Zone", RED_SHOOTING_ZONE);
-        PathfindingDebugUtils.drawObstacle("Blue Shooting Zone", BLUE_SHOOTING_ZONE);
+        // PathfindingDebugUtils.drawObstacle("Red Shooting Zone", RED_SHOOTING_ZONE);
+        // PathfindingDebugUtils.drawObstacle("Blue Shooting Zone", BLUE_SHOOTING_ZONE);
     }
 
     public static Pose2d getShootingTarget() {

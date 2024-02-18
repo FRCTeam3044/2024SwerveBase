@@ -65,7 +65,8 @@ public class NoteDetection extends SubsystemBase {
     public void periodic() {
         if (RobotBase.isSimulation()) {
             hasNote = true;
-            closestPose = new Pose2d(0.5, 2, new Rotation2d());
+            closestPose = new Pose2d(16.05, 2, new Rotation2d());
+            SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
             return;
         }
         notePoses.clear();

@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -19,7 +18,6 @@ import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
-import frc.robot.utils.PathfindingDebugUtils;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
@@ -93,6 +91,10 @@ public class StateMachine extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("Intake Limit Switch", RobotContainer.m_driverController.getHID().getAButton());
+        SmartDashboard.putBoolean("Transit Limit Switch", RobotContainer.m_driverController.getHID().getBButton());
+        SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
+        SmartDashboard.putBoolean("Shooter At Angle", RobotContainer.m_driverController.getHID().getYButton());
         switch (currentState) {
             case NO_NOTE:
                 if (m_noteDetection.hasNote) {
@@ -199,7 +201,6 @@ public class StateMachine extends SubsystemBase {
                 return getShootCommand();
             default:
                 // Do nothing
-                // TODO: Null Command handling
                 return null;
         }
     }
@@ -219,31 +220,40 @@ public class StateMachine extends SubsystemBase {
 
     private Command getLockinNoteCommand() {
         TransitRunMotorCommand transitRunMotorCommand = new TransitRunMotorCommand(m_transitSubsystem);
-        return transitRunMotorCommand;
+        Command getToPoint = goToShootingZoneCommand();
+        if (getToPoint == null) {
+            return null;
+        }
+        return Commands.parallel(transitRunMotorCommand, getToPoint);
     }
 
     private Command getReadyShooterCommand() {
-        ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
-        if (shootingZone == null) {
+        Command getToPoint = goToShootingZoneCommand();
+        if (getToPoint == null) {
             return null;
         }
-
-        Command getToPoint;
-        Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
-        Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
-        if (shootingZone.isInside(robotPos)) {
-            getToPoint = new GoToAndTrackPointCommand(m_driveSubsystem.getPose(), trackPoint, m_driveSubsystem);
-        } else {
-            Vertex closestPoint = shootingZone.calculateNearestPoint(robotPos);
-            PathfindingDebugUtils.drawPoint("closet point", closestPoint);
-            Pose2d closestPose = new Pose2d(closestPoint.x, closestPoint.y, new Rotation2d());
-            getToPoint = new GoToAndTrackPointCommand(closestPose, trackPoint, m_driveSubsystem);
-        }
-
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
         SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubystem);
 
         return Commands.parallel(getToPoint, autoAimCommnd, speakerShooterCommand);
+    }
+
+    private Command goToShootingZoneCommand() {
+        ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
+        if (shootingZone == null) {
+            return null;
+        }
+        Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
+        Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
+        if (shootingZone.isInside(robotPos)) {
+            return new TrackPointCommand(m_driveSubsystem, trackPoint);
+        } else {
+            Pose2d closestPoint = shootingZone.calculateNearestPoint(robotPos).asPose2d();
+            GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(closestPoint, trackPoint,
+                    m_driveSubsystem);
+            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint);
+            return travelToPoint.andThen(trackPointCmd);
+        }
     }
 
     private Command getShootCommand() {
