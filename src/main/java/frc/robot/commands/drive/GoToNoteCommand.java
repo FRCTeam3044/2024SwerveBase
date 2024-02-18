@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -20,7 +19,6 @@ public class GoToNoteCommand extends Command {
     private final DriveSubsystem m_robotDrive;
     private final NoteDetection m_noteDetection;
     private final TargetRotationController targetRotationController;
-    private TrajectoryConfig config;
     private FollowTrajectoryCommand m_followCommand;
     private Pose2d originalRobotPose;
     private boolean failed = false;
@@ -39,8 +37,6 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public void initialize() {
-        config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
-                PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
         originalRobotPose = m_robotDrive.getPose();
         m_followCommand = null;
     }
@@ -55,7 +51,8 @@ public class GoToNoteCommand extends Command {
         targetRotationController.setTargetY(notePose.getY());
 
         try {
-            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(originalRobotPose, notePose, config);
+            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(originalRobotPose, notePose,
+                    m_robotDrive.getTrajectoryConfig());
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(

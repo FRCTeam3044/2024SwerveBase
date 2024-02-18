@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.PathfindingConstants;
@@ -40,9 +39,8 @@ public class GoToPointDriverRotCommand extends Command {
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
-                    PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
-            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
+            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target,
+                    m_robotDrive.getTrajectoryConfig());
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(

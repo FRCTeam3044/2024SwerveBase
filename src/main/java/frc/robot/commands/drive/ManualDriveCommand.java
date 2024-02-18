@@ -3,9 +3,11 @@ package frc.robot.commands.drive;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 
 /**
@@ -15,7 +17,7 @@ import frc.robot.Constants.DriveConstants;
 public class ManualDriveCommand extends Command {
     private final CommandXboxController m_driverController;
     private final DriveSubsystem m_robotDrive;
-
+    private final RobotContainer m_robotContainer;
     private final boolean isSimulation;
 
     /**
@@ -25,15 +27,25 @@ public class ManualDriveCommand extends Command {
      * @param driverController The XboxController that provides the input for the
      *                         drive command
      */
-    public ManualDriveCommand(DriveSubsystem driveSubsystem, CommandXboxController driverController) {
+    public ManualDriveCommand(RobotContainer robotContainer, DriveSubsystem driveSubsystem,
+            CommandXboxController driverController) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
+        m_robotContainer = robotContainer;
         isSimulation = RobotBase.isSimulation();
         addRequirements(m_robotDrive);
     }
 
     @Override
+    public void initialize() {
+        if (m_robotContainer.stateMachineCommand.isScheduled()) {
+            this.cancel();
+        }
+    }
+
+    @Override
     public void execute() {
+
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());

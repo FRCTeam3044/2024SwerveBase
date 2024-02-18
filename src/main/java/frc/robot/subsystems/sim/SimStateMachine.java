@@ -1,6 +1,6 @@
 package frc.robot.subsystems.sim;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -24,29 +24,25 @@ public class SimStateMachine extends StateMachine {
             TransitSubsystem transitSubsystem, IntakeSubsystem intakeSubsystem,
             NoteDetection noteDetection, DriveSubsystem driveSubsystem) {
         super(shooterSubsystem, elevatorSubsystem, transitSubsystem, intakeSubsystem, noteDetection, driveSubsystem);
-        SmartDashboard.putBoolean("Intake Limit Switch Pressed", false);
-        SmartDashboard.putBoolean("Transit Limit Switch Pressed", false);
-        SmartDashboard.putBoolean("Shooter At Speed", false);
-        SmartDashboard.putBoolean("Elevator At Angle", false);
     }
 
     @Override
     protected boolean getIntakeLimitSwitch() {
-        return SmartDashboard.getBoolean("Intake Limit Switch Pressed", false);
+        return RobotContainer.m_driverController.getHID().getAButton();
     }
 
     @Override
     protected boolean getTransitLimitSwitch() {
-        return SmartDashboard.getBoolean("Transit Limit Switch Pressed", false);
+        return RobotContainer.m_driverController.getHID().getBButton();
     }
 
     @Override
     protected boolean shooterAtSpeed() {
-        return SmartDashboard.getBoolean("Shooter At Speed", false);
+        return RobotContainer.m_driverController.getHID().getXButton();
     }
 
     @Override
     protected boolean shooterAtAngle() {
-        return SmartDashboard.getBoolean("Elevator At Angle", false);
+        return RobotContainer.m_driverController.getHID().getYButton();
     }
 }

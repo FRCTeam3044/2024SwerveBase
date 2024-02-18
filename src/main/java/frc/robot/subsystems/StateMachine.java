@@ -139,6 +139,9 @@ public class StateMachine extends SubsystemBase {
                 if (!getTransitLimitSwitch()) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
+                } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
+                    currentState = State.NOTE_LOADED;
+                    updateDesiredCommand();
                 }
                 break;
             default:

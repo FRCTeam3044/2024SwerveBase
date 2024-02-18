@@ -27,11 +27,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
 import me.nabdev.pathfinding.Pathfinder;
@@ -399,6 +401,26 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public ChassisSpeeds getChassisSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  public TrajectoryConfig getTrajectoryConfig() {
+    TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+        PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
+
+    // TODO: Figure out this situation.
+    // ChassisSpeeds chassisSpeed = getChassisSpeeds();
+    // Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
+    // chassisSpeed.vyMetersPerSecond);
+    // Translation2d pathDirTranslation =
+    // trajectory.sample(0.01).poseMeters.minus(trajectory.sample(0).poseMeters)
+    // .getTranslation();
+    // Vector pathDir = new Vector(pathDirTranslation.getX(),
+    // pathDirTranslation.getY()).normalize();
+    // double speed = velocity.dotProduct(pathDir);
+    // config.setStartVelocity(speed);
+    // config.setKinematics(DriveConstants.kDriveKinematics);
+    config.setStartVelocity(10);
+    return config;
   }
 
   @Override

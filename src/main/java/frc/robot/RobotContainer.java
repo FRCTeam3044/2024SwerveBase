@@ -66,6 +66,7 @@ public class RobotContainer {
     public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
     public static final StateMachine stateMachine;
+    public final StateMachineCommand stateMachineCommand;
 
     static {
         if (RobotBase.isSimulation()) {
@@ -80,6 +81,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Configure the trigger bindings
+        stateMachineCommand = new StateMachineCommand(stateMachine);
         configureBindings();
         try {
             m_autoAiming = new AutoAiming();
@@ -88,7 +90,7 @@ public class RobotContainer {
             throw new RuntimeException(e);
         }
 
-        m_robotDrive.setDefaultCommand(new ManualDriveCommand(m_robotDrive, m_driverController));
+        m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
         intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
         climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
         transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
@@ -111,7 +113,7 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        m_driverController.rightTrigger().whileTrue(new StateMachineCommand(RobotContainer.stateMachine));
+        m_driverController.rightTrigger().whileTrue(stateMachineCommand);
         m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
 
     }
