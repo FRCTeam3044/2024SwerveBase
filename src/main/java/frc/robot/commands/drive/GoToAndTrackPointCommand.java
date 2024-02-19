@@ -58,9 +58,7 @@ public class GoToAndTrackPointCommand extends Command {
     @Override
     public void initialize() {
         try {
-
-            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target,
-                    m_robotDrive.getTrajectoryConfig());
+            Trajectory myPath = m_robotDrive.generateTrajectory(target);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(
