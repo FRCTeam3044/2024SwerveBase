@@ -23,7 +23,7 @@ public abstract class AdvancedSubsystem extends SubsystemBase {
   }
 
   private final List<SubsystemFault> faults = new ArrayList<>();
-  private final List<SelfChecking> hardware = new ArrayList<>();
+  public static final List<SelfChecking> hardware = new ArrayList<>();
   private final String statusTable;
   private final boolean checkErrors;
 
@@ -118,23 +118,21 @@ public abstract class AdvancedSubsystem extends SubsystemBase {
 
   public SystemStatus getSystemStatus() {
     SystemStatus worstStatus = SystemStatus.OK;
-
     for (SubsystemFault f : this.faults) {
       if (f.sticky || f.timestamp > Timer.getFPGATimestamp() - 10) {
         if (f.isWarning) {
           if (worstStatus != SystemStatus.ERROR) {
+            System.out.println("warning bad error");
             worstStatus = SystemStatus.WARNING;
           }
         } else {
+          System.out.println("bad bad bad error");
           worstStatus = SystemStatus.ERROR;
         }
       }
     }
+    System.out.println("good error");
     return worstStatus;
-  }
-
-  public void registerHardware(String label, TalonSRX talon) {
-    hardware.add(new SelfCheckingTalonSRX(label, talon));
   }
 
   public void registerHardware(String label, BaseMotorController phoenixMotor) {

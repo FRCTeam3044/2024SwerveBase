@@ -157,6 +157,10 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "sim fault pit display auto check": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -337,6 +341,10 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "sim fault pit display auto check": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -516,6 +524,10 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "sim fault pit display auto check": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -694,6 +706,10 @@
         "Shooter Tolerance RPM": {
             "comment": "Auto-Generated",
             "value": "100.0"
+        },
+        "sim fault pit display auto check": {
+            "comment": "Auto-Generated",
+            "value": "false"
         },
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",

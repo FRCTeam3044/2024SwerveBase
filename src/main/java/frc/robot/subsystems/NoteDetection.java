@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
@@ -38,68 +39,72 @@ public class NoteDetection extends SubsystemBase {
     private ArrayList<Pose2d> notePoses = new ArrayList<>();
 
     public NoteDetection() {
-        detector = new PhotonCamera("detection");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        if(Robot.isReal()) {
+            detector = new PhotonCamera("detection");
 
-        MatOfPoint2f cameraPoints = new MatOfPoint2f(
-                new Point(501, 638),
-                new Point(789, 643),
-                new Point(755, 587),
-                new Point(524, 579));
+            MatOfPoint2f cameraPoints = new MatOfPoint2f(
+                    new Point(501, 638),
+                    new Point(789, 643),
+                    new Point(755, 587),
+                    new Point(524, 579));
 
-        MatOfPoint2f fieldPoints = new MatOfPoint2f(
-                new Point(0.61595, 0.08255),
-                new Point(0.61595, -0.08255),
-                new Point(0.78105, -0.08255),
-                new Point(0.78105, 0.08255));
-        
-        homography = new Mat();
-        homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
+            MatOfPoint2f fieldPoints = new MatOfPoint2f(
+                    new Point(0.61595, 0.08255),
+                    new Point(0.61595, -0.08255),
+                    new Point(0.78105, -0.08255),
+                    new Point(0.78105, 0.08255));
+            
+            homography = new Mat();
+            homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
 
-        SmartDashboard.putString("Homography matrix", homography.dump());
+            SmartDashboard.putString("Homography matrix", homography.dump());
+        }
     }
 
     @Override
     public void periodic() {
-        notePoses.clear();
+        if(Robot.isReal()) {
+            notePoses.clear();
 
-        var result = detector.getLatestResult();
-        if (!result.hasTargets()) {
-            hasNote = false;
-            return;
-        }
-        hasNote = true;
-        List<PhotonTrackedTarget> targets = result.getTargets();
-        for (int i = 0; i < targets.size(); i++) {
-            minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
-            maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
-            minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
-            for (PhotonTrackedTarget target : targets) {
-                for (TargetCorner corner : target.getMinAreaRectCorners()) {
-                    if (corner.x < minX) {
-                        minX = (int) corner.x;
-                    }
-                    if (corner.x > maxX) {
-                        maxX = (int) corner.x;
-                    }
-                    if (corner.y < minY) {
-                        minY = (int) corner.y;
+            var result = detector.getLatestResult();
+            if (!result.hasTargets()) {
+                hasNote = false;
+                return;
+            }
+            hasNote = true;
+            List<PhotonTrackedTarget> targets = result.getTargets();
+            for (int i = 0; i < targets.size(); i++) {
+                minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+                maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+                minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
+                for (PhotonTrackedTarget target : targets) {
+                    for (TargetCorner corner : target.getMinAreaRectCorners()) {
+                        if (corner.x < minX) {
+                            minX = (int) corner.x;
+                        }
+                        if (corner.x > maxX) {
+                            maxX = (int) corner.x;
+                        }
+                        if (corner.y < minY) {
+                            minY = (int) corner.y;
+                        }
                     }
                 }
-            }
-            var midpoint = (maxX + minX) / 2;
+                var midpoint = (maxX + minX) / 2;
 
-            notePoses.add(getNotePose(midpoint, minY));
-            SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
+                notePoses.add(getNotePose(midpoint, minY));
+                SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
+            }
+            Pose2d closestRawPose = findClosestNote();
+            closestPose = new Pose2d(
+                filterNoteX.calculate(closestRawPose.getX()), 
+                filterNoteY.calculate(closestRawPose.getY()),
+                closestRawPose.getRotation()
+            );
+            SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+            SmartDashboard.putBoolean("Has note", hasNote);
         }
-        Pose2d closestRawPose = findClosestNote();
-        closestPose = new Pose2d(
-            filterNoteX.calculate(closestRawPose.getX()), 
-            filterNoteY.calculate(closestRawPose.getY()),
-            closestRawPose.getRotation()
-        );
-        SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
-        SmartDashboard.putBoolean("Has note", hasNote);
     }
 
     public Pose2d getClosestNote() {

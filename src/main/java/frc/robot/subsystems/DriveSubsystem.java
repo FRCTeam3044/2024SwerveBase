@@ -31,6 +31,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib.subsystem.AdvancedSubsystem;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
@@ -38,33 +39,34 @@ import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
 import me.nabdev.pathfinding.structures.Edge;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends AdvancedSubsystem {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
       DriveConstants.kFrontLeftChassisAngularOffset,
-      "frontLeftModule");
+      "FL");
 
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
       DriveConstants.kFrontRightChassisAngularOffset,
-      "frontRightModule");
+      "FR");
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
       DriveConstants.kRearLeftDrivingCanId,
       DriveConstants.kRearLeftTurningCanId,
       DriveConstants.kBackLeftChassisAngularOffset,
-      "rearLeftModule");
+      "BL");
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset,
-      "rearRightModule");
+      "BR");
 
   // The gyro sensor (NavX)
   private final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
@@ -410,5 +412,18 @@ public class DriveSubsystem extends SubsystemBase {
     angle.set(Math.toDegrees(m_simYaw));
 
     REVPhysicsSim.getInstance().run();
+  }
+
+  @Override
+  protected Command systemCheckCommand() {
+    // return Commands.sequence(
+    //   () -> {
+    //     m_frontLeft.getSystemCheckCommand().schedule();
+    //     m_frontRight.getSystemCheckCommand().schedule();
+    //     m_rearLeft.getSystemCheckCommand().schedule();
+    //     m_rearRight.getSystemCheckCommand().schedule();
+    //   },
+    // this),
+    return null; //TODO: FINISH THIS
   }
 }

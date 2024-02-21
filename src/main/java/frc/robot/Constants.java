@@ -232,7 +232,7 @@ public final class Constants {
         public static final class AutoCheckConstants {
                 public static final int TransitTalonAmps = 3; //TODO need to tune this value but this should be fine default
         }
-        
+
         public static final class ShooterConstants {
                 public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
                                 100.0, "Shooter Tolerance RPM");
@@ -251,7 +251,7 @@ public final class Constants {
                 public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT CORRECT
                 // array of active cameras
                 public final static String[] activeCameras = {
-                                "front",
+                                // "front",
                                 // "back",
                                 // "left",
                                 // "right"

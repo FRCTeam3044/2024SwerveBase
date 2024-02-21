@@ -4,6 +4,7 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SystemStatus/AllSystemsCheck": "Command",
       "/SmartDashboard/SystemStatus/TransitSubsystem/SystemCheck": "Command",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },

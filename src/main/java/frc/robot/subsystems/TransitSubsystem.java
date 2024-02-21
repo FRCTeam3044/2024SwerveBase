@@ -1,38 +1,34 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.subsystem.AdvancedSubsystem;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoCheckConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PDHChannelConstants;
 import frc.robot.Constants.TransitConstants;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class TransitSubsystem extends AdvancedSubsystem {
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
-    DigitalInput transitSensor = new DigitalInput(7/*CANConstants.kTransitSensorPort*/);
+    // DigitalInput transitSensor = new DigitalInput(7/*CANConstants.kTransitSensorPort*/);
+    ConfigurableParameter<Boolean> simFault = new ConfigurableParameter<Boolean>(false, "sim fault pit display auto check");
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
     boolean isIntakeRunning = false;
 
-    // change this to change the speed of the motor
-    double motorSpeed = 0.8;
-
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
-        registerHardware("Transit Motor", transitMotor);
+        registerHardware("Transit", transitMotor);
     }
 
     // Use this to get the note from the intake system
@@ -47,11 +43,12 @@ public class TransitSubsystem extends AdvancedSubsystem {
 
     // Checks the sensors every second it updates
     public boolean readTransitLimitSwitch() {
-        return transitSensor.get();
+        // return transitSensor.get();
+        return false;
     }
 
     public void runTransit() {
-        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed * TransitConstants.kTransitManualSpeed.get());
+        transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
     private void stopTransit() {
@@ -81,8 +78,11 @@ public class TransitSubsystem extends AdvancedSubsystem {
             Commands.waitSeconds(1.0),
             Commands.runOnce(
                 () -> {
-                  if (RobotContainer.m_powerDistroHub.getCurrent(PDHChannelConstants.TransitTalonChannel) < AutoCheckConstants.TransitTalonAmps) {
+                  if (Robot.isReal() && RobotContainer.m_powerDistroHub.getCurrent(PDHChannelConstants.TransitTalonChannel) < AutoCheckConstants.TransitTalonAmps) {
                     addFault("[System Check] Transit motor not moving", false, true);
+                  }
+                  if(simFault.get()) {
+                    addFault("[System Check] Talon fucking exploded", false, true);
                   }
                   transitMotor.set(TalonSRXControlMode.PercentOutput, -1.0);
                 },
@@ -90,7 +90,7 @@ public class TransitSubsystem extends AdvancedSubsystem {
             Commands.waitSeconds(1.0),
             Commands.runOnce(
                 () -> {
-                  if (RobotContainer.m_powerDistroHub.getCurrent(PDHChannelConstants.TransitTalonChannel) < AutoCheckConstants.TransitTalonAmps) {
+                  if (Robot.isReal() && RobotContainer.m_powerDistroHub.getCurrent(PDHChannelConstants.TransitTalonChannel) < AutoCheckConstants.TransitTalonAmps) {
                     addFault("[System Check] Intake motor not moving", false, true);
                   }
                   transitMotor.set(TalonSRXControlMode.PercentOutput, 0.0);

@@ -11,20 +11,27 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
+import frc.robot.Constants.AutoCheckConstants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.PDHChannelConstants;
+import frc.lib.subsystem.AdvancedSubsystem;
+import frc.lib.subsystem.selfcheck.SelfCheckingSparkMax;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
-public class MAXSwerveModule {
+public class MAXSwerveModule extends AdvancedSubsystem {
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
@@ -54,6 +61,9 @@ public class MAXSwerveModule {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
+    AdvancedSubsystem.hardware.add(new SelfCheckingSparkMax(moduleName + " Drive", m_drivingSparkMax));
+    AdvancedSubsystem.hardware.add(new SelfCheckingSparkMax(moduleName + " Rotation", m_turningSparkMax));
+    
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.
     m_drivingSparkMax.restoreFactoryDefaults();
@@ -245,5 +255,67 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
+  }
+
+  @Override
+  protected Command systemCheckCommand() {
+    return Commands.sequence(
+      Commands.runOnce(
+        () -> {
+          clearFaults();
+          m_drivingSparkMax.set(0);
+          setDesiredState(new SwerveModuleState(0, new Rotation2d(45)));
+        },
+        this),
+        Commands.waitSeconds(0.3),
+        Commands.runOnce(
+          () -> {
+            double rotation = getRotation().getDegrees();
+            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+              m_drivingSparkMax.set(0);
+              setDesiredState(new SwerveModuleState(0, new Rotation2d(-45)));
+            } else {
+              m_drivingSparkMax.set(0);
+              m_turningSparkMax.set(0);
+              addFault("[System Check] Module did not rotate to 45 degrees");
+            }
+          },
+          this),
+        Commands.waitSeconds(0.3),
+        Commands.runOnce(
+          () -> {
+            double rotation = getRotation().getDegrees();
+            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+              m_drivingSparkMax.set(0);
+              setDesiredState(new SwerveModuleState(0, new Rotation2d(0)));
+            } else {
+              m_drivingSparkMax.set(0);
+              m_turningSparkMax.set(0);
+              addFault("[System Check] Module did not rotate to -45 degrees");
+            }
+          },
+          this),
+        Commands.waitSeconds(0.3),
+        Commands.runOnce(
+          () -> {
+            double rotation = getRotation().getDegrees();
+            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+              m_drivingSparkMax.set(0);
+              setDesiredState(new SwerveModuleState(0, new Rotation2d(45)));
+            } else {
+              m_drivingSparkMax.set(0);
+              m_turningSparkMax.set(0);
+              addFault("[System Check] Module did not rotate to 0 degrees");
+            }
+          },
+          this))
+      .until(() -> getFaults().size() > 0)
+      .andThen(
+        Commands.runOnce(
+          () -> {
+            m_drivingSparkMax.set(0);
+            m_turningSparkMax.set(0);
+          },
+          this));
   }
 }

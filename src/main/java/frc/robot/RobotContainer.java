@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.lib.subsystem.AdvancedSubsystem;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.ClimberCommand;
@@ -28,12 +29,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.math.proto.Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -50,9 +54,8 @@ public class RobotContainer {
   public static PowerDistribution m_powerDistroHub = new PowerDistribution();
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
   public static final NoteDetection m_noteDetection = new NoteDetection();
-  public final TransitSubsystem m_transitSubsystem = new TransitSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final CommandXboxController m_driverController = new CommandXboxController(
@@ -79,6 +82,9 @@ public class RobotContainer {
     transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
     elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator, m_driverController.getHID()));
     shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
+
+    SmartDashboard.putData("SystemStatus/AllSystemsCheck", allSystemsCheckCommand());
+    SmartDashboard.putData("PDH", m_powerDistroHub);
   }
 
   /**
@@ -124,4 +130,24 @@ public class RobotContainer {
     }
   }
 
+public static Command allSystemsCheckCommand() {
+  System.out.println("system check robotcont");
+    return Commands.sequence(
+      transit.getSystemCheckCommand(),
+        Commands.runOnce(
+            () -> {
+              if (allSystemsOK()) {
+                // set leds to something
+              } else {
+                // check failed
+                // set leds to something
+              }
+            }),
+        Commands.waitSeconds(2.0)
+    );
+  }
+
+  public static boolean allSystemsOK() {
+    return transit.getSystemStatus() == AdvancedSubsystem.SystemStatus.OK;
+  }
 }
