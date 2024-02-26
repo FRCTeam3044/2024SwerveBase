@@ -4,6 +4,17 @@
 
 package frc.robot;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.subsystem.AdvancedSubsystem;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
@@ -11,35 +22,19 @@ import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorManualControlCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
-import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.NoteDetection;
-import frc.robot.subsystems.VisionSubsystem;
-import me.nabdev.pathfinding.autos.AutoParser;
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.math.proto.Controller;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.VisionSubsystem;
+import me.nabdev.pathfinding.autos.AutoParser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -131,8 +126,11 @@ public class RobotContainer {
   }
 
 public static Command allSystemsCheckCommand() {
-  System.out.println("system check robotcont");
+  if(m_robotDrive.getCurrentCommand() != null) {
+    m_robotDrive.getCurrentCommand().cancel();
+  }
     return Commands.sequence(
+      m_robotDrive.getSystemCheckCommand(),
       transit.getSystemCheckCommand(),
         Commands.runOnce(
             () -> {
@@ -144,6 +142,8 @@ public static Command allSystemsCheckCommand() {
               }
             }),
         Commands.waitSeconds(2.0)
+        .andThen(() -> {
+        })
     );
   }
 

@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.subsystem.selfcheck.*;
 import frc.robot.Robot;
+import frc.robot.RobotSystemChecks;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +69,8 @@ public abstract class AdvancedSubsystem extends SubsystemBase {
   }
 
   private void setupCallbacks() {
-    Robot.addPeriodicCallback(this::checkForFaults, 0.25);
-    Robot.addPeriodicCallback(this::publishStatus, 1.0);
+    RobotSystemChecks.addPeriodicCallback(this::checkForFaults, 0.25);
+    RobotSystemChecks.addPeriodicCallback(this::publishStatus, 1.0);
   }
 
   private void publishStatus() {
@@ -122,16 +124,13 @@ public abstract class AdvancedSubsystem extends SubsystemBase {
       if (f.sticky || f.timestamp > Timer.getFPGATimestamp() - 10) {
         if (f.isWarning) {
           if (worstStatus != SystemStatus.ERROR) {
-            System.out.println("warning bad error");
             worstStatus = SystemStatus.WARNING;
           }
         } else {
-          System.out.println("bad bad bad error");
           worstStatus = SystemStatus.ERROR;
         }
       }
     }
-    System.out.println("good error");
     return worstStatus;
   }
 

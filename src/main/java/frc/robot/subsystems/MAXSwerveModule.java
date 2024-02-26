@@ -18,20 +18,22 @@ import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
-import frc.robot.Constants.AutoCheckConstants;
+import frc.robot.RobotSystemChecks;
 import frc.robot.Constants.ModuleConstants;
-import frc.robot.Constants.PDHChannelConstants;
 import frc.lib.subsystem.AdvancedSubsystem;
-import frc.lib.subsystem.selfcheck.SelfCheckingSparkMax;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class MAXSwerveModule extends AdvancedSubsystem {
+  public enum ModuleCode {
+    FL,
+    FR,
+    BL,
+    BR
+  }
+
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
@@ -57,12 +59,13 @@ public class MAXSwerveModule extends AdvancedSubsystem {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, String moduleName) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, ModuleCode moduleCode) {
+    super(moduleCode.name() + "SwerveModule");
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
-    AdvancedSubsystem.hardware.add(new SelfCheckingSparkMax(moduleName + " Drive", m_drivingSparkMax));
-    AdvancedSubsystem.hardware.add(new SelfCheckingSparkMax(moduleName + " Rotation", m_turningSparkMax));
+    registerHardware("Drive", m_drivingSparkMax);
+    registerHardware("Rotation", m_turningSparkMax);
     
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.
@@ -123,11 +126,11 @@ public class MAXSwerveModule extends AdvancedSubsystem {
         ModuleConstants.kTurningMaxOutput);
 
     new ConfigurableSparkPIDController(m_drivingPIDController,
-        moduleName + "/driving",
-        moduleName + " driving");
+        getName() + "/driving",
+        getName() + " driving");
     new ConfigurableSparkPIDController(m_turningPIDController,
-        moduleName + "/turning",
-        moduleName + " turning");
+        getName() + "/turning",
+        getName() + " turning");
 
     m_drivingSparkMax.setIdleMode(ModuleConstants.kDrivingMotorIdleMode);
     m_turningSparkMax.setIdleMode(ModuleConstants.kTurningMotorIdleMode);
@@ -146,13 +149,11 @@ public class MAXSwerveModule extends AdvancedSubsystem {
 
     m_drivingEncoder.setPosition(0);
 
-    // Robot.addPeriodicCallback(() -> {
-    //   if (RobotBase.isReal()) {
-    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/drive", m_drivingSparkMax.getMotorTemperature());
-    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/turn", m_turningSparkMax.getMotorTemperature());
-    //     SmartDashboard.putNumber("Swerve/" + moduleName + "/turnAngle", m_turningEncoder.getPosition());
-    //   }
-    // }, 0.5);
+    RobotSystemChecks.addPeriodicCallback(() -> {
+      SmartDashboard.putNumber("Subsystems/Swerve/" + getName() + "/DriveTemp", m_drivingSparkMax.getMotorTemperature());
+      SmartDashboard.putNumber("Subsystems/Swerve/" + getName() + "/TurnTemp", m_turningSparkMax.getMotorTemperature());
+      SmartDashboard.putNumber("Subsystems/Swerve/" + getName() + "/turnAngle", m_turningEncoder.getPosition());
+    }, 0.5);
 
     if (RobotBase.isSimulation()) {
       // The rev physics sim will handle changing the encoder readings.
@@ -264,16 +265,16 @@ public class MAXSwerveModule extends AdvancedSubsystem {
         () -> {
           clearFaults();
           m_drivingSparkMax.set(0);
-          setDesiredState(new SwerveModuleState(0, new Rotation2d(45)));
+            setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.toRadians(45))));
         },
         this),
-        Commands.waitSeconds(0.3),
+        Commands.waitSeconds(1),
         Commands.runOnce(
           () -> {
             double rotation = getRotation().getDegrees();
-            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+            if ((40 <= rotation && rotation <= 50) || (-50 <= rotation && rotation <= -40) || (130 <= rotation && rotation <= 140) || (-140 <= rotation && rotation <= -130)) {
               m_drivingSparkMax.set(0);
-              setDesiredState(new SwerveModuleState(0, new Rotation2d(-45)));
+              setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.toRadians(-45))));
             } else {
               m_drivingSparkMax.set(0);
               m_turningSparkMax.set(0);
@@ -281,13 +282,12 @@ public class MAXSwerveModule extends AdvancedSubsystem {
             }
           },
           this),
-        Commands.waitSeconds(0.3),
+        Commands.waitSeconds(1),
         Commands.runOnce(
           () -> {
             double rotation = getRotation().getDegrees();
-            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+            if ((40 <= rotation && rotation <= 50) || (-50 <= rotation && rotation <= -40) || (130 <= rotation && rotation <= 140) || (-140 <= rotation && rotation <= -130)) {
               m_drivingSparkMax.set(0);
-              setDesiredState(new SwerveModuleState(0, new Rotation2d(0)));
             } else {
               m_drivingSparkMax.set(0);
               m_turningSparkMax.set(0);
@@ -295,20 +295,41 @@ public class MAXSwerveModule extends AdvancedSubsystem {
             }
           },
           this),
+        Commands.waitSeconds(1),
+        Commands.runOnce(
+          () -> {
+            m_drivingSparkMax.set(0.5);
+          }
+        ),
         Commands.waitSeconds(0.3),
         Commands.runOnce(
           () -> {
-            double rotation = getRotation().getDegrees();
-            if (44 <= rotation && rotation <= 46) { // check if the module is within 1 degree of the desired angle
+            if (m_drivingSparkMax.getAppliedOutput() > 0.4) {
               m_drivingSparkMax.set(0);
-              setDesiredState(new SwerveModuleState(0, new Rotation2d(45)));
-            } else {
-              m_drivingSparkMax.set(0);
-              m_turningSparkMax.set(0);
-              addFault("[System Check] Module did not rotate to 0 degrees");
+              addFault("[System Check] Module did not drive forward");
             }
           },
-          this))
+          this),
+        Commands.runOnce(
+          () -> {
+            m_drivingSparkMax.set(-0.5);
+          }
+        ),
+        Commands.waitSeconds(0.3),
+        Commands.runOnce(
+          () -> {
+            if (m_drivingSparkMax.getAppliedOutput() < -0.4) {
+              m_drivingSparkMax.set(0);
+              addFault("[System Check] Module did not drive backward");
+            }
+          },
+          this),
+        Commands.runOnce(
+          () -> {
+            m_drivingSparkMax.set(0);
+          }
+        ),
+        Commands.waitSeconds(0.3)
       .until(() -> getFaults().size() > 0)
       .andThen(
         Commands.runOnce(
@@ -316,6 +337,8 @@ public class MAXSwerveModule extends AdvancedSubsystem {
             m_drivingSparkMax.set(0);
             m_turningSparkMax.set(0);
           },
-          this));
+          this)
+      )
+    );
   }
 }

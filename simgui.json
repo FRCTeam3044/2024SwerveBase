@@ -5,6 +5,11 @@
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/SystemStatus/AllSystemsCheck": "Command",
+      "/SmartDashboard/SystemStatus/BLSwerveModule/SystemCheck": "Command",
+      "/SmartDashboard/SystemStatus/BRSwerveModule/SystemCheck": "Command",
+      "/SmartDashboard/SystemStatus/DriveSubsystem/SystemCheck": "Command",
+      "/SmartDashboard/SystemStatus/FLSwerveModule/SystemCheck": "Command",
+      "/SmartDashboard/SystemStatus/FRSwerveModule/SystemCheck": "Command",
       "/SmartDashboard/SystemStatus/TransitSubsystem/SystemCheck": "Command",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },

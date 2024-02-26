@@ -1,11 +1,15 @@
 {
     "presentation": {
         "frontRightModule/turning/FF": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
+        "BL/turning/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/P": "0.03999999910593033",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Theta Controller/D": "0.01",
+        "BL/driving/IZone": "0.0",
+        "FL/turning/FF": "0.0",
+        "FR/turning/FF": "0.0",
+        "FRSwerveModule/driving/D": "0.0",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -14,14 +18,8 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "1.0",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
+        "FRSwerveModule/driving/I": "0.0",
+        "BLSwerveModule/driving/I": "0.0",
         "rearRightModule/turning/FF": "0.0",
         "Drive & Track Target Y": {
             "comment": "Auto-Generated",
@@ -31,51 +29,55 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
         "Drive & Track Target X": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
         },
-        "Y Controller/I": "0.0",
+        "BR/driving/Min": "-1.0",
+        "FLSwerveModule/driving/Max": "1.0",
+        "FRSwerveModule/turning/FF": "0.0",
+        "BLSwerveModule/driving/P": "0.03999999910593033",
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
         },
+        "FR/turning/Min": "-1.0",
+        "BLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/turning/IZone": "0.0",
         "Target X": {
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Rate Limit": {
+        "BLSwerveModule/driving/D": "0.0",
+        "BR/turning/Max": "1.0",
+        "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "true"
+            "value": "1.0"
         },
+        "BL/turning/Max": "1.0",
         "rearRightModule/driving/Min": "-1.0",
+        "FRSwerveModule/driving/FF": "0.2081708461046219",
         "Elevator Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "BLSwerveModule/driving/FF": "0.2081708461046219",
+        "BR/turning/FF": "0.0",
+        "FR/driving/Max": "1.0",
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "0.0",
+        "FL/turning/IZone": "0.0",
         "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
+        "BR/driving/I": "0.0",
+        "BR/turning/D": "0.0",
+        "BR/driving/P": "0.03999999910593033",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
@@ -88,23 +90,15 @@
         },
         "frontRightModule/turning/Max": "1.0",
         "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
+        "FR/driving/I": "0.0",
+        "FL/driving/FF": "0.2081708461046219",
+        "FR/driving/D": "0.0",
+        "FLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
+        "BL/driving/FF": "0.2081708461046219",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
             "value": "10.0"
@@ -117,79 +111,205 @@
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
         "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
+        "FLSwerveModule/driving/D": "0.0",
         "Direction Slew rate": {
             "comment": "Radians per second",
             "value": "1.2"
         },
+        "FR/driving/P": "0.03999999910593033",
         "frontLeftModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/FF": "0.0",
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "Elevator PID/I": "0.0",
         "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
+        "FLSwerveModule/driving/P": "0.03999999910593033",
         "Elevator PID/P": "0.0",
-        "rearLeftModule/driving/Max": "1.0",
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
+        "BR/driving/IZone": "0.0",
+        "FLSwerveModule/driving/I": "0.0",
+        "FRSwerveModule/turning/D": "0.0",
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
+        "BRSwerveModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/I": "0.0",
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
+        "FRSwerveModule/turning/P": "1.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
         "sim fault pit display auto check": {
             "comment": "Auto-Generated",
             "value": "false"
         },
-        "frontLeftModule/turning/Min": "-1.0",
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/Min": "-1.0",
+        "FL/driving/Min": "-1.0",
+        "BL/driving/Min": "-1.0",
+        "FLSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Min": "-1.0",
         "Pathfinding Max Angular Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "FL/turning/Min": "-1.0",
+        "FR/driving/IZone": "0.0",
+        "BRSwerveModule/turning/Min": "-1.0",
+        "rearRightModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/Min": "-1.0",
+        "FRSwerveModule/driving/IZone": "0.0",
+        "BLSwerveModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/Max": "1.0",
+        "Pathfinding X Controller/P": "1.0",
+        "BL/turning/IZone": "0.0",
+        "rearLeftModule/turning/IZone": "0.0",
+        "FR/turning/D": "0.0",
+        "FR/turning/I": "0.0",
+        "Theta Controller/D": "0.01",
+        "frontLeftModule/turning/IZone": "0.0",
+        "Theta Controller/I": "0.0",
+        "Theta Controller/P": "1.0",
+        "Y Controller/P": "1.0",
+        "FF Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "BL/turning/Min": "-1.0",
+        "FR/driving/Min": "-1.0",
+        "BRSwerveModule/turning/I": "0.0",
+        "X Controller/I": "0.0",
+        "Y Controller/D": "0.0",
+        "BLSwerveModule/driving/IZone": "0.0",
+        "X Controller/D": "0.0",
+        "Y Controller/I": "0.0",
+        "BRSwerveModule/turning/D": "0.0",
+        "frontRightModule/driving/IZone": "0.0",
+        "rearRightModule/turning/Min": "-1.0",
+        "BR/driving/Max": "1.0",
+        "BL/turning/I": "0.0",
+        "Rate Limit": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "FLSwerveModule/driving/Min": "-1.0",
+        "BL/turning/D": "0.0",
+        "FR/turning/Max": "1.0",
+        "BR/turning/Min": "-1.0",
+        "BRSwerveModule/turning/P": "1.0",
+        "FL/driving/I": "0.0",
+        "BLSwerveModule/turning/D": "0.0",
+        "FL/driving/IZone": "0.0",
+        "FL/driving/P": "0.03999999910593033",
+        "BLSwerveModule/turning/I": "0.0",
+        "rearLeftModule/driving/Min": "-1.0",
+        "FL/driving/D": "0.0",
+        "BLSwerveModule/turning/P": "1.0",
+        "rearLeftModule/driving/P": "0.03999999910593033",
+        "frontRightModule/turning/Min": "-1.0",
+        "rearLeftModule/driving/I": "0.0",
+        "rearRightModule/driving/Max": "1.0",
+        "frontLeftModule/driving/FF": "0.2081708461046219",
+        "rearLeftModule/driving/D": "0.0",
+        "FLSwerveModule/turning/FF": "0.0",
+        "Overall Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "frontRightModule/driving/Max": "1.0",
+        "PID Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "FLSwerveModule/driving/IZone": "0.0",
+        "Field Relative": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "BL/driving/P": "0.03999999910593033",
+        "FLSwerveModule/driving/FF": "0.2081708461046219",
+        "frontLeftModule/turning/FF": "0.0",
+        "BL/driving/D": "0.0",
+        "BRSwerveModule/driving/P": "0.03999999910593033",
+        "BL/driving/I": "0.0",
+        "rearLeftModule/driving/FF": "0.2081708461046219",
+        "Driver Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.08"
+        },
+        "BRSwerveModule/driving/D": "0.0",
+        "BR/driving/FF": "0.2081708461046219",
+        "BRSwerveModule/turning/FF": "0.0",
+        "BRSwerveModule/driving/I": "0.0",
+        "BR/turning/IZone": "0.0",
+        "frontRightModule/driving/FF": "0.2081708461046219",
+        "BR/turning/P": "1.0",
+        "BR/turning/I": "0.0",
+        "BR/driving/D": "0.0",
+        "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
+        "rearLeftModule/turning/Max": "1.0",
+        "FRSwerveModule/turning/Max": "1.0",
+        "FLSwerveModule/turning/P": "1.0",
+        "BLSwerveModule/driving/Min": "-1.0",
+        "BRSwerveModule/driving/IZone": "0.0",
+        "Shooter Tolerance RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
+        },
+        "FL/driving/Max": "1.0",
+        "FLSwerveModule/turning/I": "0.0",
+        "BL/driving/Max": "1.0",
+        "FL/turning/Max": "1.0",
+        "FLSwerveModule/turning/Min": "-1.0",
+        "BL/turning/P": "1.0",
+        "BLSwerveModule/turning/Min": "-1.0",
+        "frontLeftModule/turning/Min": "-1.0",
+        "X Controller/P": "1.0",
+        "BRSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Max": "1.0",
+        "FL/turning/I": "0.0",
+        "frontLeftModule/turning/D": "0.0",
+        "rearRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
+        "FL/turning/D": "0.0",
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "FL/turning/P": "1.0",
+        "FR/driving/FF": "0.2081708461046219",
+        "FR/turning/P": "1.0",
+        "FRSwerveModule/turning/IZone": "0.0",
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.0"
         },
         "frontLeftModule/turning/P": "1.0",
+        "FLSwerveModule/turning/D": "0.0",
+        "FR/turning/IZone": "0.0",
+        "FRSwerveModule/driving/Max": "1.0",
         "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "BRSwerveModule/driving/FF": "0.2081708461046219"
     },
     "mode": "testing",
     "simulation": {
         "frontRightModule/turning/FF": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
+        "BL/turning/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/P": "0.03999999910593033",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Theta Controller/D": "0.01",
+        "BL/driving/IZone": "0.0",
+        "FL/turning/FF": "0.0",
+        "FR/turning/FF": "0.0",
+        "FRSwerveModule/driving/D": "0.0",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -198,14 +318,8 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "1.0",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
+        "FRSwerveModule/driving/I": "0.0",
+        "BLSwerveModule/driving/I": "0.0",
         "rearRightModule/turning/FF": "0.0",
         "Drive & Track Target Y": {
             "comment": "Auto-Generated",
@@ -215,51 +329,55 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
         "Drive & Track Target X": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
         },
-        "Y Controller/I": "0.0",
+        "BR/driving/Min": "-1.0",
+        "FLSwerveModule/driving/Max": "1.0",
+        "FRSwerveModule/turning/FF": "0.0",
+        "BLSwerveModule/driving/P": "0.03999999910593033",
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
         },
+        "FR/turning/Min": "-1.0",
+        "BLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/turning/IZone": "0.0",
         "Target X": {
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Rate Limit": {
+        "BLSwerveModule/driving/D": "0.0",
+        "BR/turning/Max": "1.0",
+        "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "true"
+            "value": "1.0"
         },
+        "BL/turning/Max": "1.0",
         "rearRightModule/driving/Min": "-1.0",
+        "FRSwerveModule/driving/FF": "0.2081708461046219",
         "Elevator Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "BLSwerveModule/driving/FF": "0.2081708461046219",
+        "BR/turning/FF": "0.0",
+        "FR/driving/Max": "1.0",
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "1.0",
+        "FL/turning/IZone": "0.0",
         "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
+        "BR/driving/I": "0.0",
+        "BR/turning/D": "0.0",
+        "BR/driving/P": "0.03999999910593033",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
@@ -272,23 +390,15 @@
         },
         "frontRightModule/turning/Max": "1.0",
         "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
+        "FR/driving/I": "0.0",
+        "FL/driving/FF": "0.2081708461046219",
+        "FR/driving/D": "0.0",
+        "FLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
+        "BL/driving/FF": "0.2081708461046219",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
             "value": "10.0"
@@ -301,86 +411,66 @@
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
         "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
+        "FLSwerveModule/driving/D": "0.0",
         "Direction Slew rate": {
             "comment": "Radians per second",
             "value": "1.2"
         },
+        "FR/driving/P": "0.03999999910593033",
         "frontLeftModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/FF": "0.0",
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "Elevator PID/I": "0.0",
         "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
+        "FLSwerveModule/driving/P": "0.03999999910593033",
         "Elevator PID/P": "0.0",
-        "rearLeftModule/driving/Max": "1.0",
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
+        "BR/driving/IZone": "0.0",
+        "FLSwerveModule/driving/I": "0.0",
+        "FRSwerveModule/turning/D": "0.0",
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
+        "BRSwerveModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/I": "0.0",
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
+        "FRSwerveModule/turning/P": "1.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
         "sim fault pit display auto check": {
             "comment": "Auto-Generated",
             "value": "false"
         },
-        "frontLeftModule/turning/Min": "-1.0",
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/Min": "-1.0",
+        "FL/driving/Min": "-1.0",
+        "BL/driving/Min": "-1.0",
+        "FLSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Min": "-1.0",
         "Pathfinding Max Angular Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
-        "rearRightModule/turning/I": "0.0",
-        "rearRightModule/turning/P": "1.0",
-        "frontLeftModule/turning/I": "0.0",
+        "FL/turning/Min": "-1.0",
+        "FR/driving/IZone": "0.0",
+        "BRSwerveModule/turning/Min": "-1.0",
         "rearRightModule/turning/IZone": "0.0",
-        "frontLeftModule/driving/Min": "-1.0",
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
-    },
-    "testing": {
-        "frontRightModule/turning/FF": "0.0",
+        "FRSwerveModule/turning/Min": "-1.0",
+        "FRSwerveModule/driving/IZone": "0.0",
+        "BLSwerveModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/Max": "1.0",
+        "Pathfinding X Controller/P": "1.0",
+        "BL/turning/IZone": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
-        "rearLeftModule/driving/IZone": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
+        "FR/turning/D": "0.0",
+        "FR/turning/I": "0.0",
         "Theta Controller/D": "0.01",
-        "Shooter Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "Theta Controller/P": "1.0",
@@ -389,6 +479,146 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "BL/turning/Min": "-1.0",
+        "FR/driving/Min": "-1.0",
+        "BRSwerveModule/turning/I": "0.0",
+        "X Controller/I": "0.0",
+        "Y Controller/D": "0.0",
+        "BLSwerveModule/driving/IZone": "0.0",
+        "X Controller/D": "0.0",
+        "Y Controller/I": "0.0",
+        "BRSwerveModule/turning/D": "0.0",
+        "frontRightModule/driving/IZone": "0.0",
+        "rearRightModule/turning/Min": "-1.0",
+        "BR/driving/Max": "1.0",
+        "BL/turning/I": "0.0",
+        "Rate Limit": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "FLSwerveModule/driving/Min": "-1.0",
+        "BL/turning/D": "0.0",
+        "FR/turning/Max": "1.0",
+        "BR/turning/Min": "-1.0",
+        "BRSwerveModule/turning/P": "1.0",
+        "FL/driving/I": "0.0",
+        "BLSwerveModule/turning/D": "0.0",
+        "FL/driving/IZone": "0.0",
+        "FL/driving/P": "0.03999999910593033",
+        "BLSwerveModule/turning/I": "0.0",
+        "rearLeftModule/driving/Min": "-1.0",
+        "FL/driving/D": "0.0",
+        "BLSwerveModule/turning/P": "1.0",
+        "rearLeftModule/driving/P": "0.03999999910593033",
+        "frontRightModule/turning/Min": "-1.0",
+        "rearLeftModule/driving/I": "0.0",
+        "rearRightModule/driving/Max": "1.0",
+        "frontLeftModule/driving/FF": "0.2081708461046219",
+        "rearLeftModule/driving/D": "0.0",
+        "FLSwerveModule/turning/FF": "0.0",
+        "Overall Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "frontRightModule/driving/Max": "1.0",
+        "PID Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "FLSwerveModule/driving/IZone": "0.0",
+        "Field Relative": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "BL/driving/P": "0.03999999910593033",
+        "FLSwerveModule/driving/FF": "0.2081708461046219",
+        "frontLeftModule/turning/FF": "0.0",
+        "BL/driving/D": "0.0",
+        "BRSwerveModule/driving/P": "0.03999999910593033",
+        "BL/driving/I": "0.0",
+        "rearLeftModule/driving/FF": "0.2081708461046219",
+        "Driver Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.08"
+        },
+        "BRSwerveModule/driving/D": "0.0",
+        "BR/driving/FF": "0.2081708461046219",
+        "BRSwerveModule/turning/FF": "0.0",
+        "BRSwerveModule/driving/I": "0.0",
+        "BR/turning/IZone": "0.0",
+        "frontRightModule/driving/FF": "0.2081708461046219",
+        "BR/turning/P": "1.0",
+        "BR/turning/I": "0.0",
+        "BR/driving/D": "0.0",
+        "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
+        "rearLeftModule/turning/Max": "1.0",
+        "FRSwerveModule/turning/Max": "1.0",
+        "FLSwerveModule/turning/P": "1.0",
+        "BLSwerveModule/driving/Min": "-1.0",
+        "BRSwerveModule/driving/IZone": "0.0",
+        "Shooter Tolerance RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
+        },
+        "FL/driving/Max": "1.0",
+        "FLSwerveModule/turning/I": "0.0",
+        "BL/driving/Max": "1.0",
+        "FL/turning/Max": "1.0",
+        "FLSwerveModule/turning/Min": "-1.0",
+        "BL/turning/P": "1.0",
+        "BLSwerveModule/turning/Min": "-1.0",
+        "frontLeftModule/turning/Min": "-1.0",
+        "X Controller/P": "1.0",
+        "BRSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Max": "1.0",
+        "FL/turning/I": "0.0",
+        "frontLeftModule/turning/D": "0.0",
+        "rearRightModule/driving/IZone": "0.0",
+        "rearRightModule/turning/I": "0.0",
+        "FL/turning/D": "0.0",
+        "rearRightModule/turning/P": "1.0",
+        "frontLeftModule/turning/I": "0.0",
+        "frontLeftModule/driving/Min": "-1.0",
+        "FL/turning/P": "1.0",
+        "FR/driving/FF": "0.2081708461046219",
+        "FR/turning/P": "1.0",
+        "FRSwerveModule/turning/IZone": "0.0",
+        "Pathfinding Max Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
+        "frontLeftModule/turning/P": "1.0",
+        "FLSwerveModule/turning/D": "0.0",
+        "FR/turning/IZone": "0.0",
+        "FRSwerveModule/driving/Max": "1.0",
+        "rearRightModule/turning/D": "0.0",
+        "BRSwerveModule/driving/FF": "0.2081708461046219"
+    },
+    "testing": {
+        "frontRightModule/turning/FF": "0.0",
+        "BL/turning/FF": "0.0",
+        "rearLeftModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/P": "0.03999999910593033",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
+        "BL/driving/IZone": "0.0",
+        "FL/turning/FF": "0.0",
+        "FR/turning/FF": "0.0",
+        "FRSwerveModule/driving/D": "0.0",
+        "Shooter Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Pathfinding Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
+        "FRSwerveModule/driving/I": "0.0",
+        "BLSwerveModule/driving/I": "0.0",
         "rearRightModule/turning/FF": "0.0",
         "Drive & Track Target Y": {
             "comment": "Auto-Generated",
@@ -398,51 +628,55 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
         "Drive & Track Target X": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "X Controller/D": "0.0",
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
         },
-        "Y Controller/I": "0.0",
+        "BR/driving/Min": "-1.0",
+        "FLSwerveModule/driving/Max": "1.0",
+        "FRSwerveModule/turning/FF": "0.0",
+        "BLSwerveModule/driving/P": "0.03999999910593033",
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
         },
+        "FR/turning/Min": "-1.0",
+        "BLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/turning/IZone": "0.0",
         "Target X": {
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Rate Limit": {
+        "BLSwerveModule/driving/D": "0.0",
+        "BR/turning/Max": "1.0",
+        "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "true"
+            "value": "1.0"
         },
+        "BL/turning/Max": "1.0",
         "rearRightModule/driving/Min": "-1.0",
+        "FRSwerveModule/driving/FF": "0.2081708461046219",
         "Elevator Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "BLSwerveModule/driving/FF": "0.2081708461046219",
+        "BR/turning/FF": "0.0",
+        "FR/driving/Max": "1.0",
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "3",
+        "FL/turning/IZone": "0.0",
         "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
+        "BR/driving/I": "0.0",
+        "BR/turning/D": "0.0",
+        "BR/driving/P": "0.03999999910593033",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
@@ -455,23 +689,15 @@
         },
         "frontRightModule/turning/Max": "1.0",
         "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
         "rearLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
+        "FR/driving/I": "0.0",
+        "FL/driving/FF": "0.2081708461046219",
+        "FR/driving/D": "0.0",
+        "FLSwerveModule/turning/IZone": "0.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
+        "BL/driving/FF": "0.2081708461046219",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
             "value": "10.0"
@@ -484,78 +710,204 @@
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
         "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
+        "FLSwerveModule/driving/D": "0.0",
         "Direction Slew rate": {
             "comment": "Radians per second",
             "value": "1.2"
         },
+        "FR/driving/P": "0.03999999910593033",
         "frontLeftModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/FF": "0.0",
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "Elevator PID/I": "0.0",
         "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
+        "FLSwerveModule/driving/P": "0.03999999910593033",
         "Elevator PID/P": "0.0",
-        "rearLeftModule/driving/Max": "1.0",
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
+        "BR/driving/IZone": "0.0",
+        "FLSwerveModule/driving/I": "0.0",
+        "FRSwerveModule/turning/D": "0.0",
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
+        "BRSwerveModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/I": "0.0",
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
+        "FRSwerveModule/turning/P": "1.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
         "sim fault pit display auto check": {
             "comment": "Auto-Generated",
             "value": "false"
         },
-        "frontLeftModule/turning/Min": "-1.0",
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/Min": "-1.0",
+        "FL/driving/Min": "-1.0",
+        "BL/driving/Min": "-1.0",
+        "FLSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Min": "-1.0",
         "Pathfinding Max Angular Acceleration": {
             "comment": "Auto-Generated",
             "value": "1.570796"
         },
+        "FL/turning/Min": "-1.0",
+        "FR/driving/IZone": "0.0",
+        "BRSwerveModule/turning/Min": "-1.0",
+        "rearRightModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/Min": "-1.0",
+        "FRSwerveModule/driving/IZone": "0.0",
+        "BLSwerveModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/Max": "1.0",
+        "Pathfinding X Controller/P": "1.0",
+        "BL/turning/IZone": "0.0",
+        "rearLeftModule/turning/IZone": "0.0",
+        "FR/turning/D": "0.0",
+        "FR/turning/I": "0.0",
+        "Theta Controller/D": "0.01",
+        "frontLeftModule/turning/IZone": "0.0",
+        "Theta Controller/I": "0.0",
+        "Theta Controller/P": "1.0",
+        "Y Controller/P": "1.0",
+        "FF Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "BL/turning/Min": "-1.0",
+        "FR/driving/Min": "-1.0",
+        "BRSwerveModule/turning/I": "0.0",
+        "X Controller/I": "0.0",
+        "Y Controller/D": "0.0",
+        "BLSwerveModule/driving/IZone": "0.0",
+        "X Controller/D": "0.0",
+        "Y Controller/I": "0.0",
+        "BRSwerveModule/turning/D": "0.0",
+        "frontRightModule/driving/IZone": "0.0",
+        "rearRightModule/turning/Min": "-1.0",
+        "BR/driving/Max": "1.0",
+        "BL/turning/I": "0.0",
+        "Rate Limit": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "FLSwerveModule/driving/Min": "-1.0",
+        "BL/turning/D": "0.0",
+        "FR/turning/Max": "1.0",
+        "BR/turning/Min": "-1.0",
+        "BRSwerveModule/turning/P": "1.0",
+        "FL/driving/I": "0.0",
+        "BLSwerveModule/turning/D": "0.0",
+        "FL/driving/IZone": "0.0",
+        "FL/driving/P": "0.03999999910593033",
+        "BLSwerveModule/turning/I": "0.0",
+        "rearLeftModule/driving/Min": "-1.0",
+        "FL/driving/D": "0.0",
+        "BLSwerveModule/turning/P": "1.0",
+        "rearLeftModule/driving/P": "0.03999999910593033",
+        "frontRightModule/turning/Min": "-1.0",
+        "rearLeftModule/driving/I": "0.0",
+        "rearRightModule/driving/Max": "1.0",
+        "frontLeftModule/driving/FF": "0.2081708461046219",
+        "rearLeftModule/driving/D": "0.0",
+        "FLSwerveModule/turning/FF": "0.0",
+        "Overall Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "frontRightModule/driving/Max": "1.0",
+        "PID Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
+        "FLSwerveModule/driving/IZone": "0.0",
+        "Field Relative": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
+        "BL/driving/P": "0.03999999910593033",
+        "FLSwerveModule/driving/FF": "0.2081708461046219",
+        "frontLeftModule/turning/FF": "0.0",
+        "BL/driving/D": "0.0",
+        "BRSwerveModule/driving/P": "0.03999999910593033",
+        "BL/driving/I": "0.0",
+        "rearLeftModule/driving/FF": "0.2081708461046219",
+        "Driver Deadband": {
+            "comment": "Auto-Generated",
+            "value": "0.08"
+        },
+        "BRSwerveModule/driving/D": "0.0",
+        "BR/driving/FF": "0.2081708461046219",
+        "BRSwerveModule/turning/FF": "0.0",
+        "BRSwerveModule/driving/I": "0.0",
+        "BR/turning/IZone": "0.0",
+        "frontRightModule/driving/FF": "0.2081708461046219",
+        "BR/turning/P": "1.0",
+        "BR/turning/I": "0.0",
+        "BR/driving/D": "0.0",
+        "rearLeftModule/driving/Max": "1.0",
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
+        "rearLeftModule/turning/Max": "1.0",
+        "FRSwerveModule/turning/Max": "1.0",
+        "FLSwerveModule/turning/P": "1.0",
+        "BLSwerveModule/driving/Min": "-1.0",
+        "BRSwerveModule/driving/IZone": "0.0",
+        "Shooter Tolerance RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
+        },
+        "FL/driving/Max": "1.0",
+        "FLSwerveModule/turning/I": "0.0",
+        "BL/driving/Max": "1.0",
+        "FL/turning/Max": "1.0",
+        "FLSwerveModule/turning/Min": "-1.0",
+        "BL/turning/P": "1.0",
+        "BLSwerveModule/turning/Min": "-1.0",
+        "frontLeftModule/turning/Min": "-1.0",
+        "X Controller/P": "1.0",
+        "BRSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Max": "1.0",
+        "FL/turning/I": "0.0",
+        "frontLeftModule/turning/D": "0.0",
+        "rearRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/I": "0.0",
+        "FL/turning/D": "0.0",
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "FL/turning/P": "1.0",
+        "FR/driving/FF": "0.2081708461046219",
+        "FR/turning/P": "1.0",
+        "FRSwerveModule/turning/IZone": "0.0",
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "0.5"
         },
         "frontLeftModule/turning/P": "1.0",
+        "FLSwerveModule/turning/D": "0.0",
+        "FR/turning/IZone": "0.0",
+        "FRSwerveModule/driving/Max": "1.0",
         "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "BRSwerveModule/driving/FF": "0.2081708461046219"
     },
     "competition": {
         "frontRightModule/turning/FF": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
+        "BL/turning/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
+        "FRSwerveModule/driving/P": "0.03999999910593033",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Theta Controller/D": "0.0",
+        "BL/driving/IZone": "0.0",
+        "FL/turning/FF": "0.0",
+        "FR/turning/FF": "0.0",
+        "FRSwerveModule/driving/D": "0.0",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -564,6 +916,159 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "FRSwerveModule/driving/I": "0.0",
+        "BLSwerveModule/driving/I": "0.0",
+        "rearRightModule/turning/FF": "0.0",
+        "Drive & Track Target Y": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Climber Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Drive & Track Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Rotation FF Timestep": {
+            "comment": "Auto-Generated",
+            "value": "0.02"
+        },
+        "BR/driving/Min": "-1.0",
+        "FLSwerveModule/driving/Max": "1.0",
+        "FRSwerveModule/turning/FF": "0.0",
+        "BLSwerveModule/driving/P": "0.03999999910593033",
+        "Target Y": {
+            "comment": "Auto-Generated",
+            "value": "8.2042"
+        },
+        "FR/turning/Min": "-1.0",
+        "BLSwerveModule/turning/IZone": "0.0",
+        "frontRightModule/turning/IZone": "0.0",
+        "Target X": {
+            "comment": "Auto-Generated",
+            "value": "1.8415"
+        },
+        "BLSwerveModule/driving/D": "0.0",
+        "BR/turning/Max": "1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "BL/turning/Max": "1.0",
+        "rearRightModule/driving/Min": "-1.0",
+        "FRSwerveModule/driving/FF": "0.2081708461046219",
+        "Elevator Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "BLSwerveModule/driving/FF": "0.2081708461046219",
+        "BR/turning/FF": "0.0",
+        "FR/driving/Max": "1.0",
+        "rearRightModule/turning/Max": "1.0",
+        "Pathfinding Y Controller/I": "0.0",
+        "Pathfinding Theta Controller/I": "0.0",
+        "Pathfinding Theta Controller/P": "0.0",
+        "FL/turning/IZone": "0.0",
+        "rearLeftModule/turning/Min": "-1.0",
+        "Pathfinding Y Controller/D": "0.0",
+        "BR/driving/I": "0.0",
+        "BR/turning/D": "0.0",
+        "BR/driving/P": "0.03999999910593033",
+        "Max Angular Speed": {
+            "comment": "Auto-Generated",
+            "value": "6.283185307179586"
+        },
+        "Pathfinding Theta Controller/D": "0.0",
+        "frontRightModule/driving/Min": "-1.0",
+        "Filter taps": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
+        "frontRightModule/turning/Max": "1.0",
+        "frontRightModule/driving/D": "0.0",
+        "rearLeftModule/turning/FF": "0.0",
+        "frontLeftModule/driving/IZone": "0.0",
+        "FR/driving/I": "0.0",
+        "FL/driving/FF": "0.2081708461046219",
+        "FR/driving/D": "0.0",
+        "FLSwerveModule/turning/IZone": "0.0",
+        "frontRightModule/driving/P": "0.03999999910593033",
+        "Pathfinding Y Controller/P": "1.0",
+        "BL/driving/FF": "0.2081708461046219",
+        "Elevator Tolerance": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
+        },
+        "frontRightModule/driving/I": "0.0",
+        "Max Speed": {
+            "comment": "Meters per second",
+            "value": "4.8"
+        },
+        "frontRightModule/turning/D": "0.0",
+        "rearRightModule/driving/I": "0.0",
+        "frontLeftModule/driving/D": "0.0",
+        "frontLeftModule/driving/I": "0.0",
+        "frontRightModule/turning/I": "0.0",
+        "rearRightModule/driving/D": "0.0",
+        "rearRightModule/driving/P": "0.03999999910593033",
+        "FLSwerveModule/driving/D": "0.0",
+        "Direction Slew rate": {
+            "comment": "Radians per second",
+            "value": "1.2"
+        },
+        "FR/driving/P": "0.03999999910593033",
+        "frontLeftModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/FF": "0.0",
+        "frontRightModule/turning/P": "1.0",
+        "frontLeftModule/driving/P": "0.03999999910593033",
+        "Elevator PID/I": "0.0",
+        "frontLeftModule/turning/Max": "1.0",
+        "FLSwerveModule/driving/P": "0.03999999910593033",
+        "Elevator PID/P": "0.0",
+        "BR/driving/IZone": "0.0",
+        "FLSwerveModule/driving/I": "0.0",
+        "FRSwerveModule/turning/D": "0.0",
+        "rearLeftModule/turning/P": "1.0",
+        "rearLeftModule/turning/D": "0.0",
+        "BRSwerveModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/I": "0.0",
+        "rearLeftModule/turning/I": "0.0",
+        "Elevator PID/D": "0.0",
+        "FRSwerveModule/turning/P": "1.0",
+        "Rotation FF": {
+            "comment": "Auto-Generated",
+            "value": "1"
+        },
+        "rearRightModule/driving/FF": "0.2081708461046219",
+        "sim fault pit display auto check": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "FRSwerveModule/driving/Min": "-1.0",
+        "FL/driving/Min": "-1.0",
+        "BL/driving/Min": "-1.0",
+        "FLSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Min": "-1.0",
+        "Pathfinding Max Angular Acceleration": {
+            "comment": "Auto-Generated",
+            "value": "3.141592653589793"
+        },
+        "FL/turning/Min": "-1.0",
+        "FR/driving/IZone": "0.0",
+        "BRSwerveModule/turning/Min": "-1.0",
+        "rearRightModule/turning/IZone": "0.0",
+        "FRSwerveModule/turning/Min": "-1.0",
+        "FRSwerveModule/driving/IZone": "0.0",
+        "BLSwerveModule/driving/Max": "1.0",
+        "BLSwerveModule/turning/Max": "1.0",
+        "Pathfinding X Controller/P": "1.0",
+        "BL/turning/IZone": "0.0",
+        "rearLeftModule/turning/IZone": "0.0",
+        "FR/turning/D": "0.0",
+        "FR/turning/I": "0.0",
+        "Theta Controller/D": "0.0",
         "frontLeftModule/turning/IZone": "0.0",
         "Theta Controller/I": "0.0",
         "Theta Controller/P": "0.1",
@@ -572,164 +1077,123 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
-        "rearRightModule/turning/FF": "0.0",
-        "Drive & Track Target Y": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Climber Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
+        "BL/turning/Min": "-1.0",
+        "FR/driving/Min": "-1.0",
+        "BRSwerveModule/turning/I": "0.0",
         "X Controller/I": "0.0",
         "Y Controller/D": "0.0",
-        "Drive & Track Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
+        "BLSwerveModule/driving/IZone": "0.0",
         "X Controller/D": "0.0",
-        "Rotation FF Timestep": {
-            "comment": "Auto-Generated",
-            "value": "0.02"
-        },
         "Y Controller/I": "0.0",
-        "Target Y": {
-            "comment": "Auto-Generated",
-            "value": "8.2042"
-        },
-        "frontRightModule/turning/IZone": "0.0",
-        "Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.8415"
-        },
+        "BRSwerveModule/turning/D": "0.0",
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "BR/driving/Max": "1.0",
+        "BL/turning/I": "0.0",
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
         },
-        "rearRightModule/driving/Min": "-1.0",
-        "Elevator Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "rearRightModule/turning/Max": "1.0",
-        "Pathfinding Y Controller/I": "0.0",
-        "Pathfinding Theta Controller/I": "0.0",
+        "FLSwerveModule/driving/Min": "-1.0",
+        "BL/turning/D": "0.0",
+        "FR/turning/Max": "1.0",
+        "BR/turning/Min": "-1.0",
+        "BRSwerveModule/turning/P": "1.0",
+        "FL/driving/I": "0.0",
+        "BLSwerveModule/turning/D": "0.0",
+        "FL/driving/IZone": "0.0",
+        "FL/driving/P": "0.03999999910593033",
+        "BLSwerveModule/turning/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "0.0",
-        "rearLeftModule/turning/Min": "-1.0",
+        "FL/driving/D": "0.0",
+        "BLSwerveModule/turning/P": "1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/D": "0.0",
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
-        "Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "6.283185307179586"
-        },
-        "Pathfinding Theta Controller/D": "0.0",
-        "frontRightModule/driving/Min": "-1.0",
-        "Filter taps": {
-            "comment": "Auto-Generated",
-            "value": "3"
-        },
-        "frontRightModule/turning/Max": "1.0",
-        "frontRightModule/driving/D": "0.0",
+        "FLSwerveModule/turning/FF": "0.0",
         "Overall Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
         },
-        "rearLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "FLSwerveModule/driving/IZone": "0.0",
         "Field Relative": {
             "comment": "Auto-Generated",
             "value": "false"
         },
-        "frontRightModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/P": "1.0",
-        "Elevator Tolerance": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "frontRightModule/driving/I": "0.0",
-        "Max Speed": {
-            "comment": "Meters per second",
-            "value": "4.8"
-        },
-        "frontRightModule/turning/D": "0.0",
-        "rearRightModule/driving/I": "0.0",
-        "frontLeftModule/driving/D": "0.0",
+        "BL/driving/P": "0.03999999910593033",
+        "FLSwerveModule/driving/FF": "0.2081708461046219",
         "frontLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/I": "0.0",
-        "frontRightModule/turning/I": "0.0",
-        "rearRightModule/driving/D": "0.0",
+        "BL/driving/D": "0.0",
+        "BRSwerveModule/driving/P": "0.03999999910593033",
+        "BL/driving/I": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
-        "rearRightModule/driving/P": "0.03999999910593033",
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.08"
         },
-        "Direction Slew rate": {
-            "comment": "Radians per second",
-            "value": "1.2"
-        },
-        "frontLeftModule/driving/Max": "1.0",
-        "frontRightModule/turning/P": "1.0",
-        "frontLeftModule/driving/P": "0.03999999910593033",
-        "Elevator PID/I": "0.0",
-        "frontLeftModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/D": "0.0",
+        "BR/driving/FF": "0.2081708461046219",
+        "BRSwerveModule/turning/FF": "0.0",
+        "BRSwerveModule/driving/I": "0.0",
+        "BR/turning/IZone": "0.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
-        "Elevator PID/P": "0.0",
+        "BR/turning/P": "1.0",
+        "BR/turning/I": "0.0",
+        "BR/driving/D": "0.0",
         "rearLeftModule/driving/Max": "1.0",
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "3.0"
         },
-        "rearLeftModule/turning/P": "1.0",
-        "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
-        "rearLeftModule/turning/I": "0.0",
-        "Elevator PID/D": "0.0",
-        "Rotation FF": {
-            "comment": "Auto-Generated",
-            "value": "1"
-        },
-        "rearRightModule/driving/FF": "0.2081708461046219",
+        "FRSwerveModule/turning/Max": "1.0",
+        "FLSwerveModule/turning/P": "1.0",
+        "BLSwerveModule/driving/Min": "-1.0",
+        "BRSwerveModule/driving/IZone": "0.0",
         "Shooter Tolerance RPM": {
             "comment": "Auto-Generated",
             "value": "100.0"
         },
-        "sim fault pit display auto check": {
-            "comment": "Auto-Generated",
-            "value": "false"
-        },
+        "FL/driving/Max": "1.0",
+        "FLSwerveModule/turning/I": "0.0",
+        "BL/driving/Max": "1.0",
+        "FL/turning/Max": "1.0",
+        "FLSwerveModule/turning/Min": "-1.0",
+        "BL/turning/P": "1.0",
+        "BLSwerveModule/turning/Min": "-1.0",
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
+        "BRSwerveModule/turning/Max": "1.0",
+        "BRSwerveModule/driving/Max": "1.0",
+        "FL/turning/I": "0.0",
         "frontLeftModule/turning/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
-        "Pathfinding Max Angular Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
         "rearRightModule/turning/I": "0.0",
+        "FL/turning/D": "0.0",
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "FL/turning/P": "1.0",
+        "FR/driving/FF": "0.2081708461046219",
+        "FR/turning/P": "1.0",
+        "FRSwerveModule/turning/IZone": "0.0",
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.0"
         },
         "frontLeftModule/turning/P": "1.0",
+        "FLSwerveModule/turning/D": "0.0",
+        "FR/turning/IZone": "0.0",
+        "FRSwerveModule/driving/Max": "1.0",
         "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "BRSwerveModule/driving/FF": "0.2081708461046219"
     }
 }

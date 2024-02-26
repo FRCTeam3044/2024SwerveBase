@@ -48,26 +48,26 @@ public class DriveSubsystem extends AdvancedSubsystem {
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
       DriveConstants.kFrontLeftChassisAngularOffset,
-      "FL");
+      MAXSwerveModule.ModuleCode.FL);
 
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
       DriveConstants.kFrontRightChassisAngularOffset,
-      "FR");
+      MAXSwerveModule.ModuleCode.FR);
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
       DriveConstants.kRearLeftDrivingCanId,
       DriveConstants.kRearLeftTurningCanId,
       DriveConstants.kBackLeftChassisAngularOffset,
-      "BL");
+      MAXSwerveModule.ModuleCode.BL);
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset,
-      "BR");
-
+      MAXSwerveModule.ModuleCode.BR);
+  
   // The gyro sensor (NavX)
   private final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
   // Slew rate filter variables for controlling lateral acceleration
@@ -416,14 +416,24 @@ public class DriveSubsystem extends AdvancedSubsystem {
 
   @Override
   protected Command systemCheckCommand() {
-    // return Commands.sequence(
-    //   () -> {
-    //     m_frontLeft.getSystemCheckCommand().schedule();
-    //     m_frontRight.getSystemCheckCommand().schedule();
-    //     m_rearLeft.getSystemCheckCommand().schedule();
-    //     m_rearRight.getSystemCheckCommand().schedule();
-    //   },
-    // this),
-    return null; //TODO: FINISH THIS
+    return Commands.sequence(
+      Commands.runOnce(
+        () -> {
+          m_frontLeft.getSystemCheckCommand().schedule();
+          m_frontRight.getSystemCheckCommand().schedule();
+          m_rearLeft.getSystemCheckCommand().schedule();
+          m_rearRight.getSystemCheckCommand().schedule();
+        },
+      this),
+      Commands.waitSeconds(0.3)
+      .until(
+        () ->
+          getFaults().size() > 0
+            || m_frontLeft.getFaults().size() > 0
+            || m_frontRight.getFaults().size() > 0
+            || m_rearLeft.getFaults().size() > 0
+            || m_rearRight.getFaults().size() > 0
+      )
+    );
   }
 }

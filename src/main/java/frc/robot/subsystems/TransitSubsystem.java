@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.subsystem.AdvancedSubsystem;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.RobotSystemChecks;
 import frc.robot.Constants.AutoCheckConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PDHChannelConstants;
@@ -29,6 +30,10 @@ public class TransitSubsystem extends AdvancedSubsystem {
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
         registerHardware("Transit", transitMotor);
+        RobotSystemChecks.addPeriodicCallback(() -> {
+          SmartDashboard.putNumber("/Subsystems/Transit/Temp", transitMotor.getTemperature());
+        }
+        , 1.0);
     }
 
     // Use this to get the note from the intake system
