@@ -29,7 +29,7 @@ public class AutoTargetUtils {
                 new Vertex(1, 7));
         Obstacle blueShootingZoneTwo = Obstacle.createObstacle(
                 new Vertex(3, 7),
-                new Vertex(3, 5.9),
+                new Vertex(3, 4.75),
                 new Vertex(5, 5.9),
                 new Vertex(5, 7));
         BLUE_SHOOTING_ZONE = new ObstacleGroup(blueShootingZoneOne, blueShootingZoneTwo);
@@ -42,7 +42,7 @@ public class AutoTargetUtils {
         Obstacle redShootingZoneTwo = Obstacle.createObstacle(
                 new Vertex(11.55, 7),
                 new Vertex(13.55, 7),
-                new Vertex(13.55, 5.9),
+                new Vertex(13.55, 4.75),
                 new Vertex(11.55, 5.9));
         RED_SHOOTING_ZONE = new ObstacleGroup(redShootingZoneOne, redShootingZoneTwo);
 
