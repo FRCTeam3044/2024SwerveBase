@@ -10,13 +10,11 @@ public class RobotSystemChecks extends TimedRobot {
     private static RobotSystemChecks instance;
 
     public void robotInit() {
-      System.out.println("robot init");
         instance = this;
         addPeriodic(() -> SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime()), 1.0);
     }
 
     public void robotPeriodic() {
-      System.out.println("robot periodic");
         SmartDashboard.putNumber("RIOInputVoltage", RobotController.getInputVoltage());
         SmartDashboard.putNumber("RIOCANUtil", RobotController.getCANStatus().percentBusUtilization * 100);
     }
