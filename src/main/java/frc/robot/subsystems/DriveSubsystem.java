@@ -433,12 +433,11 @@ public class DriveSubsystem extends SubsystemBase {
         TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
                 PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
 
-        // TODO: Figure out this situation.
         ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), getPose().getRotation());
         Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
                 chassisSpeed.vyMetersPerSecond);
         Vertex start = path.getStart();
-        Vertex nextWaypoint = path.get(0);
+        Vertex nextWaypoint = path.size() > 0 ? path.get(0) : path.getTarget();
         Vector pathDir = start.createVectorTo(nextWaypoint).normalize();
         double speed = velocity.dotProduct(pathDir);
         config.setStartVelocity(speed);
