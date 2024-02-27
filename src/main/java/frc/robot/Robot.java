@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +32,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   public RobotContainer m_robotContainer;
+  private Timer e = new Timer();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -135,8 +137,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    e.start();
     CommandScheduler.getInstance().cancelAll();
-    ControllerRumble.driverBigLong();
+
+
   }
 
   /** This function is called periodically during test mode. */
@@ -145,7 +149,7 @@ public class Robot extends LoggedRobot {
     if(RobotContainer.m_driverController.getHID().getStartButton()) {
       ControllerRumble.driverBigLong();
     } else if(RobotContainer.m_driverController.getHID().getBackButton()) {
-      ControllerRumble.driverWave(1);
+      ControllerRumble.driverWave(0.3);
     }
   }
 
