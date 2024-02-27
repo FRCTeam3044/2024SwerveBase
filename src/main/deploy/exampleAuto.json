@@ -25,5 +25,11 @@
     "type": "command",
     "id": "go_to_note",
     "parameters": {}
+  },
+  {
+    "type": "command",
+    "id": "new_command",
+    "name": "New Command",
+    "parameters": {}
   }
 ]

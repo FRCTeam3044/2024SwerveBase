@@ -124,16 +124,16 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        waypoints.add(new Pose2d(0, 1, new Rotation2d()));
-        waypoints.add(new Pose2d(1, 1, new Rotation2d()));
-        waypoints.add(new Pose2d(1, 0, new Rotation2d()));
-        waypoints.add(new Pose2d(0, 0, new Rotation2d()));
+        // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        // waypoints.add(new Pose2d(0, 1, new Rotation2d()));
+        // waypoints.add(new Pose2d(1, 1, new Rotation2d()));
+        // waypoints.add(new Pose2d(1, 0, new Rotation2d()));
+        // waypoints.add(new Pose2d(0, 0, new Rotation2d()));
         // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("exampleAuto.json");
+            Command auto = AutoParser.loadAuto("NewAuto.json");
             return auto;
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't find file");

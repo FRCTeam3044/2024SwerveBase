@@ -1,0 +1,12 @@
+[
+  {
+    "type": "command",
+    "id": "go_to_point",
+    "name": "Go To Test Point",
+    "parameters": {
+      "targetX": 4,
+      "targetY": 3,
+      "rotDegrees": 0
+    }
+  }
+]
