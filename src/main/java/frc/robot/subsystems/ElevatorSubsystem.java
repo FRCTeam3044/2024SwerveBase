@@ -1,5 +1,10 @@
 package frc.robot.subsystems;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -9,6 +14,8 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -16,6 +23,10 @@ import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+    private ArrayList<Double> elevatorAngleCalibration = new ArrayList<Double>();
+    private ArrayList<Double> elevatorEncoderCalibration = new ArrayList<Double>();
+    public boolean calibrationModeEnabled = false;
 
     public RobotContainer m_robotContainer;
 
@@ -26,7 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
-    // TODO: Also not how this will be wired
+    // TODO: Also not how this will be wired (maybe)
     public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
 
     private SparkPIDController pidController;
@@ -40,7 +51,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double ampAngle = 0;
     public double intakeAngle = 0;
 
-    // TODO: This will not be how it is wired, it will be limit switches instead
     RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
     RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
     double currentTargetRotations = 0;
@@ -81,17 +91,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-        currentTargetRotations = intakeAngle;
+        currentTargetRotations = angleToRotations(intakeAngle);
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
     // into an amp
     public void setToAmpMode() {
-        currentTargetRotations = ampAngle;
+        currentTargetRotations = angleToRotations(ampAngle);
     }
 
     public void setAngle(double setAngle) {
-        currentTargetRotations = setAngle;
+        currentTargetRotations = angleToRotations(setAngle);
     }
 
     /**
@@ -132,5 +142,37 @@ public class ElevatorSubsystem extends SubsystemBase {
         double tolerance = ElevatorConstants.kElevatorTolerance.get();
         return Math.abs(motorOneEncoder.getPosition() - currentTargetRotations) < tolerance
                 && Math.abs(motorTwoEncoder.getPosition() - currentTargetRotations) < tolerance;
+    }
+
+    private double angleToRotations(double angle) {
+        // TODO: Pick a Regression and actually regress.
+        return angle;
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Arm/MotorOnePos", motorOneEncoder.getPosition());
+        SmartDashboard.putNumber("Arm/MotorTwoPos", motorTwoEncoder.getPosition());
+        SmartDashboard.putNumber("Arm/TargetPos", currentTargetRotations);
+        SmartDashboard.putNumber("Arm/CurrentAngle", getAngle());
+
+        if (calibrationModeEnabled) {
+            SmartDashboard.putNumber("Arm/PredictedEncoderForAngle", angleToRotations(getAngle()));
+            elevatorAngleCalibration.add(getAngle());
+            elevatorEncoderCalibration.add(angleToRotations(getAngle()));
+            if (RobotContainer.m_driverController.getHID().getBButton()) {
+                try (PrintWriter writer = new PrintWriter(
+                        new FileWriter(Filesystem.getDeployDirectory() + "/calibration.csv"))) {
+                    writer.println("Angle,Encoder");
+                    for (int i = 0; i < elevatorAngleCalibration.size(); i++) {
+                        double angle = elevatorAngleCalibration.get(i);
+                        double encoder = elevatorEncoderCalibration.get(i);
+                        writer.println(angle + "," + encoder);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

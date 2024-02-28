@@ -143,7 +143,12 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-
+        // TODO: Adjust button
+        if (RobotContainer.m_driverController.getHID().getAButton()) {
+            RobotContainer.elevator.calibrationModeEnabled = true;
+        } else {
+            RobotContainer.elevator.calibrationModeEnabled = false;
+        }
     }
 
     /** This function is called once when the robot is first started up. */

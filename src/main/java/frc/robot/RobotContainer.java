@@ -22,10 +22,6 @@ import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.ClimberSubsystem;
