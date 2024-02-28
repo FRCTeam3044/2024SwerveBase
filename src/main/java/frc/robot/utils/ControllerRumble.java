@@ -17,25 +17,49 @@ public class ControllerRumble {
 
     public static Timer timer = new Timer();
     private static Timer waveTimer = new Timer();
+    private static Timer pulseTimer = new Timer();
 
     public static double XVariable = 0;
 
     public static double waveIntensity;
+
+    public static double pulseTime;
+
+    public static double currentTime;
+
+    public static double pulseDutyCycle;
+
+    public static double pulseIntensity;
+
+    public static double timeSeconds;
 
     private boolean driverRumbleActive = false;
     private boolean operatorRumbleActive = false;
 
     private static boolean hasInit = false;
 
+    public static double pulsePeriod;
+
     public static void updatePeriodic() {
         if(!hasInit) {
             timer.start();
             waveTimer.start();
+            // pulseTimer.start();
         }
-        double currentTime = waveTimer.get();
+
+        pulsePeriod = 4.0;
+        pulseDutyCycle = 0.1;
+
+        timeSeconds = 1;
+
+        currentTime = waveTimer.get();
+
+        // pulseIntensity = (pulseTimer.get() % pulsePeriod) < (pulseDutyCycle * pulsePeriod) ? 1.0 : 0.0;
+        // SmartDashboard.putNumber("Pulse Intensity", pulseIntensity);
+
         // double waveIntensity = Math.sin(2 * Math.PI * currentTime / kWavePeriod.get());
         
-        waveIntensity = Math.sin((2 * Math.PI * waveTimer.get()) + 1);
+        waveIntensity = (((1 + (Math.sin(2 * Math.PI * waveTimer.get() / 10))) * .5) * .5) + .5;
         SmartDashboard.putNumber("Wave Intensity", waveIntensity);
         // System.out.println(waveIntensity);
 
@@ -44,13 +68,20 @@ public class ControllerRumble {
             waveIntensity = 0.0;
             timer.reset();
         }
-        if( waveIntensity >= 1 /*waveTimer.get() >= 4 || waveIntensity <= 0 */) {
+        if( waveIntensity >= 2 /*waveTimer.get() >= 4 || waveIntensity <= 0 */) {
             waveTimer.restart();
             waveIntensity = 0;
         }
 
+        // System.out.println(pulseIntensity);
+        // if(pulseIntensity == 1) {
+        //     pulseTimer.reset();
+        // }
     }
 
+    // public static void driverPulse(double intensity) {
+    //     RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,  pulseIntensity);
+    // }
 
     public static void driverWave(double intensity) {
         RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, intensity * waveIntensity);

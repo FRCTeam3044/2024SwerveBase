@@ -149,7 +149,11 @@ public class Robot extends LoggedRobot {
     if(RobotContainer.m_driverController.getHID().getStartButton()) {
       ControllerRumble.driverBigLong();
     } else if(RobotContainer.m_driverController.getHID().getBackButton()) {
-      ControllerRumble.driverWave(0.3);
+      // ControllerRumble.driverWave(0.3);
+      ControllerRumble.driverBigLong();
+    }  else if(RobotContainer.m_driverController.getHID().getXButton()) {
+      // System.out.println("x pressed");
+      // ControllerRumble.driverPulse(1);
     }
   }
 
