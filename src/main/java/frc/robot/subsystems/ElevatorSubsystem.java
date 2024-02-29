@@ -15,6 +15,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
@@ -161,8 +162,10 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorAngleCalibration.add(getAngle());
             elevatorEncoderCalibration.add(angleToRotations(getAngle()));
             if (RobotContainer.m_driverController.getHID().getBButton()) {
+                String path = RobotBase.isReal() ? "/U/calibration.csv"
+                        : Filesystem.getDeployDirectory() + "/calibration.csv";
                 try (PrintWriter writer = new PrintWriter(
-                        new FileWriter(Filesystem.getDeployDirectory() + "/calibration.csv"))) {
+                        new FileWriter(path))) {
                     writer.println("Angle,Encoder");
                     for (int i = 0; i < elevatorAngleCalibration.size(); i++) {
                         double angle = elevatorAngleCalibration.get(i);
