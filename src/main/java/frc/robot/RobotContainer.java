@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ElevatorManualControlCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
@@ -90,7 +89,9 @@ public class RobotContainer {
         intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
         climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
         transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
-        elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator, m_driverController.getHID()));
+        // TODO: Get manual control from drivers
+        // elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator,
+        // m_driverController.getHID()));
         shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
     }
 
