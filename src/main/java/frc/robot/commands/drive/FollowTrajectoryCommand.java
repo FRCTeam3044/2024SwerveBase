@@ -13,9 +13,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 import java.util.function.Supplier;
@@ -149,6 +151,14 @@ public class FollowTrajectoryCommand extends Command {
 
     @Override
     public boolean isFinished() {
+        // TODO: This is a dirty hack because wpilib's command scheduler doesn't work
+        // properly when cancelling command compositions nested more than 2 layers deep.
+        // It's probably my fault.
+        if (DriverStation.isTeleop()) {
+            if (RobotContainer.m_driverController.getHID().getRightTriggerAxis() < 0.5) {
+                return true;
+            }
+        }
         return m_timer.hasElapsed(m_trajectory.getTotalTimeSeconds());
     }
 }

@@ -43,6 +43,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -54,6 +58,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -98,6 +106,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -146,6 +158,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -223,6 +239,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -234,6 +254,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -247,7 +271,7 @@
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "3.0",
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
@@ -278,6 +302,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -326,6 +354,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -402,6 +434,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -413,6 +449,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -458,6 +498,10 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
+        },
         "Field Relative": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -500,11 +544,15 @@
         "rearLeftModule/driving/Max": "1.0",
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "20"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {
@@ -581,6 +629,10 @@
             "value": "0.02"
         },
         "Y Controller/I": "0.0",
+        "Statemachine Debounce": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Target Y": {
             "comment": "Auto-Generated",
             "value": "8.2042"
@@ -592,6 +644,10 @@
         },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
+        "Transit Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -636,6 +692,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Note Detection Distance": {
+            "comment": "Auto-Generated",
+            "value": "3.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -684,6 +744,10 @@
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
         "rearLeftModule/turning/Max": "1.0",
+        "Bucket Size": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "rearLeftModule/turning/I": "0.0",
         "Elevator PID/D": "0.0",
         "Rotation FF": {

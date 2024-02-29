@@ -2,9 +2,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.utils.AutoTargetUtils;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -141,5 +144,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void ampSpeed() {
         currentTargetRPM = ampRPM;
+    }
+
+    public void saveShotData() {
+        double dist = RobotContainer.m_robotDrive.getPose().getTranslation()
+                .getDistance(AutoTargetUtils.getShootingTarget().getTranslation());
+        ChassisSpeeds speeds = RobotContainer.m_robotDrive.getChassisSpeeds();
+
+        RobotContainer.m_autoAiming.addData(dist, RobotContainer.elevator.getAngle(), getTopMotorRPM(),
+                getBottomMotorRPM(), speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
     }
 }
