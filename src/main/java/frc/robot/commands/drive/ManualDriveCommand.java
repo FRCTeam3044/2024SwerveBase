@@ -16,7 +16,6 @@ import frc.robot.Constants.DriveConstants;
 public class ManualDriveCommand extends Command {
     private final CommandXboxController m_driverController;
     private final DriveSubsystem m_robotDrive;
-    private final RobotContainer m_robotContainer;
     private final boolean isSimulation;
 
     /**
@@ -30,16 +29,12 @@ public class ManualDriveCommand extends Command {
             CommandXboxController driverController) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
-        m_robotContainer = robotContainer;
         isSimulation = RobotBase.isSimulation();
         addRequirements(m_robotDrive);
     }
 
     @Override
     public void initialize() {
-        if (m_robotContainer.stateMachineCommand.isScheduled()) {
-            this.cancel();
-        }
     }
 
     @Override
