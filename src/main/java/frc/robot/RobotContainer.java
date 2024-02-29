@@ -4,40 +4,17 @@
 
 package frc.robot;
 
+import java.io.FileNotFoundException;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AutoAimCommnd;
-import frc.robot.commands.AutoCommandFactory;
-import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
-import frc.robot.commands.ElevatorSetAngleForSubwooferCommand;
-import frc.robot.commands.ManualShooterCommand;
-import frc.robot.commands.StateMachineCommand;
-import frc.robot.commands.IntakeCommands.IntakeCommand;
-import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
-import frc.robot.utils.AutoTargetUtils;
-import me.nabdev.pathfinding.autos.AutoParser;
-
-import java.io.FileNotFoundException;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.StateMachine;
-import frc.robot.subsystems.TransitSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -61,28 +38,11 @@ public class RobotContainer {
     public static final CommandXboxController m_operatorController = new CommandXboxController(
             OIConstants.kOperatorControllerPort);
 
-    public static final ClimberSubsystem climber = new ClimberSubsystem();
-    public static final IntakeSubsystem intake = new IntakeSubsystem();
-    public static final TransitSubsystem transit = new TransitSubsystem();
-    public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
-    public static final ShooterSubsystem shooter = new ShooterSubsystem();
-    public static final StateMachine stateMachine;
-    public final StateMachineCommand stateMachineCommand;
-
-    static {
-        if (RobotBase.isSimulation()) {
-            stateMachine = new SimStateMachine(shooter, elevator, transit, intake, m_noteDetection, m_robotDrive);
-        } else {
-            stateMachine = new StateMachine(shooter, elevator, transit, intake, m_noteDetection, m_robotDrive);
-        }
-    }
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         // Configure the trigger bindings
-        stateMachineCommand = new StateMachineCommand(stateMachine);
         configureBindings();
         try {
             m_autoAiming = new AutoAiming();
@@ -92,7 +52,6 @@ public class RobotContainer {
         }
 
         m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
-        climber.setDefaultCommand(new ClimberCommand(climber, m_operatorController.getHID()));
     }
 
     /**
@@ -110,22 +69,7 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        // Driver 1
-        m_driverController.rightTrigger().whileTrue(stateMachineCommand);
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
-                new TrackPointCommand(AutoTargetUtils::getShootingTarget, m_robotDrive));
-        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
-        // When the menu button is pressed
-        m_driverController.button(7).onTrue(new RunCommand(() -> {
-            stateMachine.reset();
-        }));
 
-        // Driver 2
-        Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
-        m_operatorController.x().whileTrue(manualIntakeCommand);
-        m_operatorController.rightTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
-        m_operatorController.a().whileTrue(new ElevatorSetAngleForIntakeCommand(elevator));
-        m_operatorController.b().whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator));
     }
 
     /**
@@ -134,21 +78,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        // waypoints.add(new Pose2d(0, 1, new Rotation2d()));
-        // waypoints.add(new Pose2d(1, 1, new Rotation2d()));
-        // waypoints.add(new Pose2d(1, 0, new Rotation2d()));
-        // waypoints.add(new Pose2d(0, 0, new Rotation2d()));
-        // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
-        // m_robotDrive);
-        try {
-            AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("NewAuto.json");
-            return auto;
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldn't find file");
-            return null;
-        }
+        return null;
     }
 
 }
