@@ -8,7 +8,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
+// import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -24,9 +24,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
 
-    DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
+    // DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
-    DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
+    // DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
     private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -67,13 +67,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
 
-        elevatorMotorOne.follow(elevatorMotorTwo);
+        elevatorMotorTwo.follow(elevatorMotorOne);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
     public void moveElevator(double motorSpeed) {
         elevatorMotorOne.set(motorSpeed);
-        elevatorMotorTwo.set(motorSpeed);
     }
 
     // Shifts the intake, shooter, and transit to the default postion that makes it
@@ -93,14 +92,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Tells us when the elevator has hit the top of it's height
-    public boolean readTopLimitSwitch() {
-        return elevatorTopLimitSwitch.get();
-    }
+    // public boolean readTopLimitSwitch() {
+    //     return elevatorTopLimitSwitch.get();
+    // }
 
     // Tells us when the elevator has hit the bottom of it's height
-    public boolean readBottomLimitSwitch() {
-        return elevatorBottomLimitSwitch.get();
-    }
+    // public boolean readBottomLimitSwitch() {
+    //     return elevatorBottomLimitSwitch.get();
+    // }
 
     public double getAngle() {
         double currentAngle = shooterEncoderOne.getPosition();
