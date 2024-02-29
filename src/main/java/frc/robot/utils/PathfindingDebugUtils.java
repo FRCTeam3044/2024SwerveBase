@@ -50,6 +50,8 @@ public class PathfindingDebugUtils {
         double[] arr = new double[edges.size() * 6];
         for (int i = 0; i < edges.size(); i++) {
             Edge e = edges.get(i);
+            if (e.getVertexOne() >= vertices.size() || e.getVertexTwo() >= vertices.size())
+                continue;
             arr[i * 6] = vertices.get(e.getVertexOne()).x;
             arr[i * 6 + 1] = vertices.get(e.getVertexOne()).y;
             arr[i * 6 + 2] = 0;
