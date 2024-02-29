@@ -160,7 +160,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (calibrationModeEnabled) {
             SmartDashboard.putNumber("Arm/PredictedEncoderForAngle", angleToRotations(getAngle()));
             elevatorAngleCalibration.add(getAngle());
-            elevatorEncoderCalibration.add(angleToRotations(getAngle()));
+            elevatorEncoderCalibration.add(motorOneEncoder.getPosition());
             if (RobotContainer.m_driverController.getHID().getBButton()) {
                 String path = RobotBase.isReal() ? "/U/calibration.csv"
                         : Filesystem.getDeployDirectory() + "/calibration.csv";
