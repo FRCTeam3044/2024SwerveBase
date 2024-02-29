@@ -36,8 +36,13 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeBottomMotor.set(0);
     }
 
+    /**
+     * Reads the intake limit switch
+     * 
+     * @return true if the intake limit switch is pressed
+     */
     public boolean readIntakeLimitSwitch() {
-        return intakeSensor.get();
+        return !intakeSensor.get();
     }
 
     public void consumeIntakeInput(boolean isTheBButtonPressed) {

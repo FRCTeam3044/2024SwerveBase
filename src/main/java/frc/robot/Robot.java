@@ -8,15 +8,10 @@ import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
-import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.utils.ControllerRumble;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -30,140 +25,149 @@ import me.nabdev.oxconfig.OxConfig;
  * project.
  */
 public class Robot extends LoggedRobot {
-  private Command m_autonomousCommand;
-  public RobotContainer m_robotContainer;
-  private Timer e = new Timer();
+    private Command m_autonomousCommand;
+    public RobotContainer m_robotContainer;
 
-  /**
-   * This function is run when the robot is first started up and should be used
-   * for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    PathfindingConstants.initialize();
+    /**
+     * This function is run when the robot is first started up and should be used
+     * for any
+     * initialization code.
+     */
+    @Override
+    public void robotInit() {
+        PathfindingConstants.initialize();
 
-    Logger.addDataReceiver(new NT4Publisher());
+        Logger.addDataReceiver(new NT4Publisher());
 
-    // Start AdvantageKit logger
-    Logger.start();
-    m_robotContainer = new RobotContainer();
-    OxConfig.initialize();
-  }
-
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items
-   * like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>
-   * This runs after the mode specific periodic functions, but before LiveWindow
-   * and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler. This is responsible for polling buttons, adding
-    // newly-scheduled
-    // commands, running already-scheduled commands, removing finished or
-    // interrupted commands,
-    // and running subsystem periodic() methods. This must be called from the
-    // robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-    m_robotContainer.m_visionSubsystem.periodic();
-    RobotContainer.m_noteDetection.periodic();
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    ControllerRumble.updatePeriodic();
-  }
-
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {
-
-  }
-
-  @Override
-  public void disabledPeriodic() {
-  }
-
-  /**
-   * This autonomous runs the autonomous command selected by your
-   * {@link RobotContainer} class.
-   */
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-  }
-
-  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+        // Start AdvantageKit logger
+        Logger.start();
+        m_robotContainer = new RobotContainer();
+        OxConfig.initialize();
     }
 
-    
-
-    lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-    double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-    if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive,
-          RobotContainer.m_driverController)).schedule();
-      lastClick = click;
+    /**
+     * This function is called every 20 ms, no matter the mode. Use this for items
+     * like diagnostics
+     * that you want ran during disabled, autonomous, teleoperated and test.
+     *
+     * <p>
+     * This runs after the mode specific periodic functions, but before LiveWindow
+     * and
+     * SmartDashboard integrated updating.
+     */
+    @Override
+    public void robotPeriodic() {
+        // Runs the Scheduler. This is responsible for polling buttons, adding
+        // newly-scheduled
+        // commands, running already-scheduled commands, removing finished or
+        // interrupted commands,
+        // and running subsystem periodic() methods. This must be called from the
+        // robot's periodic
+        // block in order for anything in the Command-based framework to work.
+        CommandScheduler.getInstance().run();
+        m_robotContainer.m_visionSubsystem.periodic();
+        RobotContainer.m_noteDetection.periodic();
+        SmartDashboard.putData(CommandScheduler.getInstance());
     }
-  }
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    e.start();
-    CommandScheduler.getInstance().cancelAll();
-
-
-  }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
-    if(RobotContainer.m_driverController.getHID().getStartButton()) {
-      ControllerRumble.driverBigLong();
-    } else if(RobotContainer.m_driverController.getHID().getBackButton()) {
-      // ControllerRumble.driverWave(0.3);
-      ControllerRumble.driverBigLong();
-    }  else if(RobotContainer.m_driverController.getHID().getXButton()) {
-      // System.out.println("x pressed");
-      // ControllerRumble.driverPulse(1);
+    /** This function is called once each time the robot enters Disabled mode. */
+    @Override
+    public void disabledInit() {
     }
-  }
 
-  // This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-  }
+    @Override
+    public void disabledPeriodic() {
+    }
 
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-  }
+    /**
+     * This autonomous runs the autonomous command selected by your
+     * {@link RobotContainer} class.
+     */
+    @Override
+    public void autonomousInit() {
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
+    }
+
+    /** This function is called periodically during autonomous. */
+    @Override
+    public void autonomousPeriodic() {
+    }
+
+    // private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition",
+    // new double[] { 0, 0 });
+
+    @Override
+    public void teleopInit() {
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
+
+        // lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0,
+        // 0 });
+
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
+    }
+
+    /** This function is called periodically during operator control. */
+    @Override
+    public void teleopPeriodic() {
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
+
+        // double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[]
+        // { 0, 0 });
+        // if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+        // (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new
+        // Rotation2d()),
+        // RobotContainer.m_robotDrive,
+        // RobotContainer.m_driverController)).schedule();
+        // lastClick = click;
+        // }
+    }
+
+    @Override
+    public void testInit() {
+        // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
+
+    /** This function is called periodically during test mode. */
+    @Override
+    public void testPeriodic() {
+        // TODO: Adjust button
+        if (RobotContainer.m_driverController.getHID().getAButton()) {
+            RobotContainer.elevator.calibrationModeEnabled = true;
+        } else {
+            RobotContainer.elevator.calibrationModeEnabled = false;
+        }
+        if (RobotContainer.m_driverController.getHID().getStartButton()) {
+            ControllerRumble.driverBigLong();
+        } else if (RobotContainer.m_driverController.getHID().getBackButton()) {
+            // ControllerRumble.driverWave(0.3);
+            ControllerRumble.driverBigLong();
+        } else if (RobotContainer.m_driverController.getHID().getXButton()) {
+            // System.out.println("x pressed");
+            // ControllerRumble.driverPulse(1);
+        }
+    }
+
+    /** This function is called once when the robot is first started up. */
+    @Override
+    public void simulationInit() {
+    }
+
+    /** This function is called periodically whilst in simulation. */
+    @Override
+    public void simulationPeriodic() {
+    }
 }
