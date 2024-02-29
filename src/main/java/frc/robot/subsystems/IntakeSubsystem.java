@@ -30,19 +30,41 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeBottomMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
+    public void runIntakeReverse() {
+        intakeTopMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeBottomMotor.set(1 * IntakeConstants.kIntakeManualSpeed.get());
+    }
+
     // Stops intake
     private void stopIntake() {
         intakeTopMotor.set(0);
         intakeBottomMotor.set(0);
     }
 
+    /**
+     * Reads the intake limit switch
+     * 
+     * @return true if the intake limit switch is pressed
+     */
     public boolean readIntakeLimitSwitch() {
-        return intakeSensor.get();
+        return !intakeSensor.get();
     }
 
-    public void consumeIntakeInput(boolean isTheBButtonPressed) {
-        if (isTheBButtonPressed) {
+    public void consumeIntakeInput(boolean run) {
+        if (run) {
             runIntake();
+        } else {
+            stopIntake();
+        }
+    }
+
+    public void consumeIntakeInput(boolean run, boolean reverse) {
+        if (run) {
+            if (reverse) {
+                runIntakeReverse();
+            } else {
+                runIntake();
+            }
         } else {
             stopIntake();
         }

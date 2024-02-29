@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.TargetRotationController;
@@ -21,6 +21,7 @@ public class GoToAndTrackPointCommand extends Command {
     private final TargetRotationController targetRotationController;
     private final ArrayList<Pose2d> target;
     private FollowTrajectoryCommand m_followTrajectoryCommand;
+    private boolean failed = false;
 
     public GoToAndTrackPointCommand(Pose2d target, DriveSubsystem m_robotDrive) {
         this.target = new ArrayList<Pose2d>();
@@ -57,9 +58,7 @@ public class GoToAndTrackPointCommand extends Command {
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(0.5,
-                    0.5);
-            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
+            Trajectory myPath = m_robotDrive.generateTrajectory(target);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(
@@ -72,16 +71,33 @@ public class GoToAndTrackPointCommand extends Command {
             m_followTrajectoryCommand = new FollowTrajectoryCommand(myPath, targetRotSpeed, controller,
                     m_robotDrive, m_robotDrive);
             m_followTrajectoryCommand.schedule();
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
         if (m_followTrajectoryCommand == null) {
-            return false;
+            return failed;
         }
         return m_followTrajectoryCommand.isFinished();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (m_followTrajectoryCommand != null) {
+            m_followTrajectoryCommand.cancel();
+        }
+    }
+
+    @Override
+    public void cancel() {
+        CommandScheduler.getInstance().cancel(this);
+        if (m_followTrajectoryCommand != null) {
+            m_followTrajectoryCommand.cancel();
+        }
     }
 }

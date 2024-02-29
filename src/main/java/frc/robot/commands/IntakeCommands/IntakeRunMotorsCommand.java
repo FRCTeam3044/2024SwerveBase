@@ -8,6 +8,7 @@ public class IntakeRunMotorsCommand extends Command {
 
     public IntakeRunMotorsCommand(IntakeSubsystem intake) {
         m_intake = intake;
+        addRequirements(intake);
     }
 
     @Override

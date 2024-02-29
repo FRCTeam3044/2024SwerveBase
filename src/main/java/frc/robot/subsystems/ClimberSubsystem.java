@@ -9,12 +9,6 @@ import frc.robot.Constants.CANConstants;
 public class ClimberSubsystem extends SubsystemBase {
     TalonSRX leftClimberMotor = new TalonSRX(CANConstants.kClimberLeftClimberMotorPort);
     TalonSRX rightClimberMotor = new TalonSRX(CANConstants.kClimberRightClimberMotorPort);
-    // Encoder leftClimberEncoder = new Encoder(null, null);
-    // Encoder rightClimberEncoder = new Encoder(null, null);
-
-    // power going into each of the motors
-    double leftMotorPower = 0;
-    double rightMotorPower = 0;
 
     public ClimberSubsystem() {
         leftClimberMotor.configFactoryDefault();
@@ -23,27 +17,17 @@ public class ClimberSubsystem extends SubsystemBase {
 
     // contorls left arm
     public void leftArm(double moveLeftMotorPower) {
-        moveLeftMotorPower = leftMotorPower;
         rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
     }
 
     // controls right arm
     public void rightArm(double moveRightMotorPower) {
-        moveRightMotorPower = rightMotorPower;
         rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
     }
 
-    public void consumeClimberInput(boolean isLeftBumperPressed, boolean isRightBumperPressed, double rightYValue) {
-        if (isLeftBumperPressed) {
-            leftArm(rightYValue);
-        } else {
-            leftArm(0);
-        }
-
-        if (isRightBumperPressed) {
-            rightArm(rightYValue);
-        } else {
-            rightArm(0);
-        }
+    public void consumeClimberInput(double leftPow, double rightPow) {
+        leftArm(leftPow);
+        rightArm(rightPow);
     }
+
 }

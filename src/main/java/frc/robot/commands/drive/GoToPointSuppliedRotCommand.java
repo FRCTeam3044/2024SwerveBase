@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -18,6 +17,7 @@ public class GoToPointSuppliedRotCommand extends Command {
     private final ArrayList<Pose2d> target;
     private FollowTrajectoryCommand nextCommand;
     private Supplier<Rotation2d> rotSupplier;
+    private boolean failed = false;
 
     public GoToPointSuppliedRotCommand(Pose2d target, DriveSubsystem m_robotDrive, Supplier<Rotation2d> rotSupplier) {
         this.target = new ArrayList<Pose2d>();
@@ -49,9 +49,7 @@ public class GoToPointSuppliedRotCommand extends Command {
     @Override
     public void initialize() {
         try {
-            TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
-                    PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
-            Trajectory myPath = m_robotDrive.pathfinder.generateTrajectory(m_robotDrive.getPose(), target, config);
+            Trajectory myPath = m_robotDrive.generateTrajectory(target);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(
@@ -59,13 +57,25 @@ public class GoToPointSuppliedRotCommand extends Command {
                     PathfindingConstants.kPathfindingThetaController);
             nextCommand = new FollowTrajectoryCommand(myPath, controller, rotSupplier, m_robotDrive, m_robotDrive);
             nextCommand.schedule();
+            failed = false;
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
+            failed = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return nextCommand.isFinished();
+        if (nextCommand != null) {
+            return nextCommand.isFinished();
+        }
+        return failed;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (nextCommand != null) {
+            nextCommand.cancel();
+        }
     }
 }

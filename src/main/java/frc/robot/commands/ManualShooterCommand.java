@@ -28,6 +28,6 @@ public class ManualShooterCommand extends Command {
     public void execute() {
         boolean isAButtonPressed = m_controller.getAButtonPressed();
 
-        m_shooter.consumeShooterInput(isAButtonPressed);
+        m_shooter.consumeShooterInput(isAButtonPressed, false);
     }
 }
