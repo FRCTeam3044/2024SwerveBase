@@ -9,14 +9,10 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
-import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -29,156 +25,164 @@ import me.nabdev.oxconfig.OxConfig;
  * project.
  */
 public class Robot extends LoggedRobot {
-  private Command m_autonomousCommand;
-  public RobotContainer m_robotContainer;
+    private Command m_autonomousCommand;
+    public RobotContainer m_robotContainer;
 
-  /**
-   * This function is run when the robot is first started up and should be used
-   * for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Record metadata
-    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-    switch (BuildConstants.DIRTY) {
-      case 0:
-        Logger.recordMetadata("GitDirty", "All changes committed");
-        break;
-      case 1:
-        Logger.recordMetadata("GitDirty", "Uncomitted changes");
-        break;
-      default:
-        Logger.recordMetadata("GitDirty", "Unknown");
-        break;
-    }
+    /**
+     * This function is run when the robot is first started up and should be used
+     * for any
+     * initialization code.
+     */
+    @Override
+    public void robotInit() {
+      // Record metadata
+      Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+      Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+      Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+      Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+      Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+      switch (BuildConstants.DIRTY) {
+        case 0:
+          Logger.recordMetadata("GitDirty", "All changes committed");
+          break;
+        case 1:
+          Logger.recordMetadata("GitDirty", "Uncomitted changes");
+          break;
+        default:
+          Logger.recordMetadata("GitDirty", "Unknown");
+          break;
+      }
 
-    // Set up data receivers & replay source
-    if (isReal()) {
-        Logger.addDataReceiver(new WPILOGWriter());
+      // Set up data receivers & replay source
+      if (isReal()) {
+          Logger.addDataReceiver(new WPILOGWriter());
+          Logger.addDataReceiver(new NT4Publisher());
+      } else if(isSimulation()) {
         Logger.addDataReceiver(new NT4Publisher());
-    } else if(isSimulation()) {
-      Logger.addDataReceiver(new NT4Publisher());
-    } else {
-      return;
+      } else {
+        return;
+      }
+      // Start AdvantageKit logger
+      Logger.start();
+      PathfindingConstants.initialize();
+      m_robotContainer = new RobotContainer();
+      OxConfig.initialize();
     }
 
-    Logger.start();
-
-    PathfindingConstants.initialize();
-    m_robotContainer = new RobotContainer();
-    OxConfig.initialize();
-  }
-
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items
-   * like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>
-   * This runs after the mode specific periodic functions, but before LiveWindow
-   * and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler. This is responsible for polling buttons, adding
-    // newly-scheduled
-    // commands, running already-scheduled commands, removing finished or
-    // interrupted commands,
-    // and running subsystem periodic() methods. This must be called from the
-    // robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-    m_robotContainer.m_visionSubsystem.periodic();
-    RobotContainer.m_noteDetection.periodic();
-    SmartDashboard.putData(CommandScheduler.getInstance());
-  }
-
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {
-  }
-
-  @Override
-  public void disabledPeriodic() {
-  }
-
-  /**
-   * This autonomous runs the autonomous command selected by your
-   * {@link RobotContainer} class.
-   */
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-  }
-
-  private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    /**
+     * This function is called every 20 ms, no matter the mode. Use this for items
+     * like diagnostics
+     * that you want ran during disabled, autonomous, teleoperated and test.
+     *
+     * <p>
+     * This runs after the mode specific periodic functions, but before LiveWindow
+     * and
+     * SmartDashboard integrated updating.
+     */
+    @Override
+    public void robotPeriodic() {
+        // Runs the Scheduler. This is responsible for polling buttons, adding
+        // newly-scheduled
+        // commands, running already-scheduled commands, removing finished or
+        // interrupted commands,
+        // and running subsystem periodic() methods. This must be called from the
+        // robot's periodic
+        // block in order for anything in the Command-based framework to work.
+        CommandScheduler.getInstance().run();
+        m_robotContainer.m_visionSubsystem.periodic();
+        RobotContainer.m_noteDetection.periodic();
+        SmartDashboard.putData(CommandScheduler.getInstance());
     }
 
-    lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-    double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
-    if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-      (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()), RobotContainer.m_robotDrive,
-          RobotContainer.m_driverController)).schedule();
-      lastClick = click;
+    /** This function is called once each time the robot enters Disabled mode. */
+    @Override
+    public void disabledInit() {
     }
-    m_robotContainer.climber.leftArm(0);
-    m_robotContainer.climber.rightArm(0);
 
-    boolean isBButtonPressed = RobotContainer.m_operatorController.getHID().getBButtonPressed();
+    @Override
+    public void disabledPeriodic() {
+    }
 
-    m_robotContainer.intake.consumeIntakeInput(isBButtonPressed);
+    /**
+     * This autonomous runs the autonomous command selected by your
+     * {@link RobotContainer} class.
+     */
+    @Override
+    public void autonomousInit() {
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    RobotContainer.m_operatorController.getHID().getLeftY();
-  }
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
+    }
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+    /** This function is called periodically during autonomous. */
+    @Override
+    public void autonomousPeriodic() {
+    }
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
-  }
+    // private double[] lastClick = SmartDashboard.getNumberArray("ClickPosition",
+    // new double[] { 0, 0 });
 
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-  }
+    @Override
+    public void teleopInit() {
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
 
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-  }
+        // lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0,
+        // 0 });
+
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
+    }
+
+    /** This function is called periodically during operator control. */
+    @Override
+    public void teleopPeriodic() {
+        // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
+        // 1);
+
+        // double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[]
+        // { 0, 0 });
+        // if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+        // (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new
+        // Rotation2d()),
+        // RobotContainer.m_robotDrive,
+        // RobotContainer.m_driverController)).schedule();
+        // lastClick = click;
+        // }
+    }
+
+    @Override
+    public void testInit() {
+        // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
+
+    /** This function is called periodically during test mode. */
+    @Override
+    public void testPeriodic() {
+        // TODO: Adjust button
+        if (RobotContainer.m_driverController.getHID().getAButton()) {
+            RobotContainer.elevator.calibrationModeEnabled = true;
+        } else {
+            RobotContainer.elevator.calibrationModeEnabled = false;
+        }
+    }
+
+    /** This function is called once when the robot is first started up. */
+    @Override
+    public void simulationInit() {
+    }
+
+    /** This function is called periodically whilst in simulation. */
+    @Override
+    public void simulationPeriodic() {
+    }
 }

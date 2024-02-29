@@ -1,19 +1,17 @@
 package frc.robot.commands;
 
-import java.lang.Math;
-
-import frc.robot.RobotContainer;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
-
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ElevatorManualControlCommand  extends Command {
+public class ElevatorManualControlCommand extends Command {
     private final ElevatorSubsystem m_elevator;
-    private final RobotContainer m_robotContainer;
+    private final XboxController m_controller;
 
-    public ElevatorManualControlCommand(ElevatorSubsystem elevator, RobotContainer robotContainer) {
+    public ElevatorManualControlCommand(ElevatorSubsystem elevator, XboxController controller) {
         m_elevator = elevator;
-        m_robotContainer = robotContainer;
+        m_controller = controller;
         addRequirements(m_elevator);
     }
 
@@ -24,10 +22,9 @@ public class ElevatorManualControlCommand  extends Command {
 
     @Override
     public void execute() {
-        double controllerStickInput = m_robotContainer.m_operatorController.getLeftY();
+        double leftStickY = m_controller.getLeftY();
 
-        if (Math.abs(controllerStickInput) > 0.1) {
-            m_elevator.elevatorMotorOne.set(controllerStickInput * Math.abs(controllerStickInput));
-        }
+        leftStickY = leftStickY * ElevatorConstants.kElevatorManualSpeed.get();
+        m_elevator.consumeElevatorInput(leftStickY);
     }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     // Defines the motor
@@ -18,10 +19,15 @@ public class IntakeSubsystem extends SubsystemBase {
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
 
+    public IntakeSubsystem() {
+        intakeTopMotor.restoreFactoryDefaults();
+        intakeBottomMotor.restoreFactoryDefaults();
+    }
+
     // Use this to run intake
     public void runIntake() {
-        intakeTopMotor.set(1);
-        intakeBottomMotor.set(-1);
+        intakeTopMotor.set(1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeBottomMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     // Stops intake
@@ -30,8 +36,13 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeBottomMotor.set(0);
     }
 
+    /**
+     * Reads the intake limit switch
+     * 
+     * @return true if the intake limit switch is pressed
+     */
     public boolean readIntakeLimitSwitch() {
-        return intakeSensor.get();
+        return !intakeSensor.get();
     }
 
     public void consumeIntakeInput(boolean isTheBButtonPressed) {

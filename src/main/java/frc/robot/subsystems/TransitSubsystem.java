@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.TransitConstants;
 
 public class TransitSubsystem extends SubsystemBase {
 
@@ -17,8 +18,9 @@ public class TransitSubsystem extends SubsystemBase {
     boolean isNoteInTransit = false;
     boolean isIntakeRunning = false;
 
-    // change this to change the speed of the motor
-    double motorSpeed = 0;
+    public TransitSubsystem() {
+        transitMotor.configFactoryDefault();
+    }
 
     // Use this to get the note from the intake system
     public void getNoteFromIntake() {
@@ -30,13 +32,17 @@ public class TransitSubsystem extends SubsystemBase {
 
     }
 
-    // Checks the sensors every second it updates
+    /**
+     * Reads the transit limit switch
+     * 
+     * @return true if the transit limit switch is pressed
+     */
     public boolean readTransitLimitSwitch() {
-        return transitSensor.get();
+        return !transitSensor.get();
     }
 
     public void runTransit() {
-        transitMotor.set(TalonSRXControlMode.PercentOutput, motorSpeed);
+        transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
     private void stopTransit() {

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.calib3d.Calib3d;
@@ -12,22 +13,31 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
+    public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
+            "Filter taps");
+    LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
+    LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
+
     private Mat homography;
     Timer timer = new Timer();
     private PhotonCamera detector;
-    public Pose2d notePose = new Pose2d();
     public boolean hasNote = false;
+    private Pose2d closestPose;
     int minX;
     int maxX;
     int minY;
+    private ArrayList<Pose2d> notePoses = new ArrayList<>();
 
     public NoteDetection() {
         detector = new PhotonCamera("detection");
@@ -45,33 +55,22 @@ public class NoteDetection extends SubsystemBase {
                 new Point(0.78105, -0.08255),
                 new Point(0.78105, 0.08255));
 
-        // Mat test = new Mat(3, 1, CvType.CV_64FC1);
-        // test.put(0, 0, 93, 450, 1);
-
         homography = new Mat();
         homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
 
         SmartDashboard.putString("Homography matrix", homography.dump());
-
-        // Mat res = new Mat();
-        // Core.gemm(homography, test, 1, new Mat(), 0, res);
-        // res.convertTo(res, CvType.CV_64FC1, 1.0 / res.get(2, 0)[0]);
-
-        // SmartDashboard.putString("Test result", res.dump());
-        // Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
-        // Pose2d notePose = new Pose2d();
-        // notePose = new Pose2d(
-        // currentPose.getX() + res.get(0, 0)[0],
-        // currentPose.getY() + res.get(1, 0)[0],
-        // currentPose.getRotation()
-        // );
-        // double[] notePoseDouble = { notePose.getX(), notePose.getY(),
-        // notePose.getRotation().getDegrees() };
-        // SmartDashboard.putNumberArray("Note", notePoseDouble);
     }
 
     @Override
     public void periodic() {
+        if (RobotBase.isSimulation()) {
+            hasNote = true;
+            closestPose = new Pose2d(16.05, 2, new Rotation2d());
+            SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+            return;
+        }
+        notePoses.clear();
+
         var result = detector.getLatestResult();
         if (!result.hasTargets()) {
             hasNote = false;
@@ -79,45 +78,72 @@ public class NoteDetection extends SubsystemBase {
         }
         hasNote = true;
         List<PhotonTrackedTarget> targets = result.getTargets();
-        // System.out.println("before the fire");
-        minX = (int) targets.get(0).getMinAreaRectCorners().get(0).x;
-        maxX = (int) targets.get(0).getMinAreaRectCorners().get(0).x;
-        minY = (int) targets.get(0).getMinAreaRectCorners().get(0).y;
-        for (PhotonTrackedTarget target : targets) {
-            for (TargetCorner corner : target.getMinAreaRectCorners()) {
-                // if(minX == 9000 && maxX == 0 && minY == 9000) {
-                // // System.out.println("values are zero");
-                // minX = (int) corner.x;
-                // maxX = (int) corner.x;
-                // minY = (int) corner.y;
-                // } else {
-                if (corner.x < minX) {
-                    minX = (int) corner.x;
+        for (int i = 0; i < targets.size(); i++) {
+            minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+            maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+            minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
+            for (PhotonTrackedTarget target : targets) {
+                for (TargetCorner corner : target.getMinAreaRectCorners()) {
+                    if (corner.x < minX) {
+                        minX = (int) corner.x;
+                    }
+                    if (corner.x > maxX) {
+                        maxX = (int) corner.x;
+                    }
+                    if (corner.y < minY) {
+                        minY = (int) corner.y;
+                    }
                 }
-                if (corner.x > maxX) {
-                    maxX = (int) corner.x;
-                }
-                if (corner.y < minY) {
-                    minY = (int) corner.y;
-                    // }
+            }
+            var midpoint = (maxX + minX) / 2;
+
+            notePoses.add(getNotePose(midpoint, minY));
+            SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
+        }
+        Pose2d closestRawPose = findClosestNote();
+        closestPose = new Pose2d(
+                filterNoteX.calculate(closestRawPose.getX()),
+                filterNoteY.calculate(closestRawPose.getY()),
+                closestRawPose.getRotation());
+        SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+        SmartDashboard.putBoolean("Has note", hasNote);
+    }
+
+    public Pose2d getClosestNote() {
+        return closestPose;
+    }
+
+    public double getClosestNoteDistance() {
+        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        double distance = getClosestNote().getTranslation().getDistance(currentPose.getTranslation());
+        return distance;
+    }
+
+    private Pose2d findClosestNote() {
+        Pose2d notePose = new Pose2d();
+        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        for (int i = 0; i < notePoses.size(); i++) {
+            if (i == 0) {
+                notePose = notePoses.get(i);
+            } else {
+                if (notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose
+                        .getTranslation().getDistance(currentPose.getTranslation())) {
+                    notePose = notePoses.get(i);
                 }
             }
         }
-        // System.out.println("fire has been put out");
-        var midpoint = (maxX + minX) / 2;
-        SmartDashboard.putNumber("minX", minX);
-        SmartDashboard.putNumber("maxX", maxX);
-        SmartDashboard.putNumber("minY", minY);
-        SmartDashboard.putNumber("midPoint", midpoint);
 
+        return notePose;
+    }
+
+    private Pose2d getNotePose(int x, int y) {
         Mat noteScreenSpace = new Mat(3, 1, CvType.CV_64FC1);
 
-        noteScreenSpace.put(0, 0, midpoint, minY, 1);
+        noteScreenSpace.put(0, 0, x, y, 1);
         Mat res = new Mat();
         Core.gemm(homography, noteScreenSpace, 1, new Mat(), 0, res);
         res.convertTo(res, CvType.CV_64FC1, 1.0 / res.get(2, 0)[0]);
 
-        SmartDashboard.putString("Test result", res.dump());
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         Pose2d robotRelativeNotePose = new Pose2d(
                 (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.3937 /* TODO: Move camera offset to constants */
@@ -134,12 +160,16 @@ public class NoteDetection extends SubsystemBase {
                 noteX * Math.sin(robotRotationRad) + noteY * Math.cos(robotRotationRad),
                 new Rotation2d());
 
-        notePose = new Pose2d(
+        Pose2d notePose = new Pose2d(
                 rotatedNotePose.getX() + currentPose.getX(),
                 rotatedNotePose.getY() + currentPose.getY(),
                 new Rotation2d());
-        double[] notePoseDouble = { notePose.getX(), notePose.getY(),
-                notePose.getRotation().getDegrees() };
-        SmartDashboard.putNumberArray("Note pose", notePoseDouble);
+
+        return notePose;
+    }
+
+    private double[] poseToDouble(Pose2d pose) {
+        double[] poseDouble = { pose.getX(), pose.getY(), pose.getRotation().getDegrees() };
+        return poseDouble;
     }
 }

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberCommand extends Command {
@@ -29,6 +30,10 @@ public class ClimberCommand extends Command {
         boolean isLeftBumperPressed = m_controller.getLeftBumper();
         boolean isRightBumperPressed = m_controller.getRightBumper();
         double rightYValue = m_controller.getRightY();
+
+        rightYValue = rightYValue * ClimberConstants.kClimberManualSpeed.get();
+
         m_climber.consumeClimberInput(isLeftBumperPressed, isRightBumperPressed, rightYValue);
+
     }
 }
