@@ -147,6 +147,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        pathfinder.periodic();
         // Update the pose estimator in the periodic block
         poseEstimator.update(Rotation2d.fromDegrees(getGyroAngleDegrees()), getModulePositions());
         Logger.recordOutput("ModuleState", getModuleStates());
@@ -154,6 +155,10 @@ public class DriveSubsystem extends SubsystemBase {
         field.setRobotPose(getPose());
 
         SmartDashboard.putData("Field", field);
+
+        // ArrayList<Vertex> inflatedVertices = pathfinder.visualizeInflatedVertices();
+        // PathfindingDebugUtils.drawLines("Visibility Graph",
+        // pathfinder.visualizeNeighbors(), inflatedVertices);
     }
 
     /**
