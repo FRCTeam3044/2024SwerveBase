@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
+import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -154,10 +156,10 @@ public class Robot extends LoggedRobot {
         Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
                 RobotContainer.m_driverController);
         driveTestCommand.schedule();
-        Command elevatorTestCommand = new ClimberTestCommand(RobotContainer.climber,
+        Command elevatorTestCommand = new ElevatorTestCommand(RobotContainer.elevator,
                 RobotContainer.m_driverController.getHID());
         elevatorTestCommand.schedule();
-        Command shooterTestCommand = new ClimberTestCommand(RobotContainer.climber,
+        Command shooterTestCommand = new ShooterTestCommand(RobotContainer.shooter,
                 RobotContainer.m_driverController.getHID());
         shooterTestCommand.schedule();
 
