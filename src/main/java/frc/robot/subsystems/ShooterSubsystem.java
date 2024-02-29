@@ -18,17 +18,16 @@ public class ShooterSubsystem extends SubsystemBase {
     /*
      * Defines the motors that shoot the notes
      */
-    CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushless);
-    CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
+    private CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushless);
+    private CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
 
     /*
      * Encoders for Shooter wheels
      */
-    RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
-    RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
+    private RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
+    private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
 
-    double motorRPM = 0;
-
+    // TODO: Get values
     public double speakerRPM = 0;
     public double ampRPM = 0;
 
@@ -38,8 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkPIDController topPidController;
     private SparkPIDController bottomPidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-    double maxVel = 0;
-    double maxAccel = 0;
+    private double maxVel = 0;
+    private double maxAccel = 0;
     public static final int kCPR = 8192;
 
     private RelativeEncoder m_topAlternateEncoder;
@@ -64,15 +63,16 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomMotor.set(0);
     }
 
-    public void consumeShooterInput(boolean isTheAButtonPressed) {
-        motorRPM = motorRPM * ShooterConstants.kShooterManualSpeed.get();
-
-        if (isTheAButtonPressed) {
-            setShooterRPM(motorRPM);
-            handlePID();
+    public void consumeShooterInput(boolean shoot, boolean slow) {
+        double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
+                : ShooterConstants.kShooterManualSpeed.get();
+        if (shoot) {
+            topMotor.set(output);
+            bottomMotor.set(output);
         } else {
             stopShooter();
         }
+
     }
 
     public ShooterSubsystem() {

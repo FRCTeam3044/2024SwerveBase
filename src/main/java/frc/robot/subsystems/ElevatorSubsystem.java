@@ -13,7 +13,6 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,9 +33,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
-    DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
+    // DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
-    DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
+    // DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
     // TODO: Also not how this will be wired (maybe)
     public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
@@ -80,13 +79,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
 
-        elevatorMotorOne.follow(elevatorMotorTwo);
+        elevatorMotorTwo.follow(elevatorMotorOne);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
     public void moveElevator(double motorSpeed) {
         elevatorMotorOne.set(motorSpeed);
-        elevatorMotorTwo.set(motorSpeed);
     }
 
     // Shifts the intake, shooter, and transit to the default postion that makes it
@@ -103,24 +101,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setAngle(double setAngle) {
         currentTargetRotations = angleToRotations(setAngle);
-    }
-
-    /**
-     * Read the top limit switch
-     * 
-     * @return true if the top limit switch is pressed
-     */
-    public boolean readTopLimitSwitch() {
-        return !elevatorTopLimitSwitch.get();
-    }
-
-    /**
-     * Read the bottom limit switch
-     * 
-     * @return true if the bottom limit switch is pressed
-     */
-    public boolean readBottomLimitSwitch() {
-        return !elevatorBottomLimitSwitch.get();
     }
 
     public double getAngle() {
@@ -161,7 +141,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Arm/PredictedEncoderForAngle", angleToRotations(getAngle()));
             elevatorAngleCalibration.add(getAngle());
             elevatorEncoderCalibration.add(motorOneEncoder.getPosition());
-            if (RobotContainer.m_driverController.getHID().getBButton()) {
+            if (RobotContainer.m_driverController.getHID().getPOV() == 90) {
                 String path = RobotBase.isReal() ? "/U/calibration.csv"
                         : Filesystem.getDeployDirectory() + "/calibration.csv";
                 try (PrintWriter writer = new PrintWriter(

@@ -127,6 +127,10 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "Shooter Manual Control Slow Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -351,6 +355,10 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "Shooter Manual Control Slow Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -574,6 +582,10 @@
             "comment": "Auto-Generated",
             "value": "0.05"
         },
+        "Shooter Manual Control Slow Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -796,6 +808,10 @@
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
+        },
+        "Shooter Manual Control Slow Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",

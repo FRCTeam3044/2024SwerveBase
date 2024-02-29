@@ -45,13 +45,27 @@ public class TransitSubsystem extends SubsystemBase {
         transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
+    public void runTransitReverse() {
+        transitMotor.set(TalonSRXControlMode.PercentOutput, -TransitConstants.kTransitManualSpeed.get());
+    }
+
     private void stopTransit() {
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 
-    public void consumeTransitInput(boolean isTheBButtonPressed) {
-        if (isTheBButtonPressed) {
+    public void consumeTransitInput(boolean run) {
+        if (run) {
             runTransit();
+        } else {
+            stopTransit();
+        }
+    }
+
+    public void consumeTransitInput(boolean run, boolean reverse) {
+        if (run) {
+            runTransit();
+        } else if (reverse) {
+            runTransitReverse();
         } else {
             stopTransit();
         }

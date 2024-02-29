@@ -180,3 +180,5 @@ ctre_sim/
 simgui.json
 
 simgui-ds.json
+
+BuildConstants.java
