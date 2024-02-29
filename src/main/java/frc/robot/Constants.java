@@ -254,6 +254,9 @@ public final class Constants {
                 100.0, "Shooter Tolerance RPM");
         public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Shooter Manual Control Speed");
+        public static final ConfigurableParameter<Double> kShooterManualSlowSpeed = new ConfigurableParameter<Double>(
+                0.5,
+                "Shooter Manual Control Slow Speed");
     }
 
     public static final class ElevatorConstants {

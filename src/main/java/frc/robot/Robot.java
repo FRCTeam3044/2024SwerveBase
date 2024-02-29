@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.commands.test.ClimberTestCommand;
+import frc.robot.commands.test.DriveTestCommand;
+import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.TransitTestCommand;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -138,12 +142,30 @@ public class Robot extends LoggedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        Command climberTestCommand = new ClimberTestCommand(RobotContainer.climber,
+                RobotContainer.m_driverController.getHID());
+        climberTestCommand.schedule();
+        Command intakeTestCommand = new IntakeTestCommand(RobotContainer.intake,
+                RobotContainer.m_driverController.getHID());
+        intakeTestCommand.schedule();
+        Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
+                RobotContainer.m_driverController.getHID());
+        transitTestCommand.schedule();
+        Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
+                RobotContainer.m_driverController);
+        driveTestCommand.schedule();
+        Command elevatorTestCommand = new ClimberTestCommand(RobotContainer.climber,
+                RobotContainer.m_driverController.getHID());
+        elevatorTestCommand.schedule();
+        Command shooterTestCommand = new ClimberTestCommand(RobotContainer.climber,
+                RobotContainer.m_driverController.getHID());
+        shooterTestCommand.schedule();
+
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        // TODO: Adjust button
         if (RobotContainer.m_driverController.getHID().getAButton()) {
             RobotContainer.elevator.calibrationModeEnabled = true;
         } else {
