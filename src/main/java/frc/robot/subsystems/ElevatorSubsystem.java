@@ -33,9 +33,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
-    // DigitalInput elevatorTopLimitSwitch = new DigitalInput(CANConstants.kElevatorTopLimitSwitch);
+    // DigitalInput elevatorTopLimitSwitch = new
+    // DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
-    // DigitalInput elevatorBottomLimitSwitch = new DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
+    // DigitalInput elevatorBottomLimitSwitch = new
+    // DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
     // TODO: Also not how this will be wired (maybe)
     public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
@@ -46,10 +48,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     double maxAccel = 0;
 
     PIDController pid = new ConfigurablePIDController(0, 0, 0, "Elevator PID");
-
-    // The angle for shooting in the amp (currently set to 0)
-    public double ampAngle = 0;
-    public double intakeAngle = 0;
 
     RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
     RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
@@ -90,13 +88,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
     public void setToIntakeMode() {
-        currentTargetRotations = angleToRotations(intakeAngle);
+        currentTargetRotations = angleToRotations(ElevatorConstants.kIntakeAngle.get());
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
     // into an amp
     public void setToAmpMode() {
-        currentTargetRotations = angleToRotations(ampAngle);
+        currentTargetRotations = angleToRotations(ElevatorConstants.kAmpAngle.get());
+    }
+
+    public void setToSubwooferMode() {
+        currentTargetRotations = angleToRotations(ElevatorConstants.kSubwooferAngle.get());
     }
 
     public void setAngle(double setAngle) {

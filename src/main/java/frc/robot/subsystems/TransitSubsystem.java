@@ -49,7 +49,7 @@ public class TransitSubsystem extends SubsystemBase {
         transitMotor.set(TalonSRXControlMode.PercentOutput, -TransitConstants.kTransitManualSpeed.get());
     }
 
-    private void stopTransit() {
+    public void stopTransit() {
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 

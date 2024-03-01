@@ -22,7 +22,7 @@ public class TransitTestCommand extends Command {
 
     @Override
     public void execute() {
-        boolean isXButtonPressed = m_controller.getXButtonPressed();
+        boolean isXButtonPressed = m_controller.getXButton();
         m_transit.consumeTransitInput(isXButtonPressed);
     }
 

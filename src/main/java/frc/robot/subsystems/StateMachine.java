@@ -13,7 +13,7 @@ import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.SpeakerShooterCommand;
-import frc.robot.commands.IntakeCommands.IntakeRunMotorsCommand;
+import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
@@ -217,7 +217,7 @@ public class StateMachine extends SubsystemBase {
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection);
-        IntakeRunMotorsCommand intakeRunMotorsCommand = new IntakeRunMotorsCommand(m_intakeSubsystem);
+        IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
         return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
     }
 
