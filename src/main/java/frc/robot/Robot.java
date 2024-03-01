@@ -12,6 +12,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.commands.test.ClimberTestCommand;
@@ -20,6 +21,7 @@ import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
+import frc.robot.subsystems.LEDSubsystem;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -34,6 +36,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
+    public LEDSubsystem m_led;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -74,6 +77,7 @@ public class Robot extends LoggedRobot {
         PathfindingConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, (LEDConstants.sideLEDLength * 2) + LEDConstants.topLEDLength);
     }
 
     /**
