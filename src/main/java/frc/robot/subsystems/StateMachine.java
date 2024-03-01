@@ -16,7 +16,6 @@ import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
-import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
@@ -215,10 +214,8 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getPickupNoteCommand() {
-        GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
-                RobotContainer.m_noteDetection);
         IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
-        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
+        return Commands.parallel(intakeRunMotorsCommand);
     }
 
     private Command getLockinNoteCommand() {

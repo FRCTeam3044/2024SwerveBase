@@ -26,8 +26,8 @@ public class ElevatorTestCommand extends Command {
     public void execute() {
         double leftTrigger = m_controller.getLeftTriggerAxis();
         double rightTrigger = m_controller.getRightTriggerAxis();
-        leftTrigger = MathUtil.applyDeadband(leftTrigger, 0.4) * ElevatorConstants.kElevatorManualSpeed.get();
-        rightTrigger = MathUtil.applyDeadband(rightTrigger, 0.4) * ElevatorConstants.kElevatorManualSpeed.get();
+        leftTrigger = MathUtil.applyDeadband(leftTrigger, 0.1) * ElevatorConstants.kElevatorManualSpeed.get();
+        rightTrigger = MathUtil.applyDeadband(rightTrigger, 0.1) * ElevatorConstants.kElevatorManualSpeed.get();
         if (leftTrigger > 0 && rightTrigger > 0) {
             return;
         }
