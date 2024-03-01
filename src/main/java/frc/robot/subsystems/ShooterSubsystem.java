@@ -18,6 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
     /*
      * Defines the motors that shoot the note
      */
+    // TODO: SWITCH BACK WHEN MOTOR REPLACED
     private CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushed);
     private CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
 
