@@ -22,7 +22,7 @@ public class IntakeCommand extends Command {
     @Override
     public void execute() {
         // TODO: Which button?
-        boolean isBButtonPressed = m_controller.getBButtonPressed();
+        boolean isBButtonPressed = m_controller.getBButton();
 
         m_intake.consumeIntakeInput(isBButtonPressed);
 

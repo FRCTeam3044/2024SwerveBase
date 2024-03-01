@@ -26,7 +26,7 @@ public class ManualShooterCommand extends Command {
 
     @Override
     public void execute() {
-        boolean isAButtonPressed = m_controller.getAButtonPressed();
+        boolean isAButtonPressed = m_controller.getAButton();
 
         m_shooter.consumeShooterInput(isAButtonPressed, false);
     }

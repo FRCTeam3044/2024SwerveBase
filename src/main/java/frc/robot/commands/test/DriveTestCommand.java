@@ -45,15 +45,18 @@ public class DriveTestCommand extends Command {
 
     @Override
     public void execute() {
-
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
+        double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
+        if (m_driverController.getHID().getRightBumper() || m_driverController.getHID().getLeftBumper()) {
+            inputRot = 0;
+        }
 
         if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, 0, false,
+            m_robotDrive.drive(inputX, -inputY, inputRot, false,
                     DriveConstants.kRateLimit.get());
         } else {
-            m_robotDrive.drive(-inputY, -inputX, 0, false,
+            m_robotDrive.drive(-inputY, -inputX, inputRot, false,
                     DriveConstants.kRateLimit.get());
         }
     }
