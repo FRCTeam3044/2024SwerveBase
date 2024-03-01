@@ -263,7 +263,7 @@ public final class Constants {
     public static final class ElevatorConstants {
         public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
                 10.0, "Elevator Tolerance");
-        public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
+        public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(0.4,
                 "Elevator Manual Control Speed");
 
         public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.0,

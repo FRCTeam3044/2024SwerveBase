@@ -13,12 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
-import frc.robot.commands.test.ClimberTestCommand;
-import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
-import frc.robot.commands.test.IntakeTestCommand;
-import frc.robot.commands.test.ShooterTestCommand;
-import frc.robot.commands.test.TransitTestCommand;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -41,38 +36,38 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-      // Record metadata
-      Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-      Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-      Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-      Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-      Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-      switch (BuildConstants.DIRTY) {
-        case 0:
-          Logger.recordMetadata("GitDirty", "All changes committed");
-          break;
-        case 1:
-          Logger.recordMetadata("GitDirty", "Uncomitted changes");
-          break;
-        default:
-          Logger.recordMetadata("GitDirty", "Unknown");
-          break;
-      }
+        // Record metadata
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        switch (BuildConstants.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
 
-      // Set up data receivers & replay source
-      if (isReal()) {
-          Logger.addDataReceiver(new WPILOGWriter());
-          Logger.addDataReceiver(new NT4Publisher());
-      } else if(isSimulation()) {
-        Logger.addDataReceiver(new NT4Publisher());
-      } else {
-        return;
-      }
-      // Start AdvantageKit logger
-      Logger.start();
-      PathfindingConstants.initialize();
-      m_robotContainer = new RobotContainer();
-      OxConfig.initialize();
+        // Set up data receivers & replay source
+        if (isReal()) {
+            Logger.addDataReceiver(new WPILOGWriter());
+            Logger.addDataReceiver(new NT4Publisher());
+        } else if (isSimulation()) {
+            Logger.addDataReceiver(new NT4Publisher());
+        } else {
+            return;
+        }
+        // Start AdvantageKit logger
+        Logger.start();
+        PathfindingConstants.initialize();
+        m_robotContainer = new RobotContainer();
+        OxConfig.initialize();
     }
 
     /**
@@ -95,8 +90,6 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        m_robotContainer.m_visionSubsystem.periodic();
-        RobotContainer.m_noteDetection.periodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
     }
 
@@ -167,26 +160,9 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void testInit() {
-        // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
-        Command climberTestCommand = new ClimberTestCommand(RobotContainer.climber,
-                RobotContainer.m_driverController.getHID());
-        climberTestCommand.schedule();
-        Command intakeTestCommand = new IntakeTestCommand(RobotContainer.intake,
-                RobotContainer.m_driverController.getHID());
-        intakeTestCommand.schedule();
-        Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
-                RobotContainer.m_driverController.getHID());
-        transitTestCommand.schedule();
-        Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
-                RobotContainer.m_driverController);
-        driveTestCommand.schedule();
         Command elevatorTestCommand = new ElevatorTestCommand(RobotContainer.elevator,
                 RobotContainer.m_driverController.getHID());
         elevatorTestCommand.schedule();
-        Command shooterTestCommand = new ShooterTestCommand(RobotContainer.shooter,
-                RobotContainer.m_driverController.getHID());
-        shooterTestCommand.schedule();
 
     }
 

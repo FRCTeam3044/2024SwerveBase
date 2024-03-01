@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
@@ -114,14 +113,16 @@ public class NoteDetection extends SubsystemBase {
     }
 
     public double getClosestNoteDistance() {
-        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        // Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        Pose2d currentPose = new Pose2d();
         double distance = getClosestNote().getTranslation().getDistance(currentPose.getTranslation());
         return distance;
     }
 
     private Pose2d findClosestNote() {
         Pose2d notePose = new Pose2d();
-        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        Pose2d currentPose = new Pose2d();
+        // Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         for (int i = 0; i < notePoses.size(); i++) {
             if (i == 0) {
                 notePose = notePoses.get(i);
@@ -144,7 +145,8 @@ public class NoteDetection extends SubsystemBase {
         Core.gemm(homography, noteScreenSpace, 1, new Mat(), 0, res);
         res.convertTo(res, CvType.CV_64FC1, 1.0 / res.get(2, 0)[0]);
 
-        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        // Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        Pose2d currentPose = new Pose2d();
         Pose2d robotRelativeNotePose = new Pose2d(
                 (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.3937 /* TODO: Move camera offset to constants */
                         + 0.1778 /* Note center dist */,

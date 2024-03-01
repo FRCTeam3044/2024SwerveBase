@@ -19,10 +19,10 @@ public class AutoAimCommnd extends Command {
 
     @Override
     public void execute() {
-        Translation2d target = AutoTargetUtils.getShootingTarget().getTranslation();
-        double distance = m_drive.getPose().getTranslation().getDistance(target);
-        double angle = RobotContainer.m_autoAiming.getAngle(distance);
-        m_elevator.setAngle(angle);
+        // Translation2d target = AutoTargetUtils.getShootingTarget().getTranslation();
+        // double distance = m_drive.getPose().getTranslation().getDistance(target);
+        // double angle = RobotContainer.m_autoAiming.getAngle(distance);
+        // m_elevator.setAngle(angle);
     }
 
     @Override
