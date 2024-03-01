@@ -5,6 +5,10 @@
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "The period of the wave in seconds": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Theta Controller/D": "0.01",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -83,6 +87,10 @@
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
+        "Long Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -105,8 +113,16 @@
             "value": "0.05"
         },
         "rearLeftModule/turning/FF": "0.0",
+        "Short Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
+        "Small intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
@@ -124,6 +140,10 @@
             "value": "true"
         },
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Large intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
@@ -194,6 +214,10 @@
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "This is the time the short rumble takes": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -209,6 +233,10 @@
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "The period of the wave in seconds": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Theta Controller/D": "0.01",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -287,6 +315,10 @@
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
+        "Long Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -309,8 +341,16 @@
             "value": "0.05"
         },
         "rearLeftModule/turning/FF": "0.0",
+        "Short Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
+        "Small intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
@@ -328,6 +368,10 @@
             "value": "true"
         },
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Large intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
@@ -398,6 +442,10 @@
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "This is the time the short rumble takes": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -412,6 +460,10 @@
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "The period of the wave in seconds": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Theta Controller/D": "0.01",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -490,6 +542,10 @@
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
+        "Long Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -512,8 +568,16 @@
             "value": "0.05"
         },
         "rearLeftModule/turning/FF": "0.0",
+        "Short Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
+        "Small intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
@@ -531,6 +595,10 @@
             "value": "true"
         },
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Large intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
@@ -601,6 +669,10 @@
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "This is the time the short rumble takes": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -615,6 +687,10 @@
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "The period of the wave in seconds": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Theta Controller/D": "0.0",
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -693,6 +769,10 @@
         "rearLeftModule/turning/Min": "-1.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/D": "0.0",
+        "Long Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -715,8 +795,16 @@
             "value": "0.05"
         },
         "rearLeftModule/turning/FF": "0.0",
+        "Short Rumble Time": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
+        "Small intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "PID Deadband": {
             "comment": "Auto-Generated",
             "value": "0.05"
@@ -734,6 +822,10 @@
             "value": "false"
         },
         "frontRightModule/driving/P": "0.03999999910593033",
+        "Large intensity Of The Rumble": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
@@ -804,6 +896,10 @@
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
         "frontLeftModule/driving/Min": "-1.0",
+        "This is the time the short rumble takes": {
+            "comment": "Auto-Generated",
+            "value": "0.1"
+        },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
             "value": "3.0"

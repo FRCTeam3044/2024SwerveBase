@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.utils.ControllerRumble;
+import frc.robot.utils.ControllerRumble.RumbleMode;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
@@ -41,38 +43,38 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-      // Record metadata
-      Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-      Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-      Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-      Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-      Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-      switch (BuildConstants.DIRTY) {
-        case 0:
-          Logger.recordMetadata("GitDirty", "All changes committed");
-          break;
-        case 1:
-          Logger.recordMetadata("GitDirty", "Uncomitted changes");
-          break;
-        default:
-          Logger.recordMetadata("GitDirty", "Unknown");
-          break;
-      }
+        // Record metadata
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        switch (BuildConstants.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
 
-      // Set up data receivers & replay source
-      if (isReal()) {
-          Logger.addDataReceiver(new WPILOGWriter());
-          Logger.addDataReceiver(new NT4Publisher());
-      } else if(isSimulation()) {
-        Logger.addDataReceiver(new NT4Publisher());
-      } else {
-        return;
-      }
-      // Start AdvantageKit logger
-      Logger.start();
-      PathfindingConstants.initialize();
-      m_robotContainer = new RobotContainer();
-      OxConfig.initialize();
+        // Set up data receivers & replay source
+        if (isReal()) {
+            Logger.addDataReceiver(new WPILOGWriter());
+            Logger.addDataReceiver(new NT4Publisher());
+        } else if (isSimulation()) {
+            Logger.addDataReceiver(new NT4Publisher());
+        } else {
+            return;
+        }
+        // Start AdvantageKit logger
+        Logger.start();
+        PathfindingConstants.initialize();
+        m_robotContainer = new RobotContainer();
+        OxConfig.initialize();
     }
 
     /**
@@ -97,6 +99,7 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().run();
         m_robotContainer.m_visionSubsystem.periodic();
         RobotContainer.m_noteDetection.periodic();
+        ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
     }
 
