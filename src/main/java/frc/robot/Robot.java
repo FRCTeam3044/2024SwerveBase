@@ -147,6 +147,8 @@ public class Robot extends LoggedRobot {
 
         // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
         // 1);
+
+        ControllerRumble.driverWave(1);
     }
 
     /** This function is called periodically during operator control. */
@@ -194,6 +196,7 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+      ControllerRumble.updatePeriodic();
         if (RobotContainer.m_driverController.getHID().getAButton()) {
             RobotContainer.elevator.calibrationModeEnabled = true;
         } else {
@@ -203,10 +206,10 @@ public class Robot extends LoggedRobot {
             ControllerRumble.driverBigLong();
         } else if (RobotContainer.m_driverController.getHID().getBackButton()) {
             // ControllerRumble.driverWave(0.3);
-            ControllerRumble.driverBigLong();
+            ControllerRumble.driverWave(1);
         } else if (RobotContainer.m_driverController.getHID().getXButton()) {
             // System.out.println("x pressed");
-            // ControllerRumble.driverPulse(1);
+            ControllerRumble.driverPulse(1);
         }
     }
 

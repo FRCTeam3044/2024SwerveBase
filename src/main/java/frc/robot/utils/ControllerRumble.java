@@ -31,6 +31,8 @@ public class ControllerRumble {
 
     public static double pulseIntensity;
 
+    public static double pulseWave;
+
     public static double timeSeconds;
 
     private boolean driverRumbleActive = false;
@@ -47,20 +49,25 @@ public class ControllerRumble {
             // pulseTimer.start();
         }
 
-        pulsePeriod = 4.0;
-        pulseDutyCycle = 0.1;
+        pulsePeriod = 1.0;
+        pulseDutyCycle = 0.2;
 
         timeSeconds = 1;
 
-        currentTime = waveTimer.get();
+        currentTime = timer.get();
 
         // pulseIntensity = (pulseTimer.get() % pulsePeriod) < (pulseDutyCycle * pulsePeriod) ? 1.0 : 0.0;
-        // SmartDashboard.putNumber("Pulse Intensity", pulseIntensity);
+
+
+        SmartDashboard.putNumber("Pulse Intensity", pulseIntensity);
 
         // double waveIntensity = Math.sin(2 * Math.PI * currentTime / kWavePeriod.get());
         
         waveIntensity = (((1 + (Math.sin(2 * Math.PI * waveTimer.get() / 10))) * .5) * .5) + .5;
+        pulseWave = Math.sin(2 * Math.PI * waveTimer.get() / 2);
         SmartDashboard.putNumber("Wave Intensity", waveIntensity);
+        SmartDashboard.putNumber("Pulse Intensity", pulseIntensity);
+        SmartDashboard.putNumber("Pulse Wave", pulseWave);
         // System.out.println(waveIntensity);
 
         if (timer.hasElapsed(cancelTime)) {
@@ -77,11 +84,18 @@ public class ControllerRumble {
         // if(pulseIntensity == 1) {
         //     pulseTimer.reset();
         // }
+
+        if(pulseWave < 0) {
+            pulseIntensity = 1;
+        } 
+        if (pulseWave > 0) {
+            pulseIntensity = 0;
+        }
     }
 
-    // public static void driverPulse(double intensity) {
-    //     RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,  pulseIntensity);
-    // }
+    public static void driverPulse(double intensity) {
+        RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,  pulseIntensity);
+    }
 
     public static void driverWave(double intensity) {
         RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, intensity * waveIntensity);
