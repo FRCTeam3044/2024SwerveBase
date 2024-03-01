@@ -5,19 +5,23 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
+import frc.robot.commands.ElevatorSetAngleForSubwooferCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
+import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
+import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -30,6 +34,8 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -86,13 +92,7 @@ public class RobotContainer {
         }
 
         m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
-        intake.setDefaultCommand(new IntakeCommand(intake, m_driverController.getHID()));
-        climber.setDefaultCommand(new ClimberCommand(climber, m_driverController.getHID()));
-        transit.setDefaultCommand(new TransitCommand(transit, m_driverController.getHID()));
-        // TODO: Get manual control from drivers
-        // elevator.setDefaultCommand(new ElevatorManualControlCommand(elevator,
-        // m_driverController.getHID()));
-        shooter.setDefaultCommand(new ManualShooterCommand(shooter, m_driverController.getHID()));
+        climber.setDefaultCommand(new ClimberCommand(climber, m_operatorController.getHID()));
     }
 
     /**
@@ -110,9 +110,22 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
+        // Driver 1
         m_driverController.rightTrigger().whileTrue(stateMachineCommand);
-        m_driverController.leftTrigger().whileTrue(new GoToNoteCommand(m_robotDrive, m_noteDetection));
+        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
+                new TrackPointCommand(AutoTargetUtils::getShootingTarget, m_robotDrive));
+        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
+        // When the menu button is pressed
+        m_driverController.button(7).onTrue(new RunCommand(() -> {
+            stateMachine.reset();
+        }));
 
+        // Driver 2
+        Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
+        m_operatorController.x().whileTrue(manualIntakeCommand);
+        m_operatorController.rightTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
+        m_operatorController.a().whileTrue(new ElevatorSetAngleForIntakeCommand(elevator));
+        m_operatorController.b().whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator));
     }
 
     /**

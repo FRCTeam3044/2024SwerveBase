@@ -77,9 +77,9 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
-        "This is the time the long rumble takes": {
+        "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "2.0"
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
@@ -305,9 +305,9 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
-        "This is the time the long rumble takes": {
+        "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "2.0"
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
@@ -532,9 +532,9 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
-        "This is the time the long rumble takes": {
+        "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "2.0"
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
@@ -759,9 +759,9 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
-        "This is the time the long rumble takes": {
+        "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "2.0"
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
