@@ -60,6 +60,10 @@
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
+        "Large Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "Transit Manual Control Speed": {
@@ -69,6 +73,10 @@
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
+        },
+        "Wave Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
@@ -179,6 +187,10 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Elevator PID/P": "0.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Small Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -217,6 +229,10 @@
         "This is the time the short rumble takes": {
             "comment": "Auto-Generated",
             "value": "0.1"
+        },
+        "Rumble Pulse Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
@@ -288,6 +304,10 @@
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
+        "Large Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "Transit Manual Control Speed": {
@@ -297,6 +317,10 @@
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
+        },
+        "Wave Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
@@ -407,6 +431,10 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Elevator PID/P": "0.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Small Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -445,6 +473,10 @@
         "This is the time the short rumble takes": {
             "comment": "Auto-Generated",
             "value": "0.1"
+        },
+        "Rumble Pulse Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
@@ -515,6 +547,10 @@
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
+        "Large Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "Transit Manual Control Speed": {
@@ -524,6 +560,10 @@
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
+        },
+        "Wave Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
@@ -634,6 +674,10 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Elevator PID/P": "0.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Small Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "20"
@@ -672,6 +716,10 @@
         "This is the time the short rumble takes": {
             "comment": "Auto-Generated",
             "value": "0.1"
+        },
+        "Rumble Pulse Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
@@ -742,6 +790,10 @@
             "comment": "Auto-Generated",
             "value": "1.8415"
         },
+        "Large Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "frontRightModule/driving/IZone": "0.0",
         "rearRightModule/turning/Min": "-1.0",
         "Transit Manual Control Speed": {
@@ -751,6 +803,10 @@
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
+        },
+        "Wave Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
@@ -861,6 +917,10 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Elevator PID/P": "0.0",
         "rearLeftModule/driving/Max": "1.0",
+        "Small Rumble intensity": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "3.0"
@@ -899,6 +959,10 @@
         "This is the time the short rumble takes": {
             "comment": "Auto-Generated",
             "value": "0.1"
+        },
+        "Rumble Pulse Period": {
+            "comment": "Auto-Generated",
+            "value": "10.0"
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
