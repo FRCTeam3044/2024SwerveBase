@@ -33,11 +33,16 @@ public class NoteDetection extends SubsystemBase {
     Timer timer = new Timer();
     private PhotonCamera detector;
     public boolean hasNote = false;
+    public boolean hasNoteInRegion = false;
     private Pose2d closestPose;
+    private Pose2d closestPoseToRegion;
     int minX;
     int maxX;
     int minY;
     private ArrayList<Pose2d> notePoses = new ArrayList<>();
+
+    private Pose2d regionPose = null;
+    private double regionRadius = 0;
 
     public NoteDetection() {
         detector = new PhotonCamera("detection");
@@ -74,6 +79,7 @@ public class NoteDetection extends SubsystemBase {
         var result = detector.getLatestResult();
         if (!result.hasTargets()) {
             hasNote = false;
+            hasNoteInRegion = false;
             return;
         }
         hasNote = true;
@@ -100,17 +106,33 @@ public class NoteDetection extends SubsystemBase {
             notePoses.add(getNotePose(midpoint, minY));
             SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
         }
-        Pose2d closestRawPose = findClosestNote();
+        Pose2d closestRawPose = findClosestNote(null);
+        Pose2d closestPoseToRegion = findClosestNote(regionPose);
+        if (closestPoseToRegion == null) {
+            hasNoteInRegion = false;
+        } else {
+            hasNoteInRegion = true;
+            closestPoseToRegion = new Pose2d(
+                    filterNoteX.calculate(closestPoseToRegion.getX()),
+                    filterNoteY.calculate(closestPoseToRegion.getY()),
+                    closestPoseToRegion.getRotation());
+        }
         closestPose = new Pose2d(
                 filterNoteX.calculate(closestRawPose.getX()),
                 filterNoteY.calculate(closestRawPose.getY()),
                 closestRawPose.getRotation());
+
         SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
         SmartDashboard.putBoolean("Has note", hasNote);
+        SmartDashboard.putBoolean("Has note in region", hasNoteInRegion);
     }
 
     public Pose2d getClosestNote() {
         return closestPose;
+    }
+
+    public Pose2d getClosestNoteToRegion() {
+        return closestPoseToRegion;
     }
 
     public double getClosestNoteDistance() {
@@ -119,9 +141,9 @@ public class NoteDetection extends SubsystemBase {
         return distance;
     }
 
-    private Pose2d findClosestNote() {
+    private Pose2d findClosestNote(Pose2d regionPose) {
         Pose2d notePose = new Pose2d();
-        Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
+        Pose2d currentPose = regionPose == null ? RobotContainer.m_robotDrive.getPose() : regionPose;
         for (int i = 0; i < notePoses.size(); i++) {
             if (i == 0) {
                 notePose = notePoses.get(i);
@@ -130,6 +152,11 @@ public class NoteDetection extends SubsystemBase {
                         .getTranslation().getDistance(currentPose.getTranslation())) {
                     notePose = notePoses.get(i);
                 }
+            }
+        }
+        if (regionPose != null) {
+            if (notePose.getTranslation().getDistance(currentPose.getTranslation()) > regionRadius) {
+                return null;
             }
         }
 
@@ -171,5 +198,15 @@ public class NoteDetection extends SubsystemBase {
     private double[] poseToDouble(Pose2d pose) {
         double[] poseDouble = { pose.getX(), pose.getY(), pose.getRotation().getDegrees() };
         return poseDouble;
+    }
+
+    public void setRegion(Pose2d pose, double radius) {
+        regionPose = pose;
+        regionRadius = radius;
+    }
+
+    public void clearRegion() {
+        regionPose = null;
+        regionRadius = 0;
     }
 }
