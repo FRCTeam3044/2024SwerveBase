@@ -15,8 +15,10 @@ public class ControllerRumble {
             "Short Rumble Time");
     public static final ConfigurableParameter<Double> kLongTime = new ConfigurableParameter<Double>(0.5,
             "Long Rumble Time");
-    public static final ConfigurableParameter<Double> kWavePeriod = new ConfigurableParameter<Double>(10.0, "Wave Period");
-    public static ConfigurableParameter<Double> kPulsePeriod = new ConfigurableParameter<Double>(10.0, "Rumble Pulse Period");
+    public static final ConfigurableParameter<Double> kWavePeriod = new ConfigurableParameter<Double>(10.0,
+            "Wave Period");
+    public static ConfigurableParameter<Double> kPulsePeriod = new ConfigurableParameter<Double>(10.0,
+            "Rumble Pulse Period");
 
     private static Timer driverRumbleTimer = new Timer();
     private static Timer operatorRumbleTimer = new Timer();
@@ -46,7 +48,7 @@ public class ControllerRumble {
                 double waveIntensity = (((1 + (Math.sin(driverRumbleTimer.get() * kWavePeriod.get()))) * .5) * .8) + .1;
                 RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, waveIntensity);
                 SmartDashboard.putNumber("Driver Wave Intensity", waveIntensity);
-            } else if (driverRumbleMode == RumbleMode.PULSE){
+            } else if (driverRumbleMode == RumbleMode.PULSE) {
                 double pulseWave = Math.sin(driverRumbleTimer.get() * kPulsePeriod.get());
                 double pulseIntensity = pulseWave > 0 ? driverRumbleIntensity : 0;
                 RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble, pulseIntensity);
@@ -63,10 +65,11 @@ public class ControllerRumble {
                 return;
             }
             if (operatorRumbleMode == RumbleMode.WAVE) {
-                double waveIntensity = (((1 + (Math.sin(operatorRumbleTimer.get() * kWavePeriod.get()))) * .5) * .8) + .1;
+                double waveIntensity = (((1 + (Math.sin(operatorRumbleTimer.get() * kWavePeriod.get()))) * .5) * .8)
+                        + .1;
                 RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, waveIntensity);
                 SmartDashboard.putNumber("Operator Wave Intensity", waveIntensity);
-            } else if (operatorRumbleMode == RumbleMode.PULSE){
+            } else if (operatorRumbleMode == RumbleMode.PULSE) {
                 double pulseWave = Math.sin(operatorRumbleTimer.get() * kPulsePeriod.get());
                 double pulseIntensity = pulseWave > 0 ? operatorRumbleIntensity : 0;
                 RobotContainer.m_operatorController.getHID().setRumble(RumbleType.kBothRumble, pulseIntensity);
@@ -128,22 +131,22 @@ public class ControllerRumble {
         setControllerRumble(kLongTime.get(), kLargeRumbleIntensity.get(), false, RumbleMode.CONSTANT);
     }
 
-    public static void driverWaveLong(){
+    public static void driverWaveLong() {
         setControllerRumble(kLongTime.get() * 5, kLargeRumbleIntensity.get(), true, RumbleMode.WAVE);
     }
 
-    public static void opWaveLong(){
+    public static void opWaveLong() {
         setControllerRumble(kLongTime.get() * 5, kLargeRumbleIntensity.get(), true, RumbleMode.WAVE);
     }
 
-    public static void drivePulseLong(){
+    public static void driverPulseLong() {
         setControllerRumble(kLongTime.get() * 5, kLargeRumbleIntensity.get(), true, RumbleMode.PULSE);
     }
 
-    public static void opPulseLong(){
+    public static void opPulseLong() {
         setControllerRumble(kLongTime.get() * 5, kLargeRumbleIntensity.get(), false, RumbleMode.PULSE);
     }
-    
+
     public enum RumbleMode {
         CONSTANT,
         WAVE,
