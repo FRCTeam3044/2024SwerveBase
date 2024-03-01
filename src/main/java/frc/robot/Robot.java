@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.commands.test.DriveTestCommand;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -172,10 +173,10 @@ public class Robot extends LoggedRobot {
         // Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
         // RobotContainer.m_driverController.getHID());
         // transitTestCommand.schedule();
-        // Command driveTestCommand = new DriveTestCommand(m_robotContainer,
-        // RobotContainer.m_robotDrive,
-        // RobotContainer.m_driverController);
-        // driveTestCommand.schedule();
+        Command driveTestCommand = new DriveTestCommand(m_robotContainer,
+                RobotContainer.m_robotDrive,
+                RobotContainer.m_driverController);
+        driveTestCommand.schedule();
         // Command elevatorTestCommand = new
         // ElevatorTestCommand(RobotContainer.elevator,
         // RobotContainer.m_driverController.getHID());
