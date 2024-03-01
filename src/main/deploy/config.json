@@ -73,6 +73,10 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
+        "Shooter Spinup Time": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "0.0",
@@ -273,6 +277,10 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
+        "Shooter Spinup Time": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "3.0",
@@ -472,6 +480,10 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
+        "Shooter Spinup Time": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "3",
@@ -671,6 +683,10 @@
         },
         "rearRightModule/turning/Max": "1.0",
         "Pathfinding Y Controller/I": "0.0",
+        "Shooter Spinup Time": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "0.0",

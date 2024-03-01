@@ -3,10 +3,10 @@ package frc.robot.commands.IntakeCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeRunMotorsCommand extends Command {
+public class IntakeRunUntilSwitch extends Command {
     private final IntakeSubsystem m_intake;
 
-    public IntakeRunMotorsCommand(IntakeSubsystem intake) {
+    public IntakeRunUntilSwitch(IntakeSubsystem intake) {
         m_intake = intake;
         addRequirements(intake);
     }

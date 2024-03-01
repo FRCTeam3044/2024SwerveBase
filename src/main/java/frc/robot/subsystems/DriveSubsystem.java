@@ -127,8 +127,8 @@ public class DriveSubsystem extends SubsystemBase {
                 .setInjectPoints(true)
                 .setPointSpacing(0.5)
                 .setCornerPointSpacing(0.05)
-                .setRobotLength(DriveConstants.kWheelBase)
-                .setRobotWidth(DriveConstants.kTrackWidth)
+                .setRobotLength(DriveConstants.kRobotSize)
+                .setRobotWidth(DriveConstants.kRobotSize)
                 .setCornerDist(0.3)
                 .setCornerCutDist(0.01)
                 .build();

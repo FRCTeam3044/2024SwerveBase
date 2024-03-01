@@ -52,9 +52,10 @@ public final class Constants {
         public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
         // Chassis configuration
-        public static final double kTrackWidth = Units.inchesToMeters(37);
+        public static final double kTrackWidth = Units.inchesToMeters(26);
         // Distance between centers of right and left wheels on robot
-        public static final double kWheelBase = Units.inchesToMeters(37);
+        public static final double kWheelBase = Units.inchesToMeters(26);
+        public static final double kRobotSize = Units.inchesToMeters(37);
         // Distance between front and back wheels on robot
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -264,6 +265,13 @@ public final class Constants {
                 10.0, "Elevator Tolerance");
         public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Elevator Manual Control Speed");
+
+        public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.0,
+                "Amp Angle");
+        public static final ConfigurableParameter<Double> kSubwooferAngle = new ConfigurableParameter<Double>(0.0,
+                "Subwoofer Angle");
+        public static final ConfigurableParameter<Double> kIntakeAngle = new ConfigurableParameter<Double>(0.0,
+                "Intake Angle");
     }
 
     public static final class DetectorConstants {
