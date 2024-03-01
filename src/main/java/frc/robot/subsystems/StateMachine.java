@@ -63,6 +63,8 @@ public class StateMachine extends SubsystemBase {
     protected Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
 
+    public boolean lostNote = false;
+
     // private Command currentDesiredCommand;
 
     public boolean changedDesiredCommand;
@@ -118,6 +120,7 @@ public class StateMachine extends SubsystemBase {
                 if (!m_noteDetection.hasNote || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
                     currentState = State.NO_NOTE;
+                    lostNote = true;
                     updateDesiredCommand();
                 }
                 if (getIntakeLimitSwitch()) {

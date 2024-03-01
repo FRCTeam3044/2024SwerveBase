@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
+import frc.robot.utils.ControllerRumble;
 
 public class DriverShootCommand extends Command {
     private final ShooterSubsystem m_shooter;
@@ -34,6 +35,8 @@ public class DriverShootCommand extends Command {
         m_shooter.handlePID();
         if (m_controller.getRightTriggerAxis() > 0.5 && !hasShot) {
             hasShot = true;
+            ControllerRumble.driverSmallShort();
+            ControllerRumble.opSmallShort();
             m_shooter.saveShotData();
         }
         if (hasShot) {
