@@ -16,16 +16,17 @@ import com.revrobotics.SparkPIDController;
 
 public class ShooterSubsystem extends SubsystemBase {
     /*
-     * Defines the motors that shoot the notes
+     * Defines the motors that shoot the note
      */
-    private CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushless);
+    // TODO: SWITCH BACK WHEN MOTOR REPLACED
+    private CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushed);
     private CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
 
     /*
      * Encoders for Shooter wheels
      */
-    private RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
-    private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
+    private RelativeEncoder topShooterMoterEncoder = topMotor.getAlternateEncoder(8192);
+    private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getAlternateEncoder(8192);
 
     // TODO: Get values
     public double speakerRPM = 0;

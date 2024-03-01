@@ -146,23 +146,25 @@ public final class Constants {
     }
 
     public static final class CANConstants {
-        public static final int kShooterTopMotorPort = 1;
-        public static final int kShooterBottomMotorPort = 2;
+        public static final int kShooterTopMotorPort = 35;
+        public static final int kShooterBottomMotorPort = 34;
 
-        public static final int kTransitMotorPort = 3;
+        public static final int kTransitMotorPort = 33;
+
+        // TODO: Get real ports
         public static final int kTransitSensorPort = 4;
-
         public static final int kIntakeSensorPort = 5;
-        public static final int kIntakeTopMotorPort = 6;
-        public static final int kIntakeBottomMotorPort = 7;
 
-        public static final int kClimberLeftClimberMotorPort = 8;
-        public static final int kClimberRightClimberMotorPort = 9;
+        public static final int kIntakeTopMotorPort = 32;
+        public static final int kIntakeBottomMotorPort = 31;
+
+        public static final int kClimberLeftClimberMotorPort = 41;
+        public static final int kClimberRightClimberMotorPort = 42;
 
         public static final int kElevatorMotorOnePort = 21;
-        public static final int kElevatorMotorTwoPort = 20;
-        public static final int kElevatorTopLimitSwitch = 23;
-        public static final int kElevatorBottomLimitSwitch = 22;
+        public static final int kElevatorMotorTwoPort = 22;
+        // public static final int kElevatorTopLimitSwitch = 23;
+        // public static final int kElevatorBottomLimitSwitch = 22;
     }
 
     public static final class OIConstants {
