@@ -1,10 +1,14 @@
 {
     "presentation": {
         "frontRightModule/turning/FF": "0.0",
+        "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
+        "Elevator Angle PID/D": "1.0",
+        "Elevator Angle PID/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "Elevator Angle PID/P": "0.10000000149011612",
         "The period of the wave in seconds": {
             "comment": "Auto-Generated",
             "value": "2.0"
@@ -108,6 +112,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Elevator Angle PID/Max": "0.10000000149011612",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -147,6 +152,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Elevator Angle PID/Min": "-0.10000000149011612",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Large intensity Of The Rumble": {
             "comment": "Auto-Generated",
@@ -213,6 +219,7 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -245,10 +252,14 @@
     "mode": "testing",
     "simulation": {
         "frontRightModule/turning/FF": "0.0",
+        "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
+        "Elevator Angle PID/D": "1.0",
+        "Elevator Angle PID/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "Elevator Angle PID/P": "0.10000000149011612",
         "The period of the wave in seconds": {
             "comment": "Auto-Generated",
             "value": "2.0"
@@ -352,6 +363,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Elevator Angle PID/Max": "0.10000000149011612",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -391,6 +403,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Elevator Angle PID/Min": "-0.10000000149011612",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Large intensity Of The Rumble": {
             "comment": "Auto-Generated",
@@ -457,6 +470,7 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -488,10 +502,14 @@
     },
     "testing": {
         "frontRightModule/turning/FF": "0.0",
+        "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
+        "Elevator Angle PID/D": "1.0",
+        "Elevator Angle PID/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "Elevator Angle PID/P": "0.10000000149011612",
         "The period of the wave in seconds": {
             "comment": "Auto-Generated",
             "value": "2.0"
@@ -595,6 +613,7 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "Elevator Angle PID/Max": "0.10000000149011612",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -634,6 +653,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
+        "Elevator Angle PID/Min": "-0.10000000149011612",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Large intensity Of The Rumble": {
             "comment": "Auto-Generated",
@@ -700,6 +720,7 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
@@ -731,10 +752,14 @@
     },
     "competition": {
         "frontRightModule/turning/FF": "0.0",
+        "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
+        "Elevator Angle PID/D": "1.0",
+        "Elevator Angle PID/FF": "0.0",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
+        "Elevator Angle PID/P": "0.10000000149011612",
         "The period of the wave in seconds": {
             "comment": "Auto-Generated",
             "value": "2.0"
@@ -838,6 +863,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
+        "Elevator Angle PID/Max": "0.10000000149011612",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -877,6 +903,7 @@
             "comment": "Auto-Generated",
             "value": "false"
         },
+        "Elevator Angle PID/Min": "-0.10000000149011612",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Large intensity Of The Rumble": {
             "comment": "Auto-Generated",
@@ -943,6 +970,7 @@
             "comment": "Auto-Generated",
             "value": "100.0"
         },
+        "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",

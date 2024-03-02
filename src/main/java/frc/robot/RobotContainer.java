@@ -14,14 +14,13 @@ import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
+import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
-import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -113,10 +112,10 @@ public class RobotContainer {
         // Driver 1
         m_driverController.rightTrigger().whileTrue(stateMachineCommand);
         Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
-                new TrackPointCommand(AutoTargetUtils::getShootingTarget, m_robotDrive));
+                new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
-        // When the menu button is pressed
-        m_driverController.button(7).onTrue(new RunCommand(() -> {
+        // When the menu button is pressed*
+        m_driverController.start().onTrue(new RunCommand(() -> {
             stateMachine.reset();
         }));
 
