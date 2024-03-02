@@ -21,6 +21,7 @@ import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -76,6 +77,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setOutputRange(kMinOutput, kMaxOutput);
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        new ConfigurableSparkPIDController(pidController,
+                "Elevator Angle PID");
 
         elevatorMotorTwo.follow(elevatorMotorOne);
     }
