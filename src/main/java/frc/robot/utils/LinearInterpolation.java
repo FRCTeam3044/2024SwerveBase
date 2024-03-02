@@ -21,8 +21,14 @@ public class LinearInterpolation {
         }
         Double lower = m_map.lowerKey(x);
         Double higher = m_map.higherKey(x);
-        if (lower == null || higher == null) {
-            throw new IllegalArgumentException("X value is out of bounds");
+        // if (lower == null || higher == null) {
+        // throw new IllegalArgumentException("X value is out of bounds");
+        // }
+        if (lower == null) {
+            return m_map.get(m_map.firstKey());
+        }
+        if (higher == null) {
+            return m_map.get(m_map.lastKey());
         }
         double y1 = m_map.get(lower);
         double y2 = m_map.get(higher);

@@ -8,12 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
+import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
+import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.TrackPointCommand;
@@ -47,7 +50,7 @@ public class StateMachine extends SubsystemBase {
 
     protected State currentState = State.NO_NOTE;
 
-    protected final ShooterSubsystem m_shooterSubystem;
+    protected final ShooterSubsystem m_shooterSubsystem;
     protected final ElevatorSubsystem m_elevatorSubsystem;
     protected final TransitSubsystem m_transitSubsystem;
     protected final IntakeSubsystem m_intakeSubsystem;
@@ -82,7 +85,7 @@ public class StateMachine extends SubsystemBase {
     public StateMachine(ShooterSubsystem shooterSubsystem, ElevatorSubsystem elevatorSubsystem,
             TransitSubsystem transitSubsystem, IntakeSubsystem intakeSubsystem,
             NoteDetection noteDetection, DriveSubsystem driveSubsystem) {
-        m_shooterSubystem = shooterSubsystem;
+        m_shooterSubsystem = shooterSubsystem;
         m_elevatorSubsystem = elevatorSubsystem;
         m_transitSubsystem = transitSubsystem;
         m_intakeSubsystem = intakeSubsystem;
@@ -160,9 +163,13 @@ public class StateMachine extends SubsystemBase {
         SmartDashboard.putString("State", currentState.toString());
     }
 
-    // TODO: In this case, spit out any notes we may have
     public void reset() {
         currentState = State.NO_NOTE;
+
+        Command ejectNoteCommand = Commands.deadline(new WaitCommand(StateMachineConstants.kEjectTime.get()),
+                new ShooterSlowCommand(m_shooterSubsystem),
+                new TransitCommand(m_transitSubsystem));
+        ejectNoteCommand.schedule();
         updateDesiredCommand();
     }
 
@@ -180,7 +187,7 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean shooterAtSpeed() {
-        return m_shooterSpeedDebouncer.calculate(m_shooterSubystem.shooterAtSpeed());
+        return m_shooterSpeedDebouncer.calculate(m_shooterSubsystem.shooterAtSpeed());
     }
 
     protected boolean shooterAtAngle() {
@@ -236,7 +243,7 @@ public class StateMachine extends SubsystemBase {
             return null;
         }
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
-        SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubystem);
+        SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
 
         return Commands.parallel(getToPoint, autoAimCommnd, speakerShooterCommand);
     }
@@ -263,7 +270,7 @@ public class StateMachine extends SubsystemBase {
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
                 AutoTargetUtils.getShootingTarget());
-        DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubystem, m_transitSubsystem,
+        DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
         return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
     }
