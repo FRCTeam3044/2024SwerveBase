@@ -65,7 +65,7 @@ public class TargetRotationController {
         // SmartDashboard.putNumber("PID Out", pidOut);
         // SmartDashboard.putNumberArray("Rotation Target", targetPose);
 
-        double ffTerm = PathfindingConstants.kRotationFF.get() * (deltaE / timestep)
+        double ffTerm = PathfindingConstants.kRotationFF.get() * (deltaE / timestep);
         // SmartDashboard.putNumber("Rotation FF Output", ffTerm);
         // SmartDashboard.putNumber("kF", PathfindingConstants.kRotationFF.get());
 
