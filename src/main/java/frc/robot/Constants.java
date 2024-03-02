@@ -246,6 +246,8 @@ public final class Constants {
                 0.1, "Statemachine Debounce");
         public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
                 3.0, "Note Detection Distance");
+        public static final ConfigurableParameter<Double> kEjectTime = new ConfigurableParameter<Double>(
+                1.5, "State Reset Eject Time");
     }
 
     public static final class NeoMotorConstants {
