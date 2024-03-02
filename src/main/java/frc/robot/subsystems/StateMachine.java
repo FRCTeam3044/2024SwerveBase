@@ -168,7 +168,8 @@ public class StateMachine extends SubsystemBase {
     public void reset() {
         currentState = State.NO_NOTE;
 
-        Command ejectNoteCommand = Commands.deadline(new WaitCommand(1), new ShooterSlowCommand(m_shooterSubsystem),
+        Command ejectNoteCommand = Commands.deadline(new WaitCommand(StateMachineConstants.kEjectTime.get()),
+                new ShooterSlowCommand(m_shooterSubsystem),
                 new TransitCommand(m_transitSubsystem));
         ejectNoteCommand.schedule();
         updateDesiredCommand();
