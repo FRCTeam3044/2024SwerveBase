@@ -106,6 +106,14 @@ public class TransitSubsystem extends AdvancedSubsystem {
                 .andThen(stopTransitCommand());
     }
 
+    public void consumeTransitInput(boolean run) {
+        if (run) {
+            runTransit();
+        } else {
+            stopTransit();
+        }
+    }
+
     public void consumeTransitInput(boolean run, boolean reverse) {
         if (run) {
             runTransit();
