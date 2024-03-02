@@ -37,6 +37,7 @@ public class NoteDetection extends SubsystemBase {
     int minX;
     int maxX;
     int minY;
+    int midpoint;
     private ArrayList<Pose2d> notePoses = new ArrayList<>();
 
     public NoteDetection() {
@@ -95,7 +96,7 @@ public class NoteDetection extends SubsystemBase {
                     }
                 }
             }
-            var midpoint = (maxX + minX) / 2;
+            midpoint = (maxX + minX) / 2;
 
             notePoses.add(getNotePose(midpoint, minY));
             SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
@@ -111,6 +112,14 @@ public class NoteDetection extends SubsystemBase {
 
     public Pose2d getClosestNote() {
         return closestPose;
+    }
+
+    public int getClosestNoteCameraXPosition() {
+        if(hasNote) {
+            return midpoint;
+        } else {
+            return -1;
+        }
     }
 
     public double getClosestNoteDistance() {

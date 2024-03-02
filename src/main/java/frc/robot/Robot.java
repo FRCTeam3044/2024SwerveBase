@@ -77,7 +77,7 @@ public class Robot extends LoggedRobot {
         PathfindingConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, (LEDConstants.sideLEDLength * 2) + LEDConstants.topLEDLength);
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, (LEDConstants.sideLEDLength * 2) + LEDConstants.topLEDLength, m_robotContainer);
     }
 
     /**
