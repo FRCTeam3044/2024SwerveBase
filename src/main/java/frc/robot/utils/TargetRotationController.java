@@ -10,7 +10,7 @@ public class TargetRotationController {
     private double targetX;
     private double targetY;
 
-    private ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.1,
+    private ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.01,
             "Rot Controller Min Speed (rad/sec)");
     private ConfigurableParameter<Double> maxSpeed = new ConfigurableParameter<Double>(Math.PI,
             "Rot Controller Max Speed (rad/sec)");
