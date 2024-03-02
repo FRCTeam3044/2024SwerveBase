@@ -1,14 +1,17 @@
 package frc.robot.commands.drive;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.TargetRotationController;
-import me.nabdev.oxconfig.ConfigurableParameter;
 
 /**
  * A command that allows the driver to control the drivebase using the
@@ -22,8 +25,11 @@ public class DriveAndTrackPointCommand extends Command {
 
     private final TargetRotationController m_targetRotController;
 
+    private Supplier<Pose2d> targetSupplier;
+    private Pose2d lastTarget;
+
     /**
-     * Creates a new ManualDriveCommand.
+     * Creates a new DriveAndTrackPointCommand, defaulting to tracking the speaker.
      * 
      * @param driveSubsystem   The drive subsystem this command will run on
      * @param driverController The XboxController that provides the input for the
@@ -33,12 +39,53 @@ public class DriveAndTrackPointCommand extends Command {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
         isSimulation = RobotBase.isSimulation();
-        m_targetRotController = new TargetRotationController(0, 0);
-        new ConfigurableParameter<Double>(1.0, "Drive & Track Target X",
-                m_targetRotController::setTargetX);
-        new ConfigurableParameter<Double>(0.0, "Drive & Track Target Y",
-                m_targetRotController::setTargetY);
+        Pose2d target = AutoTargetUtils.getShootingTarget();
+        lastTarget = target;
+        targetSupplier = AutoTargetUtils::getShootingTarget;
+        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
         addRequirements(m_robotDrive);
+    }
+
+    /**
+     * Creates a new DriveAndTrackPointCommand
+     * 
+     * @param driveSubsystem   The drive subsystem this command will run on
+     * @param driverController The XboxController that provides the input for the
+     *                         drive command
+     * @param target           The target to track
+     */
+    public DriveAndTrackPointCommand(DriveSubsystem driveSubsystem, CommandXboxController driverController,
+            Pose2d target) {
+        m_robotDrive = driveSubsystem;
+        m_driverController = driverController;
+        isSimulation = RobotBase.isSimulation();
+        targetSupplier = () -> target;
+        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        addRequirements(m_robotDrive);
+    }
+
+    public DriveAndTrackPointCommand(Supplier<Pose2d> target, CommandXboxController driverController,
+            DriveSubsystem driveSubsystem) {
+        targetSupplier = target;
+        try {
+            lastTarget = target.get();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        isSimulation = RobotBase.isSimulation();
+        m_driverController = driverController;
+        m_robotDrive = driveSubsystem;
+        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY());
+        addRequirements(m_robotDrive);
+    }
+
+    @Override
+    public void initialize() {
+        if (lastTarget != targetSupplier.get()) {
+            Pose2d target = targetSupplier.get();
+            m_targetRotController.setTargetX(target.getX());
+            m_targetRotController.setTargetY(target.getY());
+        }
     }
 
     @Override
@@ -48,9 +95,11 @@ public class DriveAndTrackPointCommand extends Command {
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
 
         if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(), true);
+            m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get(), true);
         } else {
-            m_robotDrive.drive(-inputY, -inputX, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(), true);
+            m_robotDrive.drive(-inputY, -inputX, inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get(), true);
         }
     }
 }

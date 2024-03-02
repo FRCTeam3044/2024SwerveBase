@@ -64,6 +64,11 @@
         },
         "RealOutputs": {
           "open": true
+        }
+      },
+      "SmartDashboard": {
+        "double[]##v_/SmartDashboard/Red Shooting Zone": {
+          "open": true
         },
         "open": true
       }

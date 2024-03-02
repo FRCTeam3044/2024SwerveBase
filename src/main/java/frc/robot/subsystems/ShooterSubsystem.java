@@ -2,9 +2,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.utils.AutoTargetUtils;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -13,19 +16,19 @@ import com.revrobotics.SparkPIDController;
 
 public class ShooterSubsystem extends SubsystemBase {
     /*
-     * Defines the motors that shoot the notes
+     * Defines the motors that shoot the note
      */
-    CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushless);
-    CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
+    // TODO: SWITCH BACK WHEN MOTOR REPLACED
+    private CANSparkMax topMotor = new CANSparkMax(CANConstants.kShooterTopMotorPort, MotorType.kBrushed);
+    private CANSparkMax bottomMotor = new CANSparkMax(CANConstants.kShooterBottomMotorPort, MotorType.kBrushless);
 
     /*
      * Encoders for Shooter wheels
      */
-    RelativeEncoder topShooterMoterEncoder = topMotor.getEncoder();
-    RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getEncoder();
+    private RelativeEncoder topShooterMoterEncoder = topMotor.getAlternateEncoder(8192);
+    private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getAlternateEncoder(8192);
 
-    double motorRPM = 0;
-
+    // TODO: Get values
     public double speakerRPM = 0;
     public double ampRPM = 0;
 
@@ -35,8 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkPIDController topPidController;
     private SparkPIDController bottomPidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-    double maxVel = 0;
-    double maxAccel = 0;
+    private double maxVel = 0;
+    private double maxAccel = 0;
     public static final int kCPR = 8192;
 
     private RelativeEncoder m_topAlternateEncoder;
@@ -61,15 +64,16 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomMotor.set(0);
     }
 
-    public void consumeShooterInput(boolean isTheAButtonPressed) {
-        motorRPM = motorRPM * ShooterConstants.kShooterManualSpeed.get();
-
-        if (isTheAButtonPressed) {
-            setShooterRPM(motorRPM);
-            handlePID();
+    public void consumeShooterInput(boolean shoot, boolean slow) {
+        double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
+                : ShooterConstants.kShooterManualSpeed.get();
+        if (shoot) {
+            topMotor.set(output);
+            bottomMotor.set(output);
         } else {
             stopShooter();
         }
+
     }
 
     public ShooterSubsystem() {
@@ -141,5 +145,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void ampSpeed() {
         currentTargetRPM = ampRPM;
+    }
+
+    public void saveShotData() {
+        double dist = RobotContainer.m_robotDrive.getPose().getTranslation()
+                .getDistance(AutoTargetUtils.getShootingTarget().getTranslation());
+        ChassisSpeeds speeds = RobotContainer.m_robotDrive.getChassisSpeeds();
+
+        RobotContainer.m_autoAiming.addData(dist, RobotContainer.elevator.getAngle(), getTopMotorRPM(),
+                getBottomMotorRPM(), speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
     }
 }
