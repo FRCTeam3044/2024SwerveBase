@@ -10,10 +10,12 @@ public class TargetRotationController {
     private double targetX;
     private double targetY;
 
-    private ConfigurableParameter<Double> pidDeadband = new ConfigurableParameter<Double>(0.05, "PID Deadband");
-    private ConfigurableParameter<Double> ffDeadband = new ConfigurableParameter<Double>(0.05, "FF Deadband");
-    private ConfigurableParameter<Double> overallDeadband = new ConfigurableParameter<Double>(0.05, "Overall Deadband");
-
+    private ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.1,
+            "Rot Controller Min Speed (rad/sec)");
+    private ConfigurableParameter<Double> maxSpeed = new ConfigurableParameter<Double>(0.5,
+            "Rot Controller Max Speed (rad/sec)");
+    private ConfigurableParameter<Double> minError = new ConfigurableParameter<Double>(0.5,
+            "Rot Controller Min Error (rad)");
     private double[] targetPose;
 
     public TargetRotationController(double targetX, double targetY) {
@@ -63,13 +65,20 @@ public class TargetRotationController {
         // SmartDashboard.putNumber("PID Out", pidOut);
         // SmartDashboard.putNumberArray("Rotation Target", targetPose);
 
-        double ffTerm = MathUtil.applyDeadband(PathfindingConstants.kRotationFF.get() * (deltaE / timestep),
-                ffDeadband.get());
+        double ffTerm = PathfindingConstants.kRotationFF.get() * (deltaE / timestep)
         // SmartDashboard.putNumber("Rotation FF Output", ffTerm);
         // SmartDashboard.putNumber("kF", PathfindingConstants.kRotationFF.get());
-        pidOut = MathUtil.applyDeadband(pidOut, pidDeadband.get());
 
-        return -MathUtil.applyDeadband(pidOut - (ffTerm), overallDeadband.get());
+        double finalOut = -(pidOut - ffTerm);
+
+        // TODO: Check if this is correct
+        if (Math.abs(finalOut) < minSpeed.get() && Math.abs(e1) > minError.get()) {
+            finalOut = Math.copySign(minSpeed.get(), finalOut);
+        } else if (Math.abs(finalOut) > maxSpeed.get()) {
+            finalOut = Math.copySign(maxSpeed.get(), finalOut);
+        }
+
+        return finalOut;
     }
 
     /**
