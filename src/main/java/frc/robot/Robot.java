@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.utils.ControllerRumble;
 import frc.robot.commands.test.DriveTestCommand;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -92,6 +93,7 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().run();
         m_robotContainer.m_visionSubsystem.periodic();
         RobotContainer.m_noteDetection.periodic();
+        ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
     }
 

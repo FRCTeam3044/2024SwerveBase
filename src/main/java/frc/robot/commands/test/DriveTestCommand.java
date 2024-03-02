@@ -33,9 +33,6 @@ public class DriveTestCommand extends Command {
 
     @Override
     public void initialize() {
-        // if (m_robotContainer.stateMachineCommand.isScheduled()) {
-        // this.cancel();
-        // }
     }
 
     @Override
