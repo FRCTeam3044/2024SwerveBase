@@ -12,7 +12,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer;
-import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -47,8 +45,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     double maxVel = 0;
     double maxAccel = 0;
-
-    PIDController pid = new ConfigurablePIDController(0, 0, 0, "Elevator PID");
 
     RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
     RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
