@@ -1,0 +1,56 @@
+[
+  {
+    "type": "group",
+    "id": "race",
+    "name": "Drive Until Note",
+    "children": [
+      {
+        "type": "command",
+        "id": "wait_for_note_in_area",
+        "parameters": {
+          "regionX": "{{ regionX }}",
+          "regionY": "{{ regionY }}",
+          "regionRadius": "{{ regionRadius }}"
+        },
+        "name": "Wait For Top Note"
+      },
+      {
+        "type": "command",
+        "id": "go_to_and_track_point",
+        "parameters": {
+          "targetX": "{{ regionX }}",
+          "targetY": "{{ regionY }}",
+          "trackX": "{{ regionX }}",
+          "trackY": "{{ regionY }}"
+        },
+        "name": "Go To Top Note"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "id": "deadline",
+    "name": "Pickup Note",
+    "parameters": {},
+    "children": [
+      {
+        "type": "command",
+        "id": "wait_for_note",
+        "name": "New Command",
+        "parameters": {}
+      },
+      {
+        "type": "command",
+        "id": "go_to_note_in_area",
+        "name": "Go To Note",
+        "parameters": {}
+      },
+      {
+        "type": "command",
+        "id": "wait_for_note",
+        "name": "New Command",
+        "parameters": {}
+      }
+    ]
+  }
+]

@@ -23,33 +23,27 @@ public class GoToNoteCommand extends Command {
     private Pose2d originalRobotPose;
     private boolean failed = false;
     private boolean hasTargetRegion;
+    private Pose2d targetRegion;
+    private double regionRadius;
+    private boolean cancelIfNone = true;
 
-    public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection) {
+    public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection, boolean cancelIfNone) {
         this.m_robotDrive = m_robotDrive;
         this.m_noteDetection = m_noteDetection;
         hasTargetRegion = false;
-        if (m_noteDetection.hasNote) {
-            Pose2d closestNote = m_noteDetection.getClosestNote();
-            targetRotationController = new TargetRotationController(closestNote.getX(),
-                    closestNote.getY());
-        } else {
-            targetRotationController = new TargetRotationController(0, 0);
-        }
+        this.cancelIfNone = cancelIfNone;
+        targetRotationController = new TargetRotationController(0, 0);
     }
 
     public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection, Pose2d targetRegion,
-            double regionRadius) {
+            double regionRadius, boolean cancelIfNone) {
         hasTargetRegion = true;
         this.m_robotDrive = m_robotDrive;
         this.m_noteDetection = m_noteDetection;
-        m_noteDetection.setRegion(targetRegion, regionRadius);
-        if (m_noteDetection.hasNoteInRegion) {
-            Pose2d closestNote = m_noteDetection.getClosestNoteToRegion();
-            targetRotationController = new TargetRotationController(closestNote.getX(),
-                    closestNote.getY());
-        } else {
-            targetRotationController = new TargetRotationController(0, 0);
-        }
+        this.targetRegion = targetRegion;
+        this.regionRadius = regionRadius;
+        this.cancelIfNone = cancelIfNone;
+        targetRotationController = new TargetRotationController(0, 0);
 
     }
 
@@ -57,11 +51,30 @@ public class GoToNoteCommand extends Command {
     public void initialize() {
         originalRobotPose = m_robotDrive.getPose();
         m_followCommand = null;
+        if (hasTargetRegion) {
+            m_noteDetection.setRegion(targetRegion, regionRadius);
+            if (m_noteDetection.hasNoteInRegion) {
+                Pose2d closestNote = m_noteDetection.getClosestNoteToRegion();
+                targetRotationController.setTargetX(closestNote.getX());
+                targetRotationController.setTargetY(closestNote.getY());
+            } else if (cancelIfNone) {
+                failed = true;
+            }
+        } else {
+            if (m_noteDetection.hasNote) {
+                Pose2d closestNote = m_noteDetection.getClosestNote();
+                targetRotationController.setTargetX(closestNote.getX());
+                targetRotationController.setTargetY(closestNote.getY());
+            } else if (cancelIfNone) {
+                failed = true;
+            }
+
+        }
     }
 
     @Override
     public void execute() {
-        if (!m_noteDetection.hasNote || (hasTargetRegion && !m_noteDetection.hasNoteInRegion)) {
+        if (failed || !m_noteDetection.hasNote || (hasTargetRegion && !m_noteDetection.hasNoteInRegion)) {
             return;
         }
         Pose2d notePose = hasTargetRegion ? m_noteDetection.getClosestNoteToRegion() : m_noteDetection.getClosestNote();

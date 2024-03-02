@@ -1,0 +1,11 @@
+[
+  {
+    "type": "macro",
+    "id": "pickup_note",
+    "parameters": {
+      "regionX": "2.87",
+      "regionY": "7",
+      "regionRadius": "1"
+    }
+  }
+]

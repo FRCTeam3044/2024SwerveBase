@@ -68,54 +68,58 @@ public class NoteDetection extends SubsystemBase {
 
     @Override
     public void periodic() {
+        notePoses.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;
-            closestPose = new Pose2d(16.05, 2, new Rotation2d());
-            SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
-            return;
-        }
-        notePoses.clear();
-
-        var result = detector.getLatestResult();
-        if (!result.hasTargets()) {
-            hasNote = false;
-            hasNoteInRegion = false;
-            return;
-        }
-        hasNote = true;
-        List<PhotonTrackedTarget> targets = result.getTargets();
-        for (int i = 0; i < targets.size(); i++) {
-            minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
-            maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
-            minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
-            for (PhotonTrackedTarget target : targets) {
-                for (TargetCorner corner : target.getMinAreaRectCorners()) {
-                    if (corner.x < minX) {
-                        minX = (int) corner.x;
-                    }
-                    if (corner.x > maxX) {
-                        maxX = (int) corner.x;
-                    }
-                    if (corner.y < minY) {
-                        minY = (int) corner.y;
+            closestPose = new Pose2d(13.68, 7, new Rotation2d());
+            if (closestPose.getTranslation().getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
+                notePoses.add(closestPose);
+                SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+            }
+        } else {
+            var result = detector.getLatestResult();
+            if (!result.hasTargets()) {
+                hasNote = false;
+                hasNoteInRegion = false;
+                return;
+            }
+            hasNote = true;
+            List<PhotonTrackedTarget> targets = result.getTargets();
+            for (int i = 0; i < targets.size(); i++) {
+                minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+                maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
+                minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
+                for (PhotonTrackedTarget target : targets) {
+                    for (TargetCorner corner : target.getMinAreaRectCorners()) {
+                        if (corner.x < minX) {
+                            minX = (int) corner.x;
+                        }
+                        if (corner.x > maxX) {
+                            maxX = (int) corner.x;
+                        }
+                        if (corner.y < minY) {
+                            minY = (int) corner.y;
+                        }
                     }
                 }
-            }
-            var midpoint = (maxX + minX) / 2;
+                var midpoint = (maxX + minX) / 2;
 
-            notePoses.add(getNotePose(midpoint, minY));
-            SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
+                notePoses.add(getNotePose(midpoint, minY));
+                SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
+            }
         }
         Pose2d closestRawPose = findClosestNote(null);
-        Pose2d closestPoseToRegion = findClosestNote(regionPose);
-        if (closestPoseToRegion == null) {
-            hasNoteInRegion = false;
-        } else {
-            hasNoteInRegion = true;
-            closestPoseToRegion = new Pose2d(
-                    filterNoteX.calculate(closestPoseToRegion.getX()),
-                    filterNoteY.calculate(closestPoseToRegion.getY()),
-                    closestPoseToRegion.getRotation());
+        if (regionPose != null) {
+            Pose2d closestPoseToRegionTemp = findClosestNote(regionPose);
+            if (closestPoseToRegionTemp == null) {
+                hasNoteInRegion = false;
+            } else {
+                hasNoteInRegion = true;
+                closestPoseToRegion = new Pose2d(
+                        filterNoteX.calculate(closestPoseToRegionTemp.getX()),
+                        filterNoteY.calculate(closestPoseToRegionTemp.getY()),
+                        closestPoseToRegionTemp.getRotation());
+            }
         }
         closestPose = new Pose2d(
                 filterNoteX.calculate(closestRawPose.getX()),
@@ -141,9 +145,9 @@ public class NoteDetection extends SubsystemBase {
         return distance;
     }
 
-    private Pose2d findClosestNote(Pose2d regionPose) {
+    private Pose2d findClosestNote(Pose2d targetRegionPose) {
         Pose2d notePose = new Pose2d();
-        Pose2d currentPose = regionPose == null ? RobotContainer.m_robotDrive.getPose() : regionPose;
+        Pose2d currentPose = targetRegionPose == null ? RobotContainer.m_robotDrive.getPose() : regionPose;
         for (int i = 0; i < notePoses.size(); i++) {
             if (i == 0) {
                 notePose = notePoses.get(i);
@@ -154,7 +158,7 @@ public class NoteDetection extends SubsystemBase {
                 }
             }
         }
-        if (regionPose != null) {
+        if (targetRegionPose != null) {
             if (notePose.getTranslation().getDistance(currentPose.getTranslation()) > regionRadius) {
                 return null;
             }

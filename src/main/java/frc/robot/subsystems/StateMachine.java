@@ -226,7 +226,7 @@ public class StateMachine extends SubsystemBase {
 
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
-                RobotContainer.m_noteDetection);
+                RobotContainer.m_noteDetection, false);
         IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
         return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
     }

@@ -140,10 +140,13 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("NewAuto.json");
+            Command auto = AutoParser.loadAuto("GetThree.json");
             return auto;
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't find file");
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
