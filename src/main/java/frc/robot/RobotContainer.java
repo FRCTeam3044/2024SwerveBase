@@ -31,10 +31,10 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -115,9 +115,7 @@ public class RobotContainer {
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
         // When the menu button is pressed*
-        m_driverController.start().onTrue(new RunCommand(() -> {
-            stateMachine.reset();
-        }));
+        m_driverController.start().onTrue(new StateMachineResetCommand(stateMachine));
 
         // Driver 2
         Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));

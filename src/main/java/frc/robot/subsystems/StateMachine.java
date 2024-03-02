@@ -164,7 +164,6 @@ public class StateMachine extends SubsystemBase {
         SmartDashboard.putString("State", currentState.toString());
     }
 
-    // TODO: In this case, spit out any notes we may have
     public void reset() {
         currentState = State.NO_NOTE;
 

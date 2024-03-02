@@ -221,6 +221,10 @@
         },
         "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
+        "State Reset Eject Time": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
@@ -472,6 +476,10 @@
         },
         "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
+        "State Reset Eject Time": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
@@ -722,6 +730,10 @@
         },
         "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
+        "State Reset Eject Time": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
@@ -972,6 +984,10 @@
         },
         "Elevator Angle PID/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
+        "State Reset Eject Time": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "X Controller/P": "1.0",
         "frontLeftModule/turning/D": "0.0",
         "rearRightModule/driving/IZone": "0.0",
