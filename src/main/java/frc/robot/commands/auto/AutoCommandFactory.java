@@ -51,8 +51,15 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("intake", AutoCommandFactory::intakeCommand);
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
-        AutoParser.registerMacro("pickup_note", "pickupNote.json");
+        AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
 
+        AutoParser.registerMacro("pickup_note", "BooleanPickupNote.json");
+    }
+
+    public static NoteInArea noteInArea(JSONObject parameters) {
+        Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
+        double targetRadius = parameters.getDouble("regionRadius");
+        return new NoteInArea(RobotContainer.m_noteDetection, target, targetRadius, false);
     }
 
     public static WaitForLimitSwitchCommand waitForLimitSwitch(JSONObject parameters) {

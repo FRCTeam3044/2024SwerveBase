@@ -8,24 +8,48 @@
         {
           "id": "note_in_area",
           "parameters": {
-            "regionX": 2.87,
-            "regionY": 7,
+            "regionX": "{{ regionX }}",
+            "regionY": "{{ regionY }}",
             "regionRadius": 1
           },
           "children": []
         }
-      ]
+      ],
+      "parameters": {}
     },
     "child": {
       "type": "command",
       "id": "go_to_and_track_point",
       "parameters": {
-        "targetX": 2.87,
-        "targetY": 7,
-        "trackX": 2.87,
-        "trackY": 7
+        "targetX": "{{ regionX }}",
+        "targetY": "{{ regionY }}",
+        "trackX": "{{ regionX }}",
+        "trackY": "{{ regionY }}"
       },
       "name": "Go To Top Note"
+    }
+  },
+  {
+    "type": "if",
+    "name": "Note In Area",
+    "condition": {
+      "id": "note_in_area",
+      "parameters": {
+        "regionX": "{{ regionX }}",
+        "regionY": "{{ regionY }}",
+        "regionRadius": "{{ regionRadius }}"
+      },
+      "children": []
+    }
+  },
+  {
+    "type": "command",
+    "id": "go_to_note_in_area",
+    "name": "Go To Note",
+    "parameters": {
+      "regionX": "{{ regionX }}",
+      "regionY": "{{ regionY }}",
+      "regionRadius": "{{ regionRadius }}"
     }
   }
 ]
