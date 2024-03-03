@@ -165,6 +165,9 @@ public final class Constants {
         public static final int kElevatorMotorTwoPort = 22;
         // public static final int kElevatorTopLimitSwitch = 23;
         // public static final int kElevatorBottomLimitSwitch = 22;
+
+        // TODO: Check if this is correct
+        public static final int kElevatorPivotEncoderPort = 0;
     }
 
     public static final class OIConstants {
