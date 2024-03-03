@@ -52,7 +52,7 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
-
+        AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerMacro("pickup_note", "BooleanPickupNote.json");
     }
 
@@ -60,6 +60,10 @@ public final class AutoCommandFactory {
         Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
         double targetRadius = parameters.getDouble("regionRadius");
         return new NoteInArea(RobotContainer.m_noteDetection, target, targetRadius, false);
+    }
+
+    public static HasNote hasNote(JSONObject parameters) {
+        return new HasNote(RobotContainer.stateMachine);
     }
 
     public static WaitForLimitSwitchCommand waitForLimitSwitch(JSONObject parameters) {
