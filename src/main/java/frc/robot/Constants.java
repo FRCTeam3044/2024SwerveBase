@@ -225,20 +225,27 @@ public final class Constants {
         // array of active cameras
         public final static String[] activeCameras = {
                 "front",
-                // "back",
-                // "left",
-                // "right"
+                "back"
         };
         // array of camera transforms
         public final static Transform3d[] cameraTransforms = {
                 new Transform3d( // front
                         new Translation3d(
-                                0,
-                                0,
-                                0),
+                                0.27305,
+                                -0.10795,
+                                0.635),
                         new Rotation3d(
                                 0,
+                                0.47,
+                                0)),
+                new Transform3d( // back
+                        new Translation3d(
+                                0.2286,
+                                -0.10795,
+                                0.5715),
+                        new Rotation3d(
                                 0,
+                                0.17,
                                 0)),
         };
     }
