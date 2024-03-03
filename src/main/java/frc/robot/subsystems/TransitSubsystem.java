@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
+import frc.robot.utils.LimitSwitchSubsystem;
 
-public class TransitSubsystem extends SubsystemBase {
+public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
@@ -37,7 +38,8 @@ public class TransitSubsystem extends SubsystemBase {
      * 
      * @return true if the transit limit switch is pressed
      */
-    public boolean readTransitLimitSwitch() {
+    @Override
+    public boolean readLimitSwitch() {
         return !transitSensor.get();
     }
 

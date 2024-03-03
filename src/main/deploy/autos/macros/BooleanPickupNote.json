@@ -1,0 +1,31 @@
+[
+  {
+    "type": "while",
+    "name": "Drive Until Note",
+    "condition": {
+      "id": "not",
+      "children": [
+        {
+          "id": "note_in_area",
+          "parameters": {
+            "regionX": 2.87,
+            "regionY": 7,
+            "regionRadius": 1
+          },
+          "children": []
+        }
+      ]
+    },
+    "child": {
+      "type": "command",
+      "id": "go_to_and_track_point",
+      "parameters": {
+        "targetX": 2.87,
+        "targetY": 7,
+        "trackX": 2.87,
+        "trackY": 7
+      },
+      "name": "Go To Top Note"
+    }
+  }
+]

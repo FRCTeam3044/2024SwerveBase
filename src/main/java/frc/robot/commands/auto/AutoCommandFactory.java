@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -15,10 +15,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.commands.ElevatorSetAngleForAmpCommand;
+import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
+import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
-import frc.robot.commands.drive.WaitForNoteCommand;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 public final class AutoCommandFactory {
@@ -40,11 +43,33 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("go_to_and_track_point", AutoCommandFactory::goToAndTrackPoint);
         AutoParser.registerCommand("wait_for_note", AutoCommandFactory::waitForNote);
         AutoParser.registerCommand("wait_for_note_in_area", AutoCommandFactory::waitForNoteInArea);
+        AutoParser.registerCommand("require_note", AutoCommandFactory::requireNote);
         AutoParser.registerCommand("go_to_note", AutoCommandFactory::goToNote);
         AutoParser.registerCommand("go_to_note_in_area", AutoCommandFactory::goToNoteInArea);
         AutoParser.registerCommand("set_intake_angle", AutoCommandFactory::elevatorSetAngleForIntakeCommand);
         AutoParser.registerCommand("set_amp_angle", AutoCommandFactory::elevatorSetAngleForAmpCommand);
+        AutoParser.registerCommand("intake", AutoCommandFactory::intakeCommand);
+        AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
+        AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerMacro("pickup_note", "pickupNote.json");
+
+    }
+
+    public static WaitForLimitSwitchCommand waitForLimitSwitch(JSONObject parameters) {
+        boolean waitForOpen = parameters.getBoolean("waitForOpen");
+        double time = parameters.getDouble("time");
+        if (parameters.getString("subsystem") == "intake") {
+            return new WaitForLimitSwitchCommand(RobotContainer.intake, waitForOpen, time);
+        } else if (parameters.getString("subsystem") == "transit") {
+            return new WaitForLimitSwitchCommand(RobotContainer.transit, waitForOpen, time);
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid subsystem in limit switch auto command: " + parameters.getString("subsystem"));
+        }
+    }
+
+    public static TransitCommand transitCommand(JSONObject parameters) {
+        return new TransitCommand(RobotContainer.transit);
     }
 
     public static GoToNoteCommand goToNote(JSONObject parameters) {
@@ -55,17 +80,21 @@ public final class AutoCommandFactory {
         Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
         double targetRadius = parameters.getDouble("regionRadius");
         return new GoToNoteCommand(RobotContainer.m_robotDrive, RobotContainer.m_noteDetection, target, targetRadius,
-                true);
+                false);
     }
 
     public static WaitForNoteCommand waitForNote(JSONObject parameters) {
-        return new WaitForNoteCommand(RobotContainer.m_noteDetection);
+        return new WaitForNoteCommand(RobotContainer.m_noteDetection, false);
+    }
+
+    public static WaitForNoteCommand requireNote(JSONObject parameters) {
+        return new WaitForNoteCommand(RobotContainer.m_noteDetection, true);
     }
 
     public static WaitForNoteCommand waitForNoteInArea(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
         double targetRadius = parameters.getDouble("regionRadius");
-        return new WaitForNoteCommand(RobotContainer.m_noteDetection, target, targetRadius);
+        return new WaitForNoteCommand(RobotContainer.m_noteDetection, target, targetRadius, false);
     }
 
     public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {
@@ -113,6 +142,10 @@ public final class AutoCommandFactory {
 
     public static ElevatorSetAngleForAmpCommand elevatorSetAngleForAmpCommand(JSONObject parameters) {
         return new ElevatorSetAngleForAmpCommand(RobotContainer.elevator);
+    }
+
+    public static IntakeCommand intakeCommand(JSONObject parameters) {
+        return new IntakeCommand(RobotContainer.intake);
     }
 
     private static Pose2d getAllianceLocation(double x, double y) {

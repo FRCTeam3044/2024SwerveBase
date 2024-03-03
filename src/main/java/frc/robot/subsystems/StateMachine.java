@@ -180,11 +180,11 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean getIntakeLimitSwitch() {
-        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch());
+        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readLimitSwitch());
     }
 
     protected boolean getTransitLimitSwitch() {
-        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch());
+        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch());
     }
 
     protected boolean shooterAtSpeed() {

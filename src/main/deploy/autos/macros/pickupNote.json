@@ -34,22 +34,95 @@
     "parameters": {},
     "children": [
       {
-        "type": "command",
-        "id": "wait_for_note",
-        "name": "New Command",
+        "type": "group",
+        "id": "sequence",
+        "name": "Cancel if no note",
+        "children": [
+          {
+            "type": "command",
+            "id": "require_note",
+            "name": "End if no detected note",
+            "parameters": {}
+          },
+          {
+            "type": "group",
+            "id": "sequence",
+            "name": "End if No Note in Bot",
+            "parameters": {
+              "subsystem": "intake",
+              "waitForOpen": true
+            },
+            "children": [
+              {
+                "type": "command",
+                "id": "wait_for_limit_switch",
+                "name": "End if no intake switch",
+                "parameters": {
+                  "subsystem": "intake",
+                  "waitForOpen": true,
+                  "time": 1
+                }
+              },
+              {
+                "type": "command",
+                "id": "wait_for_limit_switch",
+                "name": "End if no transit switch",
+                "parameters": {
+                  "subsystem": "transit",
+                  "waitForOpen": true,
+                  "time": 0.5
+                }
+              }
+            ]
+          }
+        ],
         "parameters": {}
       },
       {
-        "type": "command",
-        "id": "go_to_note_in_area",
-        "name": "Go To Note",
-        "parameters": {}
-      },
-      {
-        "type": "command",
-        "id": "wait_for_note",
-        "name": "New Command",
-        "parameters": {}
+        "type": "group",
+        "id": "sequence",
+        "name": "Score Note From Ground",
+        "parameters": {},
+        "children": [
+          {
+            "type": "group",
+            "id": "deadline",
+            "name": "Pickup Note",
+            "parameters": {},
+            "children": [
+              {
+                "type": "command",
+                "id": "wait_for_limit_switch",
+                "name": "Wait For Transit Limit Switch",
+                "parameters": {
+                  "subsystem": "transit"
+                }
+              },
+              {
+                "type": "command",
+                "id": "go_to_note_in_area",
+                "name": "Go To Note",
+                "parameters": {
+                  "regionX": "{{ regionX }}",
+                  "regionY": "{{ regionY }}",
+                  "regionRadius": "{{ regionRadius }}"
+                }
+              },
+              {
+                "type": "command",
+                "id": "intake",
+                "name": "Run Intake",
+                "parameters": {}
+              },
+              {
+                "type": "command",
+                "id": "transit",
+                "name": "Run Transit",
+                "parameters": {}
+              }
+            ]
+          }
+        ]
       }
     ]
   }

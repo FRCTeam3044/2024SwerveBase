@@ -99,7 +99,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
 
-    implementation 'me.nabdev.pathfinding:oxplorer:0.11.0-SNAPSHOT3'
+    implementation 'me.nabdev.pathfinding:oxplorer:0.11.1-SNAPSHOT2'
     implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.2.4-SNAPSHOT'
     implementation 'org.json:json:20231013' 
     implementation 'gov.nist.math:jama:1.0.3'

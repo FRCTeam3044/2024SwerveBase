@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoAimCommnd;
-import frc.robot.commands.AutoCommandFactory;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ElevatorSetAngleForSubwooferCommand;
@@ -14,6 +13,7 @@ import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
+import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -140,7 +140,7 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("GetThree.json");
+            Command auto = AutoParser.loadAuto("macros/BooleanPickupNote.json");
             return auto;
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't find file");

@@ -9,8 +9,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.utils.LimitSwitchSubsystem;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
     // Defines the motor
     CANSparkMax intakeTopMotor = new CANSparkMax(CANConstants.kIntakeTopMotorPort, MotorType.kBrushless);
     CANSparkMax intakeBottomMotor = new CANSparkMax(CANConstants.kIntakeBottomMotorPort, MotorType.kBrushless);
@@ -46,7 +47,8 @@ public class IntakeSubsystem extends SubsystemBase {
      * 
      * @return true if the intake limit switch is pressed
      */
-    public boolean readIntakeLimitSwitch() {
+    @Override
+    public boolean readLimitSwitch() {
         return !intakeSensor.get();
     }
 
