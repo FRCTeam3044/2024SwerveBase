@@ -120,7 +120,7 @@ public class RobotContainer {
         // Driver 2
         Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
         m_operatorController.x().whileTrue(manualIntakeCommand);
-        m_operatorController.rightTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
+        m_operatorController.leftTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
         m_operatorController.a().whileTrue(new ElevatorSetAngleForIntakeCommand(elevator));
         m_operatorController.b().whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator));
     }

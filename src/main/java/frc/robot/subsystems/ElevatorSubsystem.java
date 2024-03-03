@@ -38,8 +38,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     // DigitalInput elevatorBottomLimitSwitch = new
     // DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
-    // TODO: Also not how this will be wired (maybe)
-    public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
+    public AbsoluteEncoder elevatorPivotEncoder = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
+    // public DutyCycleEncoder elevatorPivotEncoder = new
+    // DutyCycleEncoder(CANConstants.kElevatorPivotEncoderPort);
 
     private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -106,7 +107,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return shooterEncoderOne.getPosition();
+        return elevatorPivotEncoder.getPosition();
+        // return elevatorPivotEncoder.getAbsolutePosition();
     }
 
     public void pidHandler() {

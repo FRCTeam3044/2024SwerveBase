@@ -35,6 +35,8 @@ public class ElevatorTestCommand extends Command {
             m_elevator.consumeElevatorInput(-leftTrigger);
         } else if (rightTrigger > 0) {
             m_elevator.consumeElevatorInput(rightTrigger);
+        } else {
+            m_elevator.consumeElevatorInput(0);
         }
     }
 }

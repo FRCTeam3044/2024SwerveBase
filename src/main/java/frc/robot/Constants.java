@@ -151,9 +151,9 @@ public final class Constants {
 
         public static final int kTransitMotorPort = 33;
 
-        // TODO: Get real ports
+        // TODO: These may be swapped
         public static final int kTransitSensorPort = 4;
-        public static final int kIntakeSensorPort = 5;
+        public static final int kIntakeSensorPort = 6;
 
         public static final int kIntakeTopMotorPort = 32;
         public static final int kIntakeBottomMotorPort = 31;
@@ -165,6 +165,8 @@ public final class Constants {
         public static final int kElevatorMotorTwoPort = 22;
         // public static final int kElevatorTopLimitSwitch = 23;
         // public static final int kElevatorBottomLimitSwitch = 22;
+
+        public static final int kElevatorPivotEncoderPort = 9;
     }
 
     public static final class OIConstants {
