@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,9 +37,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     // DigitalInput elevatorBottomLimitSwitch = new
     // DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
-    public AbsoluteEncoder elevatorPivotEncoder = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
-    // public DutyCycleEncoder elevatorPivotEncoder = new
-    // DutyCycleEncoder(CANConstants.kElevatorPivotEncoderPort);
+    // public AbsoluteEncoder elevatorPivotEncoder =
+    // elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
+    public DutyCycleEncoder elevatorPivotEncoder = new DutyCycleEncoder(CANConstants.kElevatorPivotEncoderPort);
 
     private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -107,8 +106,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return elevatorPivotEncoder.getPosition();
-        // return elevatorPivotEncoder.getAbsolutePosition();
+        // return elevatorPivotEncoder.getPosition();
+        return elevatorPivotEncoder.getAbsolutePosition();
     }
 
     public void pidHandler() {

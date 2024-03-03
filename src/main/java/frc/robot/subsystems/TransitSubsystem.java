@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -20,6 +22,19 @@ public class TransitSubsystem extends SubsystemBase {
 
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
+        transitMotor.setInverted(true);
+        transitMotor.configPeakCurrentLimit(20);
+        transitMotor.setStatusFramePeriod(2, 2000);
+        transitMotor.setStatusFramePeriod(3, 2000);
+        transitMotor.setStatusFramePeriod(8, 2000);
+        transitMotor.setStatusFramePeriod(10, 20000);
+        transitMotor.setStatusFramePeriod(12, 2000);
+        transitMotor.setStatusFramePeriod(13, 2000);
+        transitMotor.setStatusFramePeriod(14, 2000);
+        transitMotor.setStatusFramePeriod(21, 2000);
+        transitMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 2000);
+        transitMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 2000);
+        transitMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 2000);
     }
 
     // Use this to get the note from the intake system

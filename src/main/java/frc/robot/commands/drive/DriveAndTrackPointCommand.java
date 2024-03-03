@@ -42,7 +42,11 @@ public class DriveAndTrackPointCommand extends Command {
         Pose2d target = AutoTargetUtils.getShootingTarget();
         lastTarget = target;
         targetSupplier = AutoTargetUtils::getShootingTarget;
-        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        if (target == null) {
+            m_targetRotController = new TargetRotationController(0, 0);
+        } else {
+            m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        }
         addRequirements(m_robotDrive);
     }
 
