@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
@@ -55,7 +56,8 @@ public class ShooterSubsystem extends SubsystemBase {
      */
     @Override
     public void periodic() {
-
+        SmartDashboard.putNumber("Shooter Top Encoder", m_topAlternateEncoder.getVelocity());
+        SmartDashboard.putNumber("Shooter Bottom Encoder", m_bottomAlternateEncoder.getVelocity());
     }
 
     public void stopShooter() {
@@ -68,7 +70,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 : ShooterConstants.kShooterManualSpeed.get();
         if (shoot) {
             topMotor.set(output);
-            bottomMotor.set(output);
+            bottomMotor.set(-output);
         } else {
             stopShooter();
         }
@@ -78,6 +80,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         topMotor.restoreFactoryDefaults();
         bottomMotor.restoreFactoryDefaults();
+
+        // bottomMotor.setInverted(false);
 
         m_topAlternateEncoder = topMotor.getAlternateEncoder(kAltEncType, kCPR);
         m_bottomAlternateEncoder = bottomMotor.getAlternateEncoder(kAltEncType, kCPR);

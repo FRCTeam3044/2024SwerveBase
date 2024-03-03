@@ -100,7 +100,7 @@ dependencies {
 
 
     implementation 'me.nabdev.pathfinding:oxplorer:0.9.24'
-    implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.2.4-SNAPSHOT'
+    implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.2.5-SNAPSHOT'
     implementation 'org.json:json:20231013' 
     implementation 'gov.nist.math:jama:1.0.3'
 }
