@@ -1,1056 +1,891 @@
 {
-    "presentation": {
-        "frontRightModule/turning/FF": "0.0",
-        "Elevator Angle PID/I": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
-        "rearLeftModule/driving/IZone": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
-        "Subwoofer Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "The period of the wave in seconds": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Theta Controller/D": "0.01",
-        "Shooter Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "1.0",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearRightModule/turning/FF": "0.0",
-        "Drive & Track Target Y": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Climber Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
-        "Drive & Track Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/D": "0.0",
-        "Rotation FF Timestep": {
-            "comment": "Auto-Generated",
-            "value": "0.02"
-        },
-        "Y Controller/I": "0.0",
-        "Statemachine Debounce": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Target Y": {
-            "comment": "Auto-Generated",
-            "value": "8.2042"
-        },
-        "frontRightModule/turning/IZone": "0.0",
-        "Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.8415"
-        },
-        "Large Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Transit Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Rate Limit": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Wave Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "rearRightModule/driving/Min": "-1.0",
-        "Elevator Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "rearRightModule/turning/Max": "1.0",
-        "Pathfinding Y Controller/I": "0.0",
-        "Shooter Spinup Time": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "0.0",
-        "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/D": "0.0",
-        "Long Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
-        "Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "6.283185307179586"
-        },
-        "Elevator Angle PID/Max": "0.10000000149011612",
-        "Pathfinding Theta Controller/D": "0.0",
-        "frontRightModule/driving/Min": "-1.0",
-        "Filter taps": {
-            "comment": "Auto-Generated",
-            "value": "3"
-        },
-        "frontRightModule/turning/Max": "1.0",
-        "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearLeftModule/turning/FF": "0.0",
-        "Short Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "Small intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Amp Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Shooter Manual Control Slow Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "Note Detection Distance": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
-        "frontRightModule/driving/P": "0.03999999910593033",
-        "Large intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Y Controller/P": "1.0",
-        "Elevator Tolerance": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "frontRightModule/driving/I": "0.0",
-        "Max Speed": {
-            "comment": "Meters per second",
-            "value": "4.8"
-        },
-        "frontRightModule/turning/D": "0.0",
-        "rearRightModule/driving/I": "0.0",
-        "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/I": "0.0",
-        "frontRightModule/turning/I": "0.0",
-        "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
-        "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
-        "Direction Slew rate": {
-            "comment": "Radians per second",
-            "value": "1.2"
-        },
-        "frontLeftModule/driving/Max": "1.0",
-        "frontRightModule/turning/P": "1.0",
-        "frontLeftModule/driving/P": "0.03999999910593033",
-        "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
-        "Intake Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "rearLeftModule/driving/Max": "1.0",
-        "Small Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "0.4"
-        },
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "rearLeftModule/turning/P": "1.0",
-        "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
-        "Bucket Size": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "rearLeftModule/turning/I": "0.0",
-        "Rotation FF": {
-            "comment": "Auto-Generated",
-            "value": "1"
-        },
-        "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
-        "Elevator Angle PID/IZone": "0.0",
-        "frontLeftModule/turning/Min": "-1.0",
-        "State Reset Eject Time": {
-            "comment": "Auto-Generated",
-            "value": "1.5"
-        },
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
-        "Pathfinding Max Angular Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "rearRightModule/turning/I": "0.0",
-        "rearRightModule/turning/P": "1.0",
-        "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
-        "frontLeftModule/driving/Min": "-1.0",
-        "This is the time the short rumble takes": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Rumble Pulse Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+  "presentation": {
+    "frontRightModule/turning/FF": "0.0",
+    "Elevator Angle PID/I": "0.0",
+    "rearLeftModule/turning/IZone": "0.0",
+    "Elevator Angle PID/D": "1.0",
+    "Elevator Angle PID/FF": "0.0",
+    "rearLeftModule/driving/IZone": "0.0",
+    "Pathfinding X Controller/I": "0.0",
+    "Pathfinding X Controller/D": "0.0",
+    "Elevator Angle PID/P": "0.10000000149011612",
+    "Subwoofer Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
     },
-    "mode": "testing",
-    "simulation": {
-        "frontRightModule/turning/FF": "0.0",
-        "Elevator Angle PID/I": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
-        "rearLeftModule/driving/IZone": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
-        "Subwoofer Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "The period of the wave in seconds": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Theta Controller/D": "0.01",
-        "Shooter Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "1.0",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearRightModule/turning/FF": "0.0",
-        "Drive & Track Target Y": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Climber Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
-        "Drive & Track Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/D": "0.0",
-        "Rotation FF Timestep": {
-            "comment": "Auto-Generated",
-            "value": "0.02"
-        },
-        "Y Controller/I": "0.0",
-        "Statemachine Debounce": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Target Y": {
-            "comment": "Auto-Generated",
-            "value": "8.2042"
-        },
-        "frontRightModule/turning/IZone": "0.0",
-        "Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.8415"
-        },
-        "Large Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Transit Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Rate Limit": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Wave Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "rearRightModule/driving/Min": "-1.0",
-        "Elevator Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "rearRightModule/turning/Max": "1.0",
-        "Pathfinding Y Controller/I": "0.0",
-        "Shooter Spinup Time": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "3.0",
-        "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/D": "0.0",
-        "Long Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
-        "Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "6.283185307179586"
-        },
-        "Elevator Angle PID/Max": "0.10000000149011612",
-        "Pathfinding Theta Controller/D": "0.0",
-        "frontRightModule/driving/Min": "-1.0",
-        "Filter taps": {
-            "comment": "Auto-Generated",
-            "value": "3"
-        },
-        "frontRightModule/turning/Max": "1.0",
-        "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearLeftModule/turning/FF": "0.0",
-        "Short Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "Small intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Amp Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Shooter Manual Control Slow Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "Note Detection Distance": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
-        "frontRightModule/driving/P": "0.03999999910593033",
-        "Large intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Y Controller/P": "1.0",
-        "Elevator Tolerance": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "frontRightModule/driving/I": "0.0",
-        "Max Speed": {
-            "comment": "Meters per second",
-            "value": "4.8"
-        },
-        "frontRightModule/turning/D": "0.0",
-        "rearRightModule/driving/I": "0.0",
-        "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/I": "0.0",
-        "frontRightModule/turning/I": "0.0",
-        "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
-        "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
-        "Direction Slew rate": {
-            "comment": "Radians per second",
-            "value": "1.2"
-        },
-        "frontLeftModule/driving/Max": "1.0",
-        "frontRightModule/turning/P": "1.0",
-        "frontLeftModule/driving/P": "0.03999999910593033",
-        "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
-        "Intake Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "rearLeftModule/driving/Max": "1.0",
-        "Small Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "0.4"
-        },
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "rearLeftModule/turning/P": "1.0",
-        "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
-        "Bucket Size": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "rearLeftModule/turning/I": "0.0",
-        "Rotation FF": {
-            "comment": "Auto-0"
-        },
-        "Elevator Angle PID/IZone": "0.0",
-        "frontLeftModule/turning/Min": "-1.0",
-        "State Reset Eject Time": {
-            "comment": "Auto-Generated",
-            "value": "1.5"
-        },
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
-        "Pathfinding Max Angular Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "rearRightModule/turning/I": "0.0",
-        "rearRightModule/turning/P": "1.0",
-        "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
-        "frontLeftModule/driving/Min": "-1.0",
-        "This is the time the short rumble takes": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Rumble Pulse Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+    "Shooter Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
     },
-    "testing": {
-        "frontRightModule/turning/FF": "0.0",
-        "Elevator Angle PID/I": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
-        "rearLeftModule/driving/IZone": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
-        "Subwoofer Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "The period of the wave in seconds": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Theta Controller/D": "0.01",
-        "Shooter Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "1.0",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearRightModule/turning/FF": "0.0",
-        "Drive & Track Target Y": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Climber Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
-        "Drive & Track Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/D": "0.0",
-        "Rotation FF Timestep": {
-            "comment": "Auto-Generated",
-            "value": "0.02"
-        },
-        "Y Controller/I": "0.0",
-        "Statemachine Debounce": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Target Y": {
-            "comment": "Auto-Generated",
-            "value": "8.2042"
-        },
-        "frontRightModule/turning/IZone": "0.0",
-        "Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.8415"
-        },
-        "Large Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Transit Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Rate Limit": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Wave Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "rearRightModule/driving/Min": "-1.0",
-        "Elevator Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "rearRightModule/turning/Max": "1.0",
-        "Pathfinding Y Controller/I": "0.0",
-        "Shooter Spinup Time": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "3",
-        "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/D": "0.0",
-        "Long Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
-        "Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "Elevator Angle PID/Max": "0.10000000149011612",
-        "Pathfinding Theta Controller/D": "0.0",
-        "frontRightModule/driving/Min": "-1.0",
-        "Filter taps": {
-            "comment": "Auto-Generated",
-            "value": "3"
-        },
-        "frontRightModule/turning/Max": "1.0",
-        "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearLeftModule/turning/FF": "0.0",
-        "Short Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "Small intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Amp Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Shooter Manual Control Slow Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "Note Detection Distance": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
-        "frontRightModule/driving/P": "0.03999999910593033",
-        "Large intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Y Controller/P": "1.0",
-        "Elevator Tolerance": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "frontRightModule/driving/I": "0.0",
-        "Max Speed": {
-            "comment": "Meters per second",
-            "value": "1.2"
-        },
-        "frontRightModule/turning/D": "0.0",
-        "rearRightModule/driving/I": "0.0",
-        "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/I": "0.0",
-        "frontRightModule/turning/I": "0.0",
-        "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
-        "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
-        "Direction Slew rate": {
-            "comment": "Radians per second",
-            "value": "1.2"
-        },
-        "frontLeftModule/driving/Max": "1.0",
-        "frontRightModule/turning/P": "1.0",
-        "frontLeftModule/driving/P": "0.03999999910593033",
-        "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/Max": "1.0",
-        "Small Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "0.4"
-        },
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "20"
-        },
-        "rearLeftModule/turning/P": "1.0",
-        "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
-        "Bucket Size": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "rearLeftModule/turning/I": "0.0",
-        "Rotation FF": {
-            "comment": "Auto-Generated",
-            "value": "1"
-        },
-        "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
-        "Elevator Angle PID/IZone": "0.0",
-        "frontLeftModule/turning/Min": "-1.0",
-        "State Reset Eject Time": {
-            "comment": "Auto-Generated",
-            "value": "1.5"
-        },
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
-        "Pathfinding Max Angular Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "1.570796"
-        },
-        "rearRightModule/turning/I": "0.0",
-        "rearRightModule/turning/P": "1.0",
-        "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
-        "frontLeftModule/driving/Min": "-1.0",
-        "This is the time the short rumble takes": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Rumble Pulse Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+    "Pathfinding Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
     },
-    "competition": {
-        "frontRightModule/turning/FF": "0.0",
-        "Elevator Angle PID/I": "0.0",
-        "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
-        "rearLeftModule/driving/IZone": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
-        "Subwoofer Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "The period of the wave in seconds": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Theta Controller/D": "0.0",
-        "Shooter Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "frontLeftModule/turning/IZone": "0.0",
-        "Theta Controller/I": "0.0",
-        "Theta Controller/P": "0.1",
-        "Y Controller/P": "1.0",
-        "FF Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearRightModule/turning/FF": "0.0",
-        "Drive & Track Target Y": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Climber Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/I": "0.0",
-        "Y Controller/D": "0.0",
-        "Drive & Track Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "X Controller/D": "0.0",
-        "Rotation FF Timestep": {
-            "comment": "Auto-Generated",
-            "value": "0.02"
-        },
-        "Y Controller/I": "0.0",
-        "Statemachine Debounce": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Target Y": {
-            "comment": "Auto-Generated",
-            "value": "8.2042"
-        },
-        "frontRightModule/turning/IZone": "0.0",
-        "Target X": {
-            "comment": "Auto-Generated",
-            "value": "1.8415"
-        },
-        "Large Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "frontRightModule/driving/IZone": "0.0",
-        "rearRightModule/turning/Min": "-1.0",
-        "Transit Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Rate Limit": {
-            "comment": "Auto-Generated",
-            "value": "true"
-        },
-        "Wave Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "rearRightModule/driving/Min": "-1.0",
-        "Elevator Manual Control Speed": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "rearRightModule/turning/Max": "1.0",
-        "Pathfinding Y Controller/I": "0.0",
-        "Shooter Spinup Time": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
-        "Pathfinding Theta Controller/I": "0.0",
-        "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "0.0",
-        "rearLeftModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/P": "0.03999999910593033",
-        "Pathfinding Y Controller/D": "0.0",
-        "Long Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "frontRightModule/turning/Min": "-1.0",
-        "rearLeftModule/driving/I": "0.0",
-        "rearRightModule/driving/Max": "1.0",
-        "frontLeftModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/D": "0.0",
-        "Max Angular Speed": {
-            "comment": "Auto-Generated",
-            "value": "6.283185307179586"
-        },
-        "Elevator Angle PID/Max": "0.10000000149011612",
-        "Pathfinding Theta Controller/D": "0.0",
-        "frontRightModule/driving/Min": "-1.0",
-        "Filter taps": {
-            "comment": "Auto-Generated",
-            "value": "3"
-        },
-        "frontRightModule/turning/Max": "1.0",
-        "frontRightModule/driving/D": "0.0",
-        "Overall Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "rearLeftModule/turning/FF": "0.0",
-        "Short Rumble Time": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "frontLeftModule/driving/IZone": "0.0",
-        "frontRightModule/driving/Max": "1.0",
-        "Small intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "PID Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.05"
-        },
-        "Amp Angle": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
-        },
-        "Shooter Manual Control Slow Speed": {
-            "comment": "Auto-Generated",
-            "value": "0.5"
-        },
-        "Note Detection Distance": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "Field Relative": {
-            "comment": "Auto-Generated",
-            "value": "false"
-        },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
-        "frontRightModule/driving/P": "0.03999999910593033",
-        "Large intensity Of The Rumble": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Pathfinding Y Controller/P": "1.0",
-        "Elevator Tolerance": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "frontRightModule/driving/I": "0.0",
-        "Max Speed": {
-            "comment": "Meters per second",
-            "value": "4.8"
-        },
-        "frontRightModule/turning/D": "0.0",
-        "rearRightModule/driving/I": "0.0",
-        "frontLeftModule/driving/D": "0.0",
-        "frontLeftModule/turning/FF": "0.0",
-        "frontLeftModule/driving/I": "0.0",
-        "frontRightModule/turning/I": "0.0",
-        "rearRightModule/driving/D": "0.0",
-        "rearLeftModule/driving/FF": "0.2081708461046219",
-        "rearRightModule/driving/P": "0.03999999910593033",
-        "Driver Deadband": {
-            "comment": "Auto-Generated",
-            "value": "0.08"
-        },
-        "Direction Slew rate": {
-            "comment": "Radians per second",
-            "value": "1.2"
-        },
-        "frontLeftModule/driving/Max": "1.0",
-        "frontRightModule/turning/P": "1.0",
-        "frontLeftModule/driving/P": "0.03999999910593033",
-        "frontLeftModule/turning/Max": "1.0",
-        "frontRightModule/driving/FF": "0.2081708461046219",
-        "rearLeftModule/driving/Max": "1.0",
-        "Small Rumble intensity": {
-            "comment": "Auto-Generated",
-            "value": "0.4"
-        },
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "rearLeftModule/turning/P": "1.0",
-        "rearLeftModule/turning/D": "0.0",
-        "rearLeftModule/turning/Max": "1.0",
-        "Bucket Size": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "rearLeftModule/turning/I": "0.0",
-        "Rotation FF": {
-            "comment": "Auto-Generated",
-            "value": "1"
-        },
-        "rearRightModule/driving/FF": "0.2081708461046219",
-        "Shooter Tolerance RPM": {
-            "comment": "Auto-Generated",
-            "value": "100.0"
-        },
-        "Elevator Angle PID/IZone": "0.0",
-        "frontLeftModule/turning/Min": "-1.0",
-        "State Reset Eject Time": {
-            "comment": "Auto-Generated",
-            "value": "1.5"
-        },
-        "X Controller/P": "1.0",
-        "frontLeftModule/turning/D": "0.0",
-        "rearRightModule/driving/IZone": "0.0",
-        "Pathfinding Max Angular Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.141592653589793"
-        },
-        "rearRightModule/turning/I": "0.0",
-        "rearRightModule/turning/P": "1.0",
-        "frontLeftModule/turning/I": "0.0",
-        "rearRightModule/turning/IZone": "0.0",
-        "frontLeftModule/driving/Min": "-1.0",
-        "This is the time the short rumble takes": {
-            "comment": "Auto-Generated",
-            "value": "0.1"
-        },
-        "Rumble Pulse Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
-    }
-}erated",
-            "value": "0.1"
-        },
-        "Rumble Pulse Period": {
-            "comment": "Auto-Generated",
-            "value": "10.0"
-        },
-        "Pathfinding Max Acceleration": {
-            "comment": "Auto-Generated",
-            "value": "3.0"
-        },
-        "frontLeftModule/turning/P": "1.0",
-        "rearRightModule/turning/D": "0.0",
-        "Pathfinding X Controller/P": "1.0"
-    }
+    "frontLeftModule/turning/IZone": "0.0",
+    "rearRightModule/turning/FF": "0.0",
+    "Rotation FF Timestep": {
+      "comment": "Auto-Generated",
+      "value": "0.02"
+    },
+    "Statemachine Debounce": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "frontRightModule/turning/IZone": "0.0",
+    "Rot Controller Max Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "Large Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "frontRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/Min": "-1.0",
+    "Intake Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Transit Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Rate Limit": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Wave Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "rearRightModule/driving/Min": "-1.0",
+    "Elevator Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Y Controller/I": "0.0",
+    "rearRightModule/turning/Max": "1.0",
+    "Shooter Spinup Time": {
+      "comment": "Auto-Generated",
+      "value": "2.0"
+    },
+    "Pathfinding Theta Controller/I": "0.0",
+    "rearLeftModule/driving/Min": "-1.0",
+    "Pathfinding Theta Controller/P": "1.0",
+    "rearLeftModule/turning/Min": "-1.0",
+    "Pathfinding Y Controller/D": "0.0",
+    "rearLeftModule/driving/P": "0.03999999910593033",
+    "Long Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "frontRightModule/turning/Min": "-1.0",
+    "rearLeftModule/driving/I": "0.0",
+    "rearRightModule/driving/Max": "1.0",
+    "frontLeftModule/driving/FF": "0.2081708461046219",
+    "rearLeftModule/driving/D": "0.0",
+    "Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "6.283185307179586"
+    },
+    "Elevator Angle PID/Max": "0.10000000149011612",
+    "Pathfinding Theta Controller/D": "0.0",
+    "frontRightModule/driving/Min": "-1.0",
+    "Filter taps": {
+      "comment": "Auto-Generated",
+      "value": "3"
+    },
+    "frontRightModule/turning/Max": "1.0",
+    "frontRightModule/driving/D": "0.0",
+    "rearLeftModule/turning/FF": "0.0",
+    "Short Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.25"
+    },
+    "Rot Controller Min Error Radians": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/driving/IZone": "0.0",
+    "frontRightModule/driving/Max": "1.0",
+    "Amp Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Slow Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "Note Detection Distance": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "Field Relative": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Elevator Angle PID/Min": "-0.10000000149011612",
+    "frontRightModule/driving/P": "0.03999999910593033",
+    "Pathfinding Y Controller/P": "1.0",
+    "Elevator Tolerance": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "frontRightModule/driving/I": "0.0",
+    "Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "4.8"
+    },
+    "frontRightModule/turning/D": "0.0",
+    "rearRightModule/driving/I": "0.0",
+    "frontLeftModule/driving/D": "0.0",
+    "frontLeftModule/turning/FF": "0.0",
+    "frontLeftModule/driving/I": "0.0",
+    "frontRightModule/turning/I": "0.0",
+    "rearRightModule/driving/D": "0.0",
+    "rearLeftModule/driving/FF": "0.2081708461046219",
+    "rearRightModule/driving/P": "0.03999999910593033",
+    "Driver Deadband": {
+      "comment": "Auto-Generated",
+      "value": "0.15"
+    },
+    "Direction Slew rate": {
+      "comment": "Auto-Generated",
+      "value": "1.2"
+    },
+    "frontLeftModule/driving/Max": "1.0",
+    "frontRightModule/turning/P": "1.0",
+    "frontLeftModule/driving/P": "0.03999999910593033",
+    "frontLeftModule/turning/Max": "1.0",
+    "frontRightModule/driving/FF": "0.2081708461046219",
+    "Intake Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "rearLeftModule/driving/Max": "1.0",
+    "Small Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "0.4"
+    },
+    "Pathfinding Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "rearLeftModule/turning/P": "1.0",
+    "rearLeftModule/turning/D": "0.0",
+    "rearLeftModule/turning/Max": "1.0",
+    "Bucket Size": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearLeftModule/turning/I": "0.0",
+    "Rotation FF": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearRightModule/driving/FF": "0.2081708461046219",
+    "Shooter Tolerance RPM": {
+      "comment": "Auto-Generated",
+      "value": "100.0"
+    },
+    "Elevator Angle PID/IZone": "0.0",
+    "frontLeftModule/turning/Min": "-1.0",
+    "State Reset Eject Time": {
+      "comment": "Auto-Generated",
+      "value": "1.5"
+    },
+    "Rot Controller Min Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/turning/D": "0.0",
+    "Pathfinding Max Angular Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "rearRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/I": "0.0",
+    "rearRightModule/turning/P": "1.0",
+    "frontLeftModule/turning/I": "0.0",
+    "rearRightModule/turning/IZone": "0.0",
+    "frontLeftModule/driving/Min": "-1.0",
+    "Rumble Pulse Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "Pathfinding Max Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "frontLeftModule/turning/P": "1.0",
+    "Pathfinding X Controller/P": "1.0",
+    "rearRightModule/turning/D": "0.0"
+  },
+  "mode": "testing",
+  "simulation": {
+    "frontRightModule/turning/FF": "0.0",
+    "Elevator Angle PID/I": "0.0",
+    "rearLeftModule/turning/IZone": "0.0",
+    "Elevator Angle PID/D": "1.0",
+    "Elevator Angle PID/FF": "0.0",
+    "rearLeftModule/driving/IZone": "0.0",
+    "Pathfinding X Controller/I": "0.0",
+    "Pathfinding X Controller/D": "0.0",
+    "Elevator Angle PID/P": "0.10000000149011612",
+    "Subwoofer Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "frontLeftModule/turning/IZone": "0.0",
+    "rearRightModule/turning/FF": "0.0",
+    "Rotation FF Timestep": {
+      "comment": "Auto-Generated",
+      "value": "0.02"
+    },
+    "Statemachine Debounce": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "frontRightModule/turning/IZone": "0.0",
+    "Rot Controller Max Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "Large Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "frontRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/Min": "-1.0",
+    "Intake Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Transit Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Rate Limit": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Wave Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "rearRightModule/driving/Min": "-1.0",
+    "Elevator Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Y Controller/I": "0.0",
+    "rearRightModule/turning/Max": "1.0",
+    "Shooter Spinup Time": {
+      "comment": "Auto-Generated",
+      "value": "2.0"
+    },
+    "Pathfinding Theta Controller/I": "0.0",
+    "rearLeftModule/driving/Min": "-1.0",
+    "Pathfinding Theta Controller/P": "1.0",
+    "rearLeftModule/turning/Min": "-1.0",
+    "Pathfinding Y Controller/D": "0.0",
+    "rearLeftModule/driving/P": "0.03999999910593033",
+    "Long Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "frontRightModule/turning/Min": "-1.0",
+    "rearLeftModule/driving/I": "0.0",
+    "rearRightModule/driving/Max": "1.0",
+    "frontLeftModule/driving/FF": "0.2081708461046219",
+    "rearLeftModule/driving/D": "0.0",
+    "Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "6.283185307179586"
+    },
+    "Elevator Angle PID/Max": "0.10000000149011612",
+    "Pathfinding Theta Controller/D": "0.0",
+    "frontRightModule/driving/Min": "-1.0",
+    "Filter taps": {
+      "comment": "Auto-Generated",
+      "value": "3"
+    },
+    "frontRightModule/turning/Max": "1.0",
+    "frontRightModule/driving/D": "0.0",
+    "rearLeftModule/turning/FF": "0.0",
+    "Short Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.25"
+    },
+    "Rot Controller Min Error Radians": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/driving/IZone": "0.0",
+    "frontRightModule/driving/Max": "1.0",
+    "Amp Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Slow Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "Note Detection Distance": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "Field Relative": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Elevator Angle PID/Min": "-0.10000000149011612",
+    "frontRightModule/driving/P": "0.03999999910593033",
+    "Pathfinding Y Controller/P": "1.0",
+    "Elevator Tolerance": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "frontRightModule/driving/I": "0.0",
+    "Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "4.8"
+    },
+    "frontRightModule/turning/D": "0.0",
+    "rearRightModule/driving/I": "0.0",
+    "frontLeftModule/driving/D": "0.0",
+    "frontLeftModule/turning/FF": "0.0",
+    "frontLeftModule/driving/I": "0.0",
+    "frontRightModule/turning/I": "0.0",
+    "rearRightModule/driving/D": "0.0",
+    "rearLeftModule/driving/FF": "0.2081708461046219",
+    "rearRightModule/driving/P": "0.03999999910593033",
+    "Driver Deadband": {
+      "comment": "Auto-Generated",
+      "value": "0.15"
+    },
+    "Direction Slew rate": {
+      "comment": "Auto-Generated",
+      "value": "1.2"
+    },
+    "frontLeftModule/driving/Max": "1.0",
+    "frontRightModule/turning/P": "1.0",
+    "frontLeftModule/driving/P": "0.03999999910593033",
+    "frontLeftModule/turning/Max": "1.0",
+    "frontRightModule/driving/FF": "0.2081708461046219",
+    "Intake Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "rearLeftModule/driving/Max": "1.0",
+    "Small Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "0.4"
+    },
+    "Pathfinding Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "rearLeftModule/turning/P": "1.0",
+    "rearLeftModule/turning/D": "0.0",
+    "rearLeftModule/turning/Max": "1.0",
+    "Bucket Size": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearLeftModule/turning/I": "0.0",
+    "Rotation FF": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearRightModule/driving/FF": "0.2081708461046219",
+    "Shooter Tolerance RPM": {
+      "comment": "Auto-Generated",
+      "value": "100.0"
+    },
+    "Elevator Angle PID/IZone": "0.0",
+    "frontLeftModule/turning/Min": "-1.0",
+    "State Reset Eject Time": {
+      "comment": "Auto-Generated",
+      "value": "1.5"
+    },
+    "Rot Controller Min Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/turning/D": "0.0",
+    "Pathfinding Max Angular Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "rearRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/I": "0.0",
+    "rearRightModule/turning/P": "1.0",
+    "frontLeftModule/turning/I": "0.0",
+    "rearRightModule/turning/IZone": "0.0",
+    "frontLeftModule/driving/Min": "-1.0",
+    "Rumble Pulse Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "Pathfinding Max Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "frontLeftModule/turning/P": "1.0",
+    "Pathfinding X Controller/P": "1.0",
+    "rearRightModule/turning/D": "0.0"
+  },
+  "testing": {
+    "frontRightModule/turning/FF": "0.0",
+    "Elevator Angle PID/I": "0.0",
+    "rearLeftModule/turning/IZone": "0.0",
+    "Elevator Angle PID/D": "1.0",
+    "Elevator Angle PID/FF": "0.0",
+    "rearLeftModule/driving/IZone": "0.0",
+    "Pathfinding X Controller/I": "0.0",
+    "Pathfinding X Controller/D": "0.0",
+    "Elevator Angle PID/P": "0.10000000149011612",
+    "Subwoofer Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "frontLeftModule/turning/IZone": "0.0",
+    "rearRightModule/turning/FF": "0.0",
+    "Rotation FF Timestep": {
+      "comment": "Auto-Generated",
+      "value": "0.02"
+    },
+    "Statemachine Debounce": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "frontRightModule/turning/IZone": "0.0",
+    "Rot Controller Max Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "Large Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "frontRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/Min": "-1.0",
+    "Intake Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "Transit Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.75"
+    },
+    "Rate Limit": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Wave Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "rearRightModule/driving/Min": "-1.0",
+    "Elevator Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Y Controller/I": "0.0",
+    "rearRightModule/turning/Max": "1.0",
+    "Shooter Spinup Time": {
+      "comment": "Auto-Generated",
+      "value": "2.0"
+    },
+    "Pathfinding Theta Controller/I": "0.0",
+    "rearLeftModule/driving/Min": "-1.0",
+    "Pathfinding Theta Controller/P": "1.0",
+    "rearLeftModule/turning/Min": "-1.0",
+    "Pathfinding Y Controller/D": "0.0",
+    "rearLeftModule/driving/P": "0.03999999910593033",
+    "Long Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "frontRightModule/turning/Min": "-1.0",
+    "rearLeftModule/driving/I": "0.0",
+    "rearRightModule/driving/Max": "1.0",
+    "frontLeftModule/driving/FF": "0.2081708461046219",
+    "rearLeftModule/driving/D": "0.0",
+    "Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "6.283185307179586"
+    },
+    "Elevator Angle PID/Max": "0.10000000149011612",
+    "Pathfinding Theta Controller/D": "0.0",
+    "frontRightModule/driving/Min": "-1.0",
+    "Filter taps": {
+      "comment": "Auto-Generated",
+      "value": "3"
+    },
+    "frontRightModule/turning/Max": "1.0",
+    "frontRightModule/driving/D": "0.0",
+    "rearLeftModule/turning/FF": "0.0",
+    "Short Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.25"
+    },
+    "Rot Controller Min Error Radians": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/driving/IZone": "0.0",
+    "frontRightModule/driving/Max": "1.0",
+    "Amp Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Slow Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "Note Detection Distance": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "Field Relative": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Elevator Angle PID/Min": "-0.10000000149011612",
+    "frontRightModule/driving/P": "0.03999999910593033",
+    "Pathfinding Y Controller/P": "1.0",
+    "Elevator Tolerance": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "frontRightModule/driving/I": "0.0",
+    "Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "4.8"
+    },
+    "frontRightModule/turning/D": "0.0",
+    "rearRightModule/driving/I": "0.0",
+    "frontLeftModule/driving/D": "0.0",
+    "frontLeftModule/turning/FF": "0.0",
+    "frontLeftModule/driving/I": "0.0",
+    "frontRightModule/turning/I": "0.0",
+    "rearRightModule/driving/D": "0.0",
+    "rearLeftModule/driving/FF": "0.2081708461046219",
+    "rearRightModule/driving/P": "0.03999999910593033",
+    "Driver Deadband": {
+      "comment": "Auto-Generated",
+      "value": "0.15"
+    },
+    "Direction Slew rate": {
+      "comment": "Auto-Generated",
+      "value": "1.2"
+    },
+    "frontLeftModule/driving/Max": "1.0",
+    "frontRightModule/turning/P": "1.0",
+    "frontLeftModule/driving/P": "0.03999999910593033",
+    "frontLeftModule/turning/Max": "1.0",
+    "frontRightModule/driving/FF": "0.2081708461046219",
+    "Intake Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "rearLeftModule/driving/Max": "1.0",
+    "Small Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "0.4"
+    },
+    "Pathfinding Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "rearLeftModule/turning/P": "1.0",
+    "rearLeftModule/turning/D": "0.0",
+    "rearLeftModule/turning/Max": "1.0",
+    "Bucket Size": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearLeftModule/turning/I": "0.0",
+    "Rotation FF": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearRightModule/driving/FF": "0.2081708461046219",
+    "Shooter Tolerance RPM": {
+      "comment": "Auto-Generated",
+      "value": "100.0"
+    },
+    "Elevator Angle PID/IZone": "0.0",
+    "frontLeftModule/turning/Min": "-1.0",
+    "State Reset Eject Time": {
+      "comment": "Auto-Generated",
+      "value": "1.5"
+    },
+    "Rot Controller Min Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/turning/D": "0.0",
+    "Pathfinding Max Angular Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "rearRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/I": "0.0",
+    "rearRightModule/turning/P": "1.0",
+    "frontLeftModule/turning/I": "0.0",
+    "rearRightModule/turning/IZone": "0.0",
+    "frontLeftModule/driving/Min": "-1.0",
+    "Rumble Pulse Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "Pathfinding Max Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "frontLeftModule/turning/P": "1.0",
+    "Pathfinding X Controller/P": "1.0",
+    "rearRightModule/turning/D": "0.0"
+  },
+  "competition": {
+    "frontRightModule/turning/FF": "0.0",
+    "Elevator Angle PID/I": "0.0",
+    "rearLeftModule/turning/IZone": "0.0",
+    "Elevator Angle PID/D": "1.0",
+    "Elevator Angle PID/FF": "0.0",
+    "rearLeftModule/driving/IZone": "0.0",
+    "Pathfinding X Controller/I": "0.0",
+    "Pathfinding X Controller/D": "0.0",
+    "Elevator Angle PID/P": "0.10000000149011612",
+    "Subwoofer Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "frontLeftModule/turning/IZone": "0.0",
+    "rearRightModule/turning/FF": "0.0",
+    "Rotation FF Timestep": {
+      "comment": "Auto-Generated",
+      "value": "0.02"
+    },
+    "Statemachine Debounce": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "frontRightModule/turning/IZone": "0.0",
+    "Rot Controller Max Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "Large Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "frontRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/Min": "-1.0",
+    "Intake Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Transit Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Rate Limit": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Wave Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "rearRightModule/driving/Min": "-1.0",
+    "Elevator Manual Control Speed": {
+      "comment": "Auto-Generated",
+      "value": "1.0"
+    },
+    "Pathfinding Y Controller/I": "0.0",
+    "rearRightModule/turning/Max": "1.0",
+    "Shooter Spinup Time": {
+      "comment": "Auto-Generated",
+      "value": "2.0"
+    },
+    "Pathfinding Theta Controller/I": "0.0",
+    "rearLeftModule/driving/Min": "-1.0",
+    "Pathfinding Theta Controller/P": "1.0",
+    "rearLeftModule/turning/Min": "-1.0",
+    "Pathfinding Y Controller/D": "0.0",
+    "rearLeftModule/driving/P": "0.03999999910593033",
+    "Long Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "frontRightModule/turning/Min": "-1.0",
+    "rearLeftModule/driving/I": "0.0",
+    "rearRightModule/driving/Max": "1.0",
+    "frontLeftModule/driving/FF": "0.2081708461046219",
+    "rearLeftModule/driving/D": "0.0",
+    "Max Angular Speed": {
+      "comment": "Auto-Generated",
+      "value": "6.283185307179586"
+    },
+    "Elevator Angle PID/Max": "0.10000000149011612",
+    "Pathfinding Theta Controller/D": "0.0",
+    "frontRightModule/driving/Min": "-1.0",
+    "Filter taps": {
+      "comment": "Auto-Generated",
+      "value": "3"
+    },
+    "frontRightModule/turning/Max": "1.0",
+    "frontRightModule/driving/D": "0.0",
+    "rearLeftModule/turning/FF": "0.0",
+    "Short Rumble Time": {
+      "comment": "Auto-Generated",
+      "value": "0.25"
+    },
+    "Rot Controller Min Error Radians": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/driving/IZone": "0.0",
+    "frontRightModule/driving/Max": "1.0",
+    "Amp Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "Shooter Manual Control Slow Speed": {
+      "comment": "Auto-Generated",
+      "value": "0.5"
+    },
+    "Note Detection Distance": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "Field Relative": {
+      "comment": "Auto-Generated",
+      "value": "true"
+    },
+    "Elevator Angle PID/Min": "-0.10000000149011612",
+    "frontRightModule/driving/P": "0.03999999910593033",
+    "Pathfinding Y Controller/P": "1.0",
+    "Elevator Tolerance": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "frontRightModule/driving/I": "0.0",
+    "Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "4.8"
+    },
+    "frontRightModule/turning/D": "0.0",
+    "rearRightModule/driving/I": "0.0",
+    "frontLeftModule/driving/D": "0.0",
+    "frontLeftModule/turning/FF": "0.0",
+    "frontLeftModule/driving/I": "0.0",
+    "frontRightModule/turning/I": "0.0",
+    "rearRightModule/driving/D": "0.0",
+    "rearLeftModule/driving/FF": "0.2081708461046219",
+    "rearRightModule/driving/P": "0.03999999910593033",
+    "Driver Deadband": {
+      "comment": "Auto-Generated",
+      "value": "0.15"
+    },
+    "Direction Slew rate": {
+      "comment": "Auto-Generated",
+      "value": "1.2"
+    },
+    "frontLeftModule/driving/Max": "1.0",
+    "frontRightModule/turning/P": "1.0",
+    "frontLeftModule/driving/P": "0.03999999910593033",
+    "frontLeftModule/turning/Max": "1.0",
+    "frontRightModule/driving/FF": "0.2081708461046219",
+    "Intake Angle": {
+      "comment": "Auto-Generated",
+      "value": "0.0"
+    },
+    "rearLeftModule/driving/Max": "1.0",
+    "Small Rumble intensity": {
+      "comment": "Auto-Generated",
+      "value": "0.4"
+    },
+    "Pathfinding Max Speed": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "rearLeftModule/turning/P": "1.0",
+    "rearLeftModule/turning/D": "0.0",
+    "rearLeftModule/turning/Max": "1.0",
+    "Bucket Size": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearLeftModule/turning/I": "0.0",
+    "Rotation FF": {
+      "comment": "Auto-Generated",
+      "value": "0.1"
+    },
+    "rearRightModule/driving/FF": "0.2081708461046219",
+    "Shooter Tolerance RPM": {
+      "comment": "Auto-Generated",
+      "value": "100.0"
+    },
+    "Elevator Angle PID/IZone": "0.0",
+    "frontLeftModule/turning/Min": "-1.0",
+    "State Reset Eject Time": {
+      "comment": "Auto-Generated",
+      "value": "1.5"
+    },
+    "Rot Controller Min Speed Rad/sec": {
+      "comment": "Auto-Generated",
+      "value": "0.01"
+    },
+    "frontLeftModule/turning/D": "0.0",
+    "Pathfinding Max Angular Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.141592653589793"
+    },
+    "rearRightModule/driving/IZone": "0.0",
+    "rearRightModule/turning/I": "0.0",
+    "rearRightModule/turning/P": "1.0",
+    "frontLeftModule/turning/I": "0.0",
+    "rearRightModule/turning/IZone": "0.0",
+    "frontLeftModule/driving/Min": "-1.0",
+    "Rumble Pulse Period": {
+      "comment": "Auto-Generated",
+      "value": "10.0"
+    },
+    "Pathfinding Max Acceleration": {
+      "comment": "Auto-Generated",
+      "value": "3.0"
+    },
+    "frontLeftModule/turning/P": "1.0",
+    "Pathfinding X Controller/P": "1.0",
+    "rearRightModule/turning/D": "0.0"
+  }
 }
