@@ -1,129 +1,70 @@
 [
   {
-    "type": "group",
-    "id": "race",
+    "type": "while",
     "name": "Drive Until Note",
-    "children": [
-      {
-        "type": "command",
-        "id": "wait_for_note_in_area",
-        "parameters": {
-          "regionX": "{{ regionX }}",
-          "regionY": "{{ regionY }}",
-          "regionRadius": "{{ regionRadius }}"
-        },
-        "name": "Wait For Top Note"
+    "condition": {
+      "id": "not",
+      "children": [
+        {
+          "id": "note_in_area",
+          "parameters": {
+            "regionX": "{{ regionX }}",
+            "regionY": "{{ regionY }}",
+            "regionRadius": 1
+          },
+          "children": []
+        }
+      ],
+      "parameters": {}
+    },
+    "child": {
+      "type": "command",
+      "id": "go_to_and_track_point",
+      "parameters": {
+        "targetX": "{{ regionX }}",
+        "targetY": "{{ regionY }}",
+        "trackX": "{{ regionX }}",
+        "trackY": "{{ regionY }}"
       },
-      {
-        "type": "command",
-        "id": "go_to_and_track_point",
-        "parameters": {
-          "targetX": "{{ regionX }}",
-          "targetY": "{{ regionY }}",
-          "trackX": "{{ regionX }}",
-          "trackY": "{{ regionY }}"
-        },
-        "name": "Go To Top Note"
-      }
-    ]
+      "name": "Go To Top Note"
+    }
   },
   {
-    "type": "group",
-    "id": "deadline",
-    "name": "Pickup Note",
-    "parameters": {},
-    "children": [
-      {
-        "type": "group",
-        "id": "sequence",
-        "name": "Cancel if no note",
+    "type": "if",
+    "name": "Note In Area",
+    "condition": {
+      "id": "note_in_area",
+      "parameters": {
+        "regionX": "{{ regionX }}",
+        "regionY": "{{ regionY }}",
+        "regionRadius": "{{ regionRadius }}"
+      },
+      "children": []
+    },
+    "child": {
+      "type": "while",
+      "name": "Pickup Note",
+      "condition": {
+        "id": "not",
         "children": [
           {
-            "type": "command",
-            "id": "require_note",
-            "name": "End if no detected note",
-            "parameters": {}
-          },
-          {
-            "type": "group",
-            "id": "sequence",
-            "name": "End if No Note in Bot",
-            "parameters": {
-              "subsystem": "intake",
-              "waitForOpen": true
-            },
-            "children": [
-              {
-                "type": "command",
-                "id": "wait_for_limit_switch",
-                "name": "End if no intake switch",
-                "parameters": {
-                  "subsystem": "intake",
-                  "waitForOpen": true,
-                  "time": 1
-                }
-              },
-              {
-                "type": "command",
-                "id": "wait_for_limit_switch",
-                "name": "End if no transit switch",
-                "parameters": {
-                  "subsystem": "transit",
-                  "waitForOpen": true,
-                  "time": 0.5
-                }
-              }
-            ]
+            "id": "has_note",
+            "parameters": {},
+            "children": []
           }
         ],
         "parameters": {}
       },
-      {
-        "type": "group",
-        "id": "sequence",
-        "name": "Score Note From Ground",
-        "parameters": {},
-        "children": [
-          {
-            "type": "group",
-            "id": "deadline",
-            "name": "Pickup Note",
-            "parameters": {},
-            "children": [
-              {
-                "type": "command",
-                "id": "wait_for_limit_switch",
-                "name": "Wait For Transit Limit Switch",
-                "parameters": {
-                  "subsystem": "transit"
-                }
-              },
-              {
-                "type": "command",
-                "id": "go_to_note_in_area",
-                "name": "Go To Note",
-                "parameters": {
-                  "regionX": "{{ regionX }}",
-                  "regionY": "{{ regionY }}",
-                  "regionRadius": "{{ regionRadius }}"
-                }
-              },
-              {
-                "type": "command",
-                "id": "intake",
-                "name": "Run Intake",
-                "parameters": {}
-              },
-              {
-                "type": "command",
-                "id": "transit",
-                "name": "Run Transit",
-                "parameters": {}
-              }
-            ]
-          }
-        ]
+      "child": {
+        "type": "command",
+        "id": "go_to_note_in_area",
+        "name": "Go To Note",
+        "parameters": {
+          "regionX": "{{ regionX }}",
+          "regionY": "{{ regionY }}",
+          "regionRadius": "{{ regionRadius }}"
+        }
       }
-    ]
+    }
   }
 ]

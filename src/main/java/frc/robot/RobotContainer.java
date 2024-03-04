@@ -140,7 +140,7 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("macros/BooleanPickupNote.json");
+            Command auto = AutoParser.loadAuto("GetThree.json");
             return auto;
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't find file");

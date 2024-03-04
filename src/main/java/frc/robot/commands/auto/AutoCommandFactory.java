@@ -53,7 +53,7 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
-        AutoParser.registerMacro("pickup_note", "BooleanPickupNote.json");
+        AutoParser.registerMacro("pickup_note", "PickupNote.json");
     }
 
     public static NoteInArea noteInArea(JSONObject parameters) {

@@ -438,6 +438,7 @@ public class DriveSubsystem extends SubsystemBase {
         TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
                 PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
 
+        // TODO: This is wrong, it stutters still on path change
         ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), getPose().getRotation());
         Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
                 chassisSpeed.vyMetersPerSecond);
