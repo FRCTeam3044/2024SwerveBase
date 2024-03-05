@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer;
-import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -39,15 +37,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     // DigitalInput elevatorBottomLimitSwitch = new
     // DigitalInput(CANConstants.kElevatorBottomLimitSwitch);
 
-    // TODO: Also not how this will be wired (maybe)
-    public AbsoluteEncoder shooterEncoderOne = elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
+    // public AbsoluteEncoder elevatorPivotEncoder =
+    // elevatorMotorOne.getAbsoluteEncoder(Type.kDutyCycle);
+    public DutyCycleEncoder elevatorPivotEncoder = new DutyCycleEncoder(CANConstants.kElevatorPivotEncoderPort);
 
     private SparkPIDController pidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     double maxVel = 0;
     double maxAccel = 0;
-
-    PIDController pid = new ConfigurablePIDController(0, 0, 0, "Elevator PID");
 
     RelativeEncoder motorOneEncoder = elevatorMotorOne.getEncoder();
     RelativeEncoder motorTwoEncoder = elevatorMotorTwo.getEncoder();
@@ -76,6 +73,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setOutputRange(kMinOutput, kMaxOutput);
         pidController.setSmartMotionMaxVelocity(maxVel, 0);
         pidController.setSmartMotionMaxAccel(maxAccel, 0);
+
+        new ConfigurableSparkPIDController(pidController,
+                "Elevator Angle PID");
 
         elevatorMotorTwo.follow(elevatorMotorOne);
     }
@@ -106,7 +106,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return shooterEncoderOne.getPosition();
+        // return elevatorPivotEncoder.getPosition();
+        return elevatorPivotEncoder.getAbsolutePosition();
     }
 
     public void pidHandler() {
