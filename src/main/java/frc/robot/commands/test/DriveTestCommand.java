@@ -2,7 +2,6 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
@@ -17,8 +16,6 @@ import frc.robot.Constants.DriveConstants;
 public class DriveTestCommand extends Command {
     private final CommandXboxController m_driverController;
     private final DriveSubsystem m_robotDrive;
-    private final RobotContainer m_robotContainer;
-    private final boolean isSimulation;
 
     /**
      * Creates a new DriveTestCommand.
@@ -31,16 +28,11 @@ public class DriveTestCommand extends Command {
             CommandXboxController driverController) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
-        m_robotContainer = robotContainer;
-        isSimulation = RobotBase.isSimulation();
         addRequirements(m_robotDrive);
     }
 
     @Override
     public void initialize() {
-        if (m_robotContainer.stateMachineCommand.isScheduled()) {
-            this.cancel();
-        }
     }
 
     @Override
@@ -52,13 +44,8 @@ public class DriveTestCommand extends Command {
             inputRot = 0;
         }
 
-        if (isSimulation) {
-            m_robotDrive.drive(inputX, -inputY, inputRot, false,
-                    DriveConstants.kRateLimit.get());
-        } else {
-            m_robotDrive.drive(-inputY, -inputX, inputRot, false,
-                    DriveConstants.kRateLimit.get());
-        }
+        m_robotDrive.drive(-inputY, -inputX, -inputRot, false,
+                DriveConstants.kRateLimit.get());
     }
 
     @Override

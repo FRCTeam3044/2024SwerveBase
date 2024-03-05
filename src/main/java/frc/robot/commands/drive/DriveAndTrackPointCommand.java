@@ -1,5 +1,7 @@
 package frc.robot.commands.drive;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -23,10 +25,11 @@ public class DriveAndTrackPointCommand extends Command {
 
     private final TargetRotationController m_targetRotController;
 
-    private Pose2d m_target;
+    private Supplier<Pose2d> targetSupplier;
+    private Pose2d lastTarget;
 
     /**
-     * Creates a new ManualDriveCommand.
+     * Creates a new DriveAndTrackPointCommand, defaulting to tracking the speaker.
      * 
      * @param driveSubsystem   The drive subsystem this command will run on
      * @param driverController The XboxController that provides the input for the
@@ -37,12 +40,18 @@ public class DriveAndTrackPointCommand extends Command {
         m_driverController = driverController;
         isSimulation = RobotBase.isSimulation();
         Pose2d target = AutoTargetUtils.getShootingTarget();
-        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        lastTarget = target;
+        targetSupplier = AutoTargetUtils::getShootingTarget;
+        if (target == null) {
+            m_targetRotController = new TargetRotationController(0, 0);
+        } else {
+            m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        }
         addRequirements(m_robotDrive);
     }
 
     /**
-     * Creates a new ManualDriveCommand.
+     * Creates a new DriveAndTrackPointCommand
      * 
      * @param driveSubsystem   The drive subsystem this command will run on
      * @param driverController The XboxController that provides the input for the
@@ -54,15 +63,30 @@ public class DriveAndTrackPointCommand extends Command {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
         isSimulation = RobotBase.isSimulation();
-        m_target = target;
+        targetSupplier = () -> target;
         m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        addRequirements(m_robotDrive);
+    }
+
+    public DriveAndTrackPointCommand(Supplier<Pose2d> target, CommandXboxController driverController,
+            DriveSubsystem driveSubsystem) {
+        targetSupplier = target;
+        try {
+            lastTarget = target.get();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        isSimulation = RobotBase.isSimulation();
+        m_driverController = driverController;
+        m_robotDrive = driveSubsystem;
+        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY());
         addRequirements(m_robotDrive);
     }
 
     @Override
     public void initialize() {
-        if (m_target == null) {
-            Pose2d target = AutoTargetUtils.getShootingTarget();
+        if (lastTarget != targetSupplier.get()) {
+            Pose2d target = targetSupplier.get();
             m_targetRotController.setTargetX(target.getX());
             m_targetRotController.setTargetY(target.getY());
         }

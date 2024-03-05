@@ -14,14 +14,13 @@ import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
+import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
-import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -32,10 +31,10 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -113,17 +112,15 @@ public class RobotContainer {
         // Driver 1
         m_driverController.rightTrigger().whileTrue(stateMachineCommand);
         Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
-                new TrackPointCommand(AutoTargetUtils::getShootingTarget, m_robotDrive));
+                new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
-        // When the menu button is pressed
-        m_driverController.button(7).onTrue(new RunCommand(() -> {
-            stateMachine.reset();
-        }));
+        // When the menu button is pressed*
+        m_driverController.start().onTrue(new StateMachineResetCommand(stateMachine));
 
         // Driver 2
         Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
         m_operatorController.x().whileTrue(manualIntakeCommand);
-        m_operatorController.rightTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
+        m_operatorController.leftTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
         m_operatorController.a().whileTrue(new ElevatorSetAngleForIntakeCommand(elevator));
         m_operatorController.b().whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator));
     }

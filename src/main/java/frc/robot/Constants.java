@@ -37,6 +37,12 @@ import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
  */
 public final class Constants {
     public static final class DriveConstants {
+        public static void initialize() {
+            // This method does nothing but touch the ConfigurableParameter objects,
+            // forcing the class to be loaded and the objects to be initialized.
+            System.out.println(kMaxAngularSpeed);
+        }
+
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
         public static final ConfigurableParameter<Double> kMaxSpeedMetersPerSecond = new ConfigurableParameter<Double>(
@@ -149,14 +155,15 @@ public final class Constants {
         public static final int kShooterTopMotorPort = 35;
         public static final int kShooterBottomMotorPort = 34;
 
-        public static final int kTransitMotorPort = 33;
+        // TODO: Swapped w intake bottom, need to redo can
+        public static final int kTransitMotorPort = 31;
 
-        // TODO: Get real ports
+        // TODO: These may be swapped
         public static final int kTransitSensorPort = 4;
-        public static final int kIntakeSensorPort = 5;
+        public static final int kIntakeSensorPort = 6;
 
         public static final int kIntakeTopMotorPort = 32;
-        public static final int kIntakeBottomMotorPort = 31;
+        public static final int kIntakeBottomMotorPort = 33;
 
         public static final int kClimberLeftClimberMotorPort = 41;
         public static final int kClimberRightClimberMotorPort = 42;
@@ -165,6 +172,8 @@ public final class Constants {
         public static final int kElevatorMotorTwoPort = 22;
         // public static final int kElevatorTopLimitSwitch = 23;
         // public static final int kElevatorBottomLimitSwitch = 22;
+
+        public static final int kElevatorPivotEncoderPort = 9;
     }
 
     public static final class OIConstants {
@@ -242,10 +251,18 @@ public final class Constants {
     }
 
     public static final class StateMachineConstants {
+        public static void initialize() {
+            // This method does nothing but touch the ConfigurableParameter objects,
+            // forcing the class to be loaded and the objects to be initialized.
+            System.out.println(kDebounce);
+        }
+
         public static final ConfigurableParameter<Double> kDebounce = new ConfigurableParameter<Double>(
                 0.1, "Statemachine Debounce");
         public static final ConfigurableParameter<Double> kNoteDetectionDistance = new ConfigurableParameter<Double>(
                 3.0, "Note Detection Distance");
+        public static final ConfigurableParameter<Double> kEjectTime = new ConfigurableParameter<Double>(
+                1.5, "State Reset Eject Time");
     }
 
     public static final class NeoMotorConstants {
@@ -253,6 +270,12 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
+        public static void initialize() {
+            // This method does nothing but touch the ConfigurableParameter objects,
+            // forcing the class to be loaded and the objects to be initialized.
+            System.out.println(kShooterToleranceRPM);
+        }
+
         public static final ConfigurableParameter<Double> kShooterToleranceRPM = new ConfigurableParameter<Double>(
                 100.0, "Shooter Tolerance RPM");
         public static final ConfigurableParameter<Double> kShooterManualSpeed = new ConfigurableParameter<Double>(1.0,
@@ -263,6 +286,13 @@ public final class Constants {
     }
 
     public static final class ElevatorConstants {
+        // I hate this. Java sucks
+        public static void initialize() {
+            // This method does nothing but touch the ConfigurableParameter objects,
+            // forcing the class to be loaded and the objects to be initialized.
+            System.out.println(kElevatorTolerance);
+        }
+
         public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
                 10.0, "Elevator Tolerance");
         public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
@@ -297,12 +327,18 @@ public final class Constants {
     }
 
     public static final class TransitConstants {
-        public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(1.0,
+        public static void initialize() {
+            // This method does nothing but touch the ConfigurableParameter objects,
+            // forcing the class to be loaded and the objects to be initialized.
+            System.out.println(kTransitManualSpeed);
+        }
+
+        public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(0.5,
                 "Transit Manual Control Speed");
     }
 
     public static final class IntakeConstants {
         public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0,
-                "Transit Manual Control Speed");
+                "Intake Manual Control Speed");
     }
 }
