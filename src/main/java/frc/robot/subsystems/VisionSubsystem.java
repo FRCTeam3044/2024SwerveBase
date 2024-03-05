@@ -10,7 +10,7 @@ import frc.robot.Vision;
 
 public class VisionSubsystem extends SubsystemBase {
     private Vision vision;
-
+    double lastEstTimestamp;
     public VisionSubsystem() {
 
         vision = new Vision();
@@ -24,12 +24,20 @@ public class VisionSubsystem extends SubsystemBase {
             var visionEst = vision.getEstimatedGlobalPose(i);
             visionEst.ifPresent(
                     est -> {
+                        if(est.timestampSeconds == lastEstTimestamp) {
+                            return;
+                        }
+                        lastEstTimestamp = est.timestampSeconds;
                         var estPose = est.estimatedPose.toPose2d();
                         // Change our trust in the measurement based on the tags we can see
                         var estStdDevs = vision.getEstimationStdDevs(estPose, camera);
 
-                        RobotContainer.m_robotDrive.addVisionMeasurement(
-                                est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                        double[] pose = { estPose.getX(), estPose.getY(), estPose.getRotation().getDegrees()};
+
+                        SmartDashboard.putNumberArray("Camera " + camera + " pose", pose);
+
+                        RobotContainer.m_robotDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                        // RobotContainer.m_robotDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds);
                     });
         }
 

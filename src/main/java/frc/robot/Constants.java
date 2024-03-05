@@ -225,10 +225,8 @@ public final class Constants {
     }
 
     public static final class VisionConstants {
-        // TODO: Update these values
-        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
-        public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT
-                                                                                           // CORRECT
+        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(12.5));
+        public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10));
         // array of active cameras
         public final static String[] activeCameras = {
                 "front",
