@@ -19,6 +19,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.Constants.TransitConstants;
 import frc.robot.utils.ControllerRumble;
+import frc.robot.utils.USBLocator;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
@@ -65,9 +66,9 @@ public class Robot extends LoggedRobot {
                 break;
         }
 
-        // Set up data receivers & replay source
+        // Set up data receivers & replaource
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter("/U/logs"));
+            Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());

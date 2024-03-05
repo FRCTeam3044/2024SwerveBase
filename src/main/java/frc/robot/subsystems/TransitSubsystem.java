@@ -9,18 +9,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 public class TransitSubsystem extends SubsystemBase {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
-    public AnalogInput ultrasonicSensorOne = new AnalogInput(0);
-    public AnalogInput ultrasonicSensorTwo = new AnalogInput(1);
-    public int voltageScaleFactor = 1;
-
-    public double ultrasonicSensorOneOutput = 0;
-    public double ultrasonicSensorTwoOutput = 0;
+    DigitalInput transitSensor = new DigitalInput(CANConstants.kTransitSensorPort);
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
@@ -58,14 +52,8 @@ public class TransitSubsystem extends SubsystemBase {
      * 
      * @return true if the transit limit switch is pressed
      */
-    public AnalogInput readTransitSensorOne() {
-        ultrasonicSensorOneOutput = ultrasonicSensorOne.getValue() * voltageScaleFactor * 0.125;
-        return ultrasonicSensorOne;
-    }
-
-    public AnalogInput readTransitSensorTwo() {
-        ultrasonicSensorTwoOutput = ultrasonicSensorTwo.getValue() * voltageScaleFactor * 0.125;
-        return ultrasonicSensorTwo;
+    public boolean readTransitLimitSwitch() {
+        return !transitSensor.get();
     }
 
     public void runTransit() {

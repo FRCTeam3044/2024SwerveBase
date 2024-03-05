@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.RobotContainer;
+import frc.robot.utils.USBLocator;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -53,6 +55,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem() {
         elevatorMotorOne.restoreFactoryDefaults();
         elevatorMotorTwo.restoreFactoryDefaults();
+
+        elevatorMotorOne.setIdleMode(IdleMode.kBrake);
+        elevatorMotorTwo.setIdleMode(IdleMode.kBrake);
 
         // PID coefficients
         kP = 0.1;
@@ -145,7 +150,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorAngleCalibration.add(getAngle());
             elevatorEncoderCalibration.add(motorOneEncoder.getPosition());
             if (RobotContainer.m_driverController.getHID().getPOV() == 90) {
-                String path = RobotBase.isReal() ? "/U/calibration.csv"
+                String path = RobotBase.isReal() ? USBLocator.getUSBPath() + "/calibration.csv"
                         : Filesystem.getDeployDirectory() + "/calibration.csv";
                 try (PrintWriter writer = new PrintWriter(
                         new FileWriter(path))) {
