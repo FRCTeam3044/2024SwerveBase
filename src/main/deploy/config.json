@@ -506,7 +506,7 @@
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.5"
         },
         "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
@@ -592,7 +592,7 @@
         "rearRightModule/driving/P": "0.03999999910593033",
         "Driver Deadband": {
             "comment": "Auto-Generated",
-            "value": "0.15"
+            "value": "0.10"
         },
         "Direction Slew rate": {
             "comment": "Auto-Generated",

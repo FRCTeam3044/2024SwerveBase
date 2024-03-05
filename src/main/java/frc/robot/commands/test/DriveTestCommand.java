@@ -40,7 +40,7 @@ public class DriveTestCommand extends Command {
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
-        if (m_driverController.getHID().getRightBumper() || m_driverController.getHID().getLeftBumper()) {
+        if (m_driverController.getHID().getAButton() || m_driverController.getHID().getYButton()) {
             inputRot = 0;
         }
 
