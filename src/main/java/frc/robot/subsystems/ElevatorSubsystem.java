@@ -33,6 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public CANSparkMax elevatorMotorOne = new CANSparkMax(CANConstants.kElevatorMotorOnePort, MotorType.kBrushless);
     public CANSparkMax elevatorMotorTwo = new CANSparkMax(CANConstants.kElevatorMotorTwoPort, MotorType.kBrushless);
 
+    private double initialPosition;
     // DigitalInput elevatorTopLimitSwitch = new
     // DigitalInput(CANConstants.kElevatorTopLimitSwitch);
 
@@ -83,6 +84,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 "Elevator Angle PID");
 
         elevatorMotorTwo.follow(elevatorMotorOne);
+
+        motorOneEncoder.setPosition(angleToRotations(getAngle()));
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
@@ -116,7 +119,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void pidHandler() {
-        pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kPosition);
+        pidController.setReference(currentTargetRotations - initialPosition, CANSparkMax.ControlType.kPosition);
     }
 
     public void consumeElevatorInput(double leftStickY) {
@@ -134,8 +137,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     private double angleToRotations(double angle) {
-        // TODO: Pick a Regression and actually regress.
-        return angle;
+        return -89. + (317 * angle) + (-183 * Math.pow(angle, 2));
     }
 
     @Override
