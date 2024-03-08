@@ -23,6 +23,6 @@ public class TransitRunMotorCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_transit.readTransitLimitSwitch();
+        return m_transit.readLimitSwitch();
     }
 }

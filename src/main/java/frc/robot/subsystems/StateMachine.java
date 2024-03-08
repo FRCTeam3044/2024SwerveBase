@@ -201,11 +201,11 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean getIntakeLimitSwitch() {
-        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch());
+        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readLimitSwitch());
     }
 
     protected boolean getTransitLimitSwitch() {
-        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch());
+        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch());
     }
 
     protected boolean shooterAtSpeed() {
@@ -247,7 +247,7 @@ public class StateMachine extends SubsystemBase {
 
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
-                RobotContainer.m_noteDetection);
+                RobotContainer.m_noteDetection, false);
         IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
         return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
     }
