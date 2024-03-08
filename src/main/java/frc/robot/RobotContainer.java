@@ -110,19 +110,23 @@ public class RobotContainer {
      */
     private void configureBindings() {
         // Driver 1
-        m_driverController.rightTrigger().whileTrue(stateMachineCommand);
+        m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() -> !DriverStation.isTest()));
         Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
-        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand);
+        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand.onlyIf(() -> !DriverStation.isTest()));
         // When the menu button is pressed*
-        m_driverController.start().onTrue(new StateMachineResetCommand(stateMachine));
+        m_driverController.start()
+                .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() -> !DriverStation.isTest()));
 
         // Driver 2
         Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
-        m_operatorController.x().whileTrue(manualIntakeCommand);
-        m_operatorController.leftTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
-        m_operatorController.a().whileTrue(new ElevatorSetAngleForIntakeCommand(elevator));
-        m_operatorController.b().whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator));
+        m_operatorController.x().whileTrue(manualIntakeCommand.onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.leftTrigger()
+                .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.a()
+                .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.b()
+                .whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
     }
 
     /**

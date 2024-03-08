@@ -3,12 +3,12 @@
         "frontRightModule/turning/FF": "0.0",
         "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
+        "Elevator Angle PID/D": "0.00001",
+        "Elevator Angle PID/FF": "0.00011",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
+        "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -23,6 +23,10 @@
         },
         "frontLeftModule/turning/IZone": "0.0",
         "rearRightModule/turning/FF": "0.0",
+        "Climber Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
@@ -49,6 +53,10 @@
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Elevator SmartMotion Max Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -88,7 +96,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
-        "Elevator Angle PID/Max": "0.10000000149011612",
+        "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -124,7 +132,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
+        "Elevator Angle PID/Min": "-1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
@@ -141,10 +149,18 @@
         "frontLeftModule/driving/D": "0.0",
         "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
+        "Elevator Test PID Target": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Elevator SmartMotion Max Accel": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -154,6 +170,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Elevator SmartMotion Min Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -226,12 +246,12 @@
         "frontRightModule/turning/FF": "0.0",
         "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
+        "Elevator Angle PID/D": "0.00001",
+        "Elevator Angle PID/FF": "0.00011",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
+        "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -246,6 +266,10 @@
         },
         "frontLeftModule/turning/IZone": "0.0",
         "rearRightModule/turning/FF": "0.0",
+        "Climber Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
@@ -272,6 +296,10 @@
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Elevator SmartMotion Max Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -311,7 +339,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
-        "Elevator Angle PID/Max": "0.10000000149011612",
+        "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -347,7 +375,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
+        "Elevator Angle PID/Min": "-1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
@@ -364,10 +392,18 @@
         "frontLeftModule/driving/D": "0.0",
         "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
+        "Elevator Test PID Target": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Elevator SmartMotion Max Accel": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -377,6 +413,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Elevator SmartMotion Min Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -448,12 +488,12 @@
         "frontRightModule/turning/FF": "0.0",
         "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
+        "Elevator Angle PID/D": "0.00001",
+        "Elevator Angle PID/FF": "0.00011",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
+        "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -468,6 +508,10 @@
         },
         "frontLeftModule/turning/IZone": "0.0",
         "rearRightModule/turning/FF": "0.0",
+        "Climber Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
@@ -495,6 +539,10 @@
             "comment": "Auto-Generated",
             "value": "0.75"
         },
+        "Elevator SmartMotion Max Velocity": {
+            "comment": "Auto-Generated",
+            "value": "5000.0"
+        },
         "Rate Limit": {
             "comment": "Auto-Generated",
             "value": "true"
@@ -506,7 +554,7 @@
         "rearRightModule/driving/Min": "-1.0",
         "Elevator Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.5"
         },
         "Pathfinding Y Controller/I": "0.0",
         "rearRightModule/turning/Max": "1.0",
@@ -533,7 +581,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
-        "Elevator Angle PID/Max": "0.10000000149011612",
+        "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -569,7 +617,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
+        "Elevator Angle PID/Min": "-1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
@@ -586,19 +634,31 @@
         "frontLeftModule/driving/D": "0.0",
         "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
+        "Elevator Test PID Target": {
+            "comment": "Auto-Generated",
+            "value": "0.58"
+        },
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Elevator SmartMotion Max Accel": {
+            "comment": "Auto-Generated",
+            "value": "8000.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
-            "value": "0.15"
+            "value": "0.10"
         },
         "Direction Slew rate": {
             "comment": "Auto-Generated",
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Elevator SmartMotion Min Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -670,12 +730,12 @@
         "frontRightModule/turning/FF": "0.0",
         "Elevator Angle PID/I": "0.0",
         "rearLeftModule/turning/IZone": "0.0",
-        "Elevator Angle PID/D": "1.0",
-        "Elevator Angle PID/FF": "0.0",
+        "Elevator Angle PID/D": "0.00001",
+        "Elevator Angle PID/FF": "0.00011",
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.10000000149011612",
+        "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -690,6 +750,10 @@
         },
         "frontLeftModule/turning/IZone": "0.0",
         "rearRightModule/turning/FF": "0.0",
+        "Climber Manual Control Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Rotation FF Timestep": {
             "comment": "Auto-Generated",
             "value": "0.02"
@@ -716,6 +780,10 @@
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Elevator SmartMotion Max Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "Rate Limit": {
             "comment": "Auto-Generated",
@@ -755,7 +823,7 @@
             "comment": "Auto-Generated",
             "value": "6.283185307179586"
         },
-        "Elevator Angle PID/Max": "0.10000000149011612",
+        "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -791,7 +859,7 @@
             "comment": "Auto-Generated",
             "value": "true"
         },
-        "Elevator Angle PID/Min": "-0.10000000149011612",
+        "Elevator Angle PID/Min": "-1.0",
         "frontRightModule/driving/P": "0.03999999910593033",
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
@@ -808,10 +876,18 @@
         "frontLeftModule/driving/D": "0.0",
         "frontLeftModule/turning/FF": "0.0",
         "frontLeftModule/driving/I": "0.0",
+        "Elevator Test PID Target": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
         "rearLeftModule/driving/FF": "0.2081708461046219",
         "rearRightModule/driving/P": "0.03999999910593033",
+        "Elevator SmartMotion Max Accel": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -821,6 +897,10 @@
             "value": "1.2"
         },
         "frontLeftModule/driving/Max": "1.0",
+        "Elevator SmartMotion Min Velocity": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "frontRightModule/turning/P": "1.0",
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",

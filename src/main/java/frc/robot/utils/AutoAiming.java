@@ -159,7 +159,8 @@ public class AutoAiming {
      */
     private String getPath() {
         if (RobotBase.isReal()) {
-            return isCollecting ? "/U/auto-aiming.json" : Filesystem.getDeployDirectory() + "/auto-aiming.json";
+            return isCollecting ? USBLocator.getUSBPath() + "/auto-aiming.json"
+                    : Filesystem.getDeployDirectory() + "/auto-aiming.json";
         } else {
             return Filesystem.getOperatingDirectory() + "/auto-aiming-sim.json";
         }
