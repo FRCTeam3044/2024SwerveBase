@@ -109,6 +109,9 @@ public class NoteDetection extends SubsystemBase {
             }
         }
         Pose2d closestRawPose = findClosestNote(null);
+        if (closestRawPose == null) {
+            return;
+        }
         if (regionPose != null) {
             Pose2d closestPoseToRegionTemp = findClosestNote(regionPose);
             if (closestPoseToRegionTemp == null) {
@@ -146,14 +149,15 @@ public class NoteDetection extends SubsystemBase {
     }
 
     private Pose2d findClosestNote(Pose2d targetRegionPose) {
-        Pose2d notePose = new Pose2d();
+        Pose2d notePose = null;
         Pose2d currentPose = targetRegionPose == null ? RobotContainer.m_robotDrive.getPose() : regionPose;
         for (int i = 0; i < notePoses.size(); i++) {
             if (i == 0) {
                 notePose = notePoses.get(i);
             } else {
-                if (notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose
-                        .getTranslation().getDistance(currentPose.getTranslation())) {
+                if (notePose == null
+                        || notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose
+                                .getTranslation().getDistance(currentPose.getTranslation())) {
                     notePose = notePoses.get(i);
                 }
             }

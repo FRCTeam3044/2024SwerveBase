@@ -113,13 +113,17 @@ public class StateMachine extends SubsystemBase {
 
         if (testModeEnabled) {
             String state = SmartDashboard.getString("State Machine/Override", "NO_NOTE");
-            State newState = State.valueOf(state);
+            State newState;
+            try {
+                newState = State.valueOf(state);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
             if (newState != currentState) {
                 forceState(newState);
+                updateDesiredCommand();
             }
-            if (SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
-                SmartDashboard.putString("State Machine/Override ", currentState.toString());
-            } else {
+            if (!SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
                 return;
             }
         }
@@ -301,6 +305,9 @@ public class StateMachine extends SubsystemBase {
 
     protected void updateDesiredCommand() {
         // currentDesiredCommand = getCommandForState(currentState);
+        if (testModeEnabled && SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
+            SmartDashboard.putString("State Machine/Override", currentState.toString());
+        }
         changedDesiredCommand = true;
     }
 
