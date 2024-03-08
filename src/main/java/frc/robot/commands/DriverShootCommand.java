@@ -49,7 +49,7 @@ public class DriverShootCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return !m_transitLimitDebouncer.calculate(m_transit.readTransitLimitSwitch()) && hasShot;
+        return !m_transitLimitDebouncer.calculate(m_transit.readLimitSwitch()) && hasShot;
     }
 
 }

@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.utils.LimitSwitchSubsystem;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
     // Defines the motor
     TalonSRX intakeTopMotor = new TalonSRX(CANConstants.kIntakeTopMotorPort);
     TalonSRX intakeBottomMotor = new TalonSRX(CANConstants.kIntakeBottomMotorPort);
@@ -48,7 +49,8 @@ public class IntakeSubsystem extends SubsystemBase {
      * 
      * @return true if the intake limit switch is pressed
      */
-    public boolean readIntakeLimitSwitch() {
+    @Override
+    public boolean readLimitSwitch() {
         return !intakeSensor.get();
     }
 

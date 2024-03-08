@@ -1,0 +1,14 @@
+[
+  {
+    "type": "if",
+    "name": "Score Note",
+    "condition": {
+      "id": "has_note",
+      "parameters": {},
+      "children": []
+    },
+    "child": {
+      "type": "command"
+    }
+  }
+]
