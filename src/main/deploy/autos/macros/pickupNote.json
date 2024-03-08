@@ -10,7 +10,7 @@
           "parameters": {
             "regionX": "{{ regionX }}",
             "regionY": "{{ regionY }}",
-            "regionRadius": 1
+            "regionRadius": "{{ regionRadius }}"
           },
           "children": []
         }
