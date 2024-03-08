@@ -2,18 +2,21 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.utils.LimitSwitchSubsystem;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
     // Defines the motor
     TalonSRX intakeTopMotor = new TalonSRX(CANConstants.kIntakeTopMotorPort);
     TalonSRX intakeBottomMotor = new TalonSRX(CANConstants.kIntakeBottomMotorPort);
-    DigitalInput intakeSensor = new DigitalInput(CANConstants.kIntakeSensorPort);
+    AnalogInput intakeUltrasonic = new AnalogInput(CANConstants.kIntakeSensorPort);
+    ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250, "Intake Ultrasonic Threshold");
 
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
@@ -51,7 +54,11 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
      */
     @Override
     public boolean readLimitSwitch() {
-        return !intakeSensor.get();
+        if(intakeUltrasonic.getValue() <= intakeUltrasonicThreshold.get()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void consumeIntakeInput(boolean run) {

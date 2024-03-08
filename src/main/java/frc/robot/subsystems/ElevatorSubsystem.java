@@ -93,6 +93,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         Consumer<Double> setMinVel = (Double m) -> pidController.setSmartMotionMinOutputVelocity(m, 0);
         new ConfigurableParameter<Double>(minVel, "Elevator SmartMotion Min Velocity", setMinVel);
 
+        new ConfigurableSparkPIDController(pidController,
+                "Elevator Angle PID");
+
         elevatorMotorTwo.follow(elevatorMotorOne);
     }
 

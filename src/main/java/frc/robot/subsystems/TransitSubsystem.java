@@ -5,17 +5,19 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
 import frc.robot.utils.LimitSwitchSubsystem;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
 
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
-    DigitalInput transitSensor = new DigitalInput(CANConstants.kTransitSensorPort);
+    AnalogInput transitUltrasonic = new AnalogInput(CANConstants.kTransitSensorPort);
+    ConfigurableParameter<Integer> transitUltrasonicThreshold = new ConfigurableParameter<Integer>(250, "Transit Ultrasonic Threshold");
 
     // if the note is in the transit then this would be true
     boolean isNoteInTransit = false;
@@ -55,7 +57,11 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
      */
     @Override
     public boolean readLimitSwitch() {
-        return !transitSensor.get();
+        if(transitUltrasonic.getValue() <= transitUltrasonicThreshold.get()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void runTransit() {
