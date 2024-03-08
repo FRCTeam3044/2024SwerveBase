@@ -49,6 +49,8 @@ public class StateMachine extends SubsystemBase {
         NO_NOTE
     }
 
+    private static final boolean testModeEnabled = true;
+
     protected State currentState = State.NO_NOTE;
 
     protected final ShooterSubsystem m_shooterSubsystem;
@@ -93,6 +95,11 @@ public class StateMachine extends SubsystemBase {
         m_noteDetection = noteDetection;
         m_driveSubsystem = driveSubsystem;
         updateDesiredCommand();
+
+        if (testModeEnabled) {
+            SmartDashboard.putString("State Machine/Override", "NO_NOTE");
+            SmartDashboard.putBoolean("State Machine/Allow State Navigation", false);
+        }
     }
 
     @Override
@@ -103,6 +110,20 @@ public class StateMachine extends SubsystemBase {
             SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
             SmartDashboard.putBoolean("Shooter At Angle", RobotContainer.m_driverController.getHID().getYButton());
         }
+
+        if (testModeEnabled) {
+            String state = SmartDashboard.getString("State Machine/Override", "NO_NOTE");
+            State newState = State.valueOf(state);
+            if (newState != currentState) {
+                forceState(newState);
+            }
+            if (SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
+                SmartDashboard.putString("State Machine/Override ", currentState.toString());
+            } else {
+                return;
+            }
+        }
+
         switch (currentState) {
             case NO_NOTE:
                 if (m_noteDetection.hasNote) {
