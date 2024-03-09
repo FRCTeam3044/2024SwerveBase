@@ -135,7 +135,7 @@ public class LEDSubsystem extends SubsystemBase {
         if(m_robotContainer.stateMachineCommand.isScheduled()) {
             setSidesRainbow();
         } else {
-            setSidesPurpleGold();
+            setSidesRainbow();
         }
 
         State state = RobotContainer.stateMachine.getState();
