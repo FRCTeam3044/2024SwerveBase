@@ -56,7 +56,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     double currentTargetRotations = 0;
     private boolean hasInitialized = false;
 
-    private static double positionOFfset = 0;
+    private final ConfigurableParameter<Double> positionOffset;
 
     public ElevatorSubsystem() {
         elevatorMotorOne.restoreFactoryDefaults();
@@ -100,7 +100,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         elevatorMotorTwo.follow(elevatorMotorOne);
 
-        elevatorPivotEncoder.setPositionOffset(positionOFfset);
+        positionOffset = new ConfigurableParameter<Double>(0.0,
+                "Elevator Position Offset", elevatorPivotEncoder::setPositionOffset);
+
+        elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
