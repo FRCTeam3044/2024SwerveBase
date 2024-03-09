@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.Matrix;
@@ -314,18 +317,39 @@ public final class Constants {
     }
 
     public static final class DetectorConstants {
-        public static double[][] cameraPointsArray = {
-                { 621, 538 },
-                { 625, 438 },
-                { 93, 450 },
-                { 1163, 469 }
-        };
-        public static double[][] fieldPointsArray = {
-                { 0.91, 0 },
-                { 1.82, 0 },
-                { 1.82, 0.91 },
-                { 1.82, -0.92 }
-        };
+        public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,"Filter taps");
+        public static final Double cameraOffset = 0.2794;
+        public static final Double noteCenterDist = 0.1778;
+        public static MatOfPoint2f cameraPointsArray = new MatOfPoint2f(
+                new Point( 601, 566 ),
+                new Point( 289, 568 ),
+                new Point( 358, 398 ),
+                new Point( 601, 397 ),
+                new Point( 910, 562 ),
+                new Point( 745, 156 ),
+                new Point( 94, 215 ),
+                new Point( 1113, 109 ),
+                new Point( 1077, 26 ),
+                new Point( 912, 565 ),
+                new Point( 1221, 563 ),
+                new Point( 1196, 283 )
+        );
+        public static MatOfPoint2f fieldPointsArray = new MatOfPoint2f(
+               new Point( 0.9144, 0 ),
+               new Point( 0.9144, 0.3048 ),
+               new Point( 1.2192, 0.3048 ),
+               new Point( 1.2192, 0 ), 
+               new Point( 0.9144, -0.3048 ),
+               new Point( 2.1336, -0.3048 ),
+               new Point( 1.8288, 0.9144 ),
+               new Point( 2.7432, 1.2192 ),
+               new Point( 2.7432, 0.9144 ),
+               new Point( 3.3528, 1.524 ),
+               new Point( 3.6576, 1.524 ),
+               new Point( 0.9144,-0.3048 ),
+               new Point( 0.9144, -0.6096 ),
+               new Point( 1.524, -0.9144 )
+        );
     }
 
     public static final class ClimberConstants {
