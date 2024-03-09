@@ -56,6 +56,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     double currentTargetRotations = 0;
     private boolean hasInitialized = false;
 
+    private static double positionOFfset = 0;
+
     public ElevatorSubsystem() {
         elevatorMotorOne.restoreFactoryDefaults();
         elevatorMotorTwo.restoreFactoryDefaults();
@@ -97,6 +99,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 "Elevator Angle PID");
 
         elevatorMotorTwo.follow(elevatorMotorOne);
+
+        elevatorPivotEncoder.setPositionOffset(positionOFfset);
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in

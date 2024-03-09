@@ -15,9 +15,9 @@ import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
@@ -257,12 +257,12 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getLockinNoteCommand() {
-        TransitRunMotorCommand transitRunMotorCommand = new TransitRunMotorCommand(m_transitSubsystem);
+        Command runIntake = new IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
         Command getToPoint = goToShootingZoneCommand();
         if (getToPoint == null) {
             return null;
         }
-        return Commands.parallel(transitRunMotorCommand, getToPoint);
+        return Commands.parallel(runIntake, getToPoint);
     }
 
     private Command getReadyShooterCommand() {

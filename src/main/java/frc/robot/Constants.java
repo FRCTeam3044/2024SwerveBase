@@ -177,6 +177,10 @@ public final class Constants {
     }
 
     public static final class OIConstants {
+        public static void initialize() {
+            System.out.println(kDriveDeadband);
+        }
+
         public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 1;
         public static final ConfigurableParameter<Double> kDriveDeadband = new ConfigurableParameter<Double>(
@@ -329,6 +333,10 @@ public final class Constants {
     }
 
     public static final class ClimberConstants {
+        public static void initialize() {
+            System.out.println(kClimberManualSpeed);
+        }
+
         public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Climber Manual Control Speed");
     }
@@ -345,6 +353,10 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
+        public static void initialize() {
+            System.out.println(kIntakeManualSpeed);
+        }
+
         public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Intake Manual Control Speed");
     }
