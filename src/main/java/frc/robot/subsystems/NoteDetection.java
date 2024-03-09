@@ -21,11 +21,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.DetectorConstants;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
-    LinearFilter filterNoteX = LinearFilter.movingAverage(DetectorConstants.filterTaps.get());
-    LinearFilter filterNoteY = LinearFilter.movingAverage(DetectorConstants.filterTaps.get());
+    public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
+            "Filter taps");
+    LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
+    LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
 
     private Mat homography;
     Timer timer = new Timer();
@@ -46,8 +48,20 @@ public class NoteDetection extends SubsystemBase {
         detector = new PhotonCamera("detection");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
+        MatOfPoint2f cameraPoints = new MatOfPoint2f(
+                new Point(501, 638),
+                new Point(789, 643),
+                new Point(755, 587),
+                new Point(524, 579));
+
+        MatOfPoint2f fieldPoints = new MatOfPoint2f(
+                new Point(0.61595, 0.08255),
+                new Point(0.61595, -0.08255),
+                new Point(0.78105, -0.08255),
+                new Point(0.78105, 0.08255));
+
         homography = new Mat();
-        homography = Calib3d.findHomography(DetectorConstants.cameraPointsArray, DetectorConstants.fieldPointsArray, Calib3d.RANSAC);
+        homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
 
         SmartDashboard.putString("Homography matrix", homography.dump());
     }
@@ -167,7 +181,8 @@ public class NoteDetection extends SubsystemBase {
 
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         Pose2d robotRelativeNotePose = new Pose2d(
-                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + DetectorConstants.cameraOffset + DetectorConstants.noteCenterDist,
+                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.3937 /* TODO: Move camera offset to constants */
+                        + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
         // Translate the note pose to the field (rotate by the robot's rotation)
