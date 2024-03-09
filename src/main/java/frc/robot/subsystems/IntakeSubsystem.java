@@ -1,44 +1,51 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.utils.LimitSwitchSubsystem;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
     // Defines the motor
-    CANSparkMax intakeTopMotor = new CANSparkMax(CANConstants.kIntakeTopMotorPort, MotorType.kBrushless);
-    CANSparkMax intakeBottomMotor = new CANSparkMax(CANConstants.kIntakeBottomMotorPort, MotorType.kBrushless);
-    DigitalInput intakeSensor = new DigitalInput(CANConstants.kIntakeSensorPort);
+    TalonSRX intakeTopMotor = new TalonSRX(CANConstants.kIntakeTopMotorPort);
+    TalonSRX intakeBottomMotor = new TalonSRX(CANConstants.kIntakeBottomMotorPort);
+    AnalogInput intakeUltrasonic = new AnalogInput(CANConstants.kIntakeSensorPort);
+    ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
+            "Intake Ultrasonic Threshold");
 
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
 
     public IntakeSubsystem() {
-        intakeTopMotor.restoreFactoryDefaults();
-        intakeBottomMotor.restoreFactoryDefaults();
+        intakeTopMotor.configFactoryDefault();
+        intakeTopMotor.setInverted(true);
+        intakeTopMotor.configPeakCurrentLimit(20);
+        intakeBottomMotor.configFactoryDefault();
+        intakeBottomMotor.configPeakCurrentLimit(20);
+        intakeBottomMotor.setInverted(true);
     }
 
     // Use this to run intake
     public void runIntake() {
-        intakeTopMotor.set(1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     public void runIntakeReverse() {
-        intakeTopMotor.set(-1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     // Stops intake
     public void stopIntake() {
-        intakeTopMotor.set(0);
-        intakeBottomMotor.set(0);
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 0);
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 
     /**
@@ -46,8 +53,13 @@ public class IntakeSubsystem extends SubsystemBase {
      * 
      * @return true if the intake limit switch is pressed
      */
-    public boolean readIntakeLimitSwitch() {
-        return !intakeSensor.get();
+    @Override
+    public boolean readLimitSwitch() {
+        if (intakeUltrasonic.getValue() <= intakeUltrasonicThreshold.get()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void consumeIntakeInput(boolean run) {

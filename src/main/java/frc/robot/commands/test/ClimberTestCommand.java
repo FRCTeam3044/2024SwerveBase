@@ -25,10 +25,20 @@ public class ClimberTestCommand extends Command {
     public void execute() {
         boolean isLeftBumperPressed = m_controller.getLeftBumper();
         boolean isRightBumperPressed = m_controller.getRightBumper();
-        double rightY = -m_controller.getRightY();
+        double leftTrigger = m_controller.getLeftTriggerAxis();
+        double rightTrigger = m_controller.getRightTriggerAxis();
+        double output = 0;
+        if (leftTrigger > 0 && rightTrigger > 0) {
+            return;
+        }
+        if (leftTrigger > 0) {
+            output = -leftTrigger;
+        } else if (rightTrigger > 0) {
+            output = rightTrigger;
+        }
 
-        double rightPow = isRightBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * rightY : 0;
-        double leftPow = isLeftBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * rightY : 0;
-        m_climber.consumeClimberInput(rightPow, leftPow);
+        double rightPow = isRightBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * output : 0;
+        double leftPow = isLeftBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * output : 0;
+        m_climber.consumeClimberInput(leftPow, rightPow);
     }
 }

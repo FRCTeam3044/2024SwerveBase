@@ -18,8 +18,7 @@ public class IntakeTestCommand extends Command {
     @Override
     public void execute() {
         boolean isBButtonPressed = m_controller.getBButton();
-        boolean isYButtonPressed = m_controller.getYButton();
-        m_intake.consumeIntakeInput(isBButtonPressed, isYButtonPressed);
+        m_intake.consumeIntakeInput(isBButtonPressed, false);
     }
 
     @Override

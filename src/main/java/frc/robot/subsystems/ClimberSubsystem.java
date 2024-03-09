@@ -17,7 +17,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     // contorls left arm
     public void leftArm(double moveLeftMotorPower) {
-        rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
+        leftClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
     }
 
     // controls right arm

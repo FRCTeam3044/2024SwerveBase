@@ -13,8 +13,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LEDConstants;
+import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.StateMachineConstants;
+import frc.robot.Constants.TransitConstants;
 import frc.robot.utils.ControllerRumble;
+import frc.robot.utils.USBLocator;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
@@ -63,9 +72,9 @@ public class Robot extends LoggedRobot {
                 break;
         }
 
-        // Set up data receivers & replay source
+        // Set up data receivers & replaource
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter());
+            Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());
@@ -75,6 +84,14 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
         PathfindingConstants.initialize();
+        DriveConstants.initialize();
+        ElevatorConstants.initialize();
+        ShooterConstants.initialize();
+        StateMachineConstants.initialize();
+        TransitConstants.initialize();
+        OIConstants.initialize();
+        IntakeConstants.initialize();
+        ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
         m_led = new LEDSubsystem(LEDConstants.LEDPort, (LEDConstants.sideLEDLength * 2) + LEDConstants.topLEDLength, m_robotContainer);

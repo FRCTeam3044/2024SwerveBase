@@ -15,9 +15,9 @@ import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.TransitCommands.TransitRunMotorCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
@@ -48,6 +48,8 @@ public class StateMachine extends SubsystemBase {
          */
         NO_NOTE
     }
+
+    private static final boolean testModeEnabled = true;
 
     protected State currentState = State.NO_NOTE;
 
@@ -93,6 +95,11 @@ public class StateMachine extends SubsystemBase {
         m_noteDetection = noteDetection;
         m_driveSubsystem = driveSubsystem;
         updateDesiredCommand();
+
+        if (testModeEnabled) {
+            SmartDashboard.putString("State Machine/Override", "NO_NOTE");
+            SmartDashboard.putBoolean("State Machine/Allow State Navigation", false);
+        }
     }
 
     @Override
@@ -103,6 +110,24 @@ public class StateMachine extends SubsystemBase {
             SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
             SmartDashboard.putBoolean("Shooter At Angle", RobotContainer.m_driverController.getHID().getYButton());
         }
+
+        if (testModeEnabled) {
+            String state = SmartDashboard.getString("State Machine/Override", "NO_NOTE");
+            State newState;
+            try {
+                newState = State.valueOf(state);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
+            if (newState != currentState) {
+                forceState(newState);
+                updateDesiredCommand();
+            }
+            if (!SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
+                return;
+            }
+        }
+
         switch (currentState) {
             case NO_NOTE:
                 if (m_noteDetection.hasNote) {
@@ -180,11 +205,11 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean getIntakeLimitSwitch() {
-        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readIntakeLimitSwitch());
+        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readLimitSwitch());
     }
 
     protected boolean getTransitLimitSwitch() {
-        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readTransitLimitSwitch());
+        return m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch());
     }
 
     protected boolean shooterAtSpeed() {
@@ -226,18 +251,18 @@ public class StateMachine extends SubsystemBase {
 
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
-                RobotContainer.m_noteDetection);
+                RobotContainer.m_noteDetection, false);
         IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
         return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
     }
 
     private Command getLockinNoteCommand() {
-        TransitRunMotorCommand transitRunMotorCommand = new TransitRunMotorCommand(m_transitSubsystem);
+        Command runIntake = new IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
         Command getToPoint = goToShootingZoneCommand();
         if (getToPoint == null) {
             return null;
         }
-        return Commands.parallel(transitRunMotorCommand, getToPoint);
+        return Commands.parallel(runIntake, getToPoint);
     }
 
     private Command getReadyShooterCommand() {
@@ -280,6 +305,9 @@ public class StateMachine extends SubsystemBase {
 
     protected void updateDesiredCommand() {
         // currentDesiredCommand = getCommandForState(currentState);
+        if (testModeEnabled && SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {
+            SmartDashboard.putString("State Machine/Override", currentState.toString());
+        }
         changedDesiredCommand = true;
     }
 
