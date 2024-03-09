@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -13,6 +15,30 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem() {
         leftClimberMotor.configFactoryDefault();
         rightClimberMotor.configFactoryDefault();
+        leftClimberMotor.setStatusFramePeriod(2, 5000);
+        leftClimberMotor.setStatusFramePeriod(3, 5000);
+        leftClimberMotor.setStatusFramePeriod(8, 5000);
+        leftClimberMotor.setStatusFramePeriod(10, 50000);
+        leftClimberMotor.setStatusFramePeriod(12, 5000);
+        leftClimberMotor.setStatusFramePeriod(13, 5000);
+        leftClimberMotor.setStatusFramePeriod(14, 5000);
+        leftClimberMotor.setStatusFramePeriod(21, 5000);
+        leftClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        leftClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        leftClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
+        rightClimberMotor.setStatusFramePeriod(2, 5000);
+        rightClimberMotor.setStatusFramePeriod(3, 5000);
+        rightClimberMotor.setStatusFramePeriod(8, 5000);
+        rightClimberMotor.setStatusFramePeriod(10, 50000);
+        rightClimberMotor.setStatusFramePeriod(12, 5000);
+        rightClimberMotor.setStatusFramePeriod(13, 5000);
+        rightClimberMotor.setStatusFramePeriod(14, 5000);
+        rightClimberMotor.setStatusFramePeriod(21, 5000);
+        rightClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        rightClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        rightClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
     }
 
     // contorls left arm

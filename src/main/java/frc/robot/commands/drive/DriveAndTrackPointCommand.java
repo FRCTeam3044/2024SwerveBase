@@ -27,6 +27,7 @@ public class DriveAndTrackPointCommand extends Command {
 
     private Supplier<Pose2d> targetSupplier;
     private Pose2d lastTarget;
+    private final boolean flipped;
 
     /**
      * Creates a new DriveAndTrackPointCommand, defaulting to tracking the speaker.
@@ -35,17 +36,19 @@ public class DriveAndTrackPointCommand extends Command {
      * @param driverController The XboxController that provides the input for the
      *                         drive command
      */
-    public DriveAndTrackPointCommand(DriveSubsystem driveSubsystem, CommandXboxController driverController) {
+    public DriveAndTrackPointCommand(DriveSubsystem driveSubsystem, CommandXboxController driverController,
+            boolean flipped) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
+        this.flipped = flipped;
         isSimulation = RobotBase.isSimulation();
         Pose2d target = AutoTargetUtils.getShootingTarget();
         lastTarget = target;
         targetSupplier = AutoTargetUtils::getShootingTarget;
         if (target == null) {
-            m_targetRotController = new TargetRotationController(0, 0);
+            m_targetRotController = new TargetRotationController(0, 0, flipped);
         } else {
-            m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+            m_targetRotController = new TargetRotationController(target.getX(), target.getY(), flipped);
         }
         addRequirements(m_robotDrive);
     }
@@ -59,17 +62,19 @@ public class DriveAndTrackPointCommand extends Command {
      * @param target           The target to track
      */
     public DriveAndTrackPointCommand(DriveSubsystem driveSubsystem, CommandXboxController driverController,
-            Pose2d target) {
+            Pose2d target, boolean flipped) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
+        this.flipped = flipped;
         isSimulation = RobotBase.isSimulation();
         targetSupplier = () -> target;
-        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        m_targetRotController = new TargetRotationController(target.getX(), target.getY(), flipped);
         addRequirements(m_robotDrive);
     }
 
     public DriveAndTrackPointCommand(Supplier<Pose2d> target, CommandXboxController driverController,
-            DriveSubsystem driveSubsystem) {
+            DriveSubsystem driveSubsystem, boolean flipped) {
+        this.flipped = flipped;
         targetSupplier = target;
         try {
             lastTarget = target.get();
@@ -79,7 +84,7 @@ public class DriveAndTrackPointCommand extends Command {
         isSimulation = RobotBase.isSimulation();
         m_driverController = driverController;
         m_robotDrive = driveSubsystem;
-        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY());
+        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY(), flipped);
         addRequirements(m_robotDrive);
     }
 
@@ -98,11 +103,15 @@ public class DriveAndTrackPointCommand extends Command {
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
 
+        inputX = inputX * inputX * Math.signum(inputX);
+        inputY = inputY * inputY * Math.signum(inputY);
+        inputRot = inputRot * inputRot * Math.signum(inputRot);
+
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(),
                     DriveConstants.kRateLimit.get(), true);
         } else {
-            m_robotDrive.drive(-inputY, -inputX, inputRot, DriveConstants.kFieldRelative.get(),
+            m_robotDrive.drive(inputY, inputX, inputRot, DriveConstants.kFieldRelative.get(),
                     DriveConstants.kRateLimit.get(), true);
         }
     }

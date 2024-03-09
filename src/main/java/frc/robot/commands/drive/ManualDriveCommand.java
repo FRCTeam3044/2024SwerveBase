@@ -49,11 +49,14 @@ public class ManualDriveCommand extends Command {
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
 
+        inputX = inputX * inputX * Math.signum(inputX);
+        inputY = inputY * inputY * Math.signum(inputY);
+        inputRot = inputRot * inputRot * Math.signum(inputRot);
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(),
                     DriveConstants.kRateLimit.get());
         } else {
-            m_robotDrive.drive(-inputY, -inputX, -inputRot, DriveConstants.kFieldRelative.get(),
+            m_robotDrive.drive(inputY, inputX, -inputRot, DriveConstants.kFieldRelative.get(),
                     DriveConstants.kRateLimit.get());
         }
     }

@@ -11,6 +11,10 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "Auto-Generated",
             "value": "0.0"
         },
         "Shooter Manual Control Speed": {
@@ -266,6 +270,10 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "Auto-Generated",
             "value": "0.0"
         },
         "Shooter Manual Control Speed": {
@@ -520,6 +528,10 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "Auto-Generated",
             "value": "0.0"
         },
         "Shooter Manual Control Speed": {
@@ -773,6 +785,10 @@
         "Pathfinding X Controller/D": "0.0",
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },

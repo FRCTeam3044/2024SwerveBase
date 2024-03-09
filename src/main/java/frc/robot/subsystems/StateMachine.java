@@ -246,7 +246,7 @@ public class StateMachine extends SubsystemBase {
     private Command getGoToSourceCommand() {
         Pose2d target = AutoTargetUtils.getSource();
         Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
-        return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem);
+        return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem, false);
     }
 
     private Command getPickupNoteCommand() {
@@ -284,12 +284,12 @@ public class StateMachine extends SubsystemBase {
         Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
         Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
         if (shootingZone.isInside(robotPos)) {
-            return new TrackPointCommand(m_driveSubsystem, trackPoint);
+            return new TrackPointCommand(m_driveSubsystem, trackPoint, true);
         } else {
             Pose2d closestPoint = shootingZone.calculateNearestPoint(robotPos).asPose2d();
             GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(closestPoint, trackPoint,
-                    m_driveSubsystem);
-            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint);
+                    m_driveSubsystem, true);
+            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
             return travelToPoint.andThen(trackPointCmd);
         }
     }
@@ -297,7 +297,7 @@ public class StateMachine extends SubsystemBase {
     private Command getShootCommand() {
         AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
-                AutoTargetUtils.getShootingTarget());
+                AutoTargetUtils.getShootingTarget(), true);
         DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
         return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);

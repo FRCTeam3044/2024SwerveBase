@@ -20,6 +20,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -30,11 +31,14 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
 import me.nabdev.pathfinding.Pathfinder;
@@ -75,6 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // The gyro sensor (NavX)
     private final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
+    // private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
     // Slew rate filter variables for controlling lateral acceleration
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
@@ -141,8 +146,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private double getGyroAngleDegrees() {
-        double gyroRadians = Math.toRadians(-m_gyro.getAngle());
-        return Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI / 2));
+        // double gyroRadians = Math.toRadians(-m_gyro.getAngle());
+        double gyroRadians = Math.toRadians(-m_gyro.getAngle() - Math.PI / 2);
+        double wrapped = Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI /
+                2));
+        return wrapped;
     }
 
     @Override
@@ -155,6 +163,9 @@ public class DriveSubsystem extends SubsystemBase {
         field.setRobotPose(getPose());
 
         SmartDashboard.putData("Field", field);
+        SmartDashboard.putNumber("Gyro Raw", getGyroAngleDegrees());
+        Translation2d shootingTarget = AutoTargetUtils.getShootingTarget().getTranslation();
+        SmartDashboard.putNumber("Dist To Speaker", shootingTarget.getDistance(getPose().getTranslation()));
 
         // ArrayList<Vertex> inflatedVertices = pathfinder.visualizeInflatedVertices();
         // PathfindingDebugUtils.drawLines("Visibility Graph",

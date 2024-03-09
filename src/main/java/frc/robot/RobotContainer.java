@@ -7,15 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
-import frc.robot.commands.ElevatorSetAngleForSubwooferCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
-import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
+import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -31,7 +29,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StateMachine;
-import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -84,7 +81,7 @@ public class RobotContainer {
         stateMachineCommand = new StateMachineCommand(stateMachine);
         configureBindings();
         try {
-            m_autoAiming = new AutoAiming();
+            m_autoAiming = new AutoAiming(true);
         } catch (FileNotFoundException e) {
             DriverStation.reportError("Unable to load auto aiming data, check that it is in the right path", false);
             throw new RuntimeException(e);
@@ -92,6 +89,7 @@ public class RobotContainer {
 
         m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
         climber.setDefaultCommand(new ClimberCommand(climber, m_operatorController.getHID()));
+        elevator.setDefaultCommand(new ElevatorTestCommand(elevator, m_operatorController.getHID()));
     }
 
     /**
@@ -112,8 +110,14 @@ public class RobotContainer {
         // Driver 1
         // m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() ->
         // !DriverStation.isTest()));
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
-                new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
+        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive)/*
+                                                                                                     * ,
+                                                                                                     * new
+                                                                                                     * DriveAndTrackPointCommand
+                                                                                                     * (m_robotDrive,
+                                                                                                     * m_driverController,
+                                                                                                     * true)
+                                                                                                     */);
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand.onlyIf(() -> !DriverStation.isTest()));
         // When the menu button is pressed*
         // m_driverController.start()
@@ -121,8 +125,10 @@ public class RobotContainer {
         // !DriverStation.isTest()));
 
         // Driver 2
-        Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake), new TransitCommand(transit));
-        m_operatorController.x().whileTrue(manualIntakeCommand.onlyIf(() -> !DriverStation.isTest()));
+        // Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake),
+        // new TransitCommand(transit));
+        m_operatorController.x().whileTrue((new IntakeCommand(intake)).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.y().whileTrue((new TransitCommand(transit)).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.leftTrigger()
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
         // m_operatorController.a()

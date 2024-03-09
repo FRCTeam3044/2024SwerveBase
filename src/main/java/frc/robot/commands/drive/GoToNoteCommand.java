@@ -32,7 +32,7 @@ public class GoToNoteCommand extends Command {
         this.m_noteDetection = m_noteDetection;
         hasTargetRegion = false;
         this.cancelIfNone = cancelIfNone;
-        targetRotationController = new TargetRotationController(0, 0);
+        targetRotationController = new TargetRotationController(0, 0, false);
     }
 
     public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection, Pose2d targetRegion,
@@ -43,7 +43,7 @@ public class GoToNoteCommand extends Command {
         this.targetRegion = targetRegion;
         this.regionRadius = regionRadius;
         this.cancelIfNone = cancelIfNone;
-        targetRotationController = new TargetRotationController(0, 0);
+        targetRotationController = new TargetRotationController(0, 0, false);
 
     }
 

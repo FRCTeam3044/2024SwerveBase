@@ -26,8 +26,18 @@ public class AutoAiming {
     private boolean runningWithoutData = false;
     private PolynomialRegression polynomialRegression;
     private JSONArray data;
-    private double[] distances;
-    private double[] angles;
+    private double[] distances = {
+            0.9,
+            1.322,
+            2.053,
+            2.615
+    };
+    private double[] angles = {
+            0.8,
+            0.7872,
+            0.7619,
+            0.758
+    };
     private LinearInterpolation linearInterpolation;
 
     public AutoAiming() throws FileNotFoundException {
@@ -35,7 +45,11 @@ public class AutoAiming {
         FileInputStream fis = new FileInputStream(new File(getPath()));
         JSONTokener tokener = new JSONTokener(fis);
         data = new JSONArray(tokener);
-        updateDataFromJSON();
+        // TODO: Remove after testing
+        if (usingLerp) {
+            linearInterpolation = new LinearInterpolation(distances, angles);
+        }
+        // updateDataFromJSON();
     }
 
     public AutoAiming(boolean lerp) throws FileNotFoundException {
@@ -43,7 +57,10 @@ public class AutoAiming {
         FileInputStream fis = new FileInputStream(new File(getPath()));
         JSONTokener tokener = new JSONTokener(fis);
         data = new JSONArray(tokener);
-        updateDataFromJSON();
+        if (usingLerp) {
+            linearInterpolation = new LinearInterpolation(distances, angles);
+        }
+        // updateDataFromJSON();
     }
 
     public double getAngle(double distance) {

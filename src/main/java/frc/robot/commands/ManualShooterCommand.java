@@ -40,7 +40,7 @@ public class ManualShooterCommand extends Command {
         // if(m_shooter.shooterAtSpeed()){
         if (m_timer.get() > m_shooterSpinupTime.get()) {
             ranTransit = true;
-            m_transit.runTransit();
+            // m_transit.runTransit();
         }
     }
 

@@ -9,6 +9,7 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class TargetRotationController {
     private double targetX;
     private double targetY;
+    private boolean flipped;
 
     private ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.01,
             "Rot Controller Min Speed Rad/sec");
@@ -18,9 +19,10 @@ public class TargetRotationController {
             "Rot Controller Min Error Radians");
     private double[] targetPose;
 
-    public TargetRotationController(double targetX, double targetY) {
+    public TargetRotationController(double targetX, double targetY, boolean flipped) {
         this.targetX = targetX;
         this.targetY = targetY;
+        this.flipped = flipped;
         this.targetPose = new double[] { targetX, targetY, 0 };
     }
 
@@ -45,20 +47,33 @@ public class TargetRotationController {
      * @return The next rotation output
      */
     public double calculate(Pose2d position, ChassisSpeeds currentSpeeds) {
+        double currentRot = position.getRotation().getRadians();
+        if (flipped) {
+            currentRot = currentRot + Math.PI;
+            currentRot = MathUtil.angleModulus(currentRot);
+        }
+
         double timestep = PathfindingConstants.kRotationTimestep.get();
         double targetAngle = Math.atan2(targetY - position.getY(), targetX - position.getX());
+        if (flipped) {
+            targetAngle = targetAngle + Math.PI;
+            targetAngle = MathUtil.angleModulus(targetAngle);
+        }
         // SmartDashboard.putNumber("Current Angle",
         // position.getRotation().getRadians());
         // SmartDashboard.putNumber("Target Angle", targetAngle);
-        double e1 = calculateError(targetAngle, position.getRotation().getRadians());
+        double e1 = calculateError(targetAngle, currentRot);
         // SmartDashboard.putNumber("Current Rot Error", e1);
 
         currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, position.getRotation());
         double predictedX = position.getX() + (currentSpeeds.vxMetersPerSecond * timestep);
         double predictedY = position.getY() + (currentSpeeds.vyMetersPerSecond * timestep);
         double predictedRot = Math.atan2(targetY - predictedY, targetX - predictedX);
-
-        double e2 = calculateError(predictedRot, position.getRotation().getRadians());
+        if (flipped) {
+            predictedRot = predictedRot + Math.PI;
+            predictedRot = MathUtil.angleModulus(predictedRot);
+        }
+        double e2 = calculateError(predictedRot, currentRot);
         double deltaE = e2 - e1;
         // SmartDashboard.putNumber("Delta e", deltaE);
         double pidOut = PathfindingConstants.kPathfindingThetaController.calculate(e1);

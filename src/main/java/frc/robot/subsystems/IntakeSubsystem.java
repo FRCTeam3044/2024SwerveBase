@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -29,6 +31,31 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeBottomMotor.configFactoryDefault();
         intakeBottomMotor.configPeakCurrentLimit(20);
         intakeBottomMotor.setInverted(true);
+
+        intakeBottomMotor.setStatusFramePeriod(2, 5000);
+        intakeBottomMotor.setStatusFramePeriod(3, 5000);
+        intakeBottomMotor.setStatusFramePeriod(8, 5000);
+        intakeBottomMotor.setStatusFramePeriod(10, 50000);
+        intakeBottomMotor.setStatusFramePeriod(12, 5000);
+        intakeBottomMotor.setStatusFramePeriod(13, 5000);
+        intakeBottomMotor.setStatusFramePeriod(14, 5000);
+        intakeBottomMotor.setStatusFramePeriod(21, 5000);
+        intakeBottomMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        intakeBottomMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        intakeBottomMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
+        intakeTopMotor.setStatusFramePeriod(2, 5000);
+        intakeTopMotor.setStatusFramePeriod(3, 5000);
+        intakeTopMotor.setStatusFramePeriod(8, 5000);
+        intakeTopMotor.setStatusFramePeriod(10, 50000);
+        intakeTopMotor.setStatusFramePeriod(12, 5000);
+        intakeTopMotor.setStatusFramePeriod(13, 5000);
+        intakeTopMotor.setStatusFramePeriod(14, 5000);
+        intakeTopMotor.setStatusFramePeriod(21, 5000);
+        intakeTopMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        intakeTopMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        intakeTopMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
     }
 
     // Use this to run intake
