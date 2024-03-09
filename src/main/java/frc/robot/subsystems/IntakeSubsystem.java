@@ -16,7 +16,8 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     TalonSRX intakeTopMotor = new TalonSRX(CANConstants.kIntakeTopMotorPort);
     TalonSRX intakeBottomMotor = new TalonSRX(CANConstants.kIntakeBottomMotorPort);
     AnalogInput intakeUltrasonic = new AnalogInput(CANConstants.kIntakeSensorPort);
-    ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250, "Intake Ultrasonic Threshold");
+    ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
+            "Intake Ultrasonic Threshold");
 
     // This will be set to true if the intake is running
     boolean isIntakeRunning = false;
@@ -27,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeTopMotor.configPeakCurrentLimit(20);
         intakeBottomMotor.configFactoryDefault();
         intakeBottomMotor.configPeakCurrentLimit(20);
-
+        intakeBottomMotor.setInverted(true);
     }
 
     // Use this to run intake
@@ -54,7 +55,7 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
      */
     @Override
     public boolean readLimitSwitch() {
-        if(intakeUltrasonic.getValue() <= intakeUltrasonicThreshold.get()) {
+        if (intakeUltrasonic.getValue() <= intakeUltrasonicThreshold.get()) {
             return true;
         } else {
             return false;
