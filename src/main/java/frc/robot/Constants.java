@@ -257,7 +257,7 @@ public final class Constants {
                         new Rotation3d(
                                 0,
                                 0.17,
-                                0)),
+                                Math.PI)),
         };
     }
 
@@ -318,7 +318,8 @@ public final class Constants {
     }
 
     public static final class DetectorConstants {
-        public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,"Filter taps");
+        public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
+                "Filter taps");
         public static final Double cameraOffset = 0.2794;
         public static final Double noteCenterDist = 0.1778;
     }
