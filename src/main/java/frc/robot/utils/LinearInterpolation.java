@@ -1,15 +1,16 @@
 package frc.robot.utils;
 
-import java.util.NavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class LinearInterpolation {
-    private NavigableMap<Double, Double> m_map;
+    private ConcurrentSkipListMap<Double, Double> m_map;
 
-    public LinearInterpolation(NavigableMap<Double, Double> map) {
+    public LinearInterpolation(ConcurrentSkipListMap<Double, Double> map) {
         m_map = map;
     }
 
     public LinearInterpolation(double[] x, double[] y) {
+        m_map = new ConcurrentSkipListMap<Double, Double>();
         for (int i = 0; i < x.length; i++) {
             m_map.put(x[i], y[i]);
         }
