@@ -329,10 +329,13 @@ public final class Constants {
                 new Point( 745, 156 ),
                 new Point( 94, 215 ),
                 new Point( 1113, 109 ),
+                new Point( 986, 109 ),
+                new Point( 1118, 48 ),
                 new Point( 1077, 26 ),
                 new Point( 912, 565 ),
                 new Point( 1221, 563 ),
                 new Point( 1196, 283 )
+
         );
         public static MatOfPoint2f fieldPointsArray = new MatOfPoint2f(
                new Point( 0.9144, 0 ),
@@ -346,7 +349,7 @@ public final class Constants {
                new Point( 2.7432, 0.9144 ),
                new Point( 3.3528, 1.524 ),
                new Point( 3.6576, 1.524 ),
-               new Point( 0.9144,-0.3048 ),
+               new Point( 0.9144, -0.3048 ),
                new Point( 0.9144, -0.6096 ),
                new Point( 1.524, -0.9144 )
         );
