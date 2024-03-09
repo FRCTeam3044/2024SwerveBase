@@ -318,18 +318,9 @@ public final class Constants {
     }
 
     public static final class DetectorConstants {
-        public static double[][] cameraPointsArray = {
-                { 621, 538 },
-                { 625, 438 },
-                { 93, 450 },
-                { 1163, 469 }
-        };
-        public static double[][] fieldPointsArray = {
-                { 0.91, 0 },
-                { 1.82, 0 },
-                { 1.82, 0.91 },
-                { 1.82, -0.92 }
-        };
+        public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,"Filter taps");
+        public static final Double cameraOffset = 0.2794;
+        public static final Double noteCenterDist = 0.1778;
     }
 
     public static final class ClimberConstants {

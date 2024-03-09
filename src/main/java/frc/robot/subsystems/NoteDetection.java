@@ -47,18 +47,40 @@ public class NoteDetection extends SubsystemBase {
     public NoteDetection() {
         detector = new PhotonCamera("detection");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
+        
         MatOfPoint2f cameraPoints = new MatOfPoint2f(
-                new Point(501, 638),
-                new Point(789, 643),
-                new Point(755, 587),
-                new Point(524, 579));
+            new Point(601, 566),
+            new Point(289, 568),
+            new Point(358, 398),
+            new Point(601, 397),
+            new Point(910, 562),
+            new Point(745, 156),
+            new Point(94, 215),
+            new Point(1113, 109),
+            new Point(986, 109),
+            new Point(1118, 48),
+            new Point(1077, 26),
+            new Point(912, 565),
+            new Point(1221, 563),
+            new Point(1196, 283)
+    );
 
-        MatOfPoint2f fieldPoints = new MatOfPoint2f(
-                new Point(0.61595, 0.08255),
-                new Point(0.61595, -0.08255),
-                new Point(0.78105, -0.08255),
-                new Point(0.78105, 0.08255));
+    MatOfPoint2f fieldPoints = new MatOfPoint2f(
+           new Point(0.9144, 0),
+           new Point(0.9144, 0.3048),
+           new Point(1.2192, 0.3048),
+           new Point(1.2192, 0), 
+           new Point(0.9144, -0.3048),
+           new Point(2.1336, -0.3048),
+           new Point(1.8288, 0.9144),
+           new Point(2.7432, 1.2192),
+           new Point(2.7432, 0.9144),
+           new Point(3.3528, 1.524),
+           new Point(3.6576, 1.524),
+           new Point(0.9144, -0.3048),
+           new Point(0.9144, -0.6096),
+           new Point(1.524, -0.9144)
+    );
 
         homography = new Mat();
         homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
