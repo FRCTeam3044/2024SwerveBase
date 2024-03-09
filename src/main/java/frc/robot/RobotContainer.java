@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AutoAimCommnd;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ElevatorSetAngleForSubwooferCommand;
@@ -111,7 +111,7 @@ public class RobotContainer {
     private void configureBindings() {
         // Driver 1
         m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() -> !DriverStation.isTest()));
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
+        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommand(elevator, m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand.onlyIf(() -> !DriverStation.isTest()));
         // When the menu button is pressed*

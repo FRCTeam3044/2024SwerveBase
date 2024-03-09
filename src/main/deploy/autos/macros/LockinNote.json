@@ -1,0 +1,71 @@
+[
+  {
+    "type": "if",
+    "name": "Lock In Note",
+    "condition": {
+      "id": "has_note",
+      "children": [],
+      "name": "New Condition",
+      "parameters": {}
+    },
+    "child": {
+      "type": "while",
+      "id": "parallel",
+      "name": "Bring in until in transit",
+      "children": [
+        {
+          "type": "command",
+          "id": "intake",
+          "name": "New Command",
+          "parameters": {}
+        },
+        {
+          "type": "command",
+          "id": "transit",
+          "name": "New Command",
+          "parameters": {}
+        },
+        {
+          "type": "command",
+          "id": "wait_for_note",
+          "name": "New Command",
+          "parameters": {}
+        }
+      ],
+      "condition": {
+        "id": "not",
+        "children": [
+          {
+            "id": "is_state",
+            "name": "New Condition",
+            "parameters": {},
+            "children": []
+          }
+        ],
+        "name": "New Condition",
+        "parameters": {
+          "state": "NOTE_LOADED"
+        }
+      },
+      "child": {
+        "type": "group",
+        "id": "parallel",
+        "name": "Run Transit & Intake",
+        "children": [
+          {
+            "type": "command",
+            "id": "intake",
+            "name": "Run Intake",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "transit",
+            "name": "Run Transit",
+            "parameters": {}
+          }
+        ]
+      }
+    }
+  }
+]

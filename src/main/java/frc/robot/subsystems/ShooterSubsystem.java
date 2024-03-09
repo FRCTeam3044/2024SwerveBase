@@ -61,6 +61,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stopShooter() {
+        currentTargetRPM = 0;
         topMotor.set(0);
         bottomMotor.set(0);
     }
