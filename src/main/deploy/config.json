@@ -83,7 +83,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -213,7 +213,7 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -342,7 +342,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -375,7 +375,7 @@
         },
         "Rot Controller Min Error Radians": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.0"
         },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
@@ -472,7 +472,7 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -491,7 +491,7 @@
         },
         "Rot Controller Min Speed Rad/sec": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.5"
         },
         "frontLeftModule/turning/D": "0.0",
         "Pathfinding Max Angular Acceleration": {
@@ -600,7 +600,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -730,7 +730,7 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -749,7 +749,7 @@
         },
         "Rot Controller Min Speed Rad/sec": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.1"
         },
         "frontLeftModule/turning/D": "0.0",
         "Pathfinding Max Angular Acceleration": {
@@ -858,7 +858,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -988,7 +988,7 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {

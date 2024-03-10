@@ -33,10 +33,10 @@ public class AutoAiming {
             2.615
     };
     private double[] angles = {
-            0.8,
-            0.7872,
-            0.7619,
-            0.758
+            0.08,
+            0.07872,
+            0.07619,
+            0.0758
     };
     private LinearInterpolation linearInterpolation;
 

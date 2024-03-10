@@ -12,6 +12,7 @@ import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
+import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -110,14 +111,8 @@ public class RobotContainer {
         // Driver 1
         // m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() ->
         // !DriverStation.isTest()));
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive)/*
-                                                                                                     * ,
-                                                                                                     * new
-                                                                                                     * DriveAndTrackPointCommand
-                                                                                                     * (m_robotDrive,
-                                                                                                     * m_driverController,
-                                                                                                     * true)
-                                                                                                     */);
+        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
+                new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand.onlyIf(() -> !DriverStation.isTest()));
         // When the menu button is pressed*
         // m_driverController.start()

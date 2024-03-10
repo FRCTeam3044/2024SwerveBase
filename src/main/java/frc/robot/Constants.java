@@ -223,7 +223,7 @@ public final class Constants {
         public static final ConfigurableParameter<Double> kRotationTimestep = new ConfigurableParameter<Double>(
                 0.02,
                 "Rotation FF Timestep");
-        public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(0.1,
+        public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(1.0,
                 "Rotation FF");
 
     }

@@ -3,6 +3,7 @@ package frc.robot.utils;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.PathfindingConstants;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
@@ -48,10 +49,6 @@ public class TargetRotationController {
      */
     public double calculate(Pose2d position, ChassisSpeeds currentSpeeds) {
         double currentRot = position.getRotation().getRadians();
-        if (flipped) {
-            currentRot = currentRot + Math.PI;
-            currentRot = MathUtil.angleModulus(currentRot);
-        }
 
         double timestep = PathfindingConstants.kRotationTimestep.get();
         double targetAngle = Math.atan2(targetY - position.getY(), targetX - position.getX());
@@ -93,6 +90,7 @@ public class TargetRotationController {
             finalOut = Math.copySign(maxSpeed.get(), finalOut);
         }
 
+        SmartDashboard.putNumber("Rot Controller Output", finalOut);
         return finalOut;
     }
 
