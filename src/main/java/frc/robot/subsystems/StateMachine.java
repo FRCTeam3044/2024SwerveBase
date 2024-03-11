@@ -49,7 +49,7 @@ public class StateMachine extends SubsystemBase {
         NO_NOTE
     }
 
-    private static final boolean testModeEnabled = true;
+    private static final boolean testModeEnabled = false;
 
     protected State currentState = State.NO_NOTE;
 
@@ -67,6 +67,8 @@ public class StateMachine extends SubsystemBase {
     protected Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
     protected Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+            DebounceType.kBoth);
+    protected Debouncer m_hasNoteDebouncer = new Debouncer(StateMachineConstants.kDebounce.get() * 2,
             DebounceType.kBoth);
 
     public boolean lostNote = false;
@@ -130,7 +132,7 @@ public class StateMachine extends SubsystemBase {
 
         switch (currentState) {
             case NO_NOTE:
-                if (m_noteDetection.hasNote) {
+                if (m_hasNoteDebouncer.calculate(m_noteDetection.hasNote)) {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
                         currentState = State.TARGETING_NOTE;
@@ -146,14 +148,14 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
-                if (!m_noteDetection.hasNote || m_noteDetection
+                if (getIntakeLimitSwitch()) {
+                    currentState = State.OWNS_NOTE;
+                    updateDesiredCommand();
+                }
+                if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
                     currentState = State.NO_NOTE;
                     lostNote = true;
-                    updateDesiredCommand();
-                }
-                if (getIntakeLimitSwitch()) {
-                    currentState = State.OWNS_NOTE;
                     updateDesiredCommand();
                 }
                 break;

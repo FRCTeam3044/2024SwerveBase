@@ -23,20 +23,24 @@ public class AutoAiming {
     public static final boolean isCollecting = true;
     public static final ConfigurableParameter<Double> bucketSize = new ConfigurableParameter<>(0.1, "Bucket Size");
 
+    private final ConfigurableParameter<Double> autoAimOffset = new ConfigurableParameter<Double>(0.0,
+            "Auto Aim Temporary Offset");
     private boolean runningWithoutData = false;
     private PolynomialRegression polynomialRegression;
     private JSONArray data;
     private double[] distances = {
-            0.9,
-            1.322,
-            2.053,
-            2.615
+            1.287,
+            1.876,
+            2.831,
+            3.410,
+            4.610
     };
     private double[] angles = {
-            0.08,
-            0.07872,
-            0.07619,
-            0.0758
+            0.115,
+            0.092,
+            0.0654,
+            0.0490,
+            0.04
     };
     private LinearInterpolation linearInterpolation;
 
@@ -65,7 +69,7 @@ public class AutoAiming {
 
     public double getAngle(double distance) {
         if (usingLerp) {
-            return lerp(distance);
+            return lerp(distance) + autoAimOffset.get();
         }
         if (runningWithoutData) {
             DriverStation.reportWarning("Auto aiming running with insufficient data, generated angles invalid", false);

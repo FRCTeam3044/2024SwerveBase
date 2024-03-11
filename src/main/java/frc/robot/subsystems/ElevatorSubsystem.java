@@ -59,7 +59,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final ConfigurableParameter<Double> positionOffset;
 
     public ElevatorSubsystem() {
-        positionOffset = new ConfigurableParameter<Double>(0.0,
+        positionOffset = new ConfigurableParameter<Double>(
+                0.8556,
                 "Elevator Position Offset", elevatorPivotEncoder::setPositionOffset);
 
         elevatorMotorOne.restoreFactoryDefaults();

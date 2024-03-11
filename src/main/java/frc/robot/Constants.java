@@ -159,8 +159,8 @@ public final class Constants {
         public static final int kTransitMotorPort = 31;
 
         // TODO: These may be swapped
-        public static final int kTransitSensorPort = 4;
-        public static final int kIntakeSensorPort = 6;
+        public static final int kTransitSensorPort = 1;
+        public static final int kIntakeSensorPort = 0;
 
         public static final int kIntakeTopMotorPort = 32;
         public static final int kIntakeBottomMotorPort = 33;
@@ -230,7 +230,7 @@ public final class Constants {
 
     public static final class VisionConstants {
         // TODO: Update these values
-        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
+        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(6, 6, 8); // THESE ARE NOT CORRECT
         public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(1.5, 1.5, 4); // THESE ARE NOT
                                                                                            // CORRECT
         // array of active cameras
@@ -251,12 +251,12 @@ public final class Constants {
                 // Math.PI)),
                 new Transform3d( // back
                         new Translation3d(
-                                0.2286,
-                                -0.10795,
+                                0.1207,
+                                0.10795,
                                 0.5715),
                         new Rotation3d(
                                 0,
-                                0.17,
+                                -0.17,
                                 Math.PI)),
         };
     }

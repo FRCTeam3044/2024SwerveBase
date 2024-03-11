@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
@@ -49,6 +50,11 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     // Use this to send the note to the shooter
     public void sendNoteToShooter() {
 
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Transit Ultrasonic", transitUltrasonic.getValue());
     }
 
     /**

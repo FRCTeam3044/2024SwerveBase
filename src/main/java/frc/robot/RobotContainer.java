@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
@@ -90,7 +91,8 @@ public class RobotContainer {
 
         m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
         climber.setDefaultCommand(new ClimberCommand(climber, m_operatorController.getHID()));
-        elevator.setDefaultCommand(new ElevatorTestCommand(elevator, m_operatorController.getHID()));
+        // elevator.setDefaultCommand(new ElevatorTestCommand(elevator,
+        // m_operatorController.getHID()));
     }
 
     /**
@@ -109,11 +111,11 @@ public class RobotContainer {
      */
     private void configureBindings() {
         // Driver 1
-        // m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() ->
-        // !DriverStation.isTest()));
+        m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() -> !DriverStation.isTest()));
         Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
-        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand.onlyIf(() -> !DriverStation.isTest()));
+        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand
+                .onlyIf(() -> (!DriverStation.isTest() && !m_operatorController.getHID().getAButton())));
         // When the menu button is pressed*
         // m_driverController.start()
         // .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() ->
@@ -126,9 +128,8 @@ public class RobotContainer {
         m_operatorController.y().whileTrue((new TransitCommand(transit)).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.leftTrigger()
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
-        // m_operatorController.a()
-        // .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() ->
-        // !DriverStation.isTest()));
+        m_operatorController.a()
+                .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
         // m_operatorController.b()
         // .whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator).onlyIf(() ->
         // !DriverStation.isTest()));

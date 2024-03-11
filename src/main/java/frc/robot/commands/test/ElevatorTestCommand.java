@@ -47,16 +47,16 @@ public class ElevatorTestCommand extends Command {
         // }
 
         // TODO: Change this back after demo
-        // if (!m_controller.getAButton() && !m_controller.getYButton()) {
-        // m_elevator.consumeElevatorInput(0);
-        // return;
-        // }
-        // // PID Control
-        // if (m_controller.getYButton()) {
-        // m_elevator.setAngle(kElevatorPIDControlTarget.get());
-        // m_elevator.pidHandler();
-        // return;
-        // }
+        if (!m_controller.getAButton() && !m_controller.getYButton()) {
+            m_elevator.consumeElevatorInput(0);
+            return;
+        }
+        // PID Control
+        if (m_controller.getYButton()) {
+            m_elevator.setAngle(kElevatorPIDControlTarget.get());
+            m_elevator.pidHandler();
+            return;
+        }
         double rightY = -m_controller.getRightY();
         rightY = MathUtil.applyDeadband(rightY, OIConstants.kDriveDeadband.get())
                 * ElevatorConstants.kElevatorManualSpeed.get();
