@@ -52,34 +52,34 @@ public class NoteDetection extends SubsystemBase {
             new Point(601, 566),
             new Point(289, 568),
             new Point(358, 398),
-            new Point(601, 397),
-            new Point(910, 562),
-            new Point(745, 156),
-            new Point(94, 215),
-            new Point(1113, 109),
-            new Point(986, 109),
-            new Point(1118, 48),
-            new Point(1077, 26),
-            new Point(912, 565),
-            new Point(1221, 563),
-            new Point(1196, 283)
+            new Point(601, 397)
+            // new Point(910, 562),
+            // new Point(745, 156),
+            // new Point(94, 215),
+            // new Point(1113, 109),
+            // new Point(986, 109),
+            // new Point(1118, 48),
+            // new Point(1077, 26),
+            // new Point(912, 565),
+            // new Point(1221, 563),
+            // new Point(1196, 283)
     );
 
     MatOfPoint2f fieldPoints = new MatOfPoint2f(
            new Point(0.9144, 0),
            new Point(0.9144, 0.3048),
            new Point(1.2192, 0.3048),
-           new Point(1.2192, 0), 
-           new Point(0.9144, -0.3048),
-           new Point(2.1336, -0.3048),
-           new Point(1.8288, 0.9144),
-           new Point(2.7432, 1.2192),
-           new Point(2.7432, 0.9144),
-           new Point(3.3528, 1.524),
-           new Point(3.6576, 1.524),
-           new Point(0.9144, -0.3048),
-           new Point(0.9144, -0.6096),
-           new Point(1.524, -0.9144)
+           new Point(1.2192, 0)
+        //    new Point(0.9144, -0.3048),
+        //    new Point(2.1336, -0.3048),
+        //    new Point(1.8288, 0.9144),
+        //    new Point(2.7432, 1.2192),
+        //    new Point(2.7432, 0.9144),
+        //    new Point(3.3528, 1.524),
+        //    new Point(3.6576, 1.524),
+        //    new Point(0.9144, -0.3048),
+        //    new Point(0.9144, -0.6096),
+        //    new Point(1.524, -0.9144)
     );
 
         homography = new Mat();
@@ -111,17 +111,15 @@ public class NoteDetection extends SubsystemBase {
                 minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
                 maxX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
                 minY = (int) targets.get(i).getMinAreaRectCorners().get(0).y;
-                for (PhotonTrackedTarget target : targets) {
-                    for (TargetCorner corner : target.getMinAreaRectCorners()) {
-                        if (corner.x < minX) {
-                            minX = (int) corner.x;
-                        }
-                        if (corner.x > maxX) {
-                            maxX = (int) corner.x;
-                        }
-                        if (corner.y < minY) {
-                            minY = (int) corner.y;
-                        }
+                for (TargetCorner corner : targets.get(i).getMinAreaRectCorners()) {
+                    if (corner.x < minX) {
+                        minX = (int) corner.x;
+                    }
+                    if (corner.x > maxX) {
+                        maxX = (int) corner.x;
+                    }
+                    if (corner.y < minY) {
+                        minY = (int) corner.y;
                     }
                 }
                 var midpoint = (maxX + minX) / 2;
@@ -203,7 +201,7 @@ public class NoteDetection extends SubsystemBase {
 
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         Pose2d robotRelativeNotePose = new Pose2d(
-                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.3937 /* TODO: Move camera offset to constants */
+                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] /*+ 0.3937 TODO: Move camera offset to constants */
                         + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
