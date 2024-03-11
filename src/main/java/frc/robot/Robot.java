@@ -94,7 +94,7 @@ public class Robot extends LoggedRobot {
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, (LEDConstants.sideLEDLength * 2) + LEDConstants.topLEDLength, m_robotContainer);
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, 104 , m_robotContainer);
     }
 
     /**
@@ -109,6 +109,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
+        m_led.setSidesRainbow();
         // Runs the Scheduler. This is responsible for polling buttons, adding
         // newly-scheduled
         // commands, running already-scheduled commands, removing finished or

@@ -25,7 +25,7 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDSubsystem(int port, int ledLength, RobotContainer robotContainer) {
         m_robotContainer = robotContainer;
         m_led = new AddressableLED(port);
-        m_ledBuffer = new AddressableLEDBuffer(ledLength);
+        m_ledBuffer = new AddressableLEDBuffer(104);
         m_led.setLength(m_ledBuffer.getLength());
         m_led.setData(m_ledBuffer);
         m_led.start();
@@ -39,9 +39,9 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setTopRainbow() {
-        for (var i = LEDConstants.sideLEDLength + 1; i < LEDConstants.topLEDLength + 1; i++) {
+        for (var i = LEDConstants.sideLEDLength + 1; i < LEDConstants.topLEDLength; i++) {
           final var hue = (m_topRainbowFirstPixelHue + (i * 180 / LEDConstants.topLEDLength)) % 180;
-          m_ledBuffer.setHSV(i, hue, 255, 128);
+          m_ledBuffer.setHSV(i, hue, 255, 64);
         }
         m_topRainbowFirstPixelHue += 3;
         m_topRainbowFirstPixelHue %= 180;
@@ -50,17 +50,26 @@ public class LEDSubsystem extends SubsystemBase {
     public void setSidesRainbow() {
         for (var i = 0; i < LEDConstants.sideLEDLength; i++) {
           final var hue = (m_sideRainbowFirstPixelHue + (i * 180 / LEDConstants.sideLEDLength)) % 180;
-          m_ledBuffer.setHSV(i, hue, 255, 128);
+          m_ledBuffer.setHSV(i, hue, 255, 64);
+        }
+        for (var i = m_ledBuffer.getLength(); i < LEDConstants.sideLEDLength + LEDConstants.topLEDLength; i--) {
+            final var hue = (m_sideRainbowFirstPixelHue + (i * 180 / LEDConstants.sideLEDLength)) % 180;
+            m_ledBuffer.setHSV(i, hue, 255, 64);
         }
         m_sideRainbowFirstPixelHue += 3;
         m_sideRainbowFirstPixelHue %= 180;
+        m_led.setData(m_ledBuffer);
     }
-
+     
     public void setRainbow() {
-        for (var i = 0; i < m_ledBuffer.getLength() + 1; i++) {
-          final var hue = (m_rainbowFirstPixelHue + (i * 180 / LEDConstants.topLEDLength)) % 180;
-          m_ledBuffer.setHSV(i, hue, 255, 128);
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+            final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+            m_ledBuffer.setHSV(i, hue, 255, 64);
         }
+        m_rainbowFirstPixelHue += 3;
+        m_rainbowFirstPixelHue %= 180;
+
+        m_led.setData(m_ledBuffer);
     }
 
     public void setColor(int r, int g, int b) {
@@ -130,25 +139,27 @@ public class LEDSubsystem extends SubsystemBase {
             purpleGoldCenterLed++;
         }
     }
+
     @Override
     public void periodic() {
-        if(m_robotContainer.stateMachineCommand.isScheduled()) {
-            setSidesRainbow();
-        } else {
-            setSidesRainbow();
-        }
+        // setSidesRainbow();
+        // if(m_robotContainer.stateMachineCommand.isScheduled()) {
+        //     setSidesRainbow();
+        // } else {
+        //     setSidesRainbow();
+        // }
 
-        State state = RobotContainer.stateMachine.getState();
-        if(state == State.NOTE_LOADED) {
-            setColorTop(255, 165, 0);
-        } else if(state == State.OWNS_NOTE) {
-            blinkColorTop(255,165,0, 0.250);
-        } else if(state == State.TARGETING_NOTE) {
-            if(RobotContainer.m_noteDetection.hasNote) {
-                setCompass(RobotContainer.m_noteDetection.getClosestNoteCameraXPosition());
-            }
-        } else if(state == State.READY_TO_SHOOT) {
-            setColorTop(0, 255, 0);
-        }
+        // State state = RobotContainer.stateMachine.getState();
+        // if(state == State.NOTE_LOADED) {
+        //     setColorTop(255, 165, 0);
+        // } else if(state == State.OWNS_NOTE) {
+        //     blinkColorTop(255,165,0, 0.250);
+        // } else if(state == State.TARGETING_NOTE) {
+        //     if(RobotContainer.m_noteDetection.hasNote) {
+        //         setCompass(RobotContainer.m_noteDetection.getClosestNoteCameraXPosition());
+        //     }
+        // } else if(state == State.READY_TO_SHOOT) {
+        //     setColorTop(0, 255, 0);
+        // }
     }
 }
