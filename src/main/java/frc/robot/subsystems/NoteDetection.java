@@ -187,7 +187,7 @@ public class NoteDetection extends SubsystemBase {
                     filterNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
             framesSinceRobot = 0;
             hasNote = true;
-        } else if (Math.abs(lastDistanceToRobot - currentDistanceToRobot) > differentNoteThreshold.get()) {
+        } else if (Math.abs(lastDistanceToRobot - currentDistanceToRobot) < differentNoteThreshold.get()) {
             lastDistanceToRobot = currentDistanceToRobot;
             closestPose = new Pose2d(filterNoteX.calculate(closestRawPose.getX()),
                     filterNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
