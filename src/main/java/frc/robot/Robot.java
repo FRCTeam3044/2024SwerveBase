@@ -13,6 +13,7 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -160,6 +161,7 @@ public class Robot extends LoggedRobot {
         // this line or comment it out.
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
+            CommandScheduler.getInstance().cancelAll();
         }
 
         // lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0,

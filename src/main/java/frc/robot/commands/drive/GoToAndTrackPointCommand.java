@@ -80,6 +80,11 @@ public class GoToAndTrackPointCommand extends Command {
     }
 
     @Override
+    public void execute() {
+        System.out.println(getName() + " Running");
+    }
+
+    @Override
     public boolean isFinished() {
         if (m_followTrajectoryCommand == null) {
             return failed;
@@ -89,6 +94,7 @@ public class GoToAndTrackPointCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println(getName() + " Ended");
         if (m_followTrajectoryCommand != null) {
             m_followTrajectoryCommand.cancel();
         }

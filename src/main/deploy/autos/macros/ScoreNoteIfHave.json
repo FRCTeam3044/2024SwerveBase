@@ -5,49 +5,59 @@
       "id": "has_note",
       "children": [],
       "name": "New Condition",
-      "parameters": {
-        "state": "NOTE_LOADED"
-      }
+      "parameters": {}
     },
     "child": {
-      "type": "group",
-      "id": "race",
-      "name": "Score",
-      "parameters": {},
-      "children": [
-        {
-          "type": "group",
-          "id": "parallel",
-          "name": "Lock in & Get to shooting zone",
-          "parameters": {},
-          "children": [
-            {
-              "type": "macro",
-              "id": "lock_in_note",
-              "name": "Lock In Note",
-              "parameters": {}
+      "type": "while",
+      "condition": {
+        "id": "not",
+        "children": [
+          {
+            "id": "is_state",
+            "name": "New Condition",
+            "parameters": {
+              "state": "NO_NOTE"
             },
-            {
-              "type": "command",
-              "id": "to_shooting_zone",
-              "name": "Get to shooting zone",
-              "parameters": {}
-            }
-          ]
-        },
-        {
-          "type": "command",
-          "id": "auto_aim_shooter",
-          "name": "Align Shooter",
-          "parameters": {}
-        },
-        {
-          "type": "command",
-          "id": "spinup_shooter_if_in_range",
-          "name": "Spinup Shooter",
-          "parameters": {}
-        }
-      ]
+            "children": []
+          }
+        ],
+        "name": "New Condition",
+        "parameters": {}
+      },
+      "child": {
+        "type": "group",
+        "id": "race",
+        "name": "Score",
+        "parameters": {},
+        "children": [
+          {
+            "type": "command",
+            "id": "to_shooting_zone",
+            "name": "Get to shooting zone",
+            "parameters": {},
+            "children": []
+          },
+          {
+            "type": "command",
+            "id": "auto_aim_shooter",
+            "name": "Align Shooter",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "spinup_shooter_if_in_range",
+            "name": "Spinup Shooter",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "shoot_if_ready",
+            "name": "Shoot when ready",
+            "parameters": {}
+          }
+        ]
+      },
+      "name": "Shoot until we dont have a note"
     },
     "name": "Score if have note"
   }

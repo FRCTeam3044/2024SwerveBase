@@ -193,7 +193,7 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -260,6 +260,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -468,7 +472,7 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -535,6 +539,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -742,7 +750,7 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -809,6 +817,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -1016,7 +1028,7 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -1083,6 +1095,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",

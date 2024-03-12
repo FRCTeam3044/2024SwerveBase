@@ -19,8 +19,9 @@ public class HasNote implements AutoBoolean {
     }
 
     private boolean hasNote() {
-        return (stateMachine.getState() == State.NOTE_LOADED
+        boolean result = (stateMachine.getState() == State.NOTE_LOADED
                 || stateMachine.getState() == State.READY_TO_SHOOT);
+        return result;
     }
 
 }

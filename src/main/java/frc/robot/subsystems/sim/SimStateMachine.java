@@ -27,11 +27,6 @@ public class SimStateMachine extends StateMachine {
     }
 
     @Override
-    protected boolean getIntakeLimitSwitch() {
-        return RobotContainer.m_driverController.getHID().getAButton();
-    }
-
-    @Override
     protected boolean getTransitLimitSwitch() {
         return RobotContainer.m_driverController.getHID().getBButton();
     }

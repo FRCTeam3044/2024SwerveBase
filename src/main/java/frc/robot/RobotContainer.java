@@ -15,16 +15,21 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
+import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
+import me.nabdev.pathfinding.autos.booleans.NotBoolean;
 
 import java.io.FileNotFoundException;
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -150,6 +155,7 @@ public class RobotContainer {
         try {
             AutoCommandFactory.registerCommands();
             Command auto = AutoParser.loadAuto("GetThree.json");
+
             return auto;
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't find file");

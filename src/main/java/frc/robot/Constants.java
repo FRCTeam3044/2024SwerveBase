@@ -154,11 +154,8 @@ public final class Constants {
     public static final class CANConstants {
         public static final int kShooterTopMotorPort = 35;
         public static final int kShooterBottomMotorPort = 34;
-
-        // TODO: Swapped w intake bottom, need to redo can
         public static final int kTransitMotorPort = 31;
 
-        // TODO: These may be swapped
         public static final int kTransitSensorPort = 1;
         public static final int kIntakeSensorPort = 0;
 
@@ -170,8 +167,6 @@ public final class Constants {
 
         public static final int kElevatorMotorOnePort = 21;
         public static final int kElevatorMotorTwoPort = 22;
-        // public static final int kElevatorTopLimitSwitch = 23;
-        // public static final int kElevatorBottomLimitSwitch = 22;
 
         public static final int kElevatorPivotEncoderPort = 9;
     }

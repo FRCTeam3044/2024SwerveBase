@@ -109,6 +109,7 @@ public class AutoAiming {
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateDataFromJSON() {
         ArrayList<Double> distancesTemp = new ArrayList<>();
         ArrayList<Double> anglesTemp = new ArrayList<>();

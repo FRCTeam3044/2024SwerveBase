@@ -15,8 +15,7 @@ public class ShootIfReady extends Command {
 
     @Override
     public void execute() {
-        if (m_transit != null &&
-                RobotContainer.stateMachine.getState() == State.READY_TO_SHOOT) {
+        if (RobotContainer.stateMachine.getState() == State.READY_TO_SHOOT) {
             m_transit.runTransit();
         }
     }

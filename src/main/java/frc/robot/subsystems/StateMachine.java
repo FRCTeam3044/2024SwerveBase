@@ -103,7 +103,6 @@ public class StateMachine extends SubsystemBase {
     @Override
     public void periodic() {
         if (RobotBase.isSimulation()) {
-            SmartDashboard.putBoolean("Intake Limit Switch", RobotContainer.m_driverController.getHID().getAButton());
             SmartDashboard.putBoolean("Transit Limit Switch", RobotContainer.m_driverController.getHID().getBButton());
             SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
             SmartDashboard.putBoolean("Shooter At Angle", RobotContainer.m_driverController.getHID().getYButton());
@@ -277,14 +276,14 @@ public class StateMachine extends SubsystemBase {
         return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand);
     }
 
-    public Command goToShootingZoneCommand() {
+    public Command goToShootingZoneCommand(boolean forceMove) {
         ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
         if (shootingZone == null) {
             return null;
         }
         Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
         Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
-        if (shootingZone.isInside(robotPos)) {
+        if (!forceMove && shootingZone.isInside(robotPos)) {
             return new TrackPointCommand(m_driveSubsystem, trackPoint, true);
         } else {
             Pose2d closestPoint = shootingZone.calculateNearestPoint(robotPos).asPose2d();
@@ -293,6 +292,10 @@ public class StateMachine extends SubsystemBase {
             TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
             return travelToPoint.andThen(trackPointCmd);
         }
+    }
+
+    public Command goToShootingZoneCommand() {
+        return goToShootingZoneCommand(false);
     }
 
     private Command getShootCommand() {

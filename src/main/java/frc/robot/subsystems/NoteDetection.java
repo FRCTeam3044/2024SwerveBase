@@ -34,6 +34,8 @@ public class NoteDetection extends SubsystemBase {
             "Lost Note Threshold (Frames)");
     LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
     LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
+    LinearFilter filterRegionNoteX = LinearFilter.movingAverage(filterTaps.get());
+    LinearFilter filterRegionNoteY = LinearFilter.movingAverage(filterTaps.get());
 
     private Mat homography;
     Timer timer = new Timer();
@@ -108,11 +110,14 @@ public class NoteDetection extends SubsystemBase {
         notePoses.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;
+            hasNoteInRegion = true;
             closestPose = new Pose2d(13.68, 7, new Rotation2d());
+            closestPoseToRegion = new Pose2d(13.68, 7, new Rotation2d());
             if (closestPose.getTranslation().getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
                 notePoses.add(closestPose);
                 SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
             }
+            return;
         } else {
             var result = detector.getLatestResult();
             if (!result.hasTargets()) {
@@ -161,17 +166,25 @@ public class NoteDetection extends SubsystemBase {
                 hasNoteInRegion = false;
             } else {
                 double currentDistanceToRegion = robotPose.getDistance(regionPose.getTranslation());
-                if (currentDistanceToRegion < lastDistanceToRegion
-                        || Math.abs(lastDistanceToRegion) - currentDistanceToRegion < differentNoteThreshold.get()) {
-                    lastDistanceToRobot = currentDistanceToRegion;
+
+                if (!hasNote || (currentDistanceToRegion < lastDistanceToRegion
+                        && Math.abs(lastDistanceToRegion - currentDistanceToRegion) > differentNoteThreshold.get())) {
+                    lastDistanceToRegion = currentDistanceToRegion;
+                    filterRegionNoteX.reset();
+                    filterRegionNoteY.reset();
+                    closestPose = new Pose2d(filterRegionNoteX.calculate(closestRawPose.getX()),
+                            filterRegionNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
                     framesSinceRegion = 0;
-                    hasNoteInRegion = true;
-                    closestPoseToRegion = new Pose2d(
-                            filterNoteX.calculate(closestPoseToRegionTemp.getX()),
-                            filterNoteY.calculate(closestPoseToRegionTemp.getY()),
-                            closestPoseToRegionTemp.getRotation());
+                    hasNote = true;
+                } else if (Math.abs(lastDistanceToRegion - currentDistanceToRegion) < differentNoteThreshold.get()) {
+                    lastDistanceToRegion = currentDistanceToRegion;
+                    closestPose = new Pose2d(filterRegionNoteX.calculate(closestRawPose.getX()),
+                            filterRegionNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
+                    framesSinceRegion = 0;
+                    hasNote = true;
                 } else {
                     framesSinceRegion++;
+                    hasNote = false;
                 }
 
             }

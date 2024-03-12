@@ -56,12 +56,17 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("to_shooting_zone", AutoCommandFactory::getToShootingZone);
         AutoParser.registerCommand("auto_aim_shooter", AutoCommandFactory::autoAimShooter);
         AutoParser.registerCommand("spinup_shooter_if_in_range", AutoCommandFactory::spinupShooterIfInRange);
+        AutoParser.registerCommand("shoot_if_ready", AutoCommandFactory::shootIfReady);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
         AutoParser.registerMacro("pickup_note", "PickupNote.json");
         AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
-        AutoParser.registerMacro("lock_in_note", "ScoreNoteIfHave.json");
+        AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
+    }
+
+    public static Command shootIfReady(JSONObject parameters) {
+        return new ShootIfReady(RobotContainer.transit);
     }
 
     public static Command spinupShooterIfInRange(JSONObject parameters) {
@@ -73,7 +78,7 @@ public final class AutoCommandFactory {
     }
 
     public static Command getToShootingZone(JSONObject parameters) {
-        return RobotContainer.stateMachine.goToShootingZoneCommand();
+        return new GoToShootingZone(RobotContainer.m_robotDrive);
     }
 
     public static NoteInArea noteInArea(JSONObject parameters) {
@@ -145,7 +150,6 @@ public final class AutoCommandFactory {
             JSONObject waypoint = waypoints.getJSONObject(i);
             Pose2d waypointPose = getAllianceLocation(waypoint.getDouble("x"), waypoint.getDouble("y"));
             targets.add(waypointPose);
-            System.out.println(waypointPose);
         }
         return new GoToPointSuppliedRotCommand(targets, RobotContainer.m_robotDrive,
                 Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
@@ -158,7 +162,6 @@ public final class AutoCommandFactory {
             JSONObject waypoint = waypoints.getJSONObject(i);
             Pose2d waypointPose = getAllianceLocation(waypoint.getDouble("x"), waypoint.getDouble("y"));
             targets.add(waypointPose);
-            System.out.println(waypointPose);
         }
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
         boolean flipped = parameters.getBoolean("flipped");
