@@ -13,9 +13,9 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.commands.AutoAimCommnd;
 import frc.robot.commands.DriverShootCommand;
+import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
-import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
@@ -31,10 +31,6 @@ public class StateMachine extends SubsystemBase {
          * Close enough to a note to pickup
          */
         TARGETING_NOTE,
-        /**
-         * A note is in the intake but not in the transit
-         */
-        OWNS_NOTE,
         /**
          * A note is in the transit & ready to be shot
          */
@@ -132,6 +128,11 @@ public class StateMachine extends SubsystemBase {
 
         switch (currentState) {
             case NO_NOTE:
+                if (getTransitLimitSwitch()) {
+                    currentState = State.NOTE_LOADED;
+                    updateDesiredCommand();
+                    return;
+                }
                 if (m_hasNoteDebouncer.calculate(m_noteDetection.hasNote)) {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
@@ -148,8 +149,8 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
-                if (getIntakeLimitSwitch()) {
-                    currentState = State.OWNS_NOTE;
+                if (getTransitLimitSwitch()) {
+                    currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                 }
                 if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
@@ -159,13 +160,12 @@ public class StateMachine extends SubsystemBase {
                     updateDesiredCommand();
                 }
                 break;
-            case OWNS_NOTE:
-                if (getTransitLimitSwitch()) {
-                    currentState = State.NOTE_LOADED;
-                    updateDesiredCommand();
-                }
-                break;
             case NOTE_LOADED:
+                if (!getIntakeLimitSwitch() && !getTransitLimitSwitch()) {
+                    currentState = State.NO_NOTE;
+                    updateDesiredCommand();
+                    return;
+                }
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
                 if (shooterAtSpeed() && shooterAtAngle() && inShootingZone) {
@@ -230,9 +230,6 @@ public class StateMachine extends SubsystemBase {
             case TARGETING_NOTE:
                 // Go To & Pickup Note
                 return getPickupNoteCommand();
-            case OWNS_NOTE:
-                // Get note locked in transit
-                return getLockinNoteCommand();
             case NOTE_LOADED:
                 // Start Aiming shooter and speeding up wheels
                 return getReadyShooterCommand();
@@ -254,18 +251,20 @@ public class StateMachine extends SubsystemBase {
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
+        ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);
         IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
-        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
+        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand, setAngleCommand);
     }
 
-    private Command getLockinNoteCommand() {
-        Command runIntake = new IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
-        Command getToPoint = goToShootingZoneCommand();
-        if (getToPoint == null) {
-            return null;
-        }
-        return Commands.parallel(runIntake, getToPoint);
-    }
+    // private Command getLockinNoteCommand() {
+    // Command runIntake = new
+    // IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
+    // Command getToPoint = goToShootingZoneCommand();
+    // if (getToPoint == null) {
+    // return null;
+    // }
+    // return Commands.parallel(runIntake, getToPoint);
+    // }
 
     private Command getReadyShooterCommand() {
         Command getToPoint = goToShootingZoneCommand();
@@ -305,6 +304,7 @@ public class StateMachine extends SubsystemBase {
         return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
     }
 
+    @SuppressWarnings("unused")
     protected void updateDesiredCommand() {
         // currentDesiredCommand = getCommandForState(currentState);
         if (testModeEnabled && SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {

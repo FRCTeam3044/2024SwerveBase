@@ -39,11 +39,10 @@ public class VisionSubsystem extends SubsystemBase {
                     });
         }
 
-        double[] pose = { RobotContainer.m_robotDrive.getPose().getX(), RobotContainer.m_robotDrive.getPose().getY(),
-                RobotContainer.m_robotDrive.getPose().getRotation().getDegrees() };
+        double[] pose = poseToDouble(RobotContainer.m_robotDrive.getPose());
 
         // Is being logged on field
-        // SmartDashboard.putNumberArray("Robot Pose", pose);
+        SmartDashboard.putNumberArray("Robot Pose", pose);
     }
 
     private double[] poseToDouble(Pose2d pose) {

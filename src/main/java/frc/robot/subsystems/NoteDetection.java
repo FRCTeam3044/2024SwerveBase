@@ -16,6 +16,7 @@ import org.photonvision.targeting.TargetCorner;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +27,11 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class NoteDetection extends SubsystemBase {
     public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
             "Filter taps");
+
+    private final ConfigurableParameter<Double> differentNoteThreshold = new ConfigurableParameter<Double>(1.0,
+            "Different Note Threshold (meters)");
+    private final ConfigurableParameter<Integer> lostFrameThreshold = new ConfigurableParameter<Integer>(50,
+            "Lost Note Threshold (Frames)");
     LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
     LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
 
@@ -36,6 +42,10 @@ public class NoteDetection extends SubsystemBase {
     public boolean hasNoteInRegion = false;
     private Pose2d closestPose;
     private Pose2d closestPoseToRegion;
+    private double lastDistanceToRobot = Double.MAX_VALUE;
+    private double lastDistanceToRegion = Double.MAX_VALUE;
+    private int framesSinceRobot;
+    private int framesSinceRegion;
     int minX;
     int maxX;
     int minY;
@@ -47,40 +57,40 @@ public class NoteDetection extends SubsystemBase {
     public NoteDetection() {
         detector = new PhotonCamera("detection");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        
-        MatOfPoint2f cameraPoints = new MatOfPoint2f(
-            new Point(601, 566),
-            new Point(289, 568),
-            new Point(358, 398),
-            new Point(601, 397)
-            // new Point(910, 562),
-            // new Point(745, 156),
-            // new Point(94, 215),
-            // new Point(1113, 109),
-            // new Point(986, 109),
-            // new Point(1118, 48),
-            // new Point(1077, 26),
-            // new Point(912, 565),
-            // new Point(1221, 563),
-            // new Point(1196, 283)
-    );
 
-    MatOfPoint2f fieldPoints = new MatOfPoint2f(
-           new Point(0.9144, 0),
-           new Point(0.9144, 0.3048),
-           new Point(1.2192, 0.3048),
-           new Point(1.2192, 0)
-        //    new Point(0.9144, -0.3048),
-        //    new Point(2.1336, -0.3048),
-        //    new Point(1.8288, 0.9144),
-        //    new Point(2.7432, 1.2192),
-        //    new Point(2.7432, 0.9144),
-        //    new Point(3.3528, 1.524),
-        //    new Point(3.6576, 1.524),
-        //    new Point(0.9144, -0.3048),
-        //    new Point(0.9144, -0.6096),
-        //    new Point(1.524, -0.9144)
-    );
+        MatOfPoint2f cameraPoints = new MatOfPoint2f(
+                new Point(601, 566),
+                new Point(289, 568),
+                new Point(358, 398),
+                new Point(601, 397)
+        // new Point(910, 562),
+        // new Point(745, 156),
+        // new Point(94, 215),
+        // new Point(1113, 109),
+        // new Point(986, 109),
+        // new Point(1118, 48),
+        // new Point(1077, 26),
+        // new Point(912, 565),
+        // new Point(1221, 563),
+        // new Point(1196, 283)
+        );
+
+        MatOfPoint2f fieldPoints = new MatOfPoint2f(
+                new Point(0.9144, 0),
+                new Point(0.9144, 0.3048),
+                new Point(1.2192, 0.3048),
+                new Point(1.2192, 0)
+        // new Point(0.9144, -0.3048),
+        // new Point(2.1336, -0.3048),
+        // new Point(1.8288, 0.9144),
+        // new Point(2.7432, 1.2192),
+        // new Point(2.7432, 0.9144),
+        // new Point(3.3528, 1.524),
+        // new Point(3.6576, 1.524),
+        // new Point(0.9144, -0.3048),
+        // new Point(0.9144, -0.6096),
+        // new Point(1.524, -0.9144)
+        );
 
         homography = new Mat();
         homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
@@ -90,6 +100,11 @@ public class NoteDetection extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+        SmartDashboard.putBoolean("Has note", hasNote);
+        SmartDashboard.putBoolean("Has note in region", hasNoteInRegion);
+        SmartDashboard.putNumber("Frames since robot", framesSinceRobot);
+        SmartDashboard.putNumber("Last Robot Distance", lastDistanceToRobot);
         notePoses.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;
@@ -101,11 +116,16 @@ public class NoteDetection extends SubsystemBase {
         } else {
             var result = detector.getLatestResult();
             if (!result.hasTargets()) {
-                hasNote = false;
-                hasNoteInRegion = false;
+                if (framesSinceRegion > lostFrameThreshold.get()) {
+                    hasNoteInRegion = false;
+                }
+                if (framesSinceRobot > lostFrameThreshold.get()) {
+                    hasNote = false;
+                }
+                framesSinceRegion++;
+                framesSinceRobot++;
                 return;
             }
-            hasNote = true;
             List<PhotonTrackedTarget> targets = result.getTargets();
             for (int i = 0; i < targets.size(); i++) {
                 minX = (int) targets.get(i).getMinAreaRectCorners().get(0).x;
@@ -128,30 +148,51 @@ public class NoteDetection extends SubsystemBase {
                 SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
             }
         }
+        Translation2d robotPose = RobotContainer.m_robotDrive.getPose().getTranslation();
         Pose2d closestRawPose = findClosestNote(null);
         if (closestRawPose == null) {
+            hasNote = false;
             return;
         }
         if (regionPose != null) {
             Pose2d closestPoseToRegionTemp = findClosestNote(regionPose);
             if (closestPoseToRegionTemp == null) {
+                framesSinceRegion++;
                 hasNoteInRegion = false;
             } else {
-                hasNoteInRegion = true;
-                closestPoseToRegion = new Pose2d(
-                        filterNoteX.calculate(closestPoseToRegionTemp.getX()),
-                        filterNoteY.calculate(closestPoseToRegionTemp.getY()),
-                        closestPoseToRegionTemp.getRotation());
+                double currentDistanceToRegion = robotPose.getDistance(regionPose.getTranslation());
+                if (currentDistanceToRegion < lastDistanceToRegion
+                        || Math.abs(lastDistanceToRegion) - currentDistanceToRegion < differentNoteThreshold.get()) {
+                    lastDistanceToRobot = currentDistanceToRegion;
+                    framesSinceRegion = 0;
+                    hasNoteInRegion = true;
+                    closestPoseToRegion = new Pose2d(
+                            filterNoteX.calculate(closestPoseToRegionTemp.getX()),
+                            filterNoteY.calculate(closestPoseToRegionTemp.getY()),
+                            closestPoseToRegionTemp.getRotation());
+                } else {
+                    framesSinceRegion++;
+                }
+
             }
         }
-        closestPose = new Pose2d(
+        Pose2d closestPoseTemp = new Pose2d(
                 filterNoteX.calculate(closestRawPose.getX()),
                 filterNoteY.calculate(closestRawPose.getY()),
                 closestRawPose.getRotation());
 
-        SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
-        SmartDashboard.putBoolean("Has note", hasNote);
-        SmartDashboard.putBoolean("Has note in region", hasNoteInRegion);
+        double currentDistanceToRobot = robotPose.getDistance(closestPoseTemp.getTranslation());
+        // if (!hasNote || currentDistanceToRobot < lastDistanceToRobot
+        // || Math.abs(lastDistanceToRobot - currentDistanceToRobot) <
+        // differentNoteThreshold.get()) {
+        lastDistanceToRobot = currentDistanceToRobot;
+        closestPose = closestPoseTemp;
+        framesSinceRobot = 0;
+        hasNote = true;
+        // } else {
+        // framesSinceRobot++;
+        // }
+
     }
 
     public Pose2d getClosestNote() {
@@ -164,7 +205,11 @@ public class NoteDetection extends SubsystemBase {
 
     public double getClosestNoteDistance() {
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
-        double distance = getClosestNote().getTranslation().getDistance(currentPose.getTranslation());
+        Pose2d c = getClosestNote();
+        if (c == null) {
+            return Double.MAX_VALUE;
+        }
+        double distance = c.getTranslation().getDistance(currentPose.getTranslation());
         return distance;
     }
 
@@ -201,7 +246,7 @@ public class NoteDetection extends SubsystemBase {
 
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         Pose2d robotRelativeNotePose = new Pose2d(
-                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] /*+ 0.3937 TODO: Move camera offset to constants */
+                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] /* + 0.3937 TODO: Move camera offset to constants */
                         + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
@@ -224,6 +269,8 @@ public class NoteDetection extends SubsystemBase {
     }
 
     private double[] poseToDouble(Pose2d pose) {
+        if (pose == null)
+            return new double[] {};
         double[] poseDouble = { pose.getX(), pose.getY(), pose.getRotation().getDegrees() };
         return poseDouble;
     }

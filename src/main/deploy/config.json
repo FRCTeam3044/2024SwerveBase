@@ -14,8 +14,8 @@
             "value": "0.8"
         },
         "Elevator Position Offset": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -91,6 +91,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -130,7 +134,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -165,6 +169,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -192,7 +200,11 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.101"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -214,6 +226,10 @@
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -257,7 +273,7 @@
         "Pathfinding X Controller/P": "1.0",
         "rearRightModule/turning/D": "0.0"
     },
-    "mode": "presentation",
+    "mode": "testing",
     "simulation": {
         "frontRightModule/turning/FF": "0.0",
         "Elevator Angle PID/I": "0.0",
@@ -273,8 +289,8 @@
             "value": "0.8"
         },
         "Elevator Position Offset": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -350,6 +366,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -389,7 +409,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -424,6 +444,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -453,6 +477,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
+        },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
@@ -473,6 +501,10 @@
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -531,8 +563,8 @@
             "value": "0.8"
         },
         "Elevator Position Offset": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -554,7 +586,7 @@
         },
         "Statemachine Debounce": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "0.05"
         },
         "frontRightModule/turning/IZone": "0.0",
         "Rot Controller Max Speed Rad/sec": {
@@ -608,6 +640,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -647,7 +683,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -682,6 +718,10 @@
             "comment": "Auto-Generated",
             "value": "8000.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "80"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -709,7 +749,11 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.101"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -731,6 +775,10 @@
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -789,8 +837,8 @@
             "value": "0.8"
         },
         "Elevator Position Offset": {
-            "comment": "Auto-Generated",
-            "value": "0.0"
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -866,6 +914,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
@@ -905,7 +957,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -940,6 +992,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -967,7 +1023,11 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.101"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -989,6 +1049,10 @@
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {

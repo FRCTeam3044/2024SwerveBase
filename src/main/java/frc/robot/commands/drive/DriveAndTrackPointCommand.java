@@ -27,7 +27,6 @@ public class DriveAndTrackPointCommand extends Command {
 
     private Supplier<Pose2d> targetSupplier;
     private Pose2d lastTarget;
-    private final boolean flipped;
 
     /**
      * Creates a new DriveAndTrackPointCommand, defaulting to tracking the speaker.
@@ -40,7 +39,6 @@ public class DriveAndTrackPointCommand extends Command {
             boolean flipped) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
-        this.flipped = flipped;
         isSimulation = RobotBase.isSimulation();
         Pose2d target = AutoTargetUtils.getShootingTarget();
         lastTarget = target;
@@ -65,7 +63,6 @@ public class DriveAndTrackPointCommand extends Command {
             Pose2d target, boolean flipped) {
         m_robotDrive = driveSubsystem;
         m_driverController = driverController;
-        this.flipped = flipped;
         isSimulation = RobotBase.isSimulation();
         targetSupplier = () -> target;
         m_targetRotController = new TargetRotationController(target.getX(), target.getY(), flipped);
@@ -74,7 +71,6 @@ public class DriveAndTrackPointCommand extends Command {
 
     public DriveAndTrackPointCommand(Supplier<Pose2d> target, CommandXboxController driverController,
             DriveSubsystem driveSubsystem, boolean flipped) {
-        this.flipped = flipped;
         targetSupplier = target;
         try {
             lastTarget = target.get();
