@@ -40,7 +40,7 @@ public class Vision {
             m_cameras.add(new PhotonCamera(Constants.VisionConstants.activeCameras[i]));
             // create a PhotonPoseEstimator and add it to m_poseEstimators for each camera
             m_poseEstimators.add(
-                    new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, m_cameras.get(i),
+                    new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, m_cameras.get(i),
                             Constants.VisionConstants.cameraTransforms[i]));
             // set the fallback strategy for each PhotonPoseEstimator
             m_poseEstimators.get(i).setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
