@@ -17,7 +17,6 @@ import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
-import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
@@ -81,9 +80,6 @@ public class StateMachine extends SubsystemBase {
     // private Command currentDesiredCommand;
 
     public boolean changedDesiredCommand;
-
-    private boolean intakeSpikeOne = false;
-    private boolean intakeSpiking = false;
 
     /**
      * Creates a new StateMachine
@@ -282,7 +278,7 @@ public class StateMachine extends SubsystemBase {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
         ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);
-        IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
+        IntakeCommand intakeRunMotorsCommand = new IntakeCommand(m_intakeSubsystem);
         return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand, setAngleCommand);
     }
 

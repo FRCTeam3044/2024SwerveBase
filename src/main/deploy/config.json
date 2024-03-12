@@ -96,11 +96,15 @@
             "value": "0.25"
         },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-12.0"
+            "value": "-10.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -383,11 +387,15 @@
             "value": "0.25"
         },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-12.0"
+            "value": "-10.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -669,11 +677,15 @@
             "value": "0.25"
         },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-12.0"
+            "value": "-15.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -748,7 +760,7 @@
         },
         "Lost Note Threshold (Frames)": {
             "comment": "Auto-Generated",
-            "value": "80"
+            "value": "150"
         },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
@@ -790,11 +802,11 @@
         },
         "Intake Current Delay": {
             "comment": "Auto-Generated",
-            "value": "0.25"
+            "value": "0.5"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "0.5"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
@@ -852,7 +864,7 @@
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "0.25"
         },
         "frontLeftModule/turning/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
@@ -955,11 +967,15 @@
             "value": "0.25"
         },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-12.0"
+            "value": "-10.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",

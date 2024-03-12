@@ -22,6 +22,8 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     AnalogInput intakeUltrasonic = new AnalogInput(CANConstants.kIntakeSensorPort);
     ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
             "Intake Ultrasonic Threshold");
+    ConfigurableParameter<Double> intakeSpinupSpeed = new ConfigurableParameter<Double>(0.4,
+            "Intake Spinup Speed");
 
     // This will be set to true if the intake is running
     public boolean isIntakeRunning = false;
@@ -79,8 +81,10 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             timeSinceStart.start();
             isIntakeRunning = true;
         }
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
+        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, output);
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -output);
     }
 
     public void runIntakeReverse() {
@@ -89,8 +93,10 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             timeSinceStart.start();
             isIntakeRunning = true;
         }
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
+        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -output);
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, output);
     }
 
     // Stops intake
