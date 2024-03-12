@@ -252,7 +252,7 @@ public final class Constants {
                 new Transform3d( // back
                         new Translation3d(
                                 0.2286,
-                                -0.10795,
+                                0.10795,
                                 0.5715),
                         new Rotation3d(
                                 0,
@@ -356,6 +356,7 @@ public final class Constants {
     public static final class LEDConstants {
         public static final int LEDPort = 9;
         public static final int sideLEDLength = 34;
+        public static final int LEDOffset = 16;
         public static final int topLEDLength = 36;
     }
 }

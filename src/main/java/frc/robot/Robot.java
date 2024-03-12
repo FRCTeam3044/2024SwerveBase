@@ -8,7 +8,9 @@ import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -54,6 +56,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
+        DriverStation.silenceJoystickConnectionWarning(true);
         // Record metadata
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -94,7 +97,8 @@ public class Robot extends LoggedRobot {
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, 104 , m_robotContainer);
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, 52 , m_robotContainer);
+        PhotonCamera.setVersionCheckEnabled(false);
     }
 
     /**
@@ -109,7 +113,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
-        m_led.setSidesRainbow();
         // Runs the Scheduler. This is responsible for polling buttons, adding
         // newly-scheduled
         // commands, running already-scheduled commands, removing finished or
