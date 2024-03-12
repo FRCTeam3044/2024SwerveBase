@@ -17,9 +17,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -35,6 +37,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PathfindingConstants;
+import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
 import me.nabdev.pathfinding.Pathfinder;
@@ -75,6 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // The gyro sensor (NavX)
     private final AHRS m_gyro = new AHRS(I2C.Port.kMXP);
+    // private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
     // Slew rate filter variables for controlling lateral acceleration
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
@@ -96,6 +100,9 @@ public class DriveSubsystem extends SubsystemBase {
     // In radians
     private double m_simYaw;
 
+    private LinearFilter distanceToShootingTargetFilter = LinearFilter.movingAverage(20);
+    public double distanceToShootingTarget;
+
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics,
@@ -111,8 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
         // noise
         // and how many or how frequently vision measurements are applied to the pose
         // estimator.
-
-        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.05);
         var visionStdDevs = VecBuilder.fill(1, 1, 1);
         poseEstimator = new SwerveDrivePoseEstimator(
                 DriveConstants.kDriveKinematics,
@@ -141,8 +147,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private double getGyroAngleDegrees() {
-        double gyroRadians = Math.toRadians(-m_gyro.getAngle());
-        return Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI / 2));
+        // double gyroRadians = Math.toRadians(-m_gyro.getAngle());
+        double gyroRadians = Math.toRadians(-m_gyro.getAngle() - Math.PI / 2);
+        double wrapped = Math.toDegrees(MathUtil.angleModulus(gyroRadians + Math.PI /
+                2));
+        return wrapped;
     }
 
     @Override
@@ -155,6 +164,13 @@ public class DriveSubsystem extends SubsystemBase {
         field.setRobotPose(getPose());
 
         SmartDashboard.putData("Field", field);
+        SmartDashboard.putNumber("Gyro Raw", getGyroAngleDegrees());
+        if (AutoTargetUtils.getShootingTarget() != null) {
+            Translation2d shootingTarget = AutoTargetUtils.getShootingTarget().getTranslation();
+            distanceToShootingTarget = distanceToShootingTargetFilter
+                    .calculate(shootingTarget.getDistance(getPose().getTranslation()));
+            SmartDashboard.putNumber("Dist To Speaker", distanceToShootingTarget);
+        }
 
         // ArrayList<Vertex> inflatedVertices = pathfinder.visualizeInflatedVertices();
         // PathfindingDebugUtils.drawLines("Visibility Graph",

@@ -46,6 +46,7 @@ public class ElevatorTestCommand extends Command {
         // m_elevator.consumeElevatorInput(0);
         // }
 
+        // TODO: Change this back after demo
         if (!m_controller.getAButton() && !m_controller.getYButton()) {
             m_elevator.consumeElevatorInput(0);
             return;

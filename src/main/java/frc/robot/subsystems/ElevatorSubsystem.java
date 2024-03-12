@@ -56,7 +56,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     double currentTargetRotations = 0;
     private boolean hasInitialized = false;
 
+    private final ConfigurableParameter<Double> positionOffset;
+
     public ElevatorSubsystem() {
+        positionOffset = new ConfigurableParameter<Double>(
+                0.8556,
+                "Elevator Position Offset", elevatorPivotEncoder::setPositionOffset);
+
         elevatorMotorOne.restoreFactoryDefaults();
         elevatorMotorTwo.restoreFactoryDefaults();
 
@@ -97,6 +103,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 "Elevator Angle PID");
 
         elevatorMotorTwo.follow(elevatorMotorOne);
+
+        elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
     // Sets the intake, shooter, and transit to the postion that we want it to be in
@@ -126,7 +134,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double getAngle() {
         // return elevatorPivotEncoder.getPosition();
-        return elevatorPivotEncoder.getAbsolutePosition();
+        return elevatorPivotEncoder.getAbsolutePosition() - positionOffset.get();
     }
 
     public void pidHandler() {
@@ -148,8 +156,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     private double angleToRotations(double angle) {
-        double raw = -89.2 + (317 * angle) + (-183 * Math.pow(angle, 2));
-        return MathUtil.clamp(raw, 0.0, 21);
+        double raw = 21.9 + (197 * angle) + (-22 * Math.pow(angle, 2));
+        return MathUtil.clamp(raw, 22.5, 50.0);
     }
 
     @Override
@@ -159,6 +167,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             motorOneEncoder.setPosition(angleToRotations(getAngle()));
             hasInitialized = true;
         }
+        // motorOneEncoder.setPosition(angleToRotations(getAngle()));
         SmartDashboard.putNumber("Arm/MotorOnePos", motorOneEncoder.getPosition());
         SmartDashboard.putNumber("Arm/MotorTwoPos", motorTwoEncoder.getPosition());
         SmartDashboard.putNumber("Arm/TargetPos", currentTargetRotations);

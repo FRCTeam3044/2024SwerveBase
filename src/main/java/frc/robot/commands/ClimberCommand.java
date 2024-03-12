@@ -38,10 +38,13 @@ public class ClimberCommand extends Command {
         // ClimberConstants.kClimberManualSpeed.get() : 0;
         // double leftPow = isLeftBumperPressed ?
         // ClimberConstants.kClimberManualSpeed.get() : 0;
-        double rightStick = MathUtil.applyDeadband(m_controller.getRightY(), climberControlDeadband.get());
-        double leftStick = MathUtil.applyDeadband(m_controller.getLeftY(), climberControlDeadband.get());
+        double rightStick = -MathUtil.applyDeadband(m_controller.getRightY(),
+                climberControlDeadband.get());
+        double leftStick = -MathUtil.applyDeadband(m_controller.getLeftY(),
+                climberControlDeadband.get());
 
-        m_climber.consumeClimberInput(rightStick * ClimberConstants.kClimberManualSpeed.get(),
+        m_climber.consumeClimberInput(rightStick *
+                ClimberConstants.kClimberManualSpeed.get(),
                 leftStick * ClimberConstants.kClimberManualSpeed.get());
     }
 }

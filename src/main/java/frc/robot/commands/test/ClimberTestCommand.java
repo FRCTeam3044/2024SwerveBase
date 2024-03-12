@@ -39,6 +39,6 @@ public class ClimberTestCommand extends Command {
 
         double rightPow = isRightBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * output : 0;
         double leftPow = isLeftBumperPressed ? ClimberConstants.kClimberManualSpeed.get() * output : 0;
-        m_climber.consumeClimberInput(rightPow, leftPow);
+        m_climber.consumeClimberInput(leftPow, rightPow);
     }
 }

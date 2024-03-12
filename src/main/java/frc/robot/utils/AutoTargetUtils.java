@@ -19,7 +19,12 @@ public class AutoTargetUtils {
     public static final ObstacleGroup RED_SHOOTING_ZONE;
 
     public static final Pose2d BLUE_SHOOTING_TARGET = new Pose2d(0.1, 5.5478, new Rotation2d());
-    public static final Pose2d RED_SHOOTING_TARGET = new Pose2d(16.45, 5.5478, new Rotation2d());
+    public static final Pose2d RED_SHOOTING_TARGET = new Pose2d(16.45, 5.5478,
+            new Rotation2d());
+    // public static final Pose2d BLUE_SHOOTING_TARGET = new Pose2d(0.1, 5.7978, new
+    // Rotation2d());
+    // public static final Pose2d RED_SHOOTING_TARGET = new Pose2d(16.45, 5.7978,
+    // new Rotation2d());
 
     static {
         Obstacle blueShootingZoneOne = Obstacle.createObstacle(

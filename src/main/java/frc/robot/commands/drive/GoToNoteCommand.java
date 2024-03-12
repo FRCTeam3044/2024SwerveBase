@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,7 +33,7 @@ public class GoToNoteCommand extends Command {
         this.m_noteDetection = m_noteDetection;
         hasTargetRegion = false;
         this.cancelIfNone = cancelIfNone;
-        targetRotationController = new TargetRotationController(0, 0);
+        targetRotationController = new TargetRotationController(0, 0, false);
     }
 
     public GoToNoteCommand(DriveSubsystem m_robotDrive, NoteDetection m_noteDetection, Pose2d targetRegion,
@@ -43,7 +44,7 @@ public class GoToNoteCommand extends Command {
         this.targetRegion = targetRegion;
         this.regionRadius = regionRadius;
         this.cancelIfNone = cancelIfNone;
-        targetRotationController = new TargetRotationController(0, 0);
+        targetRotationController = new TargetRotationController(0, 0, false);
 
     }
 
@@ -51,6 +52,7 @@ public class GoToNoteCommand extends Command {
     public void initialize() {
         originalRobotPose = m_robotDrive.getPose();
         m_followCommand = null;
+        System.out.println("Go to note initialized!!!");
         if (hasTargetRegion) {
             m_noteDetection.setRegion(targetRegion, regionRadius);
             if (m_noteDetection.hasNoteInRegion) {
@@ -77,7 +79,10 @@ public class GoToNoteCommand extends Command {
         if (failed || !m_noteDetection.hasNote || (hasTargetRegion && !m_noteDetection.hasNoteInRegion)) {
             return;
         }
+        // System.out.println("Going to note!!!");
         Pose2d notePose = hasTargetRegion ? m_noteDetection.getClosestNoteToRegion() : m_noteDetection.getClosestNote();
+        SmartDashboard.putNumberArray("Target Note Pose (StateMachine)",
+                new double[] { notePose.getX(), notePose.getY(), 0 });
         targetRotationController.setTargetX(notePose.getX());
         targetRotationController.setTargetY(notePose.getY());
 

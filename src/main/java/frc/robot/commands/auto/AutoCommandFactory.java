@@ -161,14 +161,16 @@ public final class AutoCommandFactory {
             System.out.println(waypointPose);
         }
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
+        boolean flipped = parameters.getBoolean("flipped");
         SmartDashboard.putNumberArray("track target", new double[] { trackTarget.getX(), trackTarget.getY() });
-        return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive);
+        return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive, flipped);
     }
 
     public static GoToAndTrackPointCommand goToAndTrackPoint(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("targetX"), parameters.getDouble("targetY"));
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
-        return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive);
+        boolean flipped = parameters.getBoolean("flipped");
+        return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive, flipped);
     }
 
     public static ElevatorSetAngleForIntakeCommand elevatorSetAngleForIntakeCommand(JSONObject parameters) {
