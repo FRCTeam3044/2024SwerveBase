@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AutoAimCommnd;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ManualShooterCommand;
@@ -15,7 +15,6 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -112,7 +111,7 @@ public class RobotContainer {
     private void configureBindings() {
         // Driver 1
         m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() -> !DriverStation.isTest()));
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommnd(elevator, m_robotDrive),
+        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommand(elevator, m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand
                 .onlyIf(() -> (!DriverStation.isTest() && !m_operatorController.getHID().getAButton())));
