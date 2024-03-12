@@ -117,9 +117,9 @@ public class MAXSwerveModule {
         m_turningPIDController.setOutputRange(ModuleConstants.kTurningMinOutput,
                 ModuleConstants.kTurningMaxOutput);
 
-        new ConfigurableSparkPIDController(m_drivingPIDController,
-                moduleName + "/driving",
-                moduleName + " driving");
+        // new ConfigurableSparkPIDController(m_drivingPIDController,
+        // moduleName + "/driving",
+        // moduleName + " driving");
         new ConfigurableSparkPIDController(m_turningPIDController,
                 moduleName + "/turning",
                 moduleName + " turning");

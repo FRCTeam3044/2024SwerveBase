@@ -39,8 +39,9 @@ public class Vision {
         for (int i = 0; i < Constants.VisionConstants.activeCameras.length; i++) {
             m_cameras.add(new PhotonCamera(Constants.VisionConstants.activeCameras[i]));
             // create a PhotonPoseEstimator and add it to m_poseEstimators for each camera
-            m_poseEstimators.add(new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, m_cameras.get(i),
-                    Constants.VisionConstants.cameraTransforms[i]));
+            m_poseEstimators.add(
+                    new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, m_cameras.get(i),
+                            Constants.VisionConstants.cameraTransforms[i]));
             // set the fallback strategy for each PhotonPoseEstimator
             m_poseEstimators.get(i).setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         }
@@ -77,6 +78,7 @@ public class Vision {
      *         used for estimation.
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(int cameraIndex) {
+        m_poseEstimators.get(cameraIndex).setReferencePose(RobotContainer.m_robotDrive.getPose());
         var visionEst = m_poseEstimators.get(cameraIndex).update();
         double latestTimestamp = m_cameras.get(cameraIndex).getLatestResult().getTimestampSeconds();
         boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
@@ -119,14 +121,15 @@ public class Vision {
         if (numTags == 0)
             return estStdDevs;
         avgDist /= numTags;
-        // Decrease std devs if multiple targets are visible
-        if (numTags > 1)
-            estStdDevs = Constants.VisionConstants.MultiTagStdDevs;
+        // // Decrease std devs if multiple targets are visible
+        // if (numTags > 1)
+        // estStdDevs = Constants.VisionConstants.MultiTagStdDevs;
         // Increase std devs based on (average) distance
-        if (numTags == 1 && avgDist > 4)
-            estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        else
-            estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+        // if (avgDist > 4)
+        // estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE,
+        // Double.MAX_VALUE);
+        // else
+        estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
 
         return estStdDevs;
     }

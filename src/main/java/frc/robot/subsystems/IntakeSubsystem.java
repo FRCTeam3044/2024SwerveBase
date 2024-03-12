@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CANConstants;
@@ -56,6 +57,11 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeTopMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
         intakeTopMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
 
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
     }
 
     // Use this to run intake

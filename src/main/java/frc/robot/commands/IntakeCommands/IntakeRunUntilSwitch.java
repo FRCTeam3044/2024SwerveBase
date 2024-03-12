@@ -28,4 +28,9 @@ public class IntakeRunUntilSwitch extends Command {
     public boolean isFinished() {
         return m_intake.readLimitSwitch();
     }
+
+    @Override
+    public void end(boolean interupted) {
+        m_intake.stopIntake();
+    }
 }

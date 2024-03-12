@@ -17,6 +17,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -31,9 +32,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -101,6 +100,9 @@ public class DriveSubsystem extends SubsystemBase {
     // In radians
     private double m_simYaw;
 
+    private LinearFilter distanceToShootingTargetFilter = LinearFilter.movingAverage(20);
+    public double distanceToShootingTarget;
+
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics,
@@ -163,8 +165,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         SmartDashboard.putData("Field", field);
         SmartDashboard.putNumber("Gyro Raw", getGyroAngleDegrees());
-        Translation2d shootingTarget = AutoTargetUtils.getShootingTarget().getTranslation();
-        SmartDashboard.putNumber("Dist To Speaker", shootingTarget.getDistance(getPose().getTranslation()));
+        if (AutoTargetUtils.getShootingTarget() != null) {
+            Translation2d shootingTarget = AutoTargetUtils.getShootingTarget().getTranslation();
+            distanceToShootingTarget = distanceToShootingTargetFilter
+                    .calculate(shootingTarget.getDistance(getPose().getTranslation()));
+            SmartDashboard.putNumber("Dist To Speaker", distanceToShootingTarget);
+        }
 
         // ArrayList<Vertex> inflatedVertices = pathfinder.visualizeInflatedVertices();
         // PathfindingDebugUtils.drawLines("Visibility Graph",

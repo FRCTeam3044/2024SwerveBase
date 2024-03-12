@@ -9,6 +9,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.AutoTargetUtils;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -29,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getAlternateEncoder(8192);
 
     // TODO: Get values
-    public double speakerRPM = 0;
+    public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
 
     boolean isShooterRunning = false;
@@ -81,6 +82,9 @@ public class ShooterSubsystem extends SubsystemBase {
         topMotor.restoreFactoryDefaults();
         bottomMotor.restoreFactoryDefaults();
 
+        topMotor.setSmartCurrentLimit(30);
+        bottomMotor.setSmartCurrentLimit(30);
+
         // bottomMotor.setInverted(false);
 
         m_topAlternateEncoder = topMotor.getAlternateEncoder(kAltEncType, kCPR);
@@ -129,7 +133,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void speakerSpeed() {
-        currentTargetRPM = speakerRPM;
+        currentTargetRPM = speakerRPM.get();
     }
 
     public double getTopMotorRPM() {

@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,10 +25,12 @@ public class VisionSubsystem extends SubsystemBase {
     public void periodic() {
         for (int i = 0; i < Constants.VisionConstants.activeCameras.length; i++) {
             final int camera = i;
-            var visionEst = vision.getEstimatedGlobalPose(i);
+            Optional<EstimatedRobotPose> visionEst = vision.getEstimatedGlobalPose(i);
+
             visionEst.ifPresent(
                     est -> {
                         var estPose = est.estimatedPose.toPose2d();
+                        // SmartDashboard.putNumberArray("est robot", poseToDouble(estPose));
                         // Change our trust in the measurement based on the tags we can see
                         var estStdDevs = vision.getEstimationStdDevs(estPose, camera);
 
@@ -36,6 +42,12 @@ public class VisionSubsystem extends SubsystemBase {
         double[] pose = { RobotContainer.m_robotDrive.getPose().getX(), RobotContainer.m_robotDrive.getPose().getY(),
                 RobotContainer.m_robotDrive.getPose().getRotation().getDegrees() };
 
-        SmartDashboard.putNumberArray("Robot Pose", pose);
+        // Is being logged on field
+        // SmartDashboard.putNumberArray("Robot Pose", pose);
+    }
+
+    private double[] poseToDouble(Pose2d pose) {
+        double[] poseDouble = { pose.getX(), pose.getY(), pose.getRotation().getDegrees() };
+        return poseDouble;
     }
 }

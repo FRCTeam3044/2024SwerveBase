@@ -17,7 +17,7 @@ public class ManualShooterCommand extends Command {
     public ManualShooterCommand(ShooterSubsystem shooter, TransitSubsystem transit) {
         m_shooter = shooter;
         m_transit = transit;
-        addRequirements(m_shooter, m_transit);
+        addRequirements(m_shooter);
     }
 
     @Override
