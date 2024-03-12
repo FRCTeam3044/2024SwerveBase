@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -23,7 +24,9 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             "Intake Ultrasonic Threshold");
 
     // This will be set to true if the intake is running
-    boolean isIntakeRunning = false;
+    public boolean isIntakeRunning = false;
+
+    public Timer timeSinceStart = new Timer();
 
     public IntakeSubsystem() {
         intakeTopMotor.configFactoryDefault();
@@ -62,21 +65,41 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
+        SmartDashboard.putNumber("Intake Current", intakeBottomMotor.getStatorCurrent());
+    }
+
+    public double getCurrent() {
+        return intakeBottomMotor.getStatorCurrent();
     }
 
     // Use this to run intake
     public void runIntake() {
+        if (!isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.start();
+            isIntakeRunning = true;
+        }
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     public void runIntakeReverse() {
+        if (!isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.start();
+            isIntakeRunning = true;
+        }
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
     }
 
     // Stops intake
     public void stopIntake() {
+        if (isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.stop();
+            isIntakeRunning = false;
+        }
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 0);
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }

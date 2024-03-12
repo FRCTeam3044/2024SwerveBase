@@ -15,26 +15,23 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
-import me.nabdev.pathfinding.autos.booleans.NotBoolean;
 
 import java.io.FileNotFoundException;
-import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -121,9 +118,8 @@ public class RobotContainer {
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand
                 .onlyIf(() -> (!DriverStation.isTest() && !m_operatorController.getHID().getAButton())));
         // When the menu button is pressed*
-        // m_driverController.start()
-        // .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() ->
-        // !DriverStation.isTest()));
+        m_driverController.start()
+                .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() -> !DriverStation.isTest()));
 
         // Driver 2
         // Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake),

@@ -16,16 +16,23 @@ import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
+import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
+    private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
+            "Intake Current Threshold");
+    private ConfigurableParameter<Double> kIntakeDelay = new ConfigurableParameter<Double>(0.25,
+            "Intake Current Delay");
+
     public enum State {
         /**
          * Close enough to a note to pickup
@@ -66,12 +73,17 @@ public class StateMachine extends SubsystemBase {
             DebounceType.kBoth);
     protected Debouncer m_hasNoteDebouncer = new Debouncer(StateMachineConstants.kDebounce.get() * 2,
             DebounceType.kBoth);
+    protected Debouncer m_intakeCurrentDebouncer = new Debouncer(StateMachineConstants.kDebounce.get() / 2,
+            DebounceType.kBoth);
 
     public boolean lostNote = false;
 
     // private Command currentDesiredCommand;
 
     public boolean changedDesiredCommand;
+
+    private boolean intakeSpikeOne = false;
+    private boolean intakeSpiking = false;
 
     /**
      * Creates a new StateMachine
@@ -127,7 +139,13 @@ public class StateMachine extends SubsystemBase {
 
         switch (currentState) {
             case NO_NOTE:
-                if (getTransitLimitSwitch()) {
+                // if (getIntakeLimitSwitch()) {
+                // currentState = State.NOTE_LOADED;
+                // updateDesiredCommand();
+                // return;
+                // }
+
+                if (noteIn()) {
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                     return;
@@ -148,7 +166,7 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
-                if (getTransitLimitSwitch()) {
+                if (noteIn()) {
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                 }
@@ -173,7 +191,7 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case READY_TO_SHOOT:
-                if (!getTransitLimitSwitch()) {
+                if (!getTransitLimitSwitch() && !getIntakeLimitSwitch()) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
@@ -188,6 +206,19 @@ public class StateMachine extends SubsystemBase {
         }
 
         SmartDashboard.putString("State", currentState.toString());
+    }
+
+    private boolean noteIn() {
+        boolean currentSpiked = m_intakeCurrentDebouncer
+                .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
+
+        if (m_intakeSubsystem.isIntakeRunning && m_intakeSubsystem.timeSinceStart.hasElapsed(kIntakeDelay.get())
+                && currentSpiked) {
+            return true;
+        }
+
+        // intakeSpiking = false;
+        return false;
     }
 
     public void reset() {
@@ -272,8 +303,9 @@ public class StateMachine extends SubsystemBase {
         }
         AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
+        Command runIntake = Commands.waitSeconds(1).deadlineWith(new IntakeCommand(m_intakeSubsystem));
 
-        return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand);
+        return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand, runIntake);
     }
 
     public Command goToShootingZoneCommand(boolean forceMove) {

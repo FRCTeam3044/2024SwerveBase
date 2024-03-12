@@ -98,6 +98,10 @@
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-12.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -210,6 +214,10 @@
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -377,6 +385,10 @@
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-12.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -489,6 +501,10 @@
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -655,6 +671,10 @@
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-12.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -687,7 +707,7 @@
         },
         "Shooter Manual Control Slow Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.3"
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
@@ -767,6 +787,10 @@
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -933,6 +957,10 @@
         "frontRightModule/turning/Min": "-1.0",
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-12.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -1045,6 +1073,10 @@
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
