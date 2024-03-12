@@ -116,8 +116,7 @@ public class DriveSubsystem extends SubsystemBase {
         // noise
         // and how many or how frequently vision measurements are applied to the pose
         // estimator.
-
-        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.05);
         var visionStdDevs = VecBuilder.fill(1, 1, 1);
         poseEstimator = new SwerveDrivePoseEstimator(
                 DriveConstants.kDriveKinematics,
