@@ -8,6 +8,7 @@ import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -91,6 +92,7 @@ public class Robot extends LoggedRobot {
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
+        PhotonCamera.setVersionCheckEnabled(false);
     }
 
     /**
