@@ -1,14 +1,54 @@
 [
   {
     "type": "if",
-    "name": "Score Note",
     "condition": {
       "id": "has_note",
-      "parameters": {},
-      "children": []
+      "children": [],
+      "name": "New Condition",
+      "parameters": {
+        "state": "NOTE_LOADED"
+      }
     },
     "child": {
-      "type": "command"
-    }
+      "type": "group",
+      "id": "race",
+      "name": "Score",
+      "parameters": {},
+      "children": [
+        {
+          "type": "group",
+          "id": "parallel",
+          "name": "Lock in & Get to shooting zone",
+          "parameters": {},
+          "children": [
+            {
+              "type": "macro",
+              "id": "lock_in_note",
+              "name": "Lock In Note",
+              "parameters": {}
+            },
+            {
+              "type": "command",
+              "id": "to_shooting_zone",
+              "name": "Get to shooting zone",
+              "parameters": {}
+            }
+          ]
+        },
+        {
+          "type": "command",
+          "id": "auto_aim_shooter",
+          "name": "Align Shooter",
+          "parameters": {}
+        },
+        {
+          "type": "command",
+          "id": "spinup_shooter_if_in_range",
+          "name": "Spinup Shooter",
+          "parameters": {}
+        }
+      ]
+    },
+    "name": "Score if have note"
   }
 ]

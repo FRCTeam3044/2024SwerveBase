@@ -176,22 +176,27 @@ public class NoteDetection extends SubsystemBase {
 
             }
         }
-        Pose2d closestPoseTemp = new Pose2d(
-                filterNoteX.calculate(closestRawPose.getX()),
-                filterNoteY.calculate(closestRawPose.getY()),
-                closestRawPose.getRotation());
 
-        double currentDistanceToRobot = robotPose.getDistance(closestPoseTemp.getTranslation());
-        // if (!hasNote || currentDistanceToRobot < lastDistanceToRobot
-        // || Math.abs(lastDistanceToRobot - currentDistanceToRobot) <
-        // differentNoteThreshold.get()) {
-        lastDistanceToRobot = currentDistanceToRobot;
-        closestPose = closestPoseTemp;
-        framesSinceRobot = 0;
-        hasNote = true;
-        // } else {
-        // framesSinceRobot++;
-        // }
+        double currentDistanceToRobot = robotPose.getDistance(closestRawPose.getTranslation());
+        if (!hasNote || (currentDistanceToRobot < lastDistanceToRobot
+                && Math.abs(lastDistanceToRobot - currentDistanceToRobot) > differentNoteThreshold.get())) {
+            lastDistanceToRobot = currentDistanceToRobot;
+            filterNoteX.reset();
+            filterNoteY.reset();
+            closestPose = new Pose2d(filterNoteX.calculate(closestRawPose.getX()),
+                    filterNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
+            framesSinceRobot = 0;
+            hasNote = true;
+        } else if (Math.abs(lastDistanceToRobot - currentDistanceToRobot) < differentNoteThreshold.get()) {
+            lastDistanceToRobot = currentDistanceToRobot;
+            closestPose = new Pose2d(filterNoteX.calculate(closestRawPose.getX()),
+                    filterNoteY.calculate(closestRawPose.getY()), closestRawPose.getRotation());
+            framesSinceRobot = 0;
+            hasNote = true;
+        } else {
+            framesSinceRobot++;
+            hasNote = false;
+        }
 
     }
 

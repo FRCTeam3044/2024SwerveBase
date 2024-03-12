@@ -5,11 +5,11 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class AutoAimCommnd extends Command {
+public class AutoAimCommand extends Command {
     private ElevatorSubsystem m_elevator;
     private DriveSubsystem m_drive;
 
-    public AutoAimCommnd(ElevatorSubsystem elevator, DriveSubsystem drive) {
+    public AutoAimCommand(ElevatorSubsystem elevator, DriveSubsystem drive) {
         m_drive = drive;
         m_elevator = elevator;
         addRequirements(m_elevator);

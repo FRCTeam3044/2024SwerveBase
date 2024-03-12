@@ -14,7 +14,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ElevatorSetAngleForAmpCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
@@ -51,15 +53,37 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("intake", AutoCommandFactory::intakeCommand);
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
+        AutoParser.registerCommand("to_shooting_zone", AutoCommandFactory::getToShootingZone);
+        AutoParser.registerCommand("auto_aim_shooter", AutoCommandFactory::autoAimShooter);
+        AutoParser.registerCommand("spinup_shooter_if_in_range", AutoCommandFactory::spinupShooterIfInRange);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
+        AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
         AutoParser.registerMacro("pickup_note", "PickupNote.json");
+        AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
+        AutoParser.registerMacro("lock_in_note", "ScoreNoteIfHave.json");
+    }
+
+    public static Command spinupShooterIfInRange(JSONObject parameters) {
+        return new SpinupShooterIfInRange(RobotContainer.shooter, RobotContainer.m_robotDrive);
+    }
+
+    public static Command autoAimShooter(JSONObject parameters) {
+        return new AutoAimCommand(RobotContainer.elevator, RobotContainer.m_robotDrive);
+    }
+
+    public static Command getToShootingZone(JSONObject parameters) {
+        return RobotContainer.stateMachine.goToShootingZoneCommand();
     }
 
     public static NoteInArea noteInArea(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
         double targetRadius = parameters.getDouble("regionRadius");
         return new NoteInArea(RobotContainer.m_noteDetection, target, targetRadius, false);
+    }
+
+    public static IsState isState(JSONObject parameters) {
+        return new IsState(RobotContainer.stateMachine, parameters.getString("state"));
     }
 
     public static HasNote hasNote(JSONObject parameters) {

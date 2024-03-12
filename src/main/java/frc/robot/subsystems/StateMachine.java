@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.AutoAimCommnd;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.DriverShootCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
@@ -271,13 +271,13 @@ public class StateMachine extends SubsystemBase {
         if (getToPoint == null) {
             return null;
         }
-        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
 
-        return Commands.parallel(getToPoint, autoAimCommnd, speakerShooterCommand);
+        return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand);
     }
 
-    private Command goToShootingZoneCommand() {
+    public Command goToShootingZoneCommand() {
         ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
         if (shootingZone == null) {
             return null;
@@ -296,12 +296,12 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getShootCommand() {
-        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
                 AutoTargetUtils.getShootingTarget(), true);
         DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
-        return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
+        return Commands.parallel(autoAimCommand, trackPointCommand, driverShootCommand);
     }
 
     @SuppressWarnings("unused")
