@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -33,7 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
 
-    boolean isShooterRunning = false;
+    public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.0,
+            "Shooter Spinup Time");
 
     public static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
     private SparkPIDController topPidController;
@@ -47,6 +49,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder m_bottomAlternateEncoder;
 
     private double currentTargetRPM = 0;
+
+    private boolean isShooting = false;
+    private Timer timeSinceShooting = new Timer();
 
     public void setShooterRPM(double motorRPM) {
         currentTargetRPM = motorRPM;
@@ -62,6 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stopShooter() {
+        isShooting = false;
         currentTargetRPM = 0;
         topMotor.set(0);
         bottomMotor.set(0);
@@ -71,6 +77,11 @@ public class ShooterSubsystem extends SubsystemBase {
         double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
                 : ShooterConstants.kShooterManualSpeed.get();
         if (shoot) {
+            if (!isShooting) {
+                isShooting = true;
+                timeSinceShooting.reset();
+                timeSinceShooting.start();
+            }
             topMotor.set(output);
             bottomMotor.set(-output);
         } else {
@@ -146,9 +157,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean shooterAtSpeed() {
-        double tolerance = ShooterConstants.kShooterToleranceRPM.get();
-        return Math.abs(topShooterMoterEncoder.getVelocity() - currentTargetRPM) < tolerance
-                && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) < tolerance;
+        // double tolerance = ShooterConstants.kShooterToleranceRPM.get();
+        // return Math.abs(topShooterMoterEncoder.getVelocity() - currentTargetRPM) <
+        // tolerance
+        // && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) <
+        // tolerance;
+        return (isShooting && timeSinceShooting.get() > shooterSpinupTime.get());
     }
 
     public void ampSpeed() {

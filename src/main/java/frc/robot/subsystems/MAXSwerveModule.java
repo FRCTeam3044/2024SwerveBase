@@ -120,9 +120,9 @@ public class MAXSwerveModule {
         // new ConfigurableSparkPIDController(m_drivingPIDController,
         // moduleName + "/driving",
         // moduleName + " driving");
-        new ConfigurableSparkPIDController(m_turningPIDController,
-                moduleName + "/turning",
-                moduleName + " turning");
+        // new ConfigurableSparkPIDController(m_turningPIDController,
+        // moduleName + "/turning",
+        // moduleName + " turning");
 
         m_drivingSparkMax.setIdleMode(ModuleConstants.kDrivingMotorIdleMode);
         m_turningSparkMax.setIdleMode(ModuleConstants.kTurningMotorIdleMode);

@@ -125,7 +125,8 @@ public class RobotContainer {
         // Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake),
         // new TransitCommand(transit));
         m_operatorController.x().whileTrue((new IntakeCommand(intake)).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.y().whileTrue((new TransitCommand(transit)).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.y().whileTrue((new TransitCommand(transit).alongWith(new IntakeCommand(intake)))
+                .onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.leftTrigger()
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.a()

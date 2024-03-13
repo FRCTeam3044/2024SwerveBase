@@ -197,7 +197,8 @@ public final class AutoCommandFactory {
                 return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
             }
         } else {
-            return new Pose2d(x, y, new Rotation2d());
+            return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
+            // return new Pose2d(x, y, new Rotation2d());
         }
     }
 }

@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -30,6 +31,7 @@ import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
+import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -93,6 +95,7 @@ public class Robot extends LoggedRobot {
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
         PhotonCamera.setVersionCheckEnabled(false);
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     }
 
     /**
@@ -108,17 +111,18 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         // Runs the Scheduler. This is responsible for polling buttons, adding
-        // newly-scheduled
-        // commands, running already-scheduled commands, removing finished or
-        // interrupted commands,
-        // and running subsystem periodic() methods. This must be called from the
-        // robot's periodic
-        // block in order for anything in the Command-based framework to work.
+        // newly-scheduled commands, running already-scheduled commands, removing
+        // finished or interrupted commands, and running subsystem periodic() methods.
+        // This must be called from the robot's periodic block in order for anything in
+        // the Command-based framework to work.
         CommandScheduler.getInstance().run();
         m_robotContainer.m_visionSubsystem.periodic();
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
+        if (m_autonomousCommand == null && DriverStation.getAlliance().isPresent()) {
+            m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -136,7 +140,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {

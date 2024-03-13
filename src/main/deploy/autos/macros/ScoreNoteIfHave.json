@@ -51,7 +51,7 @@
           },
           {
             "type": "command",
-            "id": "shoot_if_ready",
+            "id": "transit",
             "name": "Shoot when ready",
             "parameters": {}
           }

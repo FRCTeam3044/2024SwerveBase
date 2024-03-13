@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
@@ -21,9 +22,8 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     ConfigurableParameter<Integer> transitUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
             "Transit Ultrasonic Threshold");
 
-    // if the note is in the transit then this would be true
-    boolean isNoteInTransit = false;
-    boolean isIntakeRunning = false;
+    public Timer timeSinceTransit = new Timer();
+    public boolean runningTransit = false;
 
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
@@ -72,14 +72,29 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     }
 
     public void runTransit() {
+        if (!runningTransit) {
+            runningTransit = true;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
     public void runTransitReverse() {
+        if (!runningTransit) {
+            runningTransit = true;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, -TransitConstants.kTransitManualSpeed.get());
     }
 
     public void stopTransit() {
+        if (!runningTransit) {
+            runningTransit = false;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 

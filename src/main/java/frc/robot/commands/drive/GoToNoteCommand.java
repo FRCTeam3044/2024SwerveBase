@@ -79,7 +79,7 @@ public class GoToNoteCommand extends Command {
         if (failed || !m_noteDetection.hasNote || (hasTargetRegion && !m_noteDetection.hasNoteInRegion)) {
             return;
         }
-        System.out.println("Going to note!!!");
+        // System.out.println("Going to note!!!");
         Pose2d notePose = hasTargetRegion ? m_noteDetection.getClosestNoteToRegion() : m_noteDetection.getClosestNote();
         SmartDashboard.putNumberArray("Target Note Pose (StateMachine)",
                 new double[] { notePose.getX(), notePose.getY(), 0 });

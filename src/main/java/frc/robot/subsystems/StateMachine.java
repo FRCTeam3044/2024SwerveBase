@@ -174,7 +174,7 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case NOTE_LOADED:
-                if (!getIntakeLimitSwitch() && !getTransitLimitSwitch()) {
+                if ((m_transitSubsystem.runningTransit && m_transitSubsystem.timeSinceTransit.get() > 0.4)) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                     return;
@@ -187,7 +187,7 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case READY_TO_SHOOT:
-                if (!getTransitLimitSwitch() && !getIntakeLimitSwitch()) {
+                if ((m_transitSubsystem.runningTransit && m_transitSubsystem.timeSinceTransit.get() > 0.4)) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
@@ -205,11 +205,18 @@ public class StateMachine extends SubsystemBase {
     }
 
     private boolean noteIn() {
-        boolean currentSpiked = m_intakeCurrentDebouncer
-                .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
+        // boolean currentSpiked = m_intakeCurrentDebouncer
+        // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
 
-        if (m_intakeSubsystem.isIntakeRunning && m_intakeSubsystem.timeSinceStart.hasElapsed(kIntakeDelay.get())
-                && currentSpiked) {
+        SmartDashboard.putBoolean("Current Has Spiked", m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
+
+        System.out.println("Current current:" + m_intakeSubsystem.getCurrent());
+        System.out.println("Current Threshold:" + kIntakeCurrentThreshold.get());
+        if (/*
+             * m_intakeSubsystem.isIntakeRunning &&
+             * m_intakeSubsystem.timeSinceStart.hasElapsed(kIntakeDelay.get())
+             * &&
+             */ m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get()) {
             return true;
         }
 
@@ -269,9 +276,11 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getGoToSourceCommand() {
-        Pose2d target = AutoTargetUtils.getSource();
-        Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
-        return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem, false);
+        // Pose2d target = AutoTargetUtils.getSource();
+        // Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
+        // return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem,
+        // false);
+        return new WaitCommand(1);
     }
 
     private Command getPickupNoteCommand() {
@@ -305,21 +314,25 @@ public class StateMachine extends SubsystemBase {
     }
 
     public Command goToShootingZoneCommand(boolean forceMove) {
-        ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
-        if (shootingZone == null) {
-            return null;
-        }
-        Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
-        Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
-        if (!forceMove && shootingZone.isInside(robotPos)) {
-            return new TrackPointCommand(m_driveSubsystem, trackPoint, true);
-        } else {
-            Pose2d closestPoint = shootingZone.calculateNearestPoint(robotPos).asPose2d();
-            GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(closestPoint, trackPoint,
-                    m_driveSubsystem, true);
-            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
-            return travelToPoint.andThen(trackPointCmd);
-        }
+        // ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
+        // if (shootingZone == null) {
+        // return null;
+        // }
+        // Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
+        // Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
+        // if (!forceMove && shootingZone.isInside(robotPos)) {
+        // return new TrackPointCommand(m_driveSubsystem, trackPoint, true);
+        // } else {
+        // Pose2d closestPoint =
+        // shootingZone.calculateNearestPoint(robotPos).asPose2d();
+        // GoToAndTrackPointCommand travelToPoint = new
+        // GoToAndTrackPointCommand(closestPoint, trackPoint,
+        // m_driveSubsystem, true);
+        // TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem,
+        // trackPoint, true);
+        // return travelToPoint.andThen(trackPointCmd);
+        // }
+        return new WaitCommand(0.1);
     }
 
     public Command goToShootingZoneCommand() {
