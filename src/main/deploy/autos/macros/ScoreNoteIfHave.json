@@ -10,19 +10,10 @@
     "child": {
       "type": "while",
       "condition": {
-        "id": "not",
-        "children": [
-          {
-            "id": "is_state",
-            "name": "New Condition",
-            "parameters": {
-              "state": "NO_NOTE"
-            },
-            "children": []
-          }
-        ],
-        "name": "New Condition",
-        "parameters": {}
+        "id": "has_note",
+        "name": "Has Note",
+        "parameters": {},
+        "children": []
       },
       "child": {
         "type": "group",
@@ -51,7 +42,7 @@
           },
           {
             "type": "command",
-            "id": "transit",
+            "id": "shoot_if_ready",
             "name": "Shoot when ready",
             "parameters": {}
           }
