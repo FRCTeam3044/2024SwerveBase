@@ -1,6 +1,13 @@
 [
   {
     "type": "macro",
+    "id": "score_note",
+    "name": "Score Preload",
+    "parameters": {}
+  },
+
+  {
+    "type": "macro",
     "id": "pickup_and_score",
     "name": "Score Note 1",
     "parameters": {

@@ -1,6 +1,8 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -52,6 +54,12 @@ public class ManualDriveCommand extends Command {
         inputX = inputX * inputX * Math.signum(inputX);
         inputY = inputY * inputY * Math.signum(inputY);
         inputRot = inputRot * inputRot * Math.signum(inputRot);
+
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue) {
+            inputY *= -1;
+            inputX *= -1;
+        }
+
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(),
                     DriveConstants.kRateLimit.get());

@@ -107,6 +107,7 @@ public class NoteDetection extends SubsystemBase {
         SmartDashboard.putBoolean("Has note in region", hasNoteInRegion);
         SmartDashboard.putNumber("Frames since robot", framesSinceRobot);
         SmartDashboard.putNumber("Last Robot Distance", lastDistanceToRobot);
+        SmartDashboard.putNumberArray("Note detector target region", poseToDouble(regionPose));
         notePoses.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;

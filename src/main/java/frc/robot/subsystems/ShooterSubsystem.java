@@ -37,6 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
 
+    public ConfigurableParameter<Double> ampSpeedDifferent = new ConfigurableParameter<Double>(0.05,
+            "Shooter ampt speed diff");
     public static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
     private SparkPIDController topPidController;
     private SparkPIDController bottomPidController;
@@ -82,8 +84,13 @@ public class ShooterSubsystem extends SubsystemBase {
                 timeSinceShooting.reset();
                 timeSinceShooting.start();
             }
-            topMotor.set(output);
-            bottomMotor.set(-output);
+            if (!slow) {
+                topMotor.set(output);
+                bottomMotor.set(-output);
+            } else {
+                topMotor.set(output - ampSpeedDifferent.get());
+                bottomMotor.set(-output - ampSpeedDifferent.get());
+            }
         } else {
             stopShooter();
         }

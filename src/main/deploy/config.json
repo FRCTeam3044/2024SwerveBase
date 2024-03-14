@@ -95,6 +95,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shooter ampt speed diff": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
         "Different Note Threshold (meters)": {
             "comment": "Auto-Generated",
             "value": "0.25"
@@ -390,6 +394,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shooter ampt speed diff": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
         "Different Note Threshold (meters)": {
             "comment": "Auto-Generated",
             "value": "0.25"
@@ -617,7 +625,7 @@
         "frontLeftModule/turning/IZone": "0.0",
         "Transit Runtime": {
             "comment": "Auto-Generated",
-            "value": "0.4"
+            "value": "0.8"
         },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
@@ -684,6 +692,10 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shooter ampt speed diff": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
+        },
         "Different Note Threshold (meters)": {
             "comment": "Auto-Generated",
             "value": "0.2"
@@ -697,7 +709,7 @@
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-10.0"
+            "value": "-13.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -731,7 +743,7 @@
         },
         "Shooter Manual Control Slow Speed": {
             "comment": "Auto-Generated",
-            "value": "0.3"
+            "value": "0.15"
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
@@ -751,7 +763,7 @@
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Auto-Generated",
-            "value": "4.8"
+            "value": "5.2"
         },
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
@@ -818,7 +830,7 @@
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "1.5"
+            "value": "2"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
@@ -977,6 +989,10 @@
         "Long Rumble Time": {
             "comment": "Auto-Generated",
             "value": "0.5"
+        },
+        "Shooter ampt speed diff": {
+            "comment": "Auto-Generated",
+            "value": "0.05"
         },
         "Different Note Threshold (meters)": {
             "comment": "Auto-Generated",

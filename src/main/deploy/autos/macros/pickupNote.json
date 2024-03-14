@@ -19,7 +19,7 @@
     },
     "child": {
       "type": "group",
-      "id": "parallel",
+      "id": "race",
       "parameters": {
         "targetX": "{{ regionX }}",
         "targetY": "{{ regionY }}",

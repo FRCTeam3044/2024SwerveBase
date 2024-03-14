@@ -138,6 +138,7 @@ public class StateMachine extends SubsystemBase {
                 // }
 
                 if (noteIn()) {
+                    System.out.println("Moving to Note loaded from no note");
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                     return;
@@ -146,6 +147,7 @@ public class StateMachine extends SubsystemBase {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
                         currentState = State.TARGETING_NOTE;
+                        System.out.println("Moving to targeting note");
                         updateDesiredCommand();
                     }
                 }
@@ -159,11 +161,14 @@ public class StateMachine extends SubsystemBase {
                  * robot is no longer targeting a note.
                  */
                 if (noteIn()) {
+                    System.out.println("Moving to Note loaded from targeting note");
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
+                    return;
                 }
                 if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
+                    System.out.println("Moving back to no note");
                     currentState = State.NO_NOTE;
                     lostNote = true;
                     updateDesiredCommand();
@@ -172,6 +177,7 @@ public class StateMachine extends SubsystemBase {
             case NOTE_LOADED:
                 if ((m_transitSubsystem.runningTransit
                         && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                    System.out.println("Kicking back from note loaded");
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                     return;
