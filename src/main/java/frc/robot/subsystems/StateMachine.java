@@ -213,18 +213,11 @@ public class StateMachine extends SubsystemBase {
         // boolean currentSpiked = m_intakeCurrentDebouncer
         // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
 
-        SmartDashboard.putBoolean("Current Has Spiked", m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
+        boolean spike = m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get();
 
-        if (/*
-             * m_intakeSubsystem.isIntakeRunning &&
-             * m_intakeSubsystem.timeSinceStart.hasElapsed(kIntakeDelay.get())
-             * &&
-             */ m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get()) {
-            return true;
-        }
+        SmartDashboard.putBoolean("Current Has Spiked", spike);
 
-        // intakeSpiking = false;
-        return false;
+        return spike;
     }
 
     public void reset() {

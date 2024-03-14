@@ -26,6 +26,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -317,6 +321,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -607,6 +615,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -633,7 +645,7 @@
         "rearRightModule/turning/Min": "-1.0",
         "Intake Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.6"
         },
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -679,13 +691,13 @@
         "frontRightModule/turning/Min": "-1.0",
         "Intake Spinup Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "1.1"
         },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-12.0"
+            "value": "-10.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -789,7 +801,7 @@
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.108"
+            "value": "0.115"
         },
         "Speaker Shooter RPM": {
             "comment": "Auto-Generated",
@@ -897,6 +909,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
