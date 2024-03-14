@@ -3,6 +3,7 @@ package frc.robot.commands.auto;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.NoteDetection;
 import me.nabdev.pathfinding.autos.AutoBoolean;
 
@@ -48,7 +49,7 @@ public class NoteInArea implements AutoBoolean {
             sawNote = true;
         }
         boolean out = (!finishIfNone && sawNote) || (finishIfNone && !sawNote);
-        System.out.println("NoteInArea: " + out);
+        SmartDashboard.putBoolean("NoteInArea: ", out);
         return out;
     }
 

@@ -191,11 +191,20 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case READY_TO_SHOOT:
+                boolean inShootinZone = AutoTargetUtils.getShootingZone()
+                        .isInside(new Vertex(m_driveSubsystem.getPose()));
+                if (!inShootinZone) {
+                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
+                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
+                        inShootingZone = true;
+                    }
+                }
                 if ((m_transitSubsystem.runningTransit
-                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                        && m_transitSubsystem.timeSinceTransit.hasElapsed(kTransitRuntime.get()))) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
-                } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
+                } else if (!inShootinZone) {
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                 }

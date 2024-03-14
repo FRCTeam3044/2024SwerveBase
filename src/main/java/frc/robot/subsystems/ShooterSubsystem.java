@@ -34,7 +34,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
 
-    public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.0,
+    public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
 
     public static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
@@ -162,7 +162,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // tolerance
         // && Math.abs(bottomShooterMotorEncoder.getVelocity() - currentTargetRPM) <
         // tolerance;
-        return (isShooting && timeSinceShooting.get() > shooterSpinupTime.get());
+        return (isShooting && timeSinceShooting.hasElapsed(shooterSpinupTime.get()));
     }
 
     public void ampSpeed() {
