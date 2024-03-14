@@ -251,7 +251,7 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean shooterAtSpeed() {
-        return m_shooterSpeedDebouncer.calculate(m_shooterSubsystem.shooterAtSpeed());
+        return m_shooterSubsystem.shooterAtSpeed();
     }
 
     protected boolean shooterAtAngle() {

@@ -83,7 +83,6 @@ public class TargetRotationController {
 
         double finalOut = -(pidOut - ffTerm);
 
-        // TODO: Check if this is correct
         if (Math.abs(finalOut) < minSpeed.get() && Math.abs(e1) > minError.get()) {
             finalOut = Math.copySign(minSpeed.get(), finalOut);
         } else if (Math.abs(finalOut) > maxSpeed.get()) {
