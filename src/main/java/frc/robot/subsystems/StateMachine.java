@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,12 +17,10 @@ import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.oxconfig.ConfigurableParameter;
-import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
@@ -181,7 +178,14 @@ public class StateMachine extends SubsystemBase {
                 }
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
-                if (shooterAtSpeed() && shooterAtAngle() && inShootingZone) {
+                if (!inShootingZone) {
+                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
+                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
+                        inShootingZone = true;
+                    }
+                }
+                if (shooterAtSpeed() && /* shooterAtAngle() && */ inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     updateDesiredCommand();
                 }
@@ -210,8 +214,6 @@ public class StateMachine extends SubsystemBase {
 
         SmartDashboard.putBoolean("Current Has Spiked", m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
 
-        System.out.println("Current current:" + m_intakeSubsystem.getCurrent());
-        System.out.println("Current Threshold:" + kIntakeCurrentThreshold.get());
         if (/*
              * m_intakeSubsystem.isIntakeRunning &&
              * m_intakeSubsystem.timeSinceStart.hasElapsed(kIntakeDelay.get())
