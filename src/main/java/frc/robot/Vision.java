@@ -128,7 +128,7 @@ public class Vision {
         // estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE,
         // Double.MAX_VALUE);
         // else
-        estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+        estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 6));
 
         return estStdDevs;
     }
