@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -74,8 +75,10 @@ public class Robot extends LoggedRobot {
 
         // Set up data receivers & replaource
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
+            // Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
+            DataLogManager.logNetworkTables(true);
+            DataLogManager.start(USBLocator.getUSBPath() + "/logs");
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());
         } else {
