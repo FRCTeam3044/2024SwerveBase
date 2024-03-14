@@ -95,7 +95,6 @@ public class Robot extends LoggedRobot {
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
         PhotonCamera.setVersionCheckEnabled(false);
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     }
 
     /**
