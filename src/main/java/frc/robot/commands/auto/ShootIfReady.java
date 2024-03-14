@@ -15,7 +15,6 @@ public class ShootIfReady extends Command {
 
     @Override
     public void execute() {
-        // TODO: Fix states and set this back to ready to shoot
         if (RobotContainer.stateMachine.getState() == State.READY_TO_SHOOT) {
             m_transit.runTransit();
         }

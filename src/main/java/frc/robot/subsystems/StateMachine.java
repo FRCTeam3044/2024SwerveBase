@@ -26,8 +26,7 @@ import me.nabdev.pathfinding.structures.Vertex;
 public class StateMachine extends SubsystemBase {
     private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
             "Intake Current Threshold");
-    private ConfigurableParameter<Double> kIntakeDelay = new ConfigurableParameter<Double>(0.25,
-            "Intake Current Delay");
+    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.4, "Transit Runtime");
 
     public enum State {
         /**
@@ -171,7 +170,8 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case NOTE_LOADED:
-                if ((m_transitSubsystem.runningTransit && m_transitSubsystem.timeSinceTransit.get() > 0.4)) {
+                if ((m_transitSubsystem.runningTransit
+                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                     return;
@@ -191,7 +191,8 @@ public class StateMachine extends SubsystemBase {
                 }
                 break;
             case READY_TO_SHOOT:
-                if ((m_transitSubsystem.runningTransit && m_transitSubsystem.timeSinceTransit.get() > 0.4)) {
+                if ((m_transitSubsystem.runningTransit
+                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {

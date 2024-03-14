@@ -27,7 +27,7 @@ public class SpinupShooterIfInRange extends Command {
             // m_shooter.speakerSpeed();
             m_shooter.consumeShooterInput(true, false);
         } else {
-            m_shooter.stopShooter();
+            m_shooter.consumeShooterInput(false, false);
         }
         // m_shooter.handlePID();
 

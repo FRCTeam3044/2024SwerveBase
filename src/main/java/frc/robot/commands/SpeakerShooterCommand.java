@@ -22,4 +22,9 @@ public class SpeakerShooterCommand extends Command {
         // m_shooter.handlePID();
         m_shooter.consumeShooterInput(true, false);
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        m_shooter.consumeShooterInput(false, false);
+    }
 }
