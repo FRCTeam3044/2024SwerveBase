@@ -79,8 +79,9 @@ public class Robot extends LoggedRobot {
         if (isReal()) {
             // Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
-            DataLogManager.logNetworkTables(true);
             DataLogManager.start(USBLocator.getUSBPath() + "/logs");
+            DataLogManager.logNetworkTables(true);
+            DriverStation.startDataLog(DataLogManager.getLog());
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());
         } else {
