@@ -18,15 +18,42 @@
       "parameters": {}
     },
     "child": {
-      "type": "command",
-      "id": "go_to_and_track_point",
+      "type": "group",
+      "id": "parallel",
       "parameters": {
         "targetX": "{{ regionX }}",
         "targetY": "{{ regionY }}",
         "trackX": "{{ regionX }}",
-        "trackY": "{{ regionY }}"
+        "trackY": "{{ regionY }}",
+        "flipped": false
       },
-      "name": "Go To Top Note"
+      "name": "Go To Top Note",
+      "children": [
+        {
+          "type": "command",
+          "id": "go_to_and_track_point",
+          "name": "New Command",
+          "parameters": {
+            "targetX": "{{ regionX }}",
+            "targetY": "{{ regionY }}",
+            "trackX": "{{ regionX }}",
+            "trackY": "{{ regionY }}",
+            "flipped": false
+          }
+        },
+        {
+          "type": "command",
+          "id": "intake",
+          "name": "New Command",
+          "parameters": {}
+        },
+        {
+          "type": "command",
+          "id": "set_intake_angle",
+          "name": "New Command",
+          "parameters": {}
+        }
+      ]
     }
   },
   {
@@ -78,8 +105,8 @@
           },
           {
             "type": "command",
-            "id": "transit",
-            "name": "Transit Note",
+            "id": "set_intake_angle",
+            "name": "New Command",
             "parameters": {}
           }
         ]

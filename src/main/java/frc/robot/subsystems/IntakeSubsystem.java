@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.CANConstants;
@@ -18,9 +22,13 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     AnalogInput intakeUltrasonic = new AnalogInput(CANConstants.kIntakeSensorPort);
     ConfigurableParameter<Integer> intakeUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
             "Intake Ultrasonic Threshold");
+    ConfigurableParameter<Double> intakeSpinupSpeed = new ConfigurableParameter<Double>(0.4,
+            "Intake Spinup Speed");
 
     // This will be set to true if the intake is running
-    boolean isIntakeRunning = false;
+    public boolean isIntakeRunning = false;
+
+    public Timer timeSinceStart = new Timer();
 
     public IntakeSubsystem() {
         intakeTopMotor.configFactoryDefault();
@@ -29,21 +37,75 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeBottomMotor.configFactoryDefault();
         intakeBottomMotor.configPeakCurrentLimit(20);
         intakeBottomMotor.setInverted(true);
+
+        intakeBottomMotor.setStatusFramePeriod(2, 5000);
+        intakeBottomMotor.setStatusFramePeriod(3, 5000);
+        intakeBottomMotor.setStatusFramePeriod(8, 5000);
+        intakeBottomMotor.setStatusFramePeriod(10, 50000);
+        intakeBottomMotor.setStatusFramePeriod(12, 5000);
+        intakeBottomMotor.setStatusFramePeriod(13, 5000);
+        intakeBottomMotor.setStatusFramePeriod(14, 5000);
+        intakeBottomMotor.setStatusFramePeriod(21, 5000);
+        intakeBottomMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        intakeBottomMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        intakeBottomMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
+        intakeTopMotor.setStatusFramePeriod(2, 5000);
+        intakeTopMotor.setStatusFramePeriod(3, 5000);
+        intakeTopMotor.setStatusFramePeriod(8, 5000);
+        intakeTopMotor.setStatusFramePeriod(10, 50000);
+        intakeTopMotor.setStatusFramePeriod(12, 5000);
+        intakeTopMotor.setStatusFramePeriod(13, 5000);
+        intakeTopMotor.setStatusFramePeriod(14, 5000);
+        intakeTopMotor.setStatusFramePeriod(21, 5000);
+        intakeTopMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        intakeTopMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        intakeTopMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
+        SmartDashboard.putNumber("Intake Current", intakeBottomMotor.getStatorCurrent());
+    }
+
+    public double getCurrent() {
+        return intakeBottomMotor.getStatorCurrent();
     }
 
     // Use this to run intake
     public void runIntake() {
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
+        if (!isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.start();
+            isIntakeRunning = true;
+        }
+        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, output);
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -output);
     }
 
     public void runIntakeReverse() {
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -1 * IntakeConstants.kIntakeManualSpeed.get());
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 1 * IntakeConstants.kIntakeManualSpeed.get());
+        if (!isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.start();
+            isIntakeRunning = true;
+        }
+        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                IntakeConstants.kIntakeManualSpeed.get());
+        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -output);
+        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, output);
     }
 
     // Stops intake
     public void stopIntake() {
+        if (isIntakeRunning) {
+            timeSinceStart.reset();
+            timeSinceStart.stop();
+            isIntakeRunning = false;
+        }
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 0);
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }

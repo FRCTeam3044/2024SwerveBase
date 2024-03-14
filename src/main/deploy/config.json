@@ -11,17 +11,25 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.4"
         },
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -79,7 +87,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -87,14 +95,26 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-10.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
-            "value": "6.283185307179586"
+            "value": "0.15915494309"
         },
         "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
@@ -122,11 +142,11 @@
         },
         "Shooter Manual Control Slow Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.2"
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -142,7 +162,7 @@
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Auto-Generated",
-            "value": "4.8"
+            "value": "1.8"
         },
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
@@ -160,6 +180,10 @@
         "Elevator SmartMotion Max Accel": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
         },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
@@ -181,19 +205,27 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.101"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -209,7 +241,11 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -240,6 +276,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -266,7 +306,11 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -277,6 +321,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -334,7 +382,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -342,9 +390,21 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-10.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -367,7 +427,7 @@
         },
         "Rot Controller Min Error Radians": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.0"
         },
         "frontLeftModule/driving/IZone": "0.0",
         "frontRightModule/driving/Max": "1.0",
@@ -381,7 +441,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -416,6 +476,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -436,7 +500,7 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
@@ -445,10 +509,18 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
+        },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -464,7 +536,11 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -483,7 +559,7 @@
         },
         "Rot Controller Min Speed Rad/sec": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.5"
         },
         "frontLeftModule/turning/D": "0.0",
         "Pathfinding Max Angular Acceleration": {
@@ -495,6 +571,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -517,20 +597,28 @@
         "rearLeftModule/driving/IZone": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Elevator Angle PID/P": "0.00015",
+        "Elevator Angle PID/P": "0.00005",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.8"
         },
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -542,7 +630,7 @@
         },
         "Statemachine Debounce": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "0.05"
         },
         "frontRightModule/turning/IZone": "0.0",
         "Rot Controller Max Speed Rad/sec": {
@@ -557,7 +645,7 @@
         "rearRightModule/turning/Min": "-1.0",
         "Intake Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.6"
         },
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -588,7 +676,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -596,14 +684,26 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.1"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-10.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
-            "value": "6.283185307179586"
+            "value": "3.14159"
         },
         "Elevator Angle PID/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
@@ -631,11 +731,11 @@
         },
         "Shooter Manual Control Slow Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.3"
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -646,7 +746,7 @@
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
-            "value": "10.0"
+            "value": "100.0"
         },
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
@@ -670,6 +770,10 @@
             "comment": "Auto-Generated",
             "value": "8000.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "150"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -690,23 +794,31 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.115"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
         },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "1.5"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
@@ -718,7 +830,11 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.005"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -737,7 +853,7 @@
         },
         "Rot Controller Min Speed Rad/sec": {
             "comment": "Auto-Generated",
-            "value": "0.01"
+            "value": "0.05"
         },
         "frontLeftModule/turning/D": "0.0",
         "Pathfinding Max Angular Acceleration": {
@@ -749,6 +865,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",
@@ -756,7 +876,7 @@
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "1.5"
         },
         "frontLeftModule/turning/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
@@ -774,7 +894,11 @@
         "Elevator Angle PID/P": "0.00015",
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.8"
+        },
+        "Elevator Position Offset": {
+            "comment": "DO NOT CHANGE!!!!!",
+            "value": "0.8556"
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -785,6 +909,10 @@
             "value": "3.141592653589793"
         },
         "frontLeftModule/turning/IZone": "0.0",
+        "Transit Runtime": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
             "comment": "Auto-Generated",
@@ -842,7 +970,7 @@
         },
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "1.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -850,9 +978,21 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Different Note Threshold (meters)": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
+        },
         "frontRightModule/turning/Min": "-1.0",
+        "Intake Spinup Speed": {
+            "comment": "Auto-Generated",
+            "value": "0.4"
+        },
         "rearLeftModule/driving/I": "0.0",
         "rearRightModule/driving/Max": "1.0",
+        "Intake Current Threshold": {
+            "comment": "Auto-Generated",
+            "value": "-10.0"
+        },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
@@ -889,7 +1029,7 @@
         },
         "Note Detection Distance": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "5.0"
         },
         "Field Relative": {
             "comment": "Auto-Generated",
@@ -924,6 +1064,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Lost Note Threshold (Frames)": {
+            "comment": "Auto-Generated",
+            "value": "50"
+        },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
@@ -944,19 +1088,27 @@
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.101"
+        },
+        "Speaker Shooter RPM": {
+            "comment": "Auto-Generated",
+            "value": "100.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
             "comment": "Auto-Generated",
             "value": "0.4"
+        },
+        "Intake Current Delay": {
+            "comment": "Auto-Generated",
+            "value": "0.25"
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
@@ -972,7 +1124,11 @@
         "rearLeftModule/turning/I": "0.0",
         "Rotation FF": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "1.0"
+        },
+        "Auto Aim Temporary Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "rearRightModule/driving/FF": "0.2081708461046219",
         "Shooter Tolerance RPM": {
@@ -1003,6 +1159,10 @@
         "rearRightModule/turning/P": "1.0",
         "frontLeftModule/turning/I": "0.0",
         "rearRightModule/turning/IZone": "0.0",
+        "Shooter Spinup Range": {
+            "comment": "Auto-Generated",
+            "value": "7.5"
+        },
         "frontLeftModule/driving/Min": "-1.0",
         "Rumble Pulse Period": {
             "comment": "Auto-Generated",

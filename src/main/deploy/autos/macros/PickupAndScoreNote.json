@@ -1,0 +1,24 @@
+[
+  {
+    "type": "macro",
+    "id": "score_note",
+    "name": "Score Preload",
+    "parameters": {}
+  },
+  {
+    "type": "macro",
+    "id": "pickup_note",
+    "parameters": {
+      "regionX": "{{ noteX }}",
+      "regionY": "{{ noteY }}",
+      "regionRadius": "1"
+    },
+    "name": "Pickup Note"
+  },
+  {
+    "type": "macro",
+    "id": "score_note",
+    "name": "Score Note",
+    "parameters": {}
+  }
+]

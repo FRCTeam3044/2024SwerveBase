@@ -6,22 +6,22 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.pathfinding.autos.AutoBoolean;
 
-public class HasNote implements AutoBoolean {
+public class IsState implements AutoBoolean {
     private final StateMachine stateMachine;
+    private final State state;
 
-    public HasNote(StateMachine stateMachine) {
+    public IsState(StateMachine stateMachine, String state) {
         this.stateMachine = stateMachine;
+        this.state = State.valueOf(state);
     }
 
     @Override
     public BooleanSupplier getSupplier(BooleanSupplier... children) {
-        return this::hasNote;
+        return this::isState;
     }
 
-    private boolean hasNote() {
-        boolean result = (stateMachine.getState() == State.NOTE_LOADED
-                || stateMachine.getState() == State.READY_TO_SHOOT);
-        return result;
+    private boolean isState() {
+        return stateMachine.getState() == state;
     }
 
 }

@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import java.io.File;
 
+@SuppressWarnings("unused")
 public class USBLocator {
     private static String usbPath;
 

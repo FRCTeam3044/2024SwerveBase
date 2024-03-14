@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,30 +10,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.AutoAimCommnd;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.DriverShootCommand;
+import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
-import frc.robot.commands.IntakeCommands.IntakeRunUntilSwitch;
 import frc.robot.commands.TransitCommands.TransitCommand;
-import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
-import me.nabdev.pathfinding.structures.ObstacleGroup;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
+    private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
+            "Intake Current Threshold");
+    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.4, "Transit Runtime");
+
     public enum State {
         /**
          * Close enough to a note to pickup
          */
         TARGETING_NOTE,
-        /**
-         * A note is in the intake but not in the transit
-         */
-        OWNS_NOTE,
         /**
          * A note is in the transit & ready to be shot
          */
@@ -49,7 +47,7 @@ public class StateMachine extends SubsystemBase {
         NO_NOTE
     }
 
-    private static final boolean testModeEnabled = true;
+    private static final boolean testModeEnabled = false;
 
     protected State currentState = State.NO_NOTE;
 
@@ -67,6 +65,10 @@ public class StateMachine extends SubsystemBase {
     protected Debouncer m_shooterSpeedDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
             DebounceType.kBoth);
     protected Debouncer m_elevatorAngleDebouncer = new Debouncer(StateMachineConstants.kDebounce.get(),
+            DebounceType.kBoth);
+    protected Debouncer m_hasNoteDebouncer = new Debouncer(StateMachineConstants.kDebounce.get() * 2,
+            DebounceType.kBoth);
+    protected Debouncer m_intakeCurrentDebouncer = new Debouncer(StateMachineConstants.kDebounce.get() / 2,
             DebounceType.kBoth);
 
     public boolean lostNote = false;
@@ -105,7 +107,6 @@ public class StateMachine extends SubsystemBase {
     @Override
     public void periodic() {
         if (RobotBase.isSimulation()) {
-            SmartDashboard.putBoolean("Intake Limit Switch", RobotContainer.m_driverController.getHID().getAButton());
             SmartDashboard.putBoolean("Transit Limit Switch", RobotContainer.m_driverController.getHID().getBButton());
             SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
             SmartDashboard.putBoolean("Shooter At Angle", RobotContainer.m_driverController.getHID().getYButton());
@@ -130,7 +131,18 @@ public class StateMachine extends SubsystemBase {
 
         switch (currentState) {
             case NO_NOTE:
-                if (m_noteDetection.hasNote) {
+                // if (getIntakeLimitSwitch()) {
+                // currentState = State.NOTE_LOADED;
+                // updateDesiredCommand();
+                // return;
+                // }
+
+                if (noteIn()) {
+                    currentState = State.NOTE_LOADED;
+                    updateDesiredCommand();
+                    return;
+                }
+                if (m_hasNoteDebouncer.calculate(m_noteDetection.hasNote)) {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
                         currentState = State.TARGETING_NOTE;
@@ -146,33 +158,41 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
-                if (!m_noteDetection.hasNote || m_noteDetection
+                if (noteIn()) {
+                    currentState = State.NOTE_LOADED;
+                    updateDesiredCommand();
+                }
+                if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
                     currentState = State.NO_NOTE;
                     lostNote = true;
                     updateDesiredCommand();
                 }
-                if (getIntakeLimitSwitch()) {
-                    currentState = State.OWNS_NOTE;
-                    updateDesiredCommand();
-                }
-                break;
-            case OWNS_NOTE:
-                if (getTransitLimitSwitch()) {
-                    currentState = State.NOTE_LOADED;
-                    updateDesiredCommand();
-                }
                 break;
             case NOTE_LOADED:
+                if ((m_transitSubsystem.runningTransit
+                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                    currentState = State.NO_NOTE;
+                    updateDesiredCommand();
+                    return;
+                }
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
-                if (shooterAtSpeed() && shooterAtAngle() && inShootingZone) {
+                if (!inShootingZone) {
+                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
+                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
+                        inShootingZone = true;
+                    }
+                }
+                if (shooterAtSpeed() && /* shooterAtAngle() && */ inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     updateDesiredCommand();
                 }
                 break;
             case READY_TO_SHOOT:
-                if (!getTransitLimitSwitch()) {
+                if ((m_transitSubsystem.runningTransit
+                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
@@ -187,6 +207,17 @@ public class StateMachine extends SubsystemBase {
         }
 
         SmartDashboard.putString("State", currentState.toString());
+    }
+
+    private boolean noteIn() {
+        // boolean currentSpiked = m_intakeCurrentDebouncer
+        // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
+
+        boolean spike = m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get();
+
+        SmartDashboard.putBoolean("Current Has Spiked", spike);
+
+        return spike;
     }
 
     public void reset() {
@@ -213,7 +244,7 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean shooterAtSpeed() {
-        return m_shooterSpeedDebouncer.calculate(m_shooterSubsystem.shooterAtSpeed());
+        return m_shooterSubsystem.shooterAtSpeed();
     }
 
     protected boolean shooterAtAngle() {
@@ -228,9 +259,6 @@ public class StateMachine extends SubsystemBase {
             case TARGETING_NOTE:
                 // Go To & Pickup Note
                 return getPickupNoteCommand();
-            case OWNS_NOTE:
-                // Get note locked in transit
-                return getLockinNoteCommand();
             case NOTE_LOADED:
                 // Start Aiming shooter and speeding up wheels
                 return getReadyShooterCommand();
@@ -244,65 +272,79 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getGoToSourceCommand() {
-        Pose2d target = AutoTargetUtils.getSource();
-        Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
-        return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem);
+        // Pose2d target = AutoTargetUtils.getSource();
+        // Pose2d trackTarget = AutoTargetUtils.getSourceTrackTarget();
+        // return new GoToAndTrackPointCommand(target, trackTarget, m_driveSubsystem,
+        // false);
+        return new WaitCommand(1);
     }
 
     private Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
-        IntakeRunUntilSwitch intakeRunMotorsCommand = new IntakeRunUntilSwitch(m_intakeSubsystem);
-        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand);
+        ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);
+        IntakeCommand intakeRunMotorsCommand = new IntakeCommand(m_intakeSubsystem);
+        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand, setAngleCommand);
     }
 
-    private Command getLockinNoteCommand() {
-        Command runIntake = new IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
-        Command getToPoint = goToShootingZoneCommand();
-        if (getToPoint == null) {
-            return null;
-        }
-        return Commands.parallel(runIntake, getToPoint);
-    }
+    // private Command getLockinNoteCommand() {
+    // Command runIntake = new
+    // IntakeCommand(m_intakeSubsystem).until(this::getTransitLimitSwitch);
+    // Command getToPoint = goToShootingZoneCommand();
+    // if (getToPoint == null) {
+    // return null;
+    // }
+    // return Commands.parallel(runIntake, getToPoint);
+    // }
 
     private Command getReadyShooterCommand() {
         Command getToPoint = goToShootingZoneCommand();
         if (getToPoint == null) {
             return null;
         }
-        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
+        Command runIntake = Commands.waitSeconds(1).deadlineWith(new IntakeCommand(m_intakeSubsystem));
 
-        return Commands.parallel(getToPoint, autoAimCommnd, speakerShooterCommand);
+        return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand, runIntake);
     }
 
-    private Command goToShootingZoneCommand() {
-        ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
-        if (shootingZone == null) {
-            return null;
-        }
-        Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
-        Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
-        if (shootingZone.isInside(robotPos)) {
-            return new TrackPointCommand(m_driveSubsystem, trackPoint);
-        } else {
-            Pose2d closestPoint = shootingZone.calculateNearestPoint(robotPos).asPose2d();
-            GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(closestPoint, trackPoint,
-                    m_driveSubsystem);
-            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint);
-            return travelToPoint.andThen(trackPointCmd);
-        }
+    public Command goToShootingZoneCommand(boolean forceMove) {
+        // ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
+        // if (shootingZone == null) {
+        // return null;
+        // }
+        // Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
+        // Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
+        // if (!forceMove && shootingZone.isInside(robotPos)) {
+        // return new TrackPointCommand(m_driveSubsystem, trackPoint, true);
+        // } else {
+        // Pose2d closestPoint =
+        // shootingZone.calculateNearestPoint(robotPos).asPose2d();
+        // GoToAndTrackPointCommand travelToPoint = new
+        // GoToAndTrackPointCommand(closestPoint, trackPoint,
+        // m_driveSubsystem, true);
+        // TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem,
+        // trackPoint, true);
+        // return travelToPoint.andThen(trackPointCmd);
+        // }
+        return new WaitCommand(0.1);
+    }
+
+    public Command goToShootingZoneCommand() {
+        return goToShootingZoneCommand(false);
     }
 
     private Command getShootCommand() {
-        AutoAimCommnd autoAimCommnd = new AutoAimCommnd(m_elevatorSubsystem, m_driveSubsystem);
+        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
-                AutoTargetUtils.getShootingTarget());
+                AutoTargetUtils.getShootingTarget(), true);
         DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
-        return Commands.parallel(autoAimCommnd, trackPointCommand, driverShootCommand);
+        return Commands.parallel(autoAimCommand, trackPointCommand, driverShootCommand);
     }
 
+    @SuppressWarnings("unused")
     protected void updateDesiredCommand() {
         // currentDesiredCommand = getCommandForState(currentState);
         if (testModeEnabled && SmartDashboard.getBoolean("State Machine/Allow State Navigation", false)) {

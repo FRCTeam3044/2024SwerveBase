@@ -154,13 +154,10 @@ public final class Constants {
     public static final class CANConstants {
         public static final int kShooterTopMotorPort = 35;
         public static final int kShooterBottomMotorPort = 34;
-
-        // TODO: Swapped w intake bottom, need to redo can
         public static final int kTransitMotorPort = 31;
 
-        // TODO: These may be swapped
-        public static final int kTransitSensorPort = 4;
-        public static final int kIntakeSensorPort = 6;
+        public static final int kTransitSensorPort = 1;
+        public static final int kIntakeSensorPort = 0;
 
         public static final int kIntakeTopMotorPort = 32;
         public static final int kIntakeBottomMotorPort = 33;
@@ -170,8 +167,6 @@ public final class Constants {
 
         public static final int kElevatorMotorOnePort = 21;
         public static final int kElevatorMotorTwoPort = 22;
-        // public static final int kElevatorTopLimitSwitch = 23;
-        // public static final int kElevatorBottomLimitSwitch = 22;
 
         public static final int kElevatorPivotEncoderPort = 9;
     }
@@ -223,15 +218,15 @@ public final class Constants {
         public static final ConfigurableParameter<Double> kRotationTimestep = new ConfigurableParameter<Double>(
                 0.02,
                 "Rotation FF Timestep");
-        public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(0.1,
+        public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(1.0,
                 "Rotation FF");
 
     }
 
     public static final class VisionConstants {
         // TODO: Update these values
-        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 8); // THESE ARE NOT CORRECT
-        public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1); // THESE ARE NOT
+        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(12, 12, 8); // THESE ARE NOT CORRECT
+        public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(1.5, 1.5, 4); // THESE ARE NOT
                                                                                            // CORRECT
         // array of active cameras
         public final static String[] activeCameras = {
@@ -251,12 +246,12 @@ public final class Constants {
                                 0)),
                 new Transform3d( // back
                         new Translation3d(
-                                0.2286,
+                                0.1207,
                                 0.10795,
                                 0.5715),
                         new Rotation3d(
-                                0,
-                                0.17,
+                                Math.PI,
+                                -0.17,
                                 Math.PI)),
         };
     }

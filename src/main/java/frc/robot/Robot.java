@@ -33,6 +33,7 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -97,7 +98,7 @@ public class Robot extends LoggedRobot {
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, 52 , m_robotContainer);
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, 52, m_robotContainer);
         PhotonCamera.setVersionCheckEnabled(false);
     }
 
@@ -114,17 +115,18 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         // Runs the Scheduler. This is responsible for polling buttons, adding
-        // newly-scheduled
-        // commands, running already-scheduled commands, removing finished or
-        // interrupted commands,
-        // and running subsystem periodic() methods. This must be called from the
-        // robot's periodic
-        // block in order for anything in the Command-based framework to work.
+        // newly-scheduled commands, running already-scheduled commands, removing
+        // finished or interrupted commands, and running subsystem periodic() methods.
+        // This must be called from the robot's periodic block in order for anything in
+        // the Command-based framework to work.
         CommandScheduler.getInstance().run();
         m_robotContainer.m_visionSubsystem.periodic();
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
+        if (m_autonomousCommand == null && DriverStation.getAlliance().isPresent()) {
+            m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -142,7 +144,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -166,6 +168,7 @@ public class Robot extends LoggedRobot {
         // this line or comment it out.
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
+            CommandScheduler.getInstance().cancelAll();
         }
 
         // lastClick = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0,

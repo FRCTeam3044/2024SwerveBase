@@ -18,15 +18,15 @@ public class TrackPointCommand extends Command {
     private Pose2d lastTarget;
     private final Supplier<Pose2d> targetSupplier;
 
-    public TrackPointCommand(DriveSubsystem driveSubsystem, Pose2d target) {
+    public TrackPointCommand(DriveSubsystem driveSubsystem, Pose2d target, boolean flipped) {
         lastTarget = target;
         targetSupplier = () -> target;
         m_robotDrive = driveSubsystem;
-        m_targetRotController = new TargetRotationController(target.getX(), target.getY());
+        m_targetRotController = new TargetRotationController(target.getX(), target.getY(), flipped);
         addRequirements(m_robotDrive);
     }
 
-    public TrackPointCommand(Supplier<Pose2d> target, DriveSubsystem driveSubsystem) {
+    public TrackPointCommand(Supplier<Pose2d> target, DriveSubsystem driveSubsystem, boolean flipped) {
         targetSupplier = target;
         try {
             lastTarget = target.get();
@@ -34,7 +34,7 @@ public class TrackPointCommand extends Command {
             e.printStackTrace();
         }
         m_robotDrive = driveSubsystem;
-        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY());
+        m_targetRotController = new TargetRotationController(lastTarget.getX(), lastTarget.getY(), flipped);
         addRequirements(m_robotDrive);
     }
 

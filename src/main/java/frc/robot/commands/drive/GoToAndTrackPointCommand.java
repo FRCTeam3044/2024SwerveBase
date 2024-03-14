@@ -23,35 +23,36 @@ public class GoToAndTrackPointCommand extends Command {
     private FollowTrajectoryCommand m_followTrajectoryCommand;
     private boolean failed = false;
 
-    public GoToAndTrackPointCommand(Pose2d target, DriveSubsystem m_robotDrive) {
+    public GoToAndTrackPointCommand(Pose2d target, DriveSubsystem m_robotDrive, boolean flipped) {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        targetRotationController = new TargetRotationController(target.getX(), target.getY());
+        targetRotationController = new TargetRotationController(target.getX(), target.getY(), flipped);
     }
 
     // Tracks a different target than the path target
-    public GoToAndTrackPointCommand(Pose2d target, Pose2d track, DriveSubsystem m_robotDrive) {
+    public GoToAndTrackPointCommand(Pose2d target, Pose2d track, DriveSubsystem m_robotDrive, boolean flipped) {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        targetRotationController = new TargetRotationController(track.getX(), track.getY());
+        targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
 
     }
 
-    public GoToAndTrackPointCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive) {
+    public GoToAndTrackPointCommand(ArrayList<Pose2d> target, DriveSubsystem m_robotDrive, boolean flipped) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         Pose2d finalTarget = target.get(target.size() - 1);
-        targetRotationController = new TargetRotationController(finalTarget.getX(), finalTarget.getY());
+        targetRotationController = new TargetRotationController(finalTarget.getX(), finalTarget.getY(), flipped);
 
     }
 
     // Tracks a different target than the path target
-    public GoToAndTrackPointCommand(ArrayList<Pose2d> target, Pose2d track, DriveSubsystem m_robotDrive) {
+    public GoToAndTrackPointCommand(ArrayList<Pose2d> target, Pose2d track, DriveSubsystem m_robotDrive,
+            boolean flipped) {
         this.target = target;
         this.m_robotDrive = m_robotDrive;
-        targetRotationController = new TargetRotationController(track.getX(), track.getY());
+        targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
 
     }
 
@@ -79,6 +80,11 @@ public class GoToAndTrackPointCommand extends Command {
     }
 
     @Override
+    public void execute() {
+        System.out.println(getName() + " Running");
+    }
+
+    @Override
     public boolean isFinished() {
         if (m_followTrajectoryCommand == null) {
             return failed;
@@ -88,6 +94,7 @@ public class GoToAndTrackPointCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println(getName() + " Ended");
         if (m_followTrajectoryCommand != null) {
             m_followTrajectoryCommand.cancel();
         }

@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
@@ -17,27 +19,27 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     // defines the motor and sensor
     TalonSRX transitMotor = new TalonSRX(CANConstants.kTransitMotorPort);
     AnalogInput transitUltrasonic = new AnalogInput(CANConstants.kTransitSensorPort);
-    ConfigurableParameter<Integer> transitUltrasonicThreshold = new ConfigurableParameter<Integer>(250, "Transit Ultrasonic Threshold");
+    ConfigurableParameter<Integer> transitUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
+            "Transit Ultrasonic Threshold");
 
-    // if the note is in the transit then this would be true
-    boolean isNoteInTransit = false;
-    boolean isIntakeRunning = false;
+    public Timer timeSinceTransit = new Timer();
+    public boolean runningTransit = false;
 
     public TransitSubsystem() {
         transitMotor.configFactoryDefault();
         transitMotor.setInverted(true);
         transitMotor.configPeakCurrentLimit(20);
-        transitMotor.setStatusFramePeriod(2, 2000);
-        transitMotor.setStatusFramePeriod(3, 2000);
-        transitMotor.setStatusFramePeriod(8, 2000);
-        transitMotor.setStatusFramePeriod(10, 20000);
-        transitMotor.setStatusFramePeriod(12, 2000);
-        transitMotor.setStatusFramePeriod(13, 2000);
-        transitMotor.setStatusFramePeriod(14, 2000);
-        transitMotor.setStatusFramePeriod(21, 2000);
-        transitMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 2000);
-        transitMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 2000);
-        transitMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 2000);
+        transitMotor.setStatusFramePeriod(2, 5000);
+        transitMotor.setStatusFramePeriod(3, 5000);
+        transitMotor.setStatusFramePeriod(8, 5000);
+        transitMotor.setStatusFramePeriod(10, 50000);
+        transitMotor.setStatusFramePeriod(12, 5000);
+        transitMotor.setStatusFramePeriod(13, 5000);
+        transitMotor.setStatusFramePeriod(14, 5000);
+        transitMotor.setStatusFramePeriod(21, 5000);
+        transitMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
+        transitMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
+        transitMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
     }
 
     // Use this to get the note from the intake system
@@ -50,6 +52,11 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
 
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Transit Ultrasonic", transitUltrasonic.getValue());
+    }
+
     /**
      * Reads the transit limit switch
      * 
@@ -57,7 +64,7 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
      */
     @Override
     public boolean readLimitSwitch() {
-        if(transitUltrasonic.getValue() <= transitUltrasonicThreshold.get()) {
+        if (transitUltrasonic.getValue() <= transitUltrasonicThreshold.get()) {
             return true;
         } else {
             return false;
@@ -65,14 +72,29 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     }
 
     public void runTransit() {
+        if (!runningTransit) {
+            runningTransit = true;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, TransitConstants.kTransitManualSpeed.get());
     }
 
     public void runTransitReverse() {
+        if (!runningTransit) {
+            runningTransit = true;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, -TransitConstants.kTransitManualSpeed.get());
     }
 
     public void stopTransit() {
+        if (!runningTransit) {
+            runningTransit = false;
+            timeSinceTransit.reset();
+            timeSinceTransit.start();
+        }
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 

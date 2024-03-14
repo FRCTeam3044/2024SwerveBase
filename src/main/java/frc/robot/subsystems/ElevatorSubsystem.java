@@ -59,6 +59,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final ConfigurableParameter<Double> positionOffset;
 
     public ElevatorSubsystem() {
+        positionOffset = new ConfigurableParameter<Double>(
+                0.8556,
+                "Elevator Position Offset", elevatorPivotEncoder::setPositionOffset);
+
         elevatorMotorOne.restoreFactoryDefaults();
         elevatorMotorTwo.restoreFactoryDefaults();
 
@@ -100,9 +104,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         elevatorMotorTwo.follow(elevatorMotorOne);
 
-        positionOffset = new ConfigurableParameter<Double>(0.0,
-                "Elevator Position Offset", elevatorPivotEncoder::setPositionOffset);
-
         elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
@@ -133,7 +134,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double getAngle() {
         // return elevatorPivotEncoder.getPosition();
-        return elevatorPivotEncoder.getAbsolutePosition();
+        return elevatorPivotEncoder.getAbsolutePosition() - positionOffset.get();
     }
 
     public void pidHandler() {
@@ -155,8 +156,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     private double angleToRotations(double angle) {
-        double raw = -89.2 + (317 * angle) + (-183 * Math.pow(angle, 2));
-        return MathUtil.clamp(raw, 0.0, 21);
+        double raw = 21.3 + (199 * angle) + (-169 * Math.pow(angle, 2));
+        return MathUtil.clamp(raw, 22.5, 50.0);
     }
 
     @Override
@@ -166,6 +167,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             motorOneEncoder.setPosition(angleToRotations(getAngle()));
             hasInitialized = true;
         }
+        // motorOneEncoder.setPosition(angleToRotations(getAngle()));
         SmartDashboard.putNumber("Arm/MotorOnePos", motorOneEncoder.getPosition());
         SmartDashboard.putNumber("Arm/MotorTwoPos", motorTwoEncoder.getPosition());
         SmartDashboard.putNumber("Arm/TargetPos", currentTargetRotations);

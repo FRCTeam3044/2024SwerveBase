@@ -39,19 +39,17 @@ public class NoteInArea implements AutoBoolean {
         }
     }
 
-    public void execute() {
-        if ((!usingTargetRegion && m_noteDetection.hasNote) || (usingTargetRegion && m_noteDetection.hasNoteInRegion)) {
-            sawNote = true;
-        }
-    }
-
     private boolean sawNote() {
         if (!initialized) {
             initialize();
             initialized = true;
         }
-        execute();
-        return (!finishIfNone && sawNote) || (finishIfNone && !sawNote);
+        if ((!usingTargetRegion && m_noteDetection.hasNote) || (usingTargetRegion && m_noteDetection.hasNoteInRegion)) {
+            sawNote = true;
+        }
+        boolean out = (!finishIfNone && sawNote) || (finishIfNone && !sawNote);
+        System.out.println("NoteInArea: " + out);
+        return out;
     }
 
     @Override
