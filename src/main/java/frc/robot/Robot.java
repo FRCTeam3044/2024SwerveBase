@@ -97,12 +97,11 @@ public class Robot extends LoggedRobot {
         IntakeConstants.initialize();
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
-        OxConfig.initialize();
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+        OxConfig.initialize();
     }
 
     /**

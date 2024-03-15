@@ -66,12 +66,14 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
+        // SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
         SmartDashboard.putNumber("Intake Current", intakeBottomMotor.getStatorCurrent());
+        SmartDashboard.putNumber("Intake Top Current", -intakeTopMotor.getStatorCurrent());
+
     }
 
     public double getCurrent() {
-        return intakeBottomMotor.getStatorCurrent();
+        return -intakeTopMotor.getStatorCurrent();
     }
 
     // Use this to run intake
