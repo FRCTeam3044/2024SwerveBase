@@ -32,7 +32,6 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.StateMachine.State;
-import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -47,7 +46,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
-    public static boolean redAlliance = true;
+    public static boolean redAlliance = false;
 
     /**
      * This function is run when the robot is first started up and should be used

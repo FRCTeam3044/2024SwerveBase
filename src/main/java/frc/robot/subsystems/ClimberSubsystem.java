@@ -18,6 +18,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
         leftClimberMotor.configPeakCurrentLimit(40);
         rightClimberMotor.configPeakCurrentLimit(40);
+        rightClimberMotor.setInverted(true);
 
         leftClimberMotor.setStatusFramePeriod(2, 5000);
         leftClimberMotor.setStatusFramePeriod(3, 5000);

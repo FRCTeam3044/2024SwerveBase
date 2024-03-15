@@ -70,13 +70,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotorTwo.setIdleMode(IdleMode.kBrake);
 
         // PID coefficients
-        kP = 0.1;
+        kP = 0.00005;
         kI = 0;
-        kD = 1;
+        kD = 0.00001;
         kIz = 0;
-        kFF = 0;
-        kMaxOutput = 0.1;
-        kMinOutput = -0.1;
+        kFF = 0.00011;
+        kMaxOutput = 0.5;
+        kMinOutput = -0.5;
 
         pidController = elevatorMotorOne.getPIDController();
 

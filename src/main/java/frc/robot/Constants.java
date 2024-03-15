@@ -207,7 +207,7 @@ public final class Constants {
         public static final PIDController kPathfindingYController = new ConfigurablePIDController(1, 0, 0,
                 "Pathfinding Y Controller");
         public static final ProfiledPIDController kPathfindingThetaController = new ConfigurableProfiledPIDController(
-                1,
+                6.0,
                 0,
                 0,
                 // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
