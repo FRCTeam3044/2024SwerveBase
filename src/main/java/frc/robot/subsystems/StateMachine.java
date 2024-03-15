@@ -224,7 +224,7 @@ public class StateMachine extends SubsystemBase {
         SmartDashboard.putString("State", currentState.toString());
     }
 
-    private boolean noteIn() {
+    protected boolean noteIn() {
         // boolean currentSpiked = m_intakeCurrentDebouncer
         // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
 
