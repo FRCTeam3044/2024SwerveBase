@@ -28,6 +28,7 @@ import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
 import me.nabdev.pathfinding.autos.AutoBoolean;
 import me.nabdev.pathfinding.autos.AutoParser;
+import me.nabdev.pathfinding.autos.booleans.OrBoolean;
 
 public final class AutoCommandFactory {
     private static boolean hasRegisteredCommands = false;

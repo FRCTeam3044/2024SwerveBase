@@ -23,6 +23,8 @@ public class RobotWithinRadius implements AutoBoolean {
     }
 
     private boolean inRange() {
-        return m_robotDrive.getPose().getTranslation().getDistance(m_target.getTranslation()) < radius;
+        boolean in = m_robotDrive.getPose().getTranslation().getDistance(m_target.getTranslation()) < radius;
+        System.out.println("Robot In Range: " + in);
+        return in;
     }
 }

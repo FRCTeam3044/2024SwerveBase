@@ -35,10 +35,10 @@ public class AutoTargetUtils {
 
     static {
         Obstacle blueShootingZoneOne = Obstacle.createObstacle(
-                new Vertex(1, 3),
+                new Vertex(0, 3),
                 new Vertex(3, 3),
                 new Vertex(3, 7),
-                new Vertex(1, 7));
+                new Vertex(0, 7));
         // Obstacle blueShootingZoneTwo = Obstacle.createObstacle(
         // new Vertex(3, 7),
         // new Vertex(3, 4.75),
@@ -49,8 +49,8 @@ public class AutoTargetUtils {
         Obstacle redShootingZoneOne = Obstacle.createObstacle(
                 new Vertex(13.55, 3),
                 new Vertex(13.55, 7),
-                new Vertex(15.55, 7),
-                new Vertex(15.55, 3));
+                new Vertex(16.55, 7),
+                new Vertex(16.55, 3));
         Obstacle redShootingZoneTwo = Obstacle.createObstacle(
                 new Vertex(11.55, 7),
                 new Vertex(13.55, 7),
