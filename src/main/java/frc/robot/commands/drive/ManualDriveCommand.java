@@ -50,7 +50,7 @@ public class ManualDriveCommand extends Command {
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband.get());
-
+        boolean slow = m_driverController.getRightTriggerAxis() > 0.5;
         inputX = inputX * inputX * Math.signum(inputX);
         inputY = inputY * inputY * Math.signum(inputY);
         inputRot = inputRot * inputRot * Math.signum(inputRot);
@@ -62,10 +62,10 @@ public class ManualDriveCommand extends Command {
 
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, -inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get());
+                    DriveConstants.kRateLimit.get(), false, slow);
         } else {
             m_robotDrive.drive(inputY, inputX, -inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get());
+                    DriveConstants.kRateLimit.get(), false, slow);
         }
     }
 }

@@ -100,6 +100,7 @@ public class DriveAndTrackPointCommand extends Command {
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+        boolean slow = m_driverController.getRightTriggerAxis() > 0.5;
 
         inputX = inputX * inputX * Math.signum(inputX);
         inputY = inputY * inputY * Math.signum(inputY);
@@ -112,10 +113,10 @@ public class DriveAndTrackPointCommand extends Command {
 
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get(), true);
+                    DriveConstants.kRateLimit.get(), true, slow);
         } else {
             m_robotDrive.drive(inputY, inputX, inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get(), true);
+                    DriveConstants.kRateLimit.get(), true, slow);
         }
     }
 }

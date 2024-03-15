@@ -254,7 +254,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
-        drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false);
+        drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false, false);
     }
 
     /**
@@ -271,7 +271,7 @@ public class DriveSubsystem extends SubsystemBase {
      *                         per second.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
-            boolean absoluteRotSpeed) {
+            boolean absoluteRotSpeed, boolean slow) {
         double xSpeedCommanded;
         double ySpeedCommanded;
 
@@ -320,8 +320,8 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
-        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get();
+        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get() * (slow ? 0.5 : 1);
+        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get() * (slow ? 0.5 : 1);
         double rotDelivered = absoluteRotSpeed ? rot : rotSpeedFromJoystick(rot, rateLimit);
         ChassisSpeeds chassisSpeeds = fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
