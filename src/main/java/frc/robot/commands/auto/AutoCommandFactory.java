@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ElevatorSetAngleForAmpCommand;
@@ -199,16 +200,22 @@ public final class AutoCommandFactory {
     }
 
     private static Pose2d getAllianceLocation(double x, double y) {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            if (alliance.get() == Alliance.Blue) {
-                return new Pose2d(x, y, new Rotation2d());
-            } else {
-                return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
-            }
-        } else {
+        // Optional<Alliance> alliance = DriverStation.getAlliance();
+        boolean isRed = Robot.redAlliance.get();
+        // if (alliance.isPresent()) {
+        // if (alliance.get() == Alliance.Blue) {
+        // return new Pose2d(x, y, new Rotation2d());
+        // } else {
+        // return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
+        // }
+        // } else {
+        // return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
+        // // return new Pose2d(x, y, new Rotation2d());
+        // }
+        if (isRed) {
             return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
-            // return new Pose2d(x, y, new Rotation2d());
+        } else {
+            return new Pose2d(x, y, new Rotation2d());
         }
     }
 

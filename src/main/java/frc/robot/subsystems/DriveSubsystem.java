@@ -31,6 +31,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -129,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
                 visionStdDevs);
 
         pathfinder = new PathfinderBuilder(
-                Field.EMPTY_FIELD)
+                Field.CRESCENDO_2024)
                 .setInjectPoints(true)
                 .setPointSpacing(0.5)
                 .setCornerPointSpacing(0.05)
@@ -450,6 +451,13 @@ public class DriveSubsystem extends SubsystemBase {
         return path.asTrajectory(getTrajectoryConfig(path));
     }
 
+    public Trajectory generateTrajectoryNoAvoidance(Pose2d start, Pose2d end) throws ImpossiblePathException {
+        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        waypoints.add(start);
+        waypoints.add(end);
+        return TrajectoryGenerator.generateTrajectory(waypoints, getTrajectoryConfig(end));
+    }
+
     public TrajectoryConfig getTrajectoryConfig(Path path) {
         TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
                 PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
@@ -461,6 +469,22 @@ public class DriveSubsystem extends SubsystemBase {
         Vertex start = path.getStart();
         Vertex nextWaypoint = path.size() > 0 ? path.get(0) : path.getTarget();
         Vector pathDir = start.createVectorTo(nextWaypoint).normalize();
+        double speed = velocity.dotProduct(pathDir);
+        config.setStartVelocity(speed);
+        // config.setKinematics(DriveConstants.kDriveKinematics);
+        // config.setStartVelocity(10);
+        return config;
+    }
+
+    public TrajectoryConfig getTrajectoryConfig(Pose2d target) {
+        TrajectoryConfig config = new TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+                PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
+
+        // TODO: This is wrong, it stutters still on path change
+        ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), getPose().getRotation());
+        Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
+                chassisSpeed.vyMetersPerSecond);
+        Vector pathDir = new Vertex(getPose()).createVectorTo(new Vertex(target)).normalize();
         double speed = velocity.dotProduct(pathDir);
         config.setStartVelocity(speed);
         // config.setKinematics(DriveConstants.kDriveKinematics);

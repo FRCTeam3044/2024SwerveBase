@@ -43,8 +43,8 @@ public class ClimberCommand extends Command {
         double leftStick = -MathUtil.applyDeadband(m_controller.getLeftY(),
                 climberControlDeadband.get());
 
-        m_climber.consumeClimberInput(rightStick *
+        m_climber.consumeClimberInput(leftStick *
                 ClimberConstants.kClimberManualSpeed.get(),
-                leftStick * ClimberConstants.kClimberManualSpeed.get());
+                rightStick * ClimberConstants.kClimberManualSpeed.get());
     }
 }

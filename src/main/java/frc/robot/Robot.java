@@ -32,6 +32,7 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.StateMachine.State;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -46,6 +47,8 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
+    public static ConfigurableParameter<Boolean> redAlliance = new ConfigurableParameter<Boolean>(false,
+            "Red Alliance?");
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -100,6 +103,8 @@ public class Robot extends LoggedRobot {
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
     }
 
     /**
@@ -124,9 +129,6 @@ public class Robot extends LoggedRobot {
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
-        if (m_autonomousCommand == null && DriverStation.getAlliance().isPresent()) {
-            m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

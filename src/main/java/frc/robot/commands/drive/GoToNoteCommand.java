@@ -88,7 +88,7 @@ public class GoToNoteCommand extends Command {
         targetRotationController.setTargetY(notePose.getY());
 
         try {
-            Trajectory myPath = m_robotDrive.generateTrajectory(originalRobotPose, notePose);
+            Trajectory myPath = m_robotDrive.generateTrajectoryNoAvoidance(originalRobotPose, notePose);
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(

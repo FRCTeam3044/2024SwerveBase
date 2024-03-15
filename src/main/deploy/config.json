@@ -13,6 +13,10 @@
             "comment": "Auto-Generated",
             "value": "0.8"
         },
+        "Red Alliance?": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Elevator Position Offset": {
             "comment": "DO NOT CHANGE!!!!!",
             "value": "0.8556"
@@ -312,6 +316,10 @@
             "comment": "Auto-Generated",
             "value": "0.8"
         },
+        "Red Alliance?": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Elevator Position Offset": {
             "comment": "DO NOT CHANGE!!!!!",
             "value": "0.8556"
@@ -610,6 +618,10 @@
             "comment": "Auto-Generated",
             "value": "0.8"
         },
+        "Red Alliance?": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Elevator Position Offset": {
             "comment": "DO NOT CHANGE!!!!!",
             "value": "0.8556"
@@ -657,7 +669,7 @@
         },
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.4"
+            "value": "0.55"
         },
         "Elevator SmartMotion Max Velocity": {
             "comment": "Auto-Generated",
@@ -907,6 +919,10 @@
         "Subwoofer Angle": {
             "comment": "Auto-Generated",
             "value": "0.8"
+        },
+        "Red Alliance?": {
+            "comment": "Auto-Generated",
+            "value": "false"
         },
         "Elevator Position Offset": {
             "comment": "DO NOT CHANGE!!!!!",
