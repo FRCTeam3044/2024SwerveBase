@@ -3,16 +3,36 @@
     "type": "while",
     "name": "Drive Until Note",
     "condition": {
-      "id": "not",
+      "id": "or",
       "children": [
         {
-          "id": "robot_within_radius",
-          "parameters": {
-            "regionX": "{{ regionX }}",
-            "regionY": "{{ regionY }}",
-            "regionRadius": "{{ regionRadius }}"
-          },
-          "children": []
+          "id": "not",
+          "parameters": {},
+          "children": [
+            {
+              "id": "robot_within_radius",
+              "name": "New Condition",
+              "parameters": {
+                "regionX": "{{ regionX }}",
+                "regionY": "{{ regionY }}",
+                "regionRadius": "{{ regionRadius }}"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "not",
+          "children": [
+            {
+              "id": "note_detected",
+              "name": "Note Detected",
+              "parameters": {},
+              "children": []
+            }
+          ],
+          "name": "New Condition",
+          "parameters": {}
         }
       ],
       "parameters": {}

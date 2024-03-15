@@ -64,9 +64,14 @@ public final class AutoCommandFactory {
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
         AutoParser.registerBoolean("robot_within_radius", AutoCommandFactory::robotInRadius);
+        AutoParser.registerBoolean("note_detected", AutoCommandFactory::noteDetected);
         AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
         AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
+    }
+
+    public static NoteDetected noteDetected(JSONObject parameters) {
+        return new NoteDetected(RobotContainer.m_noteDetection);
     }
 
     public static Command shootIfReady(JSONObject parameters) {
