@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -51,6 +52,7 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("set_intake_angle", AutoCommandFactory::elevatorSetAngleForIntakeCommand);
         AutoParser.registerCommand("set_amp_angle", AutoCommandFactory::elevatorSetAngleForAmpCommand);
         AutoParser.registerCommand("intake", AutoCommandFactory::intakeCommand);
+        AutoParser.registerCommand("intake_for_second", AutoCommandFactory::runIntakeForSecond);
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerCommand("to_shooting_zone", AutoCommandFactory::getToShootingZone);
@@ -65,6 +67,10 @@ public final class AutoCommandFactory {
         AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
         AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
+    }
+
+    public static Command runIntakeForSecond(JSONObject parameters) {
+        return (new WaitCommand(1)).raceWith(new IntakeCommand(RobotContainer.intake));
     }
 
     public static NoteDetected noteDetected(JSONObject parameters) {
@@ -203,7 +209,7 @@ public final class AutoCommandFactory {
 
     private static Pose2d getAllianceLocation(double x, double y) {
         // Optional<Alliance> alliance = DriverStation.getAlliance();
-        boolean isRed = Robot.redAlliance.get();
+        boolean isRed = Robot.redAlliance;
         // if (alliance.isPresent()) {
         // if (alliance.get() == Alliance.Blue) {
         // return new Pose2d(x, y, new Rotation2d());

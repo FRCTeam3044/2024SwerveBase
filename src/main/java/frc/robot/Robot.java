@@ -47,8 +47,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
-    public static ConfigurableParameter<Boolean> redAlliance = new ConfigurableParameter<Boolean>(false,
-            "Red Alliance?");
+    public static boolean redAlliance = true;
 
     /**
      * This function is run when the robot is first started up and should be used

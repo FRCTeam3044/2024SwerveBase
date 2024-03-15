@@ -70,7 +70,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SHOOTING_TARGET;
         // }
-        if (Robot.redAlliance.get()) {
+        if (Robot.redAlliance) {
             return RED_SHOOTING_TARGET;
         } else {
             return BLUE_SHOOTING_TARGET;
@@ -90,7 +90,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SHOOTING_ZONE;
         // }
-        if (Robot.redAlliance.get()) {
+        if (Robot.redAlliance) {
             return RED_SHOOTING_ZONE;
         } else {
             return BLUE_SHOOTING_ZONE;
@@ -115,7 +115,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SOURCE;
         // }
-        if (Robot.redAlliance.get()) {
+        if (Robot.redAlliance) {
             return RED_SOURCE;
         } else {
             return BLUE_SOURCE;
@@ -140,7 +140,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SOURCE;
         // }
-        if (Robot.redAlliance.get()) {
+        if (Robot.redAlliance) {
             return RED_SOURCE;
         } else {
             return BLUE_SOURCE;
