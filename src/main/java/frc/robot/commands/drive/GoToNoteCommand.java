@@ -50,9 +50,10 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public void initialize() {
+        failed = false;
         originalRobotPose = m_robotDrive.getPose();
         m_followCommand = null;
-        System.out.println("Go to note initialized!!!");
+        // System.out.println("Go to note initialized!!!");
         if (hasTargetRegion) {
             m_noteDetection.setRegion(targetRegion, regionRadius);
             if (m_noteDetection.hasNoteInRegion) {

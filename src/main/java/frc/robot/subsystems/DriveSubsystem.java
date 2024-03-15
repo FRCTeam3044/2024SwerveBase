@@ -129,7 +129,7 @@ public class DriveSubsystem extends SubsystemBase {
                 visionStdDevs);
 
         pathfinder = new PathfinderBuilder(
-                Field.CRESCENDO_2024)
+                Field.EMPTY_FIELD)
                 .setInjectPoints(true)
                 .setPointSpacing(0.5)
                 .setCornerPointSpacing(0.05)

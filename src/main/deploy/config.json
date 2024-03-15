@@ -763,7 +763,7 @@
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
             "comment": "Auto-Generated",
-            "value": "5.2"
+            "value": "5.0"
         },
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",

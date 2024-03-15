@@ -7,11 +7,8 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.PhotonCamera;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -101,7 +98,8 @@ public class Robot extends LoggedRobot {
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
         PhotonCamera.setVersionCheckEnabled(false);
-        RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()), 2);
+        // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
+        // 2);
     }
 
     /**
