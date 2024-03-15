@@ -13,5 +13,23 @@
       "noteX": 2.87,
       "noteY": 7
     }
+  },
+  {
+    "type": "macro",
+    "id": "pickup_and_score",
+    "name": "Score Note 1",
+    "parameters": {
+      "noteX": 2.87,
+      "noteY": 5.55
+    }
+  },
+  {
+    "type": "macro",
+    "id": "pickup_and_score",
+    "name": "Score Note 1",
+    "parameters": {
+      "noteX": 2.87,
+      "noteY": 4.1
+    }
   }
 ]

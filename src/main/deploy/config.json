@@ -326,7 +326,7 @@
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.8"
         },
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",
@@ -628,7 +628,7 @@
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.8"
+            "value": "0.1"
         },
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",
@@ -721,7 +721,7 @@
         "rearRightModule/driving/Max": "1.0",
         "Intake Current Threshold": {
             "comment": "Auto-Generated",
-            "value": "-13.0"
+            "value": "-10.0"
         },
         "frontLeftModule/driving/FF": "0.2081708461046219",
         "rearLeftModule/driving/D": "0.0",
@@ -930,7 +930,7 @@
         },
         "Shooter Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.8"
         },
         "Pathfinding Max Angular Speed": {
             "comment": "Auto-Generated",

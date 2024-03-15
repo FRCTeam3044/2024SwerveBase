@@ -70,7 +70,7 @@ public final class AutoCommandFactory {
     }
 
     public static Command runIntakeForSecond(JSONObject parameters) {
-        return (new WaitCommand(1)).raceWith(new IntakeCommand(RobotContainer.intake));
+        return (new WaitCommand(0.75)).raceWith(new IntakeCommand(RobotContainer.intake));
     }
 
     public static NoteDetected noteDetected(JSONObject parameters) {

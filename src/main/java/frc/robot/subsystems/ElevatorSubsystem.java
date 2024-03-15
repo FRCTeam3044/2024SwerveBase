@@ -156,8 +156,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     private double angleToRotations(double angle) {
-        double raw = 21.3 + (199 * angle) + (-169 * Math.pow(angle, 2));
-        return MathUtil.clamp(raw, 22.5, 50.0);
+        double raw = 22.4 + (186 * angle) + (-164 * Math.pow(angle, 2));
+        return MathUtil.clamp(raw, 20, 45.0);
     }
 
     @Override
