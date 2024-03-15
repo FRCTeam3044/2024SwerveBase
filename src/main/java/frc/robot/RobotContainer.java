@@ -112,7 +112,8 @@ public class RobotContainer {
      */
     private void configureBindings() {
         // Driver 1
-        m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() -> !DriverStation.isTest()));
+        // m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() ->
+        // !DriverStation.isTest()));
         Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommand(elevator, m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
         m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand
@@ -131,6 +132,10 @@ public class RobotContainer {
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.a()
                 .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
+        Command pickupNote = stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote);
+        // pickupNote.addRequirements(m_robotDrive);
+        m_operatorController.b().whileTrue(pickupNote);
+
         // m_operatorController.b()
         // .whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator).onlyIf(() ->
         // !DriverStation.isTest()));

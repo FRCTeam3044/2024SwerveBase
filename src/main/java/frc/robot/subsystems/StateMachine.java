@@ -294,7 +294,7 @@ public class StateMachine extends SubsystemBase {
         return new WaitCommand(1);
     }
 
-    private Command getPickupNoteCommand() {
+    public Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
         ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);

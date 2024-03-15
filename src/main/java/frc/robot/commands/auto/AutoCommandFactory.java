@@ -24,6 +24,7 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
+import me.nabdev.pathfinding.autos.AutoBoolean;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 public final class AutoCommandFactory {
@@ -60,7 +61,8 @@ public final class AutoCommandFactory {
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
-        AutoParser.registerMacro("pickup_note", "PickupNote.json");
+        AutoParser.registerBoolean("robot_within_radius", AutoCommandFactory::robotInRadius);
+        AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
         AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
     }
@@ -79,6 +81,13 @@ public final class AutoCommandFactory {
 
     public static Command getToShootingZone(JSONObject parameters) {
         return new GoToShootingZone(RobotContainer.m_robotDrive);
+    }
+
+    public static AutoBoolean robotInRadius(JSONObject parameters) {
+        Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
+        double targetRadius = parameters.getDouble("regionRadius");
+
+        return new RobotWithinRadius(RobotContainer.m_robotDrive, target, targetRadius);
     }
 
     public static NoteInArea noteInArea(JSONObject parameters) {
