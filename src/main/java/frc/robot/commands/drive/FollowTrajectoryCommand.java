@@ -155,7 +155,8 @@ public class FollowTrajectoryCommand extends Command {
         // properly when cancelling command compositions nested more than 2 layers deep.
         // It's probably my fault.
         if (DriverStation.isTeleop()) {
-            if (RobotContainer.m_driverController.getHID().getRightTriggerAxis() < 0.5) {
+            if (RobotContainer.m_driverController.getHID().getRightTriggerAxis() < 0.5
+                    && !RobotContainer.m_operatorController.getHID().getBButton()) {
                 return true;
             }
         }

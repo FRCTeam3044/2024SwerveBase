@@ -138,6 +138,7 @@ public class StateMachine extends SubsystemBase {
                 // }
 
                 if (noteIn()) {
+                    System.out.println("Moving to Note loaded from no note");
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                     return;
@@ -146,6 +147,7 @@ public class StateMachine extends SubsystemBase {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
                         currentState = State.TARGETING_NOTE;
+                        System.out.println("Moving to targeting note");
                         updateDesiredCommand();
                     }
                 }
@@ -159,11 +161,14 @@ public class StateMachine extends SubsystemBase {
                  * robot is no longer targeting a note.
                  */
                 if (noteIn()) {
+                    System.out.println("Moving to Note loaded from targeting note");
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
+                    return;
                 }
                 if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
+                    System.out.println("Moving back to no note");
                     currentState = State.NO_NOTE;
                     lostNote = true;
                     updateDesiredCommand();
@@ -172,30 +177,33 @@ public class StateMachine extends SubsystemBase {
             case NOTE_LOADED:
                 if ((m_transitSubsystem.runningTransit
                         && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                    System.out.println("Kicking back from note loaded");
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                     return;
                 }
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
-                if (!inShootingZone) {
-                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
-                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
-                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
-                        inShootingZone = true;
-                    }
-                }
                 if (shooterAtSpeed() && /* shooterAtAngle() && */ inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     updateDesiredCommand();
                 }
                 break;
             case READY_TO_SHOOT:
+                boolean inShootinZone = AutoTargetUtils.getShootingZone()
+                        .isInside(new Vertex(m_driveSubsystem.getPose()));
+                if (!inShootinZone) {
+                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
+                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
+                        inShootingZone = true;
+                    }
+                }
                 if ((m_transitSubsystem.runningTransit
-                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                        && m_transitSubsystem.timeSinceTransit.hasElapsed(kTransitRuntime.get()))) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
-                } else if (!AutoTargetUtils.getShootingZone().isInside(new Vertex(m_driveSubsystem.getPose()))) {
+                } else if (!inShootinZone) {
                     currentState = State.NOTE_LOADED;
                     updateDesiredCommand();
                 }
@@ -209,7 +217,7 @@ public class StateMachine extends SubsystemBase {
         SmartDashboard.putString("State", currentState.toString());
     }
 
-    private boolean noteIn() {
+    protected boolean noteIn() {
         // boolean currentSpiked = m_intakeCurrentDebouncer
         // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
 
@@ -279,7 +287,7 @@ public class StateMachine extends SubsystemBase {
         return new WaitCommand(1);
     }
 
-    private Command getPickupNoteCommand() {
+    public Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
         ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);

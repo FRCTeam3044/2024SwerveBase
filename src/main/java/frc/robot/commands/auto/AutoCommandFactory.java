@@ -7,14 +7,14 @@ package frc.robot.commands.auto;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ElevatorSetAngleForAmpCommand;
@@ -24,6 +24,7 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
+import me.nabdev.pathfinding.autos.AutoBoolean;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 public final class AutoCommandFactory {
@@ -51,6 +52,7 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("set_intake_angle", AutoCommandFactory::elevatorSetAngleForIntakeCommand);
         AutoParser.registerCommand("set_amp_angle", AutoCommandFactory::elevatorSetAngleForAmpCommand);
         AutoParser.registerCommand("intake", AutoCommandFactory::intakeCommand);
+        AutoParser.registerCommand("intake_for_second", AutoCommandFactory::runIntakeForSecond);
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerCommand("to_shooting_zone", AutoCommandFactory::getToShootingZone);
@@ -60,9 +62,19 @@ public final class AutoCommandFactory {
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
-        AutoParser.registerMacro("pickup_note", "PickupNote.json");
+        AutoParser.registerBoolean("robot_within_radius", AutoCommandFactory::robotInRadius);
+        AutoParser.registerBoolean("note_detected", AutoCommandFactory::noteDetected);
+        AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
         AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
+    }
+
+    public static Command runIntakeForSecond(JSONObject parameters) {
+        return (new WaitCommand(0.75)).raceWith(new IntakeCommand(RobotContainer.intake));
+    }
+
+    public static NoteDetected noteDetected(JSONObject parameters) {
+        return new NoteDetected(RobotContainer.m_noteDetection);
     }
 
     public static Command shootIfReady(JSONObject parameters) {
@@ -79,6 +91,13 @@ public final class AutoCommandFactory {
 
     public static Command getToShootingZone(JSONObject parameters) {
         return new GoToShootingZone(RobotContainer.m_robotDrive);
+    }
+
+    public static AutoBoolean robotInRadius(JSONObject parameters) {
+        Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
+        double targetRadius = parameters.getDouble("regionRadius");
+
+        return new RobotWithinRadius(RobotContainer.m_robotDrive, target, targetRadius);
     }
 
     public static NoteInArea noteInArea(JSONObject parameters) {
@@ -189,16 +208,26 @@ public final class AutoCommandFactory {
     }
 
     private static Pose2d getAllianceLocation(double x, double y) {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            if (alliance.get() == Alliance.Blue) {
-                return new Pose2d(x, y, new Rotation2d());
-            } else {
-                return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
-            }
-        } else {
+        // Optional<Alliance> alliance = DriverStation.getAlliance();
+        boolean isRed = Robot.redAlliance;
+        // if (alliance.isPresent()) {
+        // if (alliance.get() == Alliance.Blue) {
+        // return new Pose2d(x, y, new Rotation2d());
+        // } else {
+        // return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
+        // }
+        // } else {
+        // return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
+        // // return new Pose2d(x, y, new Rotation2d());
+        // }
+        if (isRed) {
             return new Pose2d(2 * fieldCenter - x, y, new Rotation2d());
-            // return new Pose2d(x, y, new Rotation2d());
+        } else {
+            return new Pose2d(x, y, new Rotation2d());
         }
+    }
+
+    public static void getJoystickInputs(CommandXboxController controller) {
+
     }
 }

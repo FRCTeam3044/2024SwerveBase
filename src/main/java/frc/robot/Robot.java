@@ -7,9 +7,9 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,6 +49,7 @@ public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
     public LEDSubsystem m_led;
+    public static boolean redAlliance = false;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -78,8 +79,11 @@ public class Robot extends LoggedRobot {
 
         // Set up data receivers & replaource
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
+            // Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
+            DataLogManager.start(USBLocator.getUSBPath() + "/logs");
+            DataLogManager.logNetworkTables(true);
+            DriverStation.startDataLog(DataLogManager.getLog());
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());
         } else {
@@ -100,6 +104,10 @@ public class Robot extends LoggedRobot {
         OxConfig.initialize();
         m_led = new LEDSubsystem(LEDConstants.LEDPort, 52, m_robotContainer);
         PhotonCamera.setVersionCheckEnabled(false);
+        // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
+        // 2);
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        OxConfig.initialize();
     }
 
     /**
@@ -124,9 +132,6 @@ public class Robot extends LoggedRobot {
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
-        if (m_autonomousCommand == null && DriverStation.getAlliance().isPresent()) {
-            m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

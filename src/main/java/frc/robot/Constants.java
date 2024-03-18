@@ -207,7 +207,7 @@ public final class Constants {
         public static final PIDController kPathfindingYController = new ConfigurablePIDController(1, 0, 0,
                 "Pathfinding Y Controller");
         public static final ProfiledPIDController kPathfindingThetaController = new ConfigurableProfiledPIDController(
-                1,
+                6.0,
                 0,
                 0,
                 // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
@@ -225,7 +225,7 @@ public final class Constants {
 
     public static final class VisionConstants {
         // TODO: Update these values
-        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(12, 12, 8); // THESE ARE NOT CORRECT
+        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(8, 8, 8); // THESE ARE NOT CORRECT
         public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(1.5, 1.5, 4); // THESE ARE NOT
                                                                                            // CORRECT
         // array of active cameras
@@ -241,7 +241,7 @@ public final class Constants {
                                 -0.10795,
                                 0.635),
                         new Rotation3d(
-                                0,
+                                Math.PI,
                                 0.47,
                                 0)),
                 new Transform3d( // back

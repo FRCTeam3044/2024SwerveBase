@@ -90,11 +90,7 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     }
 
     public void stopTransit() {
-        if (!runningTransit) {
-            runningTransit = false;
-            timeSinceTransit.reset();
-            timeSinceTransit.start();
-        }
+        runningTransit = false;
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 

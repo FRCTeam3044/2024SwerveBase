@@ -4,7 +4,9 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
@@ -98,17 +100,23 @@ public class DriveAndTrackPointCommand extends Command {
         double inputX = MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband.get());
         double inputY = MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband.get());
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
+        boolean slow = m_driverController.getRightTriggerAxis() > 0.5;
 
         inputX = inputX * inputX * Math.signum(inputX);
         inputY = inputY * inputY * Math.signum(inputY);
         inputRot = inputRot * inputRot * Math.signum(inputRot);
 
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue) {
+            inputY *= -1;
+            inputX *= -1;
+        }
+
         if (isSimulation) {
             m_robotDrive.drive(inputX, -inputY, inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get(), true);
+                    DriveConstants.kRateLimit.get(), true, slow);
         } else {
             m_robotDrive.drive(inputY, inputX, inputRot, DriveConstants.kFieldRelative.get(),
-                    DriveConstants.kRateLimit.get(), true);
+                    DriveConstants.kRateLimit.get(), true, slow);
         }
     }
 }

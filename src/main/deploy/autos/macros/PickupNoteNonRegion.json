@@ -3,16 +3,36 @@
     "type": "while",
     "name": "Drive Until Note",
     "condition": {
-      "id": "not",
+      "id": "or",
       "children": [
         {
-          "id": "note_in_area",
-          "parameters": {
-            "regionX": "{{ regionX }}",
-            "regionY": "{{ regionY }}",
-            "regionRadius": "{{ regionRadius }}"
-          },
-          "children": []
+          "id": "not",
+          "parameters": {},
+          "children": [
+            {
+              "id": "robot_within_radius",
+              "name": "New Condition",
+              "parameters": {
+                "regionX": "{{ regionX }}",
+                "regionY": "{{ regionY }}",
+                "regionRadius": "{{ regionRadius }}"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "not",
+          "children": [
+            {
+              "id": "note_detected",
+              "name": "Note Detected",
+              "parameters": {},
+              "children": []
+            }
+          ],
+          "name": "New Condition",
+          "parameters": {}
         }
       ],
       "parameters": {}
@@ -32,7 +52,7 @@
         {
           "type": "command",
           "id": "go_to_and_track_point",
-          "name": "New Command",
+          "name": "Go To Note Location",
           "parameters": {
             "targetX": "{{ regionX }}",
             "targetY": "{{ regionY }}",
@@ -44,13 +64,13 @@
         {
           "type": "command",
           "id": "intake",
-          "name": "New Command",
+          "name": "Run Intake",
           "parameters": {}
         },
         {
           "type": "command",
           "id": "set_intake_angle",
-          "name": "New Command",
+          "name": "Set Intake Position",
           "parameters": {}
         }
       ]
@@ -60,7 +80,7 @@
     "type": "if",
     "name": "Note In Area",
     "condition": {
-      "id": "note_in_area",
+      "id": "robot_within_radius",
       "parameters": {
         "regionX": "{{ regionX }}",
         "regionY": "{{ regionY }}",
@@ -89,7 +109,7 @@
         "children": [
           {
             "type": "command",
-            "id": "go_to_note_in_area",
+            "id": "go_to_note",
             "name": "Go To Note",
             "parameters": {
               "regionX": "{{ regionX }}",
@@ -106,7 +126,7 @@
           {
             "type": "command",
             "id": "set_intake_angle",
-            "name": "New Command",
+            "name": "Set Intake Position",
             "parameters": {}
           }
         ]

@@ -17,7 +17,7 @@
       },
       "child": {
         "type": "group",
-        "id": "race",
+        "id": "deadline",
         "name": "Score",
         "parameters": {},
         "children": [
@@ -44,6 +44,12 @@
             "type": "command",
             "id": "shoot_if_ready",
             "name": "Shoot when ready",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "intake_for_second",
+            "name": "Intake",
             "parameters": {}
           }
         ]
