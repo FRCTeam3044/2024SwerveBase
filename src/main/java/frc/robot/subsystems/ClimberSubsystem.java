@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableInstance.NetworkMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 
@@ -16,8 +18,13 @@ public class ClimberSubsystem extends SubsystemBase {
         leftClimberMotor.configFactoryDefault();
         rightClimberMotor.configFactoryDefault();
 
+        leftClimberMotor.setNeutralMode(NeutralMode.Brake);
+        rightClimberMotor.setNeutralMode(NeutralMode.Brake);
+
         leftClimberMotor.configPeakCurrentLimit(40);
+        leftClimberMotor.enableCurrentLimit(true);
         rightClimberMotor.configPeakCurrentLimit(40);
+        leftClimberMotor.enableCurrentLimit(true);
         rightClimberMotor.setInverted(true);
 
         leftClimberMotor.setStatusFramePeriod(2, 5000);

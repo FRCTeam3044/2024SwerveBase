@@ -1,0 +1,44 @@
+[
+  {
+    "type": "macro",
+    "id": "score_note",
+    "name": "Score Preload",
+    "parameters": {}
+  },
+  {
+    "type": "command",
+    "id": "go_to_point",
+    "name": "Go To Point",
+    "parameters": {
+      "targetX": 2,
+      "targetY": 2,
+      "rotDegrees": 0
+    }
+  },
+  {
+    "type": "macro",
+    "id": "pickup_note",
+    "name": "Pickup Note",
+    "parameters": {
+      "regionX": 8.25,
+      "regionY": 0.76,
+      "regionRadius": 1
+    }
+  },
+  {
+    "type": "command",
+    "id": "go_to_point",
+    "name": "Go To Point",
+    "parameters": {
+      "targetX": 2,
+      "targetY": 2,
+      "rotDegrees": 0
+    }
+  },
+  {
+    "type": "macro",
+    "id": "score_note",
+    "name": "Score",
+    "parameters": {}
+  }
+]

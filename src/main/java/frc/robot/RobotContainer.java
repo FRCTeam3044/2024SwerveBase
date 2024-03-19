@@ -156,7 +156,7 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("GetThree.json");
+            Command auto = AutoParser.loadAuto("GetThreeSourceStart.json");
 
             return auto;
         } catch (FileNotFoundException e) {

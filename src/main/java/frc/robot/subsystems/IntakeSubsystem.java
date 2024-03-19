@@ -34,8 +34,10 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeTopMotor.configFactoryDefault();
         intakeTopMotor.setInverted(true);
         intakeTopMotor.configPeakCurrentLimit(20);
+        intakeTopMotor.enableCurrentLimit(true);
         intakeBottomMotor.configFactoryDefault();
         intakeBottomMotor.configPeakCurrentLimit(20);
+        intakeBottomMotor.enableCurrentLimit(true);
         intakeBottomMotor.setInverted(true);
 
         intakeBottomMotor.setStatusFramePeriod(2, 5000);
@@ -67,7 +69,8 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     @Override
     public void periodic() {
         // SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
-        SmartDashboard.putNumber("Intake Current", intakeBottomMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Intake Current",
+        // intakeBottomMotor.getStatorCurrent());
         SmartDashboard.putNumber("Intake Top Current", -intakeTopMotor.getStatorCurrent());
 
     }

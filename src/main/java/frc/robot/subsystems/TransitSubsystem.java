@@ -29,6 +29,7 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
         transitMotor.configFactoryDefault();
         transitMotor.setInverted(true);
         transitMotor.configPeakCurrentLimit(20);
+        transitMotor.enableCurrentLimit(true);
         transitMotor.setStatusFramePeriod(2, 5000);
         transitMotor.setStatusFramePeriod(3, 5000);
         transitMotor.setStatusFramePeriod(8, 5000);
@@ -54,7 +55,7 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Transit Ultrasonic", transitUltrasonic.getValue());
+        // SmartDashboard.putNumber("Transit Ultrasonic", transitUltrasonic.getValue());
     }
 
     /**

@@ -11,6 +11,7 @@ import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkPIDController;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -43,8 +44,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkPIDController topPidController;
     private SparkPIDController bottomPidController;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-    private double maxVel = 0;
-    private double maxAccel = 0;
+    private double maxVel = 5000;
+    private ConfigurableParameter<Double> maxAccel = new ConfigurableParameter<Double>(10000.0,
+            "Shooter Max Accelleration");
     public static final int kCPR = 8192;
 
     private RelativeEncoder m_topAlternateEncoder;
@@ -64,8 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
      */
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Shooter Top Encoder", m_topAlternateEncoder.getVelocity());
-        SmartDashboard.putNumber("Shooter Bottom Encoder", m_bottomAlternateEncoder.getVelocity());
+        SmartDashboard.putNumber("Shooter Top Encoder", topMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Shooter Bottom Encoder", bottomMotor.getEncoder().getVelocity());
     }
 
     public void stopShooter() {
@@ -110,7 +112,7 @@ public class ShooterSubsystem extends SubsystemBase {
         m_bottomAlternateEncoder = bottomMotor.getAlternateEncoder(kAltEncType, kCPR);
 
         // PID Coedficients
-        kP = 0.1;
+        kP = 0;
         kI = 0;
         kD = 0;
         kIz = 0;
@@ -130,9 +132,9 @@ public class ShooterSubsystem extends SubsystemBase {
         topPidController.setFF(kFF);
         topPidController.setOutputRange(kMinOutput, kMaxOutput);
         topPidController.setSmartMotionMaxVelocity(maxVel, 0);
-        topPidController.setSmartMotionMaxAccel(maxAccel, 0);
+        topPidController.setSmartMotionMaxAccel(maxAccel.get(), 0);
 
-        topPidController.setFeedbackDevice(m_topAlternateEncoder);
+        // topPidController.setFeedbackDevice(m_topAlternateEncoder);
         // ----------------------------------------------------------------------------------
         bottomPidController.setP(kP);
         bottomPidController.setI(kI);
@@ -141,14 +143,19 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomPidController.setFF(kFF);
         bottomPidController.setOutputRange(kMinOutput, kMaxOutput);
         bottomPidController.setSmartMotionMaxVelocity(maxVel, 0);
-        bottomPidController.setSmartMotionMaxAccel(maxAccel, 0);
+        bottomPidController.setSmartMotionMaxAccel(maxAccel.get(), 0);
 
-        bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
+        new ConfigurableSparkPIDController(bottomPidController,
+                "Shooter bottom pid");
+        new ConfigurableSparkPIDController(topPidController,
+                "Shooter top pid");
+
+        // bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
     public void handlePID() {
-        topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kVelocity);
-        bottomPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kVelocity);
+        topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
+        bottomPidController.setReference(-currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
     }
 
     public void speakerSpeed() {

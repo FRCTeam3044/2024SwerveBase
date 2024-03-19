@@ -46,11 +46,11 @@ public class AutoTargetUtils {
                 new Vertex(13.55, 7),
                 new Vertex(16.55, 7),
                 new Vertex(16.55, 3));
-        Obstacle redShootingZoneTwo = Obstacle.createObstacle(
-                new Vertex(11.55, 7),
-                new Vertex(13.55, 7),
-                new Vertex(13.55, 4.75),
-                new Vertex(11.55, 5.9));
+        // Obstacle redShootingZoneTwo = Obstacle.createObstacle(
+        // new Vertex(11.55, 7),
+        // new Vertex(13.55, 7),
+        // new Vertex(13.55, 4.75),
+        // new Vertex(11.55, 5.9));
         RED_SHOOTING_ZONE = new ObstacleGroup(redShootingZoneOne/* , redShootingZoneTwo */);
 
         // PathfindingDebugUtils.drawObstacle("Red Shooting Zone", RED_SHOOTING_ZONE);

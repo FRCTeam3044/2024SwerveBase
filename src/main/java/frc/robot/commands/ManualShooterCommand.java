@@ -34,9 +34,9 @@ public class ManualShooterCommand extends Command {
 
     @Override
     public void execute() {
-        // m_shooter.speakerSpeed();
-        // m_shooter.handlePID();
-        m_shooter.consumeShooterInput(true, false);
+        m_shooter.speakerSpeed();
+        m_shooter.handlePID();
+        // m_shooter.consumeShooterInput(true, false);
         // if(m_shooter.shooterAtSpeed()){
         if (m_timer.get() > m_shooterSpinupTime.get()) {
             ranTransit = true;

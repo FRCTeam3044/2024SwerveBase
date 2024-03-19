@@ -23,7 +23,9 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.Constants.TransitConstants;
+import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
+import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
@@ -46,7 +48,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
-    public static boolean redAlliance = false;
+    public static boolean redAlliance = true;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -101,7 +103,9 @@ public class Robot extends LoggedRobot {
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        PathfindingDebugUtils.drawObstacle("Shooting Zone", AutoTargetUtils.getShootingZone());
         OxConfig.initialize();
+        DriverStation.silenceJoystickConnectionWarning(true);
     }
 
     /**

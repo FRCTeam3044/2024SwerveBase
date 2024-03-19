@@ -22,6 +22,7 @@ public class GoToShootingZone extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("Go To Shooting Zone Initialized");
         failed = false;
         ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
         if (shootingZone == null) {
@@ -39,11 +40,17 @@ public class GoToShootingZone extends Command {
             TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
             next = Commands.sequence(travelToPoint, trackPointCmd);
         }
+
         next.schedule();
     }
 
     @Override
     public boolean isFinished() {
         return failed || (next != null && next.isFinished());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("GoToShootingZone ended " + interrupted);
     }
 }
