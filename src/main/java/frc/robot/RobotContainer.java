@@ -15,6 +15,7 @@ import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
+import frc.robot.commands.drive.XModeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -121,7 +122,7 @@ public class RobotContainer {
         // When the menu button is pressed*
         m_driverController.start()
                 .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() -> !DriverStation.isTest()));
-
+        m_driverController.x().whileTrue(new XModeCommand(m_robotDrive).onlyIf(() -> !DriverStation.isTest()));
         // Driver 2
         // Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake),
         // new TransitCommand(transit));

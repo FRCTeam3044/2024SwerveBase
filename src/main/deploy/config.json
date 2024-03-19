@@ -238,7 +238,7 @@
         },
         "Speaker Shooter RPM": {
             "comment": "Auto-Generated",
-            "value": "100.0"
+            "value": "4000.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -563,7 +563,7 @@
         },
         "Speaker Shooter RPM": {
             "comment": "Auto-Generated",
-            "value": "100.0"
+            "value": "4000.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -719,7 +719,7 @@
         "Shooter bottom pid/P": "0.0",
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.55"
+            "value": "0.6"
         },
         "Elevator SmartMotion Max Velocity": {
             "comment": "Auto-Generated",
@@ -750,7 +750,7 @@
         "Shooter top pid/FF": "0.00018",
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
-        "Pathfinding Theta Controller/P": "6.0",
+        "Pathfinding Theta Controller/P": "4.0",
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -887,7 +887,7 @@
         },
         "Speaker Shooter RPM": {
             "comment": "Auto-Generated",
-            "value": "1000.0"
+            "value": "4300.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
@@ -941,7 +941,7 @@
         },
         "Rot Controller Min Speed Rad/sec": {
             "comment": "Auto-Generated",
-            "value": "0.05"
+            "value": "0.03"
         },
         "frontLeftModule/turning/D": "0.0",
         "Pathfinding Max Angular Acceleration": {
@@ -1211,7 +1211,7 @@
         },
         "Speaker Shooter RPM": {
             "comment": "Auto-Generated",
-            "value": "100.0"
+            "value": "4000.0"
         },
         "rearLeftModule/driving/Max": "1.0",
         "Small Rumble intensity": {
