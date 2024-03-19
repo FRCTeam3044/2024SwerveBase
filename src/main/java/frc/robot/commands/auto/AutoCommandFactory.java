@@ -19,11 +19,14 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ElevatorSetAngleForAmpCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
+import frc.robot.commands.IntakeCommands.IntakeAndThenSecond;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
+import frc.robot.commands.drive.TrackPointCommand;
+import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.autos.AutoBoolean;
 import me.nabdev.pathfinding.autos.AutoParser;
 
@@ -59,6 +62,8 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("auto_aim_shooter", AutoCommandFactory::autoAimShooter);
         AutoParser.registerCommand("spinup_shooter_if_in_range", AutoCommandFactory::spinupShooterIfInRange);
         AutoParser.registerCommand("shoot_if_ready", AutoCommandFactory::shootIfReady);
+        AutoParser.registerCommand("align_robot_to_shoot", AutoCommandFactory::alignRobotToShoot);
+        AutoParser.registerCommand("intake_then_second", AutoCommandFactory::intakeThenSecond);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
@@ -69,8 +74,12 @@ public final class AutoCommandFactory {
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
     }
 
+    public static Command intakeThenSecond(JSONObject parameters) {
+        return new IntakeAndThenSecond(RobotContainer.intake);
+    }
+
     public static Command runIntakeForSecond(JSONObject parameters) {
-        return (new WaitCommand(0.75)).raceWith(new IntakeCommand(RobotContainer.intake));
+        return (new WaitCommand(1)).raceWith(new IntakeCommand(RobotContainer.intake));
     }
 
     public static NoteDetected noteDetected(JSONObject parameters) {
@@ -90,7 +99,14 @@ public final class AutoCommandFactory {
     }
 
     public static Command getToShootingZone(JSONObject parameters) {
-        return new GoToShootingZone(RobotContainer.m_robotDrive);
+        Command toShootingZone = new GoToShootingZone(RobotContainer.m_robotDrive);
+        return toShootingZone;
+    }
+
+    public static Command alignRobotToShoot(JSONObject parameters) {
+        TrackPointCommand trackPointCmd = new TrackPointCommand(RobotContainer.m_robotDrive,
+                AutoTargetUtils.getShootingTarget(), true);
+        return trackPointCmd;
     }
 
     public static AutoBoolean robotInRadius(JSONObject parameters) {

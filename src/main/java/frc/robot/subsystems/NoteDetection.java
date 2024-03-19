@@ -106,15 +106,16 @@ public class NoteDetection extends SubsystemBase {
         SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
         SmartDashboard.putBoolean("Has note", hasNote);
         SmartDashboard.putBoolean("Has note in region", hasNoteInRegion);
-        SmartDashboard.putNumber("Frames since robot", framesSinceRobot);
-        SmartDashboard.putNumber("Last Robot Distance", lastDistanceToRobot);
-        SmartDashboard.putNumberArray("Note detector target region", poseToDouble(regionPose));
+        // SmartDashboard.putNumber("Frames since robot", framesSinceRobot);
+        // SmartDashboard.putNumber("Last Robot Distance", lastDistanceToRobot);
+        // SmartDashboard.putNumberArray("Note detector target region",
+        // poseToDouble(regionPose));
         notePoses.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;
             hasNoteInRegion = true;
-            closestPose = new Pose2d(2.87, 7, new Rotation2d());
-            closestPoseToRegion = new Pose2d(2.87, 7, new Rotation2d());
+            closestPose = new Pose2d(8.25, 0.76, new Rotation2d());
+            closestPoseToRegion = new Pose2d(8.25, 0.76, new Rotation2d());
             if (closestPose.getTranslation().getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
                 notePoses.add(closestPose);
                 SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));

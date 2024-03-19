@@ -43,14 +43,14 @@
         },
         {
           "type": "command",
-          "id": "intake",
-          "name": "New Command",
+          "id": "intake_then_second",
+          "name": "Run Intake",
           "parameters": {}
         },
         {
           "type": "command",
           "id": "set_intake_angle",
-          "name": "New Command",
+          "name": "Get to Intake Angle",
           "parameters": {}
         }
       ]

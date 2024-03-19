@@ -15,11 +15,13 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision {
     private double lastEstTimestamp = 0;
@@ -124,11 +126,11 @@ public class Vision {
         // if (numTags > 1)
         // estStdDevs = Constants.VisionConstants.MultiTagStdDevs;
         // Increase std devs based on (average) distance
-        // if (avgDist > 4)
-        // estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE,
-        // Double.MAX_VALUE);
-        // else
-        estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 6));
+        if (avgDist > 3.5)
+            estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        else {
+            estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 6));
+        }
 
         return estStdDevs;
     }

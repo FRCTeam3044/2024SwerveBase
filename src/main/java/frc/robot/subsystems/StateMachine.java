@@ -184,6 +184,13 @@ public class StateMachine extends SubsystemBase {
                 }
                 boolean inShootingZone = AutoTargetUtils.getShootingZone()
                         .isInside(new Vertex(m_driveSubsystem.getPose()));
+                if (!inShootingZone) {
+                    Vertex closestPoint = AutoTargetUtils.getShootingZone()
+                            .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
+                        inShootingZone = true;
+                    }
+                }
                 if (shooterAtSpeed() && /* shooterAtAngle() && */ inShootingZone) {
                     currentState = State.READY_TO_SHOOT;
                     updateDesiredCommand();
@@ -195,8 +202,8 @@ public class StateMachine extends SubsystemBase {
                 if (!inShootinZone) {
                     Vertex closestPoint = AutoTargetUtils.getShootingZone()
                             .calculateNearestPoint(new Vertex(m_driveSubsystem.getPose()));
-                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.5) {
-                        inShootingZone = true;
+                    if (closestPoint.distance(m_driveSubsystem.getPose()) < 0.8) {
+                        inShootinZone = true;
                     }
                 }
                 if ((m_transitSubsystem.runningTransit
