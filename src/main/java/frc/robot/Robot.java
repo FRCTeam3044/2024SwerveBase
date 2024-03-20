@@ -104,7 +104,7 @@ public class Robot extends LoggedRobot {
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
         OxConfig.initialize();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, 100, m_robotContainer);
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, 143, m_robotContainer);
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LEDConstants;
@@ -79,15 +80,19 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void setCompass(int cameraPixel) {
-        int pixel = (cameraPixel * m_ledBuffer.getLength()) / 1280;
+        int pixel = (int) (((double) cameraPixel * LEDConstants.LEDTopLength) / 1280);
+        SmartDashboard.putNumber("led cam pixel", cameraPixel);
+        SmartDashboard.putNumber("led pixel", pixel);
 
         for (var i = 0; i < m_ledBuffer.getLength(); i++) {
             m_ledBuffer.setRGB(i, 0,0,0);
         }
 
-        m_ledBuffer.setRGB(pixel, changeBrightness(255), changeBrightness(165), 0);
-        m_ledBuffer.setRGB(pixel + 1, changeBrightness(255), changeBrightness(165), 0);
-        m_ledBuffer.setRGB(pixel - 1, changeBrightness(255), changeBrightness(165), 0);
+        m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel, 0, 255, 0);
+        m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel + 1, 165, 175, 0);
+        m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel + 2, 200, 175, 0);
+        m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel - 1, 165, 175, 0);
+        m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel - 2, 200, 175, 0);
 
         m_led.setData(m_ledBuffer);
     }
@@ -99,20 +104,23 @@ public class LEDSubsystem extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        if(m_robotContainer.stateMachineCommand.isScheduled()) {
+        if(true) {
             State currentState = RobotContainer.stateMachine.currentState;
             switch (currentState) {
                 case TARGETING_NOTE: 
                     setCompass(RobotContainer.m_noteDetection.midpoint);
+                    break;
                 case NOTE_LOADED:
-                    setColor(0,255,0);
+                    setColor(0,150,0);
+                    break;
                 case READY_TO_SHOOT:
                     blinkColor(0,255,0, 0.5);
+                    break;
                 case NO_NOTE:
-                    setRainbow();
+                    // setRainbow();
+                    setColor(0,0,0);
+                    break;
             }
-        } else {
-            setRainbow();
         }
     }
 }

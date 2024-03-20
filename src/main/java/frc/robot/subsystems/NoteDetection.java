@@ -53,6 +53,7 @@ public class NoteDetection extends SubsystemBase {
     int minY;
     int midpoint;
     private ArrayList<Pose2d> notePoses = new ArrayList<>();
+    private ArrayList<Integer> cameraMidpoints = new ArrayList<>();
 
     private Pose2d regionPose = null;
     private double regionRadius = 0;
@@ -111,6 +112,7 @@ public class NoteDetection extends SubsystemBase {
         // SmartDashboard.putNumberArray("Note detector target region",
         // poseToDouble(regionPose));
         notePoses.clear();
+        cameraMidpoints.clear();
         if (RobotBase.isSimulation()) {
             hasNote = true;
             hasNoteInRegion = true;
@@ -150,9 +152,10 @@ public class NoteDetection extends SubsystemBase {
                         minY = (int) corner.y;
                     }
                 }
-                var midpoint = (maxX + minX) / 2;
+                int tempMidpoint = (maxX + minX) / 2;
 
-                notePoses.add(getNotePose(midpoint, minY));
+                notePoses.add(getNotePose(tempMidpoint, minY));
+                cameraMidpoints.add(tempMidpoint);
                 SmartDashboard.putNumberArray("Note pose " + i, poseToDouble(notePoses.get(i)));
             }
         }
@@ -220,14 +223,6 @@ public class NoteDetection extends SubsystemBase {
         return closestPose;
     }
 
-    public int getClosestNoteCameraXPosition() {
-        if(hasNote) {
-            return midpoint;
-        } else {
-            return -1;
-        }
-    }
-
     public Pose2d getClosestNoteToRegion() {
         return closestPoseToRegion;
     }
@@ -248,11 +243,13 @@ public class NoteDetection extends SubsystemBase {
         for (int i = 0; i < notePoses.size(); i++) {
             if (i == 0) {
                 notePose = notePoses.get(i);
+                midpoint = cameraMidpoints.get(i);
             } else {
                 if (notePose == null
                         || notePoses.get(i).getTranslation().getDistance(currentPose.getTranslation()) < notePose
                                 .getTranslation().getDistance(currentPose.getTranslation())) {
                     notePose = notePoses.get(i);
+                    midpoint = cameraMidpoints.get(i);
                 }
             }
         }

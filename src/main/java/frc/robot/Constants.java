@@ -350,6 +350,8 @@ public final class Constants {
 
     public static final class LEDConstants {
         public static final int LEDPort = 9;
+        public static final int LEDTopLength = 43;
+        public static final int LEDOffset = 43;
         public static final ConfigurableParameter<Integer> LEDBrightnessModifier = new ConfigurableParameter<Integer>(3, "LED Brightness Modifier");
     }
 }
