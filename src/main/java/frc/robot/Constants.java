@@ -304,7 +304,7 @@ public final class Constants {
         public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Elevator Manual Control Speed");
 
-        public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.0,
+        public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.123,
                 "Amp Angle");
         public static final ConfigurableParameter<Double> kSubwooferAngle = new ConfigurableParameter<Double>(0.0,
                 "Subwoofer Angle");

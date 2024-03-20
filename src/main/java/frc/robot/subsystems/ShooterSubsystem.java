@@ -34,8 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // TODO: Get values
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
-    public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(100.0, "Amp Top Shooter RPM");
-    public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(100.0, "Amp Bottom Shooter RPM");
+    public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(600.0, "Amp Top Shooter RPM");
+    public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0, "Amp Bottom Shooter RPM");
 
     public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
