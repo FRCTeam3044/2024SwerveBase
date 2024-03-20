@@ -23,6 +23,7 @@ public class LEDSubsystem extends SubsystemBase {
      * @param robotContainer The robot container
      */
     public LEDSubsystem(int port, int ledLength, RobotContainer robotContainer) {
+        LEDConstants.LEDBrightnessModifier.get();
         m_robotContainer = robotContainer;
         m_led = new AddressableLED(port);
         m_ledBuffer = new AddressableLEDBuffer(ledLength);
@@ -98,7 +99,6 @@ public class LEDSubsystem extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        // setRainbow();
         if(m_robotContainer.stateMachineCommand.isScheduled()) {
             State currentState = RobotContainer.stateMachine.currentState;
             switch (currentState) {
