@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AmpShooterCommand;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
@@ -131,6 +132,7 @@ public class RobotContainer {
                 .onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.leftTrigger()
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.povDown().whileTrue((new AmpShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest())));
         m_operatorController.a()
                 .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
         Command pickupNote = stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote);
