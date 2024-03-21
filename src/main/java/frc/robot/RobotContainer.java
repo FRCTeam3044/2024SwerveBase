@@ -71,7 +71,7 @@ public class RobotContainer {
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
     public static final StateMachine stateMachine;
     public final StateMachineCommand stateMachineCommand;
-    public static boolean isRed = true;
+    // public static boolean isRed = true;
 
     static {
         if (RobotBase.isSimulation()) {
@@ -157,7 +157,7 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand(boolean red) {
+    public Command getAutonomousCommand() {
         // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
         // waypoints.add(new Pose2d(0, 1, new Rotation2d()));
         // waypoints.add(new Pose2d(1, 1, new Rotation2d()));
@@ -166,7 +166,6 @@ public class RobotContainer {
         // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
         // m_robotDrive);
         try {
-            isRed = red;
             AutoCommandFactory.registerCommands();
             Command auto = AutoParser.loadAuto("GetThreeAmpStart.json");
 
