@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LEDConstants;
@@ -13,19 +12,17 @@ public class LEDSubsystem extends SubsystemBase {
     private AddressableLED m_led;
     private AddressableLEDBuffer m_ledBuffer;
     private int m_RainbowFirstPixelHue;
-    private RobotContainer m_robotContainer;
     private Timer timer = new Timer();
 
     /**
      * Creates a new LEDSubsystem to control Addressable LEDs
      * 
-     * @param port      The PWM Port of the LEDs
-     * @param ledLength The number of LEDs on the strand
+     * @param port           The PWM Port of the LEDs
+     * @param ledLength      The number of LEDs on the strand
      * @param robotContainer The robot container
      */
-    public LEDSubsystem(int port, int ledLength, RobotContainer robotContainer) {
+    public LEDSubsystem(int port, int ledLength) {
         LEDConstants.LEDBrightnessModifier.get();
-        m_robotContainer = robotContainer;
         m_led = new AddressableLED(port);
         m_ledBuffer = new AddressableLEDBuffer(ledLength);
         m_led.setLength(m_ledBuffer.getLength());
@@ -83,7 +80,7 @@ public class LEDSubsystem extends SubsystemBase {
         int pixel = (int) (((double) cameraPixel * LEDConstants.LEDTopLength) / 1280);
 
         for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-            m_ledBuffer.setRGB(i, 0,0,0);
+            m_ledBuffer.setRGB(i, 0, 0, 0);
         }
 
         m_ledBuffer.setRGB(LEDConstants.LEDOffset + LEDConstants.LEDTopLength - pixel, 0, 255, 0);
@@ -103,22 +100,23 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(true) {
+        if (true) {
             State currentState = RobotContainer.stateMachine.currentState;
             switch (currentState) {
-                case TARGETING_NOTE: 
+                case TARGETING_NOTE:
                     setCompass(RobotContainer.m_noteDetection.midpoint);
                     break;
                 case NOTE_LOADED:
-                    setColor(0,changeBrightness(120),0);
+                    setColor(0, changeBrightness(120), 0);
                     break;
                 case READY_TO_SHOOT:
-                    // TODO: This never gets called, we will need to check if shooter wheels have spun up in the note_loaded case
-                    blinkColor(0,changeBrightness(100),0, 0.5);
+                    // TODO: This never gets called, we will need to check if shooter wheels have
+                    // spun up in the note_loaded case
+                    blinkColor(0, changeBrightness(100), 0, 0.5);
                     break;
                 case NO_NOTE:
                     // setRainbow();
-                    setColor(0,0,0);
+                    setColor(0, 0, 0);
                     break;
             }
         }
