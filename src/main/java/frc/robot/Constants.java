@@ -353,5 +353,8 @@ public final class Constants {
         public static final int LEDTopLength = 43;
         public static final int LEDOffset = 43;
         public static final ConfigurableParameter<Integer> LEDBrightnessModifier = new ConfigurableParameter<Integer>(3, "LED Brightness Modifier");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_RED = new ConfigurableParameter<Integer>(0, "LED Note Loaded Red");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_GREEN = new ConfigurableParameter<Integer>(0, "LED Note Loaded Green");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_BLUE = new ConfigurableParameter<Integer>(0, "LED Note Loaded Blue");
     }
 }

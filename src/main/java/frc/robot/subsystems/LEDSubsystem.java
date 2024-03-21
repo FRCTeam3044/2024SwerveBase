@@ -81,8 +81,6 @@ public class LEDSubsystem extends SubsystemBase {
 
     public void setCompass(int cameraPixel) {
         int pixel = (int) (((double) cameraPixel * LEDConstants.LEDTopLength) / 1280);
-        SmartDashboard.putNumber("led cam pixel", cameraPixel);
-        SmartDashboard.putNumber("led pixel", pixel);
 
         for (var i = 0; i < m_ledBuffer.getLength(); i++) {
             m_ledBuffer.setRGB(i, 0,0,0);
@@ -102,6 +100,7 @@ public class LEDSubsystem extends SubsystemBase {
         int output = (int) Math.round(before);
         return output;
     }
+
     @Override
     public void periodic() {
         if(true) {
@@ -111,10 +110,11 @@ public class LEDSubsystem extends SubsystemBase {
                     setCompass(RobotContainer.m_noteDetection.midpoint);
                     break;
                 case NOTE_LOADED:
-                    setColor(0,150,0);
+                    setColor(0,changeBrightness(120),0);
                     break;
                 case READY_TO_SHOOT:
-                    blinkColor(0,255,0, 0.5);
+                    // TODO: This never gets called, we will need to check if shooter wheels have spun up in the note_loaded case
+                    blinkColor(0,changeBrightness(100),0, 0.5);
                     break;
                 case NO_NOTE:
                     // setRainbow();
