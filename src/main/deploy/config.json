@@ -102,6 +102,10 @@
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "6.0",
+        "LED Brightness Modifier": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -427,6 +431,10 @@
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "6.0",
+        "LED Brightness Modifier": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -751,6 +759,10 @@
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "4.0",
+        "LED Brightness Modifier": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",
@@ -1075,6 +1087,10 @@
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "6.0",
+        "LED Brightness Modifier": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
         "rearLeftModule/turning/Min": "-1.0",
         "Pathfinding Y Controller/D": "0.0",
         "rearLeftModule/driving/P": "0.03999999910593033",

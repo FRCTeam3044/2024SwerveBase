@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -33,6 +34,7 @@ import frc.robot.commands.test.ElevatorTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
@@ -48,6 +50,7 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
+    public LEDSubsystem m_led;
     public static boolean redAlliance = true;
 
     /**
@@ -57,6 +60,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
+        DriverStation.silenceJoystickConnectionWarning(true);
         // Record metadata
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -99,6 +103,8 @@ public class Robot extends LoggedRobot {
         IntakeConstants.initialize();
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
+        OxConfig.initialize();
+        m_led = new LEDSubsystem(LEDConstants.LEDPort, 143, m_robotContainer);
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);

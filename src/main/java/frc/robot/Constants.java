@@ -304,7 +304,7 @@ public final class Constants {
         public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Elevator Manual Control Speed");
 
-        public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.0,
+        public static final ConfigurableParameter<Double> kAmpAngle = new ConfigurableParameter<Double>(0.123,
                 "Amp Angle");
         public static final ConfigurableParameter<Double> kSubwooferAngle = new ConfigurableParameter<Double>(0.0,
                 "Subwoofer Angle");
@@ -346,5 +346,12 @@ public final class Constants {
 
         public static final ConfigurableParameter<Double> kIntakeManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Intake Manual Control Speed");
+    }
+
+    public static final class LEDConstants {
+        public static final int LEDPort = 9;
+        public static final int LEDTopLength = 43;
+        public static final int LEDOffset = 43;
+        public static final ConfigurableParameter<Integer> LEDBrightnessModifier = new ConfigurableParameter<Integer>(3, "LED Brightness Modifier");
     }
 }

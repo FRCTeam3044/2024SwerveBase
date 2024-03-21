@@ -34,6 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // TODO: Get values
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
+    public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(600.0, "Amp Top Shooter RPM");
+    public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0, "Amp Bottom Shooter RPM");
 
     public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
@@ -153,9 +155,14 @@ public class ShooterSubsystem extends SubsystemBase {
         // bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
-    public void handlePID() {
-        topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
-        bottomPidController.setReference(-currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
+    public void handlePID(boolean amp) {
+        if(amp) {
+            topPidController.setReference(ampTopRPM.get(), CANSparkMax.ControlType.kSmartVelocity);
+            bottomPidController.setReference(-ampBottomRPM.get(), CANSparkMax.ControlType.kSmartVelocity);
+        } else {
+            topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
+            bottomPidController.setReference(-currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
+        }
     }
 
     public void speakerSpeed() {
@@ -180,7 +187,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void ampSpeed() {
-        currentTargetRPM = ampRPM;
+        // currentTargetRPM = ampRPM;
     }
 
     public void saveShotData() {
