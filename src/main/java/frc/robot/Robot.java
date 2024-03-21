@@ -11,6 +11,7 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -52,6 +53,9 @@ public class Robot extends LoggedRobot {
     public RobotContainer m_robotContainer;
     public LEDSubsystem m_led;
     public static boolean redAlliance = false;
+    private SendableChooser<Boolean> redAllianceChooser;
+    private SendableChooser<String> autoChooser;
+    private String lastAuto;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -107,10 +111,20 @@ public class Robot extends LoggedRobot {
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand("ShootMidfieldSourceAmp.json");
         PathfindingDebugUtils.drawObstacle("Shooting Zone", AutoTargetUtils.getShootingZone());
         OxConfig.initialize();
         DriverStation.silenceJoystickConnectionWarning(true);
+        redAllianceChooser = new SendableChooser<Boolean>();
+        redAllianceChooser.setDefaultOption("Red Alliance", true);
+        redAllianceChooser.addOption("Blue Alliance", false);
+        SmartDashboard.putData(redAllianceChooser);
+        autoChooser = new SendableChooser<String>();
+        autoChooser.setDefaultOption("4 Note Amp Start", "GetThreeAmpStart.json");
+        autoChooser.addOption("4 Note Source Start", "GetThreeSourceStart.json");
+        autoChooser.addOption("Midfield Pickup Amp Start", "ShootMidfieldSourceAmp.json");
+        autoChooser.addOption("Midfield Pickup Source Start", "ShootMidfieldSourceSide.json");
+        SmartDashboard.putData(autoChooser);
     }
 
     /**
@@ -135,6 +149,12 @@ public class Robot extends LoggedRobot {
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
+        if (redAllianceChooser.getSelected() != redAlliance || lastAuto != autoChooser.getSelected()) {
+            lastAuto = autoChooser.getSelected();
+            redAlliance = redAllianceChooser.getSelected();
+            m_autonomousCommand = m_robotContainer.getAutonomousCommand(lastAuto);
+
+        }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

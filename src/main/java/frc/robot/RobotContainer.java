@@ -157,7 +157,7 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Command getAutonomousCommand(String autoName) {
         // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
         // waypoints.add(new Pose2d(0, 1, new Rotation2d()));
         // waypoints.add(new Pose2d(1, 1, new Rotation2d()));
@@ -167,7 +167,7 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("GetThreeAmpStart.json");
+            Command auto = AutoParser.loadAuto(autoName);
 
             return auto;
         } catch (FileNotFoundException e) {
