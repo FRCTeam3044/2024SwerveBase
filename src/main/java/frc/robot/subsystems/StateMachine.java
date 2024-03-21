@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +27,9 @@ import me.nabdev.pathfinding.structures.Vertex;
 public class StateMachine extends SubsystemBase {
     private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
             "Intake Current Threshold");
-    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.4, "Transit Runtime");
+    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
+    private ConfigurableParameter<Double> kTeleTransitRuntime = new ConfigurableParameter<Double>(0.5,
+            "Transit Runtime");
 
     public enum State {
         /**
@@ -176,7 +179,7 @@ public class StateMachine extends SubsystemBase {
                 break;
             case NOTE_LOADED:
                 if ((m_transitSubsystem.runningTransit
-                        && m_transitSubsystem.timeSinceTransit.get() > kTransitRuntime.get())) {
+                        && m_transitSubsystem.timeSinceTransit.get() > getTransitRuntime())) {
                     System.out.println("Kicking back from note loaded");
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
@@ -207,7 +210,7 @@ public class StateMachine extends SubsystemBase {
                     }
                 }
                 if ((m_transitSubsystem.runningTransit
-                        && m_transitSubsystem.timeSinceTransit.hasElapsed(kTransitRuntime.get()))) {
+                        && m_transitSubsystem.timeSinceTransit.hasElapsed(getTransitRuntime()))) {
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
                 } else if (!inShootinZone) {
@@ -378,5 +381,13 @@ public class StateMachine extends SubsystemBase {
             changedDesiredCommand = false;
         }
         return cmd;
+    }
+
+    private double getTransitRuntime() {
+        if (DriverStation.isTeleop()) {
+            return kTeleTransitRuntime.get();
+        } else {
+            return kTransitRuntime.get();
+        }
     }
 }
