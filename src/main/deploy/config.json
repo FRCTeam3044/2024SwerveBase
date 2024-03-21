@@ -223,6 +223,10 @@
             "comment": "Auto-Generated",
             "value": "250"
         },
+        "Lob Speed": {
+            "comment": "Auto-Generated",
+            "value": "2000.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -235,6 +239,10 @@
         "Elevator SmartMotion Min Velocity": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Slow Speed Percent": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
         },
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
@@ -289,6 +297,14 @@
         "Intake Auto Runtime": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Shooter amp bottom rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
+        },
+        "Shooter amp top rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
         },
         "Climber Control Deadband": {
             "comment": "Auto-Generated",
@@ -564,6 +580,10 @@
             "comment": "Auto-Generated",
             "value": "250"
         },
+        "Lob Speed": {
+            "comment": "Auto-Generated",
+            "value": "2000.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -576,6 +596,10 @@
         "Elevator SmartMotion Min Velocity": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Slow Speed Percent": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
         },
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
@@ -630,6 +654,14 @@
         "Intake Auto Runtime": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Shooter amp bottom rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
+        },
+        "Shooter amp top rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
         },
         "Climber Control Deadband": {
             "comment": "Auto-Generated",
@@ -780,7 +812,7 @@
         "rearRightModule/turning/Max": "1.0",
         "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "2.0"
+            "value": "1.1"
         },
         "Shooter bottom pid/D": "0.0",
         "Shooter top pid/FF": "0.00018",
@@ -821,7 +853,7 @@
         "rearLeftModule/driving/D": "0.0",
         "Max Angular Speed": {
             "comment": "Auto-Generated",
-            "value": "3.14159"
+            "value": "5"
         },
         "Elevator Angle PID/Max": "0.5",
         "Pathfinding Theta Controller/D": "0.0",
@@ -898,11 +930,15 @@
         },
         "Lost Note Threshold (Frames)": {
             "comment": "Auto-Generated",
-            "value": "350"
+            "value": "200"
         },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
             "value": "250"
+        },
+        "Lob Speed": {
+            "comment": "Auto-Generated",
+            "value": "3500.0"
         },
         "Driver Deadband": {
             "comment": "Auto-Generated",
@@ -916,6 +952,10 @@
         "Elevator SmartMotion Min Velocity": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Slow Speed Percent": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
         },
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
@@ -944,7 +984,7 @@
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "2.5"
+            "value": "3.0"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
@@ -970,6 +1010,14 @@
         "Intake Auto Runtime": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Shooter amp bottom rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
+        },
+        "Shooter amp top rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
         },
         "Climber Control Deadband": {
             "comment": "Auto-Generated",
@@ -1013,7 +1061,7 @@
         },
         "Pathfinding Max Acceleration": {
             "comment": "Auto-Generated",
-            "value": "1"
+            "value": "1.5"
         },
         "frontLeftModule/turning/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
@@ -1244,6 +1292,10 @@
             "comment": "Auto-Generated",
             "value": "250"
         },
+        "Lob Speed": {
+            "comment": "Auto-Generated",
+            "value": "2000.0"
+        },
         "Driver Deadband": {
             "comment": "Auto-Generated",
             "value": "0.15"
@@ -1256,6 +1308,10 @@
         "Elevator SmartMotion Min Velocity": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Slow Speed Percent": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
         },
         "frontRightModule/turning/P": "1.0",
         "Transit Ultrasonic Threshold": {
@@ -1310,6 +1366,14 @@
         "Intake Auto Runtime": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Shooter amp bottom rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
+        },
+        "Shooter amp top rpm": {
+            "comment": "Auto-Generated",
+            "value": "1000.0"
         },
         "Climber Control Deadband": {
             "comment": "Auto-Generated",

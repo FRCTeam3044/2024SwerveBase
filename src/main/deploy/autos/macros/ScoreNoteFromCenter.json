@@ -1,0 +1,64 @@
+[
+  {
+    "type": "if",
+    "condition": {
+      "id": "has_note",
+      "children": [],
+      "name": "New Condition",
+      "parameters": {}
+    },
+    "child": {
+      "type": "while",
+      "condition": {
+        "id": "has_note",
+        "name": "Has Note",
+        "parameters": {},
+        "children": []
+      },
+      "child": {
+        "type": "group",
+        "id": "parallel",
+        "name": "Score",
+        "parameters": {},
+        "children": [
+          {
+            "type": "command",
+            "id": "to_shooting_point",
+            "name": "Get to shooting zone",
+            "parameters": {
+              "shootX": 1.5,
+              "shootY": 5.5
+            },
+            "children": []
+          },
+          {
+            "type": "command",
+            "id": "auto_aim_shooter",
+            "name": "Align Shooter",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "spinup_shooter_if_in_range",
+            "name": "Spinup Shooter",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "shoot_if_ready",
+            "name": "Shoot when ready",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "intake",
+            "name": "Run Intake",
+            "parameters": {}
+          }
+        ]
+      },
+      "name": "Shoot until we dont have a note"
+    },
+    "name": "Score if have note"
+  }
+]

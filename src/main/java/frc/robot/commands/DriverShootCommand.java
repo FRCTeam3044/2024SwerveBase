@@ -32,7 +32,7 @@ public class DriverShootCommand extends Command {
     @Override
     public void execute() {
         m_shooter.speakerSpeed();
-        m_shooter.handlePID(false);
+        m_shooter.handlePID();
         if (m_controller.getRightTriggerAxis() > 0.5 && !hasShot) {
             hasShot = true;
             ControllerRumble.driverSmallShort();

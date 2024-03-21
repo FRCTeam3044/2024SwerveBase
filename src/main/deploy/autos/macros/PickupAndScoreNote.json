@@ -11,7 +11,7 @@
   },
   {
     "type": "macro",
-    "id": "score_note",
+    "id": "score_note_from_center",
     "name": "Score Note",
     "parameters": {}
   }

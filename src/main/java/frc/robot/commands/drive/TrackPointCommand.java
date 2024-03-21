@@ -52,7 +52,7 @@ public class TrackPointCommand extends Command {
         double inputRot = m_targetRotController.calculate(m_robotDrive.getPose(), m_robotDrive.getChassisSpeeds());
         m_robotDrive.drive(0, 0, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(), true,
                 false);
-        System.out.println("Tracking Point");
+        // System.out.println("Tracking Point");
     }
 
     @Override

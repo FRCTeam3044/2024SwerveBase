@@ -41,6 +41,7 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
 import me.nabdev.pathfinding.structures.Edge;
@@ -94,6 +95,9 @@ public class DriveSubsystem extends SubsystemBase {
     private final Pathfinder pathfinder;
 
     private final SwerveDrivePoseEstimator poseEstimator;
+
+    private final ConfigurableParameter<Double> slowPercent = new ConfigurableParameter<Double>(0.7,
+            "Slow Speed Percent");
 
     // Sim values
     private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -321,8 +325,10 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get() * (slow ? 0.5 : 1);
-        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get() * (slow ? 0.5 : 1);
+        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get()
+                * (slow ? slowPercent.get() : 1);
+        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond.get()
+                * (slow ? slowPercent.get() : 1);
         double rotDelivered = absoluteRotSpeed ? rot : rotSpeedFromJoystick(rot, rateLimit);
         ChassisSpeeds chassisSpeeds = fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,

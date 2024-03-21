@@ -6,15 +6,18 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransitSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
-public class AmpShooterCommand extends Command {
+public class ManualLobCommand extends Command {
     private final ShooterSubsystem m_shooter;
     private final TransitSubsystem m_transit;
     private final Timer m_timer = new Timer();
-    private final ConfigurableParameter<Double> m_ampShooterSpinupTime = new ConfigurableParameter<Double>(
-            2.0, "Amp Shooter Spinup Time");
+    // private final ConfigurableParameter<Double> m_shooterSpinupTime = new
+    // ConfigurableParameter<Double>(
+    // 2.0, "Shooter Spinup Time");
     private boolean ranTransit = false;
+    private final ConfigurableParameter<Double> m_shooterLobSpeed = new ConfigurableParameter<Double>(
+            2000.0, "Lob Speed");
 
-    public AmpShooterCommand(ShooterSubsystem shooter, TransitSubsystem transit) {
+    public ManualLobCommand(ShooterSubsystem shooter, TransitSubsystem transit) {
         m_shooter = shooter;
         m_transit = transit;
         addRequirements(m_shooter);
@@ -34,14 +37,14 @@ public class AmpShooterCommand extends Command {
 
     @Override
     public void execute() {
-        m_shooter.ampSpeed();
+        m_shooter.setShooterRPM(m_shooterLobSpeed.get());
         m_shooter.handlePID();
         // m_shooter.consumeShooterInput(true, false);
         // if(m_shooter.shooterAtSpeed()){
-        if (m_timer.get() > m_ampShooterSpinupTime.get()) {
-            ranTransit = true;
-            // m_transit.runTransit();
-        }
+        // if (m_timer.get() > m_shooterSpinupTime.get()) {
+        // ranTransit = true;
+        // // m_transit.runTransit();
+        // }
     }
 
     @Override

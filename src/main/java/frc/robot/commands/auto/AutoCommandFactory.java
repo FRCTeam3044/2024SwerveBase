@@ -59,6 +59,7 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("transit", AutoCommandFactory::transitCommand);
         AutoParser.registerCommand("wait_for_limit_switch", AutoCommandFactory::waitForLimitSwitch);
         AutoParser.registerCommand("to_shooting_zone", AutoCommandFactory::getToShootingZone);
+        AutoParser.registerCommand("to_shooting_point", AutoCommandFactory::getToShootingPoint);
         AutoParser.registerCommand("auto_aim_shooter", AutoCommandFactory::autoAimShooter);
         AutoParser.registerCommand("spinup_shooter_if_in_range", AutoCommandFactory::spinupShooterIfInRange);
         AutoParser.registerCommand("shoot_if_ready", AutoCommandFactory::shootIfReady);
@@ -70,7 +71,8 @@ public final class AutoCommandFactory {
         AutoParser.registerBoolean("robot_within_radius", AutoCommandFactory::robotInRadius);
         AutoParser.registerBoolean("note_detected", AutoCommandFactory::noteDetected);
         AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
-        AutoParser.registerMacro("score_note", "ScoreNoteIfHave.json");
+        AutoParser.registerMacro("score_note", "ScoreNoteFromZone.json");
+        AutoParser.registerMacro("score_note_from_center", "ScoreNoteFromCenter.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
     }
 
@@ -100,6 +102,12 @@ public final class AutoCommandFactory {
 
     public static Command getToShootingZone(JSONObject parameters) {
         Command toShootingZone = new GoToShootingZone(RobotContainer.m_robotDrive);
+        return toShootingZone;
+    }
+
+    public static Command getToShootingPoint(JSONObject parameters) {
+        Pose2d target = getAllianceLocation(parameters.getDouble("shootX"), parameters.getDouble("shootY"));
+        Command toShootingZone = new GoToShootingZone(RobotContainer.m_robotDrive, target);
         return toShootingZone;
     }
 
@@ -208,7 +216,7 @@ public final class AutoCommandFactory {
         Pose2d target = getAllianceLocation(parameters.getDouble("targetX"), parameters.getDouble("targetY"));
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
         boolean flipped = parameters.getBoolean("flipped");
-        return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive, flipped);
+        return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive, flipped, true);
     }
 
     public static ElevatorSetAngleForIntakeCommand elevatorSetAngleForIntakeCommand(JSONObject parameters) {

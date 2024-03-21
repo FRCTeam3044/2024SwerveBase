@@ -225,7 +225,7 @@ public final class Constants {
 
     public static final class VisionConstants {
         // TODO: Update these values
-        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(4, 4, 4); // THESE ARE NOT CORRECT
+        public static final Matrix<N3, N1> SingleTagStdDevs = VecBuilder.fill(6, 6, 6); // THESE ARE NOT CORRECT
         public static final Matrix<N3, N1> MultiTagStdDevs = VecBuilder.fill(1.5, 1.5, 4); // THESE ARE NOT
                                                                                            // CORRECT
         // array of active cameras
@@ -335,7 +335,7 @@ public final class Constants {
             System.out.println(kTransitManualSpeed);
         }
 
-        public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(0.5,
+        public static final ConfigurableParameter<Double> kTransitManualSpeed = new ConfigurableParameter<Double>(0.65,
                 "Transit Manual Control Speed");
     }
 
@@ -352,9 +352,13 @@ public final class Constants {
         public static final int LEDPort = 9;
         public static final int LEDTopLength = 43;
         public static final int LEDOffset = 43;
-        public static final ConfigurableParameter<Integer> LEDBrightnessModifier = new ConfigurableParameter<Integer>(3, "LED Brightness Modifier");
-        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_RED = new ConfigurableParameter<Integer>(0, "LED Note Loaded Red");
-        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_GREEN = new ConfigurableParameter<Integer>(0, "LED Note Loaded Green");
-        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_BLUE = new ConfigurableParameter<Integer>(0, "LED Note Loaded Blue");
+        public static final ConfigurableParameter<Integer> LEDBrightnessModifier = new ConfigurableParameter<Integer>(3,
+                "LED Brightness Modifier");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_RED = new ConfigurableParameter<Integer>(0,
+                "LED Note Loaded Red");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_GREEN = new ConfigurableParameter<Integer>(0,
+                "LED Note Loaded Green");
+        public static final ConfigurableParameter<Integer> LED_NOTE_LOADED_BLUE = new ConfigurableParameter<Integer>(0,
+                "LED Note Loaded Blue");
     }
 }

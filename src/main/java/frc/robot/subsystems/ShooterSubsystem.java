@@ -35,13 +35,12 @@ public class ShooterSubsystem extends SubsystemBase {
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
     public double ampRPM = 0;
     public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(600.0, "Amp Top Shooter RPM");
-    public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0, "Amp Bottom Shooter RPM");
+    public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0,
+            "Amp Bottom Shooter RPM");
 
     public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
 
-    public ConfigurableParameter<Double> ampSpeedDifferent = new ConfigurableParameter<Double>(0.05,
-            "Shooter ampt speed diff");
     public static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
     private SparkPIDController topPidController;
     private SparkPIDController bottomPidController;
@@ -51,16 +50,15 @@ public class ShooterSubsystem extends SubsystemBase {
             "Shooter Max Accelleration");
     public static final int kCPR = 8192;
 
-    private RelativeEncoder m_topAlternateEncoder;
-    private RelativeEncoder m_bottomAlternateEncoder;
-
-    private double currentTargetRPM = 0;
+    private double currentBottomTargetRPM = 0;
+    private double currentTopTargetRPM = 0;
 
     private boolean isShooting = false;
     private Timer timeSinceShooting = new Timer();
 
     public void setShooterRPM(double motorRPM) {
-        currentTargetRPM = motorRPM;
+        currentBottomTargetRPM = motorRPM;
+        currentTopTargetRPM = motorRPM;
     }
 
     /*
@@ -74,7 +72,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void stopShooter() {
         isShooting = false;
-        currentTargetRPM = 0;
+        currentBottomTargetRPM = 0;
+        currentTopTargetRPM = 0;
         topMotor.set(0);
         bottomMotor.set(0);
     }
@@ -92,8 +91,8 @@ public class ShooterSubsystem extends SubsystemBase {
                 topMotor.set(output);
                 bottomMotor.set(-output);
             } else {
-                topMotor.set(output - ampSpeedDifferent.get());
-                bottomMotor.set(-output - ampSpeedDifferent.get());
+                topMotor.set(output);
+                bottomMotor.set(-output);
             }
         } else {
             stopShooter();
@@ -107,11 +106,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
         topMotor.setSmartCurrentLimit(30);
         bottomMotor.setSmartCurrentLimit(30);
-
-        // bottomMotor.setInverted(false);
-
-        m_topAlternateEncoder = topMotor.getAlternateEncoder(kAltEncType, kCPR);
-        m_bottomAlternateEncoder = bottomMotor.getAlternateEncoder(kAltEncType, kCPR);
 
         // PID Coedficients
         kP = 0;
@@ -155,18 +149,14 @@ public class ShooterSubsystem extends SubsystemBase {
         // bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
-    public void handlePID(boolean amp) {
-        if(amp) {
-            topPidController.setReference(ampTopRPM.get(), CANSparkMax.ControlType.kSmartVelocity);
-            bottomPidController.setReference(-ampBottomRPM.get(), CANSparkMax.ControlType.kSmartVelocity);
-        } else {
-            topPidController.setReference(currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
-            bottomPidController.setReference(-currentTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
-        }
+    public void handlePID() {
+        topPidController.setReference(currentTopTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
+        bottomPidController.setReference(-currentBottomTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
     }
 
     public void speakerSpeed() {
-        currentTargetRPM = speakerRPM.get();
+        currentTopTargetRPM = speakerRPM.get();
+        currentBottomTargetRPM = speakerRPM.get();
     }
 
     public double getTopMotorRPM() {
@@ -187,7 +177,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void ampSpeed() {
-        // currentTargetRPM = ampRPM;
+        currentTopTargetRPM = ampTopRPM.get();
+        currentBottomTargetRPM = ampBottomRPM.get();
     }
 
     public void saveShotData() {

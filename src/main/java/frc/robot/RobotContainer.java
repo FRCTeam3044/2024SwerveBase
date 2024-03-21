@@ -10,6 +10,7 @@ import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ElevatorSetAngleForAmpCommand;
 import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
+import frc.robot.commands.ManualLobCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
@@ -133,8 +134,12 @@ public class RobotContainer {
                 .onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.leftTrigger()
                 .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.leftBumper().whileTrue(new ElevatorSetAngleForAmpCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.rightBumper().whileTrue((new AmpShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest())));
+        m_operatorController.leftBumper()
+                .whileTrue(new ElevatorSetAngleForAmpCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.rightBumper()
+                .whileTrue((new AmpShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest())));
+        m_operatorController.rightTrigger()
+                .whileTrue(new ManualLobCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.a()
                 .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
         Command pickupNote = stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote);
@@ -161,7 +166,7 @@ public class RobotContainer {
         // m_robotDrive);
         try {
             AutoCommandFactory.registerCommands();
-            Command auto = AutoParser.loadAuto("GetThreeSourceStart.json");
+            Command auto = AutoParser.loadAuto("GetThreeAmpStart.json");
 
             return auto;
         } catch (FileNotFoundException e) {
