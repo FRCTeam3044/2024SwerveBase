@@ -51,7 +51,7 @@ public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
     public LEDSubsystem m_led;
-    public static boolean redAlliance = true;
+    public static boolean redAlliance = false;
 
     /**
      * This function is run when the robot is first started up and should be used
