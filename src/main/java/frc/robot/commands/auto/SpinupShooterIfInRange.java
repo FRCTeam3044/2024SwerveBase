@@ -24,12 +24,13 @@ public class SpinupShooterIfInRange extends Command {
         Translation2d target = AutoTargetUtils.getShootingTarget().getTranslation();
         double distance = m_drive.getPose().getTranslation().getDistance(target);
         if (distance < m_shooterSpinupRange.get()) {
-            // m_shooter.speakerSpeed();
-            m_shooter.consumeShooterInput(true, false);
+            m_shooter.speakerSpeed();
+            // m_shooter.consumeShooterInput(true, false);
         } else {
+            m_shooter.stopShooter();
             m_shooter.consumeShooterInput(false, false);
         }
-        // m_shooter.handlePID();
+        m_shooter.handlePID();
 
     }
 

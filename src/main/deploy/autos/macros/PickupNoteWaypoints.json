@@ -1,0 +1,144 @@
+[
+  {
+    "type": "while",
+    "name": "Drive Until Note",
+    "condition": {
+      "id": "or",
+      "children": [
+        {
+          "id": "not",
+          "parameters": {},
+          "children": [
+            {
+              "id": "robot_within_radius",
+              "name": "New Condition",
+              "parameters": {
+                "regionX": "{{ regionX }}",
+                "regionY": "{{ regionY }}",
+                "regionRadius": "{{ regionRadius }}"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "not",
+          "children": [
+            {
+              "id": "note_detected",
+              "name": "Note Detected",
+              "parameters": {},
+              "children": []
+            }
+          ],
+          "name": "New Condition",
+          "parameters": {}
+        }
+      ],
+      "parameters": {}
+    },
+    "child": {
+      "type": "group",
+      "id": "race",
+      "parameters": {
+        "targetX": "{{ regionX }}",
+        "targetY": "{{ regionY }}",
+        "trackX": "{{ regionX }}",
+        "trackY": "{{ regionY }}",
+        "flipped": false
+      },
+      "name": "Go To Top Note",
+      "children": [
+        {
+          "type": "command",
+          "id": "go_to_waypoints_and_track",
+          "name": "Follow path to Note Location",
+          "parameters": {
+            "waypoints": [
+              {
+                "x": "{{ waypointX }}",
+                "y": "{{ waypointY }}"
+              },
+              {
+                "x": "{{ regionX }}",
+                "y": "{{ regionY }}"
+              }
+            ],
+            "trackX": "{{ regionX }}",
+            "trackY": "{{ regionY }}",
+            "flipped": false
+          }
+        },
+        {
+          "type": "command",
+          "id": "intake",
+          "name": "Run Intake",
+          "parameters": {}
+        },
+        {
+          "type": "command",
+          "id": "set_intake_angle",
+          "name": "Set Intake Position",
+          "parameters": {}
+        }
+      ]
+    }
+  },
+  {
+    "type": "if",
+    "name": "Note In Area",
+    "condition": {
+      "id": "robot_within_radius",
+      "parameters": {
+        "regionX": "{{ regionX }}",
+        "regionY": "{{ regionY }}",
+        "regionRadius": "{{ regionRadius }}"
+      },
+      "children": []
+    },
+    "child": {
+      "type": "while",
+      "name": "Pickup Note",
+      "condition": {
+        "id": "not",
+        "children": [
+          {
+            "id": "has_note",
+            "parameters": {},
+            "children": []
+          }
+        ],
+        "parameters": {}
+      },
+      "child": {
+        "type": "group",
+        "id": "parallel",
+        "name": "Pickup Note",
+        "children": [
+          {
+            "type": "command",
+            "id": "go_to_note",
+            "name": "Go To Note",
+            "parameters": {
+              "regionX": "{{ regionX }}",
+              "regionY": "{{ regionY }}",
+              "regionRadius": "{{ regionRadius }}"
+            }
+          },
+          {
+            "type": "command",
+            "id": "intake",
+            "name": "Intake Note",
+            "parameters": {}
+          },
+          {
+            "type": "command",
+            "id": "set_intake_angle",
+            "name": "Set Intake Position",
+            "parameters": {}
+          }
+        ]
+      }
+    }
+  }
+]

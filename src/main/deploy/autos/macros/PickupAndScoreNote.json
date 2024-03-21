@@ -11,8 +11,11 @@
   },
   {
     "type": "macro",
-    "id": "score_note_from_center",
+    "id": "score_note_from_point",
     "name": "Score Note",
-    "parameters": {}
+    "parameters": {
+      "shootX": 1.5,
+      "shootY": 5.5
+    }
   }
 ]

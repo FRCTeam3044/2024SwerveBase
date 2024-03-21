@@ -32,6 +32,7 @@ public class Vision {
     // Real
     private ArrayList<PhotonCamera> m_cameras = new ArrayList<PhotonCamera>();
     private ArrayList<PhotonPoseEstimator> m_poseEstimators = new ArrayList<PhotonPoseEstimator>();
+    public boolean hasTargets = false;
 
     public Vision() {
         // for each camera in activeCameras, create a PhotonCamera and add it to
@@ -108,7 +109,9 @@ public class Vision {
      */
     public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, int cameraIndex) {
         var estStdDevs = Constants.VisionConstants.SingleTagStdDevs;
-        var targets = getLatestResult(cameraIndex).getTargets();
+        PhotonPipelineResult result = getLatestResult(cameraIndex);
+        hasTargets = result.hasTargets();
+        var targets = result.getTargets();
         int numTags = 0;
         double avgDist = 0;
         for (var tgt : targets) {

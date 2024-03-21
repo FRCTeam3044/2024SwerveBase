@@ -150,11 +150,25 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void handlePID() {
+        if ((currentTopTargetRPM > 10 || currentBottomTargetRPM > 10)) {
+            if (!isShooting) {
+                isShooting = true;
+                timeSinceShooting.reset();
+                timeSinceShooting.start();
+            }
+        } else if (isShooting) {
+            isShooting = false;
+        }
         topPidController.setReference(currentTopTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
         bottomPidController.setReference(-currentBottomTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
     }
 
     public void speakerSpeed() {
+        // if (!isShooting) {
+        // isShooting = true;
+        // timeSinceShooting.reset();
+        // timeSinceShooting.start();
+        // }
         currentTopTargetRPM = speakerRPM.get();
         currentBottomTargetRPM = speakerRPM.get();
     }
@@ -177,6 +191,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void ampSpeed() {
+        // if (!isShooting) {
+        // isShooting = true;
+        // timeSinceShooting.reset();
+        // timeSinceShooting.start();
+        // }
         currentTopTargetRPM = ampTopRPM.get();
         currentBottomTargetRPM = ampBottomRPM.get();
     }

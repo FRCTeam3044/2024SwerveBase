@@ -6,39 +6,45 @@
     "parameters": {}
   },
   {
-    "type": "command",
-    "id": "go_to_point",
-    "name": "Go To Point",
-    "parameters": {
-      "targetX": 2,
-      "targetY": 2,
-      "rotDegrees": 0
-    }
-  },
-  {
     "type": "macro",
-    "id": "pickup_note",
-    "name": "Pickup Note",
+    "id": "pickup_note_waypoints",
+    "name": "Pickup note 1",
     "parameters": {
+      "waypointX": 2.4,
+      "waypointY": 2.1,
       "regionX": 8.25,
-      "regionY": 0.76,
+      "regionY": 0.75,
       "regionRadius": 1
-    }
-  },
-  {
-    "type": "command",
-    "id": "go_to_point",
-    "name": "Go To Point",
-    "parameters": {
-      "targetX": 2,
-      "targetY": 2,
-      "rotDegrees": 0
     }
   },
   {
     "type": "macro",
     "id": "score_note",
-    "name": "Score",
-    "parameters": {}
+    "name": "Score Note 1",
+    "parameters": {
+      "shootX": 2.85,
+      "shootY": 6.4
+    }
+  },
+  {
+    "type": "macro",
+    "id": "pickup_note_waypoints",
+    "name": "Pickup Note 2",
+    "parameters": {
+      "waypointX": 2.4,
+      "waypointY": 2.1,
+      "regionX": 8.25,
+      "regionY": 2.45,
+      "regionRadius": 1
+    }
+  },
+  {
+    "type": "macro",
+    "id": "score_note",
+    "name": "Score Note 2",
+    "parameters": {
+      "shootX": 2.85,
+      "shootY": 6.4
+    }
   }
 ]

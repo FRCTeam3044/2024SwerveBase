@@ -29,7 +29,7 @@ public class StateMachine extends SubsystemBase {
             "Intake Current Threshold");
     private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
     private ConfigurableParameter<Double> kTeleTransitRuntime = new ConfigurableParameter<Double>(0.5,
-            "Transit Runtime");
+            "Transit Teleop Runtime");
 
     public enum State {
         /**
@@ -109,6 +109,9 @@ public class StateMachine extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (testModeEnabled) {
+            DriverStation.reportWarning("State machine is in test mode, auton function unavailable", null);
+        }
         if (RobotBase.isSimulation()) {
             SmartDashboard.putBoolean("Transit Limit Switch", RobotContainer.m_driverController.getHID().getBButton());
             SmartDashboard.putBoolean("Shooter At Speed", RobotContainer.m_driverController.getHID().getXButton());
@@ -179,7 +182,7 @@ public class StateMachine extends SubsystemBase {
                 break;
             case NOTE_LOADED:
                 if ((m_transitSubsystem.runningTransit
-                        && m_transitSubsystem.timeSinceTransit.get() > getTransitRuntime())) {
+                        && m_transitSubsystem.timeSinceTransit.hasElapsed(getTransitRuntime()))) {
                     System.out.println("Kicking back from note loaded");
                     currentState = State.NO_NOTE;
                     updateDesiredCommand();
@@ -384,10 +387,13 @@ public class StateMachine extends SubsystemBase {
     }
 
     private double getTransitRuntime() {
-        if (DriverStation.isTeleop()) {
-            return kTeleTransitRuntime.get();
-        } else {
-            return kTransitRuntime.get();
-        }
+        // if (DriverStation.isTeleop()) {
+        // return kTeleTransitRuntime.get();
+        // } else {
+        // return kTransitRuntime.get();
+        // }
+        double runtime = kTransitRuntime.get();
+        // System.out.println("transit runtime " + runtime);
+        return runtime;
     }
 }

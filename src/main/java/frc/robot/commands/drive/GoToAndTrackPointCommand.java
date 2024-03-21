@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.TargetRotationController;
@@ -37,7 +36,7 @@ public class GoToAndTrackPointCommand extends Command {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        this.noObstacles = noObstacles;
+        // this.noObstacles = noObstacles;
         targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
 
     }
@@ -110,7 +109,7 @@ public class GoToAndTrackPointCommand extends Command {
 
     @Override
     public void cancel() {
-        CommandScheduler.getInstance().cancel(this);
+        // CommandScheduler.getInstance().cancel(this);
         if (m_followTrajectoryCommand != null) {
             m_followTrajectoryCommand.cancel();
         }

@@ -24,10 +24,10 @@
           {
             "type": "command",
             "id": "to_shooting_point",
-            "name": "Get to shooting zone",
+            "name": "Get to shooting point",
             "parameters": {
-              "shootX": 1.5,
-              "shootY": 5.5
+              "shootX": "{{ shootX }}",
+              "shootY": "{{ shootY }}"
             },
             "children": []
           },

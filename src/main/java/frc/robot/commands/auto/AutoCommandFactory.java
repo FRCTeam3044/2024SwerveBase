@@ -70,9 +70,10 @@ public final class AutoCommandFactory {
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
         AutoParser.registerBoolean("robot_within_radius", AutoCommandFactory::robotInRadius);
         AutoParser.registerBoolean("note_detected", AutoCommandFactory::noteDetected);
-        AutoParser.registerMacro("pickup_note", "PickupNoteNonRegion.json");
+        AutoParser.registerMacro("pickup_note", "PickupNote.json");
+        AutoParser.registerMacro("pickup_note_waypoints", "PickupNote.json");
         AutoParser.registerMacro("score_note", "ScoreNoteFromZone.json");
-        AutoParser.registerMacro("score_note_from_center", "ScoreNoteFromCenter.json");
+        AutoParser.registerMacro("score_note_from_point", "ScoreNoteFromPoint.json");
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
     }
 

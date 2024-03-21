@@ -14,6 +14,7 @@ import frc.robot.Vision;
 
 public class VisionSubsystem extends SubsystemBase {
     private Vision vision;
+    private boolean hasTargets;
 
     public VisionSubsystem() {
 
@@ -23,10 +24,13 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        hasTargets = false;
         for (int i = 0; i < Constants.VisionConstants.activeCameras.length; i++) {
             final int camera = i;
             Optional<EstimatedRobotPose> visionEst = vision.getEstimatedGlobalPose(i);
-
+            if (visionEst.isPresent()) {
+                hasTargets = true;
+            }
             visionEst.ifPresent(
                     est -> {
                         var estPose = est.estimatedPose.toPose2d();
@@ -48,5 +52,9 @@ public class VisionSubsystem extends SubsystemBase {
     private double[] poseToDouble(Pose2d pose) {
         double[] poseDouble = { pose.getX(), pose.getY(), pose.getRotation().getDegrees() };
         return poseDouble;
+    }
+
+    public boolean hasTargets() {
+        return hasTargets;
     }
 }
