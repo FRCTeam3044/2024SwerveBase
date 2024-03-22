@@ -106,7 +106,7 @@ public class GoToNoteCommand extends Command {
                 m_followCommand.setTrajectory(myPath);
             }
             failed = false;
-        } catch (ImpossiblePathException e) {
+        } catch (Throwable e) {
             System.out.println("Impossible path, aborting");
             failed = true;
         }

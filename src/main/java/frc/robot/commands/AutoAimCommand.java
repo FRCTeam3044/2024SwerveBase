@@ -10,9 +10,11 @@ public class AutoAimCommand extends Command {
     private DriveSubsystem m_drive;
 
     public AutoAimCommand(ElevatorSubsystem elevator, DriveSubsystem drive) {
+        long startTime = System.currentTimeMillis();
         m_drive = drive;
         m_elevator = elevator;
         addRequirements(m_elevator);
+        System.out.println(getName() + " Took " + (double) (System.currentTimeMillis() - startTime) / 1000);
     }
 
     @Override

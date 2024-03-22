@@ -36,7 +36,7 @@ public class GoToAndTrackPointCommand extends Command {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        // this.noObstacles = noObstacles;
+        this.noObstacles = noObstacles;
         targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
 
     }
@@ -46,12 +46,12 @@ public class GoToAndTrackPointCommand extends Command {
         this.m_robotDrive = m_robotDrive;
         Pose2d finalTarget = target.get(target.size() - 1);
         targetRotationController = new TargetRotationController(finalTarget.getX(), finalTarget.getY(), flipped);
-
     }
 
     // Tracks a different target than the path target
     public GoToAndTrackPointCommand(ArrayList<Pose2d> target, Pose2d track, DriveSubsystem m_robotDrive,
-            boolean flipped) {
+            boolean flipped, boolean noObstacles) {
+        this.noObstacles = noObstacles;
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
@@ -61,12 +61,17 @@ public class GoToAndTrackPointCommand extends Command {
     @Override
     public void initialize() {
         try {
+            long startTime = System.currentTimeMillis();
+            long lastTime = startTime;
             Trajectory myPath;
             if (noObstacles) {
                 myPath = m_robotDrive.generateTrajectoryNoAvoidance(m_robotDrive.getPose(), target.get(0));
             } else {
                 myPath = m_robotDrive.generateTrajectory(target);
             }
+            System.out.println(
+                    "Generate path " + ((double) (System.currentTimeMillis() - lastTime)) / 1000);
+            lastTime = System.currentTimeMillis();
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(
@@ -80,6 +85,8 @@ public class GoToAndTrackPointCommand extends Command {
                     m_robotDrive, m_robotDrive);
             m_followTrajectoryCommand.schedule();
             failed = false;
+            System.out.println(
+                    "Get To and track point took " + ((double) (System.currentTimeMillis() - startTime)) / 1000);
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
             failed = true;

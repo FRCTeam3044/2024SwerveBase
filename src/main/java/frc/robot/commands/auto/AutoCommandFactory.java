@@ -210,7 +210,7 @@ public final class AutoCommandFactory {
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
         boolean flipped = parameters.getBoolean("flipped");
         SmartDashboard.putNumberArray("track target", new double[] { trackTarget.getX(), trackTarget.getY() });
-        return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive, flipped);
+        return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive, flipped, true);
     }
 
     public static GoToAndTrackPointCommand goToAndTrackPoint(JSONObject parameters) {

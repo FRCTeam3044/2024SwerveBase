@@ -14,6 +14,7 @@ import frc.robot.commands.ManualLobCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
+import frc.robot.commands.IntakeCommands.IntakeReverse;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
@@ -143,6 +144,7 @@ public class RobotContainer {
                 .whileTrue(new ManualLobCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
         m_operatorController.a()
                 .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
+        m_operatorController.povDown().whileTrue((new IntakeReverse(intake)).onlyIf(() -> !DriverStation.isTest()));
         Command pickupNote = stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote);
         // pickupNote.addRequirements(m_robotDrive);
         m_operatorController.b().whileTrue(pickupNote);

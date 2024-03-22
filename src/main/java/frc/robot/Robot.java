@@ -87,8 +87,10 @@ public class Robot extends LoggedRobot {
         if (isReal()) {
             // Logger.addDataReceiver(new WPILOGWriter(USBLocator.getUSBPath() + "/logs"));
             Logger.addDataReceiver(new NT4Publisher());
-            DataLogManager.start(USBLocator.getUSBPath() + "/logs");
+            // DataLogManager.start(USBLocator.getUSBPath() + "/logs");
+            DataLogManager.start(USBLocator.getUSBPath() + "/logs", "", 0.5);
             DataLogManager.logNetworkTables(true);
+            // DataLogManager.start
             DriverStation.startDataLog(DataLogManager.getLog());
         } else if (isSimulation()) {
             Logger.addDataReceiver(new NT4Publisher());
@@ -122,9 +124,14 @@ public class Robot extends LoggedRobot {
         autoChooser = new SendableChooser<String>();
         autoChooser.setDefaultOption("4 Note Amp Start", "GetThreeAmpStart.json");
         autoChooser.addOption("4 Note Source Start", "GetThreeSourceStart.json");
-        autoChooser.addOption("Midfield Pickup Amp Start", "ShootMidfieldSourceAmp.json");
+        autoChooser.addOption("Midfield Pickup Amp Start", "ShootMidfieldAmpSide.json");
         autoChooser.addOption("Midfield Pickup Source Start", "ShootMidfieldSourceSide.json");
         SmartDashboard.putData(autoChooser);
+        // for (int i = 0; i < 3; i++) {
+        // RobotContainer.m_robotDrive.generateTrajectoryNoAvoidance(new Pose2d(0, 0,
+        // new Rotation2d()),
+        // new Pose2d(1, 1, new Rotation2d()));
+        // }
     }
 
     /**

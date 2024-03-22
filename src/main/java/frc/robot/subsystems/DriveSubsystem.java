@@ -457,17 +457,48 @@ public class DriveSubsystem extends SubsystemBase {
         return path.asTrajectory(getTrajectoryConfig(path));
     }
 
-    public Trajectory generateTrajectoryNoAvoidance(Pose2d start, Pose2d end) throws ImpossiblePathException {
+    public Trajectory generateTrajectoryNoAvoidance(Pose2d start, Pose2d end) {
+        // TrajectoryConfig config = new
+        // TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+        // PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
+        // return pathfinder.generateTrajectory(start, end, config);
+        long startTime = System.currentTimeMillis();
+        long lastTime = startTime;
         ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+
         Vertex startV = new Vertex(start);
         Vertex endV = new Vertex(end);
         Vector vec = startV.createVectorTo(endV);
+        System.out.println(
+                "Vector to " + ((double) (System.currentTimeMillis() - lastTime)) / 1000);
+        lastTime = System.currentTimeMillis();
         double angle = Math.atan2(vec.y, vec.x);
-        Pose2d startTarget = new Pose2d(start.getX(), start.getY(), Rotation2d.fromRadians(angle));
-        Pose2d endTarget = new Pose2d(end.getX(), end.getY(), Rotation2d.fromRadians(angle));
+        System.out.println(
+                "Angle Calculated " + ((double) (System.currentTimeMillis() - lastTime)) /
+                        1000);
+        lastTime = System.currentTimeMillis();
+        Pose2d startTarget = new Pose2d(start.getX(), start.getY(),
+                Rotation2d.fromRadians(angle));
+        Pose2d endTarget = new Pose2d(end.getX(), end.getY(),
+                Rotation2d.fromRadians(angle));
+        System.out.println(
+                "targets " + ((double) (System.currentTimeMillis() - lastTime)) / 1000);
+        lastTime = System.currentTimeMillis();
         waypoints.add(startTarget);
         waypoints.add(endTarget);
-        return TrajectoryGenerator.generateTrajectory(waypoints, getTrajectoryConfig(end));
+        System.out.println(
+                "Add waypoints " + ((double) (System.currentTimeMillis() - lastTime)) /
+                        1000);
+        lastTime = System.currentTimeMillis();
+        TrajectoryConfig config = getTrajectoryConfig(end);
+        System.out.println(
+                "Get config " + ((double) (System.currentTimeMillis() - lastTime)) / 1000);
+        lastTime = System.currentTimeMillis();
+        Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config);
+        System.out.println(
+                "Generate traectory " + ((double) (System.currentTimeMillis() - lastTime)) /
+                        1000);
+        return traj;
     }
 
     public TrajectoryConfig getTrajectoryConfig(Path path) {

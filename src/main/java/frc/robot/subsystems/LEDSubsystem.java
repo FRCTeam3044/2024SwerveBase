@@ -141,8 +141,9 @@ public class LEDSubsystem extends SubsystemBase {
                     break;
                 case NOTE_LOADED:
                     // TEmporary hack :D
-                    if (RobotContainer.shooter.shooterAtSpeed()) {
-                        blinkColor(0, 50, 0, 0.5);
+                    if (RobotContainer.shooter.shooterAtSpeed()
+                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5) {
+                        blinkColor(0, 50, 0, 0.2);
                     } else {
                         setColor(254, 222, 0);
                     }

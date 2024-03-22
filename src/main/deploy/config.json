@@ -789,7 +789,7 @@
         },
         "Transit Runtime": {
             "comment": "Auto-Generated",
-            "value": "0.8"
+            "value": "1.2"
         },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
@@ -852,7 +852,7 @@
         "rearRightModule/turning/Max": "1.0",
         "Shooter Spinup Time": {
             "comment": "Auto-Generated",
-            "value": "1.2"
+            "value": "1.5"
         },
         "Shooter bottom pid/D": "0.0",
         "Shooter top pid/FF": "0.00018",

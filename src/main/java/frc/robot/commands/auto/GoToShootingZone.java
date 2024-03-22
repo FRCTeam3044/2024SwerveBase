@@ -29,9 +29,13 @@ public class GoToShootingZone extends Command {
 
     @Override
     public void initialize() {
+        long startTime = System.currentTimeMillis();
+        long lastTime = startTime;
         System.out.println("Go To Shooting Zone Initialized");
         failed = false;
         ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
+        System.out.println("Get Shooting Zone Took " + ((double) ((System.currentTimeMillis() - lastTime)) / 1000));
+        lastTime = System.currentTimeMillis();
         if (shootingZone == null) {
             System.out.println("Unable to retrieve Shooting Zone");
             failed = true;
@@ -53,7 +57,9 @@ public class GoToShootingZone extends Command {
             next = Commands.sequence(travelToPoint, trackPointCmd);
         }
 
+        long time = System.currentTimeMillis();
         next.schedule();
+        System.out.println("Scheduling next" + " Took " + ((double) ((System.currentTimeMillis() - time)) / 1000));
     }
 
     @Override
