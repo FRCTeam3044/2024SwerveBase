@@ -10,7 +10,7 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class SpinupShooterIfInRange extends Command {
     private ShooterSubsystem m_shooter;
     private DriveSubsystem m_drive;
-    private ConfigurableParameter<Double> m_shooterSpinupRange = new ConfigurableParameter<Double>(7.5,
+    private static ConfigurableParameter<Double> m_shooterSpinupRange = new ConfigurableParameter<Double>(7.5,
             "Shooter Spinup Range");
 
     public SpinupShooterIfInRange(ShooterSubsystem shooter, DriveSubsystem drive) {

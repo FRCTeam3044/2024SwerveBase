@@ -13,7 +13,7 @@ public class ElevatorTestCommand extends Command {
     private final ElevatorSubsystem m_elevator;
     private final XboxController m_controller;
 
-    private ConfigurableParameter<Double> kElevatorPIDControlTarget = new ConfigurableParameter<Double>(
+    private static ConfigurableParameter<Double> kElevatorPIDControlTarget = new ConfigurableParameter<Double>(
             0.0, "Elevator Test PID Target");
 
     public ElevatorTestCommand(ElevatorSubsystem elevator, XboxController controller) {

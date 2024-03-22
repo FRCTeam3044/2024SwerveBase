@@ -300,7 +300,7 @@ public final class Constants {
         }
 
         public static final ConfigurableParameter<Double> kElevatorTolerance = new ConfigurableParameter<Double>(
-                10.0, "Elevator Tolerance");
+                2.5, "Elevator Tolerance");
         public static final ConfigurableParameter<Double> kElevatorManualSpeed = new ConfigurableParameter<Double>(1.0,
                 "Elevator Manual Control Speed");
 
@@ -351,6 +351,8 @@ public final class Constants {
     public static final class LEDConstants {
         public static final ConfigurableParameter<Boolean> purpleGoldIdle = new ConfigurableParameter<Boolean>(false,
                 "LED Purple Gold idle");
+        public static final ConfigurableParameter<Boolean> bypassEnabled = new ConfigurableParameter<Boolean>(false,
+                "LED Bypass DS enabled");
         public static final int LEDPort = 9;
         public static final int LEDTopLength = 43;
         public static final int LEDOffset = 43;

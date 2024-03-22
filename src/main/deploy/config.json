@@ -202,7 +202,7 @@
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
-            "value": "10.0"
+            "value": "2.5"
         },
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
@@ -262,6 +262,10 @@
             "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
+        "LED Bypass DS enabled": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
@@ -579,7 +583,7 @@
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
-            "value": "10.0"
+            "value": "2.5"
         },
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
@@ -639,6 +643,10 @@
             "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
+        "LED Bypass DS enabled": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
@@ -903,7 +911,7 @@
         "Pathfinding Theta Controller/D": "0.0",
         "LED Purple Gold idle": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "frontRightModule/driving/Min": "-1.0",
         "Filter taps": {
@@ -955,7 +963,7 @@
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
-            "value": "100.0"
+            "value": "2.5"
         },
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
@@ -1015,6 +1023,10 @@
             "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
+        "LED Bypass DS enabled": {
+            "comment": "Auto-Generated",
+            "value": "true"
+        },
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {
@@ -1331,7 +1343,7 @@
         "Pathfinding Y Controller/P": "1.0",
         "Elevator Tolerance": {
             "comment": "Auto-Generated",
-            "value": "10.0"
+            "value": "2.5"
         },
         "frontRightModule/driving/I": "0.0",
         "Max Speed": {
@@ -1391,6 +1403,10 @@
             "value": "280"
         },
         "frontLeftModule/driving/P": "0.03999999910593033",
+        "LED Bypass DS enabled": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
         "Intake Angle": {

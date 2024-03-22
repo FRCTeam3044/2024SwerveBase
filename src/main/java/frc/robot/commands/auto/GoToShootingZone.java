@@ -31,10 +31,11 @@ public class GoToShootingZone extends Command {
     public void initialize() {
         long startTime = System.currentTimeMillis();
         long lastTime = startTime;
-        System.out.println("Go To Shooting Zone Initialized");
+        // System.out.println("Go To Shooting Zone Initialized");
         failed = false;
         ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
-        System.out.println("Get Shooting Zone Took " + ((double) ((System.currentTimeMillis() - lastTime)) / 1000));
+        // System.out.println("Get Shooting Zone Took " + ((double)
+        // ((System.currentTimeMillis() - lastTime)) / 1000));
         lastTime = System.currentTimeMillis();
         if (shootingZone == null) {
             System.out.println("Unable to retrieve Shooting Zone");
@@ -44,11 +45,11 @@ public class GoToShootingZone extends Command {
         Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
         Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
         if (m_target == null && shootingZone.isInside(robotPos)) {
-            System.out.println("Already inside Shooting zone, aiming");
+            // System.out.println("Already inside Shooting zone, aiming");
             next = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
         } else {
             if (m_target == null) {
-                System.out.println("Finding nearest point on shooting zone");
+                // System.out.println("Finding nearest point on shooting zone");
                 m_target = shootingZone.calculateNearestPoint(robotPos).asPose2d();
             }
             GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(m_target, trackPoint,
@@ -59,7 +60,8 @@ public class GoToShootingZone extends Command {
 
         long time = System.currentTimeMillis();
         next.schedule();
-        System.out.println("Scheduling next" + " Took " + ((double) ((System.currentTimeMillis() - time)) / 1000));
+        System.out.println(
+                "Go to shooting zone init" + " Took " + ((double) ((System.currentTimeMillis() - startTime)) / 1000));
     }
 
     @Override
@@ -69,6 +71,6 @@ public class GoToShootingZone extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("GoToShootingZone ended " + interrupted);
+        // System.out.println("GoToShootingZone ended " + interrupted);
     }
 }

@@ -14,7 +14,8 @@ public class AutoAimCommand extends Command {
         m_drive = drive;
         m_elevator = elevator;
         addRequirements(m_elevator);
-        System.out.println(getName() + " Took " + (double) (System.currentTimeMillis() - startTime) / 1000);
+        // System.out.println(getName() + " Took " + (double)
+        // (System.currentTimeMillis() - startTime) / 1000);
     }
 
     @Override

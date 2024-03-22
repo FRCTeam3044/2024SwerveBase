@@ -69,8 +69,9 @@ public class GoToAndTrackPointCommand extends Command {
             } else {
                 myPath = m_robotDrive.generateTrajectory(target);
             }
-            System.out.println(
-                    "Generate path " + ((double) (System.currentTimeMillis() - lastTime)) / 1000);
+            // System.out.println(
+            // "Generate path " + ((double) (System.currentTimeMillis() - lastTime)) /
+            // 1000);
             lastTime = System.currentTimeMillis();
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
@@ -85,8 +86,9 @@ public class GoToAndTrackPointCommand extends Command {
                     m_robotDrive, m_robotDrive);
             m_followTrajectoryCommand.schedule();
             failed = false;
-            System.out.println(
-                    "Get To and track point took " + ((double) (System.currentTimeMillis() - startTime)) / 1000);
+            // System.out.println(
+            // "Get To and track point took " + ((double) (System.currentTimeMillis() -
+            // startTime)) / 1000);
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
             failed = true;

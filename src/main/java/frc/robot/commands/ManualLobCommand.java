@@ -10,7 +10,7 @@ public class ManualLobCommand extends Command {
     // private final ConfigurableParameter<Double> m_shooterSpinupTime = new
     // ConfigurableParameter<Double>(
     // 2.0, "Shooter Spinup Time");
-    private final ConfigurableParameter<Double> m_shooterLobSpeed = new ConfigurableParameter<Double>(
+    private static final ConfigurableParameter<Double> m_shooterLobSpeed = new ConfigurableParameter<Double>(
             2000.0, "Lob Speed");
 
     public ManualLobCommand(ShooterSubsystem shooter, TransitSubsystem transit) {

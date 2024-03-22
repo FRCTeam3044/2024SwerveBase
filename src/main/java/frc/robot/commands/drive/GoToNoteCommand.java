@@ -122,6 +122,7 @@ public class GoToNoteCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("Go To note Ended. Interrupted: " + interrupted);
         if (m_followCommand != null) {
             m_followCommand.cancel();
         }

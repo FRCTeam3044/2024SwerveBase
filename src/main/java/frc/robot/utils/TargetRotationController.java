@@ -12,11 +12,11 @@ public class TargetRotationController {
     private double targetY;
     private boolean flipped;
 
-    private ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.01,
+    private static ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.01,
             "Rot Controller Min Speed Rad/sec");
-    private ConfigurableParameter<Double> maxSpeed = new ConfigurableParameter<Double>(Math.PI,
+    private static ConfigurableParameter<Double> maxSpeed = new ConfigurableParameter<Double>(Math.PI,
             "Rot Controller Max Speed Rad/sec");
-    private ConfigurableParameter<Double> minError = new ConfigurableParameter<Double>(0.01,
+    private static ConfigurableParameter<Double> minError = new ConfigurableParameter<Double>(0.01,
             "Rot Controller Min Error Radians");
     private double[] targetPose;
 

@@ -147,6 +147,7 @@ public class FollowTrajectoryCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         m_timer.stop();
+        System.out.println("Follow Trajectory ended, interupted: " + interrupted);
     }
 
     @Override

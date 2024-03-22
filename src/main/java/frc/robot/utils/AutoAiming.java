@@ -36,12 +36,29 @@ public class AutoAiming {
             3.993
     };
     private double[] angles = {
-            0.119,
+            0.122, // ORIGINALLY 0.119, CHANGE BACK IF BORKEN!
             0.0965,
             0.0849,
             0.0675,
-            0.0469
+            0.0469,
     };
+    // THIS IS THE BAD (NEW) DATA
+    // private double[] distances = {
+    // 1.248,
+    // 1.590,
+    // 1.860,
+    // 2.313,
+    // 2.980,
+    // 3.714
+    // };
+    // private double[] angles = {
+    // 0.114,
+    // 0.104,
+    // 0.089,
+    // 0.072,
+    // 0.0615,
+    // 0.041
+    // };
     private LinearInterpolation linearInterpolation;
 
     public AutoAiming() throws FileNotFoundException {

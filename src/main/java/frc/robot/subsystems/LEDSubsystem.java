@@ -132,7 +132,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (DriverStation.isEnabled()) {
+        if (DriverStation.isEnabled() || LEDConstants.bypassEnabled.get()) {
             State currentState = RobotContainer.stateMachine.currentState;
             switch (currentState) {
 
@@ -140,9 +140,10 @@ public class LEDSubsystem extends SubsystemBase {
                     setCompass(RobotContainer.m_noteDetection.midpoint);
                     break;
                 case NOTE_LOADED:
+                    boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
                     // TEmporary hack :D
                     if (RobotContainer.shooter.shooterAtSpeed()
-                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5) {
+                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5 && shooterAligned) {
                         blinkColor(0, 50, 0, 0.2);
                     } else {
                         setColor(254, 222, 0);
