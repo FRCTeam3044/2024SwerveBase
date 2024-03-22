@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LEDConstants;
@@ -132,15 +133,16 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (DriverStation.isEnabled() || LEDConstants.bypassEnabled.get()) {
+        if (DriverStation.isEnabled() || (LEDConstants.bypassEnabled.get() && !DriverStation.isFMSAttached())) {
             State currentState = RobotContainer.stateMachine.currentState;
+            boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
+            SmartDashboard.putBoolean("Elevator Aligned", shooterAligned);
             switch (currentState) {
 
                 case TARGETING_NOTE:
                     setCompass(RobotContainer.m_noteDetection.midpoint);
                     break;
                 case NOTE_LOADED:
-                    boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
                     // TEmporary hack :D
                     if (RobotContainer.shooter.shooterAtSpeed()
                             && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5 && shooterAligned) {
@@ -148,12 +150,14 @@ public class LEDSubsystem extends SubsystemBase {
                     } else {
                         setColor(254, 222, 0);
                     }
-
                     break;
                 case READY_TO_SHOOT:
-                    // TODO: This never gets called, we will need to check if shooter wheels have
-                    // spun up in the note_loaded case
-                    blinkColor(0, 50, 0, 0.2);
+                    if (RobotContainer.shooter.shooterAtSpeed()
+                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5 && shooterAligned) {
+                        blinkColor(0, 50, 0, 0.2);
+                    } else {
+                        setColor(254, 222, 0);
+                    }
                     break;
                 case NO_NOTE:
                     setPurpleGold(false);

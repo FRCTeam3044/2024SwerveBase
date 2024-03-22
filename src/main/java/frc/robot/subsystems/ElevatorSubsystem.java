@@ -151,8 +151,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public boolean elevatorAtAngle() {
         double tolerance = ElevatorConstants.kElevatorTolerance.get();
-        return Math.abs(motorOneEncoder.getPosition() - currentTargetRotations) < tolerance
-                && Math.abs(motorTwoEncoder.getPosition() - currentTargetRotations) < tolerance;
+        return Math.abs(motorOneEncoder.getPosition() - currentTargetRotations) < tolerance;
     }
 
     private double angleToRotations(double angle) {

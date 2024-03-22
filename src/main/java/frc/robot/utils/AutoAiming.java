@@ -29,18 +29,18 @@ public class AutoAiming {
     private PolynomialRegression polynomialRegression;
     private JSONArray data;
     private double[] distances = {
-            1.25,
-            1.755,
-            2.324,
-            2.8,
-            3.993
+            1.248,
+            1.630,
+            2.29,
+            2.78,
+            3.592
     };
     private double[] angles = {
-            0.122, // ORIGINALLY 0.119, CHANGE BACK IF BORKEN!
-            0.0965,
-            0.0849,
-            0.0675,
-            0.0469,
+            0.115,
+            0.104,
+            0.072,
+            0.063,
+            0.048
     };
     // THIS IS THE BAD (NEW) DATA
     // private double[] distances = {
