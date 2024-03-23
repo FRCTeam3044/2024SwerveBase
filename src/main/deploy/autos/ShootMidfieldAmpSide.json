@@ -22,7 +22,7 @@
     "id": "score_note_from_point",
     "name": "Score Note 1",
     "parameters": {
-      "shootX": 3.7,
+      "shootX": 2.85,
       "shootY": 6.4
     }
   },
@@ -43,7 +43,7 @@
     "id": "score_note_from_point",
     "name": "Score Note 2",
     "parameters": {
-      "shootX": 3.7,
+      "shootX": 2.85,
       "shootY": 6.4
     }
   }
