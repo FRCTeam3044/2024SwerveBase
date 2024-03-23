@@ -36,7 +36,7 @@ public class GoToAndTrackPointCommand extends Command {
         this.target = new ArrayList<Pose2d>();
         this.target.add(target);
         this.m_robotDrive = m_robotDrive;
-        this.noObstacles = noObstacles;
+        // this.noObstacles = noObstacles;
         targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);
 
     }
@@ -51,7 +51,7 @@ public class GoToAndTrackPointCommand extends Command {
     // Tracks a different target than the path target
     public GoToAndTrackPointCommand(ArrayList<Pose2d> target, Pose2d track, DriveSubsystem m_robotDrive,
             boolean flipped, boolean noObstacles) {
-        this.noObstacles = noObstacles;
+        // this.noObstacles = noObstacles;
         this.target = target;
         this.m_robotDrive = m_robotDrive;
         targetRotationController = new TargetRotationController(track.getX(), track.getY(), flipped);

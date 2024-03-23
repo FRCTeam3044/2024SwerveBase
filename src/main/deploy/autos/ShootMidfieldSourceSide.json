@@ -19,11 +19,11 @@
   },
   {
     "type": "macro",
-    "id": "score_note",
+    "id": "score_note_from_point",
     "name": "Score Note 1",
     "parameters": {
-      "shootX": 2.85,
-      "shootY": 6.4
+      "shootX": 1.4,
+      "shootY": 3.7
     }
   },
   {
@@ -40,11 +40,11 @@
   },
   {
     "type": "macro",
-    "id": "score_note",
+    "id": "score_note_from_point",
     "name": "Score Note 2",
     "parameters": {
-      "shootX": 2.85,
-      "shootY": 6.4
+      "shootX": 1.4,
+      "shootY": 3.7
     }
   }
 ]

@@ -136,6 +136,8 @@ public class LEDSubsystem extends SubsystemBase {
         if (DriverStation.isEnabled() || (LEDConstants.bypassEnabled.get() && !DriverStation.isFMSAttached())) {
             State currentState = RobotContainer.stateMachine.currentState;
             boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
+            boolean allowedToBlink = (DriverStation.isAutonomous() || (!DriverStation.isAutonomous()
+                    && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5));
             SmartDashboard.putBoolean("Elevator Aligned", shooterAligned);
             switch (currentState) {
 
@@ -145,15 +147,14 @@ public class LEDSubsystem extends SubsystemBase {
                 case NOTE_LOADED:
                     // TEmporary hack :D
                     if (RobotContainer.shooter.shooterAtSpeed()
-                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5 && shooterAligned) {
+                            && allowedToBlink && shooterAligned) {
                         blinkColor(0, 50, 0, 0.2);
                     } else {
                         setColor(254, 222, 0);
                     }
                     break;
                 case READY_TO_SHOOT:
-                    if (RobotContainer.shooter.shooterAtSpeed()
-                            && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5 && shooterAligned) {
+                    if (RobotContainer.shooter.shooterAtSpeed() && allowedToBlink && shooterAligned) {
                         blinkColor(0, 50, 0, 0.2);
                     } else {
                         setColor(254, 222, 0);

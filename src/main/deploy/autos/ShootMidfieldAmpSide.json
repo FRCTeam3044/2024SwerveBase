@@ -13,7 +13,7 @@
       "waypointX": 2.85,
       "waypointY": 6.35,
       "regionX": 8.25,
-      "regionY": 7.45,
+      "regionY": 5.8,
       "regionRadius": 1
     }
   },
@@ -22,7 +22,7 @@
     "id": "score_note_from_point",
     "name": "Score Note 1",
     "parameters": {
-      "shootX": 2.85,
+      "shootX": 3.7,
       "shootY": 6.4
     }
   },
@@ -34,7 +34,7 @@
       "waypointX": 6.7,
       "waypointY": 6.7,
       "regionX": 8.25,
-      "regionY": 5.8,
+      "regionY": 7.45,
       "regionRadius": 1
     }
   },
@@ -43,7 +43,7 @@
     "id": "score_note_from_point",
     "name": "Score Note 2",
     "parameters": {
-      "shootX": 2.85,
+      "shootX": 3.7,
       "shootY": 6.4
     }
   }

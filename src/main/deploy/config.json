@@ -1025,7 +1025,7 @@
         "frontLeftModule/driving/P": "0.03999999910593033",
         "LED Bypass DS enabled": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "frontLeftModule/turning/Max": "1.0",
         "frontRightModule/driving/FF": "0.2081708461046219",
@@ -1052,7 +1052,7 @@
         },
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
-            "value": "3.0"
+            "value": "4.0"
         },
         "rearLeftModule/turning/P": "1.0",
         "rearLeftModule/turning/D": "0.0",
