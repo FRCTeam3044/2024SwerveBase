@@ -9,6 +9,8 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +31,7 @@ import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
+import frc.robot.commands.drive.GoToPointDriverRotCommand;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.ElevatorTestCommand;
@@ -56,6 +59,7 @@ public class Robot extends LoggedRobot {
     private SendableChooser<Boolean> redAllianceChooser;
     private SendableChooser<String> autoChooser;
     private String lastAuto;
+    private double[] lastClick = new double[] { 0, 0 };
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -219,15 +223,13 @@ public class Robot extends LoggedRobot {
         // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
         // 1);
 
-        // double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[]
-        // { 0, 0 });
-        // if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-        // (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new
-        // Rotation2d()),
-        // RobotContainer.m_robotDrive,
-        // RobotContainer.m_driverController)).schedule();
-        // lastClick = click;
-        // }
+        double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+        if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+            (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new Rotation2d()),
+                    RobotContainer.m_robotDrive,
+                    RobotContainer.m_driverController)).schedule();
+            lastClick = click;
+        }
     }
 
     @Override
