@@ -346,6 +346,15 @@ public class DriveSubsystem extends SubsystemBase {
         return m_currentRotation * DriveConstants.kMaxAngularSpeed.get();
     }
 
+    public void driveSpeed(ChassisSpeeds speeds) {
+        drive(
+                speeds.vxMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond.get(),
+                speeds.vyMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond.get(),
+                speeds.omegaRadiansPerSecond / DriveConstants.kMaxAngularSpeed.get(),
+                true,
+                false);
+    }
+
     /**
      * Sets the wheels into an X formation to prevent movement.
      */

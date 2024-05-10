@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.PathfindingConstants;
 import frc.robot.commands.AmpShooterCommand;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
@@ -24,8 +26,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
+import frc.robot.tropath.commands.PathingCommandGenerator;
+import frc.robot.tropath.robotprofile.RobotProfile;
 import frc.robot.utils.AutoAiming;
 import me.nabdev.pathfinding.autos.AutoParser;
+import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
 import java.io.FileNotFoundException;
 
@@ -72,6 +77,8 @@ public class RobotContainer {
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
     public static final StateMachine stateMachine;
     public final StateMachineCommand stateMachineCommand;
+
+    public final PathingCommandGenerator pathingCommandGenerator;
     // public static boolean isRed = true;
 
     static {
@@ -88,6 +95,18 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
         stateMachineCommand = new StateMachineCommand(stateMachine);
+        pathingCommandGenerator = new PathingCommandGenerator(
+                new RobotProfile(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
+                        PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get(),
+                        PathfindingConstants.kMaxAngularSpeedRadiansPerSecond.get(),
+                        PathfindingConstants.kMaxAngularAccelerationRadiansPerSecondSquared.get(),
+                        DriveConstants.kRobotSize, DriveConstants.kRobotSize),
+                m_robotDrive::getPose,
+                m_robotDrive::driveSpeed,
+                m_robotDrive,
+                Field.CRESCENDO_2024)
+                .withPhysicsAlgorithmType(true)
+                .withAllianceFlipping(false);
         configureBindings();
         try {
             m_autoAiming = new AutoAiming(true);

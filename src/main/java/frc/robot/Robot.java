@@ -56,6 +56,7 @@ public class Robot extends LoggedRobot {
     private SendableChooser<Boolean> redAllianceChooser;
     private SendableChooser<String> autoChooser;
     private String lastAuto;
+    private double[] lastClick = new double[] { 0, 0 };
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -219,15 +220,12 @@ public class Robot extends LoggedRobot {
         // RobotContainer.m_driverController.getHID().setRumble(RumbleType.kBothRumble,
         // 1);
 
-        // double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[]
-        // { 0, 0 });
-        // if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
-        // (new GoToPointDriverRotCommand(new Pose2d(click[0], click[1], new
-        // Rotation2d()),
-        // RobotContainer.m_robotDrive,
-        // RobotContainer.m_driverController)).schedule();
-        // lastClick = click;
-        // }
+        double[] click = SmartDashboard.getNumberArray("ClickPosition", new double[] { 0, 0 });
+        if (click[0] != lastClick[0] || click[1] != lastClick[1]) {
+            m_robotContainer.pathingCommandGenerator.generateToTranslationCommand(click[0], click[1]).schedule();
+
+            lastClick = click;
+        }
     }
 
     @Override
