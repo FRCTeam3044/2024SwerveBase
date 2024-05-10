@@ -18,6 +18,7 @@ import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
+import frc.robot.commands.auto.ShootIfReady;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
@@ -360,9 +361,9 @@ public class StateMachine extends SubsystemBase {
         AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
                 AutoTargetUtils.getShootingTarget(), true);
-        DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
-                RobotContainer.m_operatorController);
-        return Commands.parallel(autoAimCommand, trackPointCommand, driverShootCommand);
+        SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
+        TransitCommand transitCommand = new TransitCommand(m_transitSubsystem);
+        return Commands.parallel(autoAimCommand, trackPointCommand, speakerShooterCommand, transitCommand);
     }
 
     @SuppressWarnings("unused")
