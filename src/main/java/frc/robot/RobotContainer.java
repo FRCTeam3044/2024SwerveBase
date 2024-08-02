@@ -6,15 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AmpShooterCommand;
-import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ElevatorSetAngleForAmpCommand;
-import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ManualLobCommand;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
-import frc.robot.commands.IntakeCommands.IntakeCommand;
-import frc.robot.commands.IntakeCommands.IntakeReverse;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
@@ -25,6 +20,8 @@ import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
+import frc.robot.utils.ConditionalXboxController;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
@@ -42,6 +39,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import static edu.wpi.first.wpilibj2.command.button.RobotModeTriggers.test;
+import static edu.wpi.first.wpilibj2.command.button.RobotModeTriggers.teleop;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -65,6 +64,14 @@ public class RobotContainer {
     public static final CommandXboxController m_operatorController = new CommandXboxController(
             OIConstants.kOperatorControllerPort);
 
+    public static final ConditionalXboxController m_driverTeleController = new ConditionalXboxController(
+            m_driverController, teleop());
+    public static final ConditionalXboxController m_operatorTeleController = new ConditionalXboxController(
+            m_operatorController,
+            teleop());
+    public static final ConditionalXboxController m_testController = new ConditionalXboxController(m_driverController,
+            test());
+
     public static final ClimberSubsystem climber = new ClimberSubsystem();
     public static final IntakeSubsystem intake = new IntakeSubsystem();
     public static final TransitSubsystem transit = new TransitSubsystem();
@@ -72,7 +79,9 @@ public class RobotContainer {
     public static final ShooterSubsystem shooter = new ShooterSubsystem();
     public static final StateMachine stateMachine;
     public final StateMachineCommand stateMachineCommand;
-    // public static boolean isRed = true;
+
+    private static ConfigurableParameter<Double> kElevatorPIDControlTarget = new ConfigurableParameter<Double>(
+            0.0, "Elevator Test PID Target");
 
     static {
         if (RobotBase.isSimulation()) {
@@ -88,7 +97,8 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
         stateMachineCommand = new StateMachineCommand(stateMachine);
-        configureBindings();
+        configureTeleopBindings();
+        configureTestBindings();
         try {
             m_autoAiming = new AutoAiming(true);
         } catch (FileNotFoundException e) {
@@ -116,42 +126,32 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings() {
+    private void configureTeleopBindings() {
         // Driver 1
-        // m_driverController.rightTrigger().whileTrue(stateMachineCommand.onlyIf(() ->
-        // !DriverStation.isTest()));
-        Command autoAimAndAlignCommand = Commands.parallel(new AutoAimCommand(elevator, m_robotDrive),
+        Command autoAimAndAlignCommand = Commands.parallel(elevator.autoAim(m_robotDrive),
                 new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
-        m_driverController.leftTrigger().whileTrue(autoAimAndAlignCommand
-                .onlyIf(() -> (!DriverStation.isTest() && !m_operatorController.getHID().getAButton())));
+        m_driverTeleController.leftTrigger()
+                .whileTrue(autoAimAndAlignCommand.onlyIf(() -> (!m_operatorController.getHID().getAButton())));
         // When the menu button is pressed*
-        m_driverController.start()
-                .onTrue(new StateMachineResetCommand(stateMachine).onlyIf(() -> !DriverStation.isTest()));
-        m_driverController.x().whileTrue(new XModeCommand(m_robotDrive).onlyIf(() -> !DriverStation.isTest()));
-        // Driver 2
-        // Command manualIntakeCommand = Commands.parallel(new IntakeCommand(intake),
-        // new TransitCommand(transit));
-        m_operatorController.x().whileTrue((new IntakeCommand(intake)).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.y().whileTrue((new TransitCommand(transit).alongWith(new IntakeCommand(intake)))
-                .onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.leftTrigger()
-                .whileTrue(new ManualShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.leftBumper()
-                .whileTrue(new ElevatorSetAngleForAmpCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.rightBumper()
-                .whileTrue((new AmpShooterCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest())));
-        m_operatorController.rightTrigger()
-                .whileTrue(new ManualLobCommand(shooter, transit).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.a()
-                .whileTrue(new ElevatorSetAngleForIntakeCommand(elevator).onlyIf(() -> !DriverStation.isTest()));
-        m_operatorController.povDown().whileTrue((new IntakeReverse(intake)).onlyIf(() -> !DriverStation.isTest()));
-        Command pickupNote = stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote);
-        // pickupNote.addRequirements(m_robotDrive);
-        m_operatorController.b().whileTrue(pickupNote);
+        m_driverTeleController.start().onTrue(new StateMachineResetCommand(stateMachine));
+        m_driverTeleController.x().whileTrue(new XModeCommand(m_robotDrive));
 
-        // m_operatorController.b()
-        // .whileTrue(new ElevatorSetAngleForSubwooferCommand(elevator).onlyIf(() ->
-        // !DriverStation.isTest()));
+        m_operatorTeleController.x().whileTrue(intake.run());
+        m_operatorTeleController.y().whileTrue(new TransitCommand(transit).alongWith(intake.run()));
+        m_operatorTeleController.leftTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
+        m_operatorTeleController.leftBumper().whileTrue(elevator.amp());
+        m_operatorTeleController.rightBumper().whileTrue(new AmpShooterCommand(shooter, transit));
+        m_operatorTeleController.rightTrigger().whileTrue(new ManualLobCommand(shooter, transit));
+        m_operatorTeleController.a().whileTrue(elevator.intake());
+        m_operatorTeleController.povDown().whileTrue(intake.run(true));
+        m_operatorTeleController.b()
+                .whileTrue(stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote));
+    }
+
+    private void configureTestBindings() {
+        m_testController.b().whileTrue(intake.run());
+        m_testController.y().whileTrue(elevator.toAngle(kElevatorPIDControlTarget::get));
+        m_testController.a().whileTrue(elevator.test(() -> -m_testController.controller.getRightY()));
     }
 
     /**

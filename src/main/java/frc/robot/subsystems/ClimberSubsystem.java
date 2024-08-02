@@ -66,5 +66,4 @@ public class ClimberSubsystem extends SubsystemBase {
         leftArm(leftPow);
         rightArm(rightPow);
     }
-
 }

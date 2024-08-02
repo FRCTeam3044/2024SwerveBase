@@ -16,11 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.commands.AutoAimCommand;
-import frc.robot.commands.ElevatorSetAngleForAmpCommand;
-import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
-import frc.robot.commands.IntakeCommands.IntakeAndThenSecond;
-import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
@@ -64,7 +59,6 @@ public final class AutoCommandFactory {
         AutoParser.registerCommand("spinup_shooter_if_in_range", AutoCommandFactory::spinupShooterIfInRange);
         AutoParser.registerCommand("shoot_if_ready", AutoCommandFactory::shootIfReady);
         AutoParser.registerCommand("align_robot_to_shoot", AutoCommandFactory::alignRobotToShoot);
-        AutoParser.registerCommand("intake_then_second", AutoCommandFactory::intakeThenSecond);
         AutoParser.registerBoolean("note_in_area", AutoCommandFactory::noteInArea);
         AutoParser.registerBoolean("has_note", AutoCommandFactory::hasNote);
         AutoParser.registerBoolean("is_state", AutoCommandFactory::isState);
@@ -77,12 +71,8 @@ public final class AutoCommandFactory {
         AutoParser.registerMacro("pickup_and_score", "PickupAndScoreNote.json");
     }
 
-    public static Command intakeThenSecond(JSONObject parameters) {
-        return new IntakeAndThenSecond(RobotContainer.intake);
-    }
-
     public static Command runIntakeForSecond(JSONObject parameters) {
-        return (new WaitCommand(1)).raceWith(new IntakeCommand(RobotContainer.intake));
+        return (new WaitCommand(1)).raceWith(RobotContainer.intake.run());
     }
 
     public static NoteDetected noteDetected(JSONObject parameters) {
@@ -98,7 +88,7 @@ public final class AutoCommandFactory {
     }
 
     public static Command autoAimShooter(JSONObject parameters) {
-        return new AutoAimCommand(RobotContainer.elevator, RobotContainer.m_robotDrive);
+        return RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive);
     }
 
     public static Command getToShootingZone(JSONObject parameters) {
@@ -220,16 +210,16 @@ public final class AutoCommandFactory {
         return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive, flipped, true);
     }
 
-    public static ElevatorSetAngleForIntakeCommand elevatorSetAngleForIntakeCommand(JSONObject parameters) {
-        return new ElevatorSetAngleForIntakeCommand(RobotContainer.elevator);
+    public static Command elevatorSetAngleForIntakeCommand(JSONObject parameters) {
+        return RobotContainer.elevator.intake();
     }
 
-    public static ElevatorSetAngleForAmpCommand elevatorSetAngleForAmpCommand(JSONObject parameters) {
-        return new ElevatorSetAngleForAmpCommand(RobotContainer.elevator);
+    public static Command elevatorSetAngleForAmpCommand(JSONObject parameters) {
+        return RobotContainer.elevator.amp();
     }
 
-    public static IntakeCommand intakeCommand(JSONObject parameters) {
-        return new IntakeCommand(RobotContainer.intake);
+    public static Command intakeCommand(JSONObject parameters) {
+        return RobotContainer.intake.run();
     }
 
     private static Pose2d getAllianceLocation(double x, double y) {

@@ -8,8 +8,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.utils.LimitSwitchSubsystem;
@@ -80,39 +81,28 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     }
 
     // Use this to run intake
-    public void runIntake() {
-        if (!isIntakeRunning) {
-            timeSinceStart.reset();
-            timeSinceStart.start();
-            isIntakeRunning = true;
-        }
-        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
-                IntakeConstants.kIntakeManualSpeed.get());
+    private void runIntake(double output) {
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, output);
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -output);
     }
 
-    public void runIntakeReverse() {
-        if (!isIntakeRunning) {
-            timeSinceStart.reset();
-            timeSinceStart.start();
-            isIntakeRunning = true;
-        }
-        double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
-                IntakeConstants.kIntakeManualSpeed.get());
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, -output);
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, output);
+    public Command run() {
+        return run(false);
     }
 
-    // Stops intake
-    public void stopIntake() {
-        if (isIntakeRunning) {
-            timeSinceStart.reset();
-            timeSinceStart.stop();
-            isIntakeRunning = false;
-        }
-        intakeTopMotor.set(TalonSRXControlMode.PercentOutput, 0);
-        intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, 0);
+    public Command run(boolean reverse) {
+        Command run = new FunctionalCommand(
+                () -> {
+                    timeSinceStart.restart();
+                    isIntakeRunning = true;
+                }, () -> {
+                    double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                            IntakeConstants.kIntakeManualSpeed.get());
+                    runIntake(reverse ? -output : output);
+                },
+                (interrupted) -> runIntake(0), () -> false, this);
+        run.setName("Intake");
+        return run;
     }
 
     /**
@@ -126,26 +116,6 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             return true;
         } else {
             return false;
-        }
-    }
-
-    public void consumeIntakeInput(boolean run) {
-        if (run) {
-            runIntake();
-        } else {
-            stopIntake();
-        }
-    }
-
-    public void consumeIntakeInput(boolean run, boolean reverse) {
-        if (run) {
-            if (reverse) {
-                runIntakeReverse();
-            } else {
-                runIntake();
-            }
-        } else {
-            stopIntake();
         }
     }
 }

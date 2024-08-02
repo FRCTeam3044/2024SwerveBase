@@ -31,8 +31,6 @@ import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
-import frc.robot.commands.test.ElevatorTestCommand;
-import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.LEDSubsystem;
@@ -237,18 +235,12 @@ public class Robot extends LoggedRobot {
         Command climberTestCommand = new ClimberTestCommand(RobotContainer.climber,
                 RobotContainer.m_driverController.getHID());
         climberTestCommand.schedule();
-        Command intakeTestCommand = new IntakeTestCommand(RobotContainer.intake,
-                RobotContainer.m_driverController.getHID());
-        intakeTestCommand.schedule();
         Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
                 RobotContainer.m_driverController.getHID());
         transitTestCommand.schedule();
         Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
                 RobotContainer.m_driverController);
         driveTestCommand.schedule();
-        Command elevatorTestCommand = new ElevatorTestCommand(RobotContainer.elevator,
-                RobotContainer.m_driverController.getHID());
-        elevatorTestCommand.schedule();
         Command shooterTestCommand = new ShooterTestCommand(RobotContainer.shooter,
                 RobotContainer.m_driverController.getHID());
         shooterTestCommand.schedule();

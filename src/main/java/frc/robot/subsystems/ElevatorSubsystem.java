@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -17,9 +18,12 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.RobotContainer;
 import frc.robot.utils.USBLocator;
 import me.nabdev.oxconfig.ConfigurableParameter;
@@ -107,46 +111,75 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
-    // Sets the intake, shooter, and transit to the postion that we want it to be in
-    public void moveElevator(double motorSpeed) {
-        elevatorMotorOne.set(motorSpeed);
-    }
-
     // Shifts the intake, shooter, and transit to the default postion that makes it
     // easier pick up notes
-    public void setToIntakeMode() {
-        currentTargetRotations = angleToRotations(ElevatorConstants.kIntakeAngle.get());
+    public Command intake() {
+        Command intake = Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kIntakeAngle.get());
+            updatePIDReference();
+        }, this);
+        intake.setName("Elevator Intake Position");
+        return intake;
     }
 
     // Shifts the intake, shooter, and transit to the position used for shooting
     // into an amp
-    public void setToAmpMode() {
-        currentTargetRotations = angleToRotations(ElevatorConstants.kAmpAngle.get());
+    public Command amp() {
+        Command amp = Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kAmpAngle.get());
+            updatePIDReference();
+        }, this);
+        amp.setName("Elevator Amp Position");
+        return amp;
     }
 
-    public void setToSubwooferMode() {
-        currentTargetRotations = angleToRotations(ElevatorConstants.kSubwooferAngle.get());
+    public Command subwoofer() {
+        Command subwoofer = Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kSubwooferAngle.get());
+            updatePIDReference();
+        }, this);
+        subwoofer.setName("Elevator Subwoofer Position");
+        return subwoofer;
     }
 
-    public void setAngle(double setAngle) {
+    public Command toAngle(DoubleSupplier angle) {
+        Command toAngle = Commands.run(() -> {
+            setAngle(angle.getAsDouble());
+            updatePIDReference();
+        }, this);
+        toAngle.setName("Elevator To Angle");
+        return toAngle;
+    }
+
+    public Command autoAim(DriveSubsystem drive) {
+        DoubleSupplier aimTarget = () -> RobotContainer.m_autoAiming.getAngle(drive.distanceToShootingTarget);
+        Command autoAim = toAngle(aimTarget);
+        autoAim.setName("Elevator Auto Aim");
+
+        return autoAim;
+    }
+
+    public Command test(DoubleSupplier input) {
+        Command test = Commands.run(() -> {
+            double inputVal = MathUtil.applyDeadband(input.getAsDouble(), OIConstants.kDriveDeadband.get())
+                    * ElevatorConstants.kElevatorManualSpeed
+                            .get();
+            elevatorMotorOne.set(inputVal * Math.abs(inputVal));
+        }, this);
+        test.setName("Elevator Test");
+        return test;
+    }
+
+    private void setAngle(double setAngle) {
         currentTargetRotations = angleToRotations(setAngle);
     }
 
     public double getAngle() {
-        // return elevatorPivotEncoder.getPosition();
         return elevatorPivotEncoder.getAbsolutePosition() - positionOffset.get();
     }
 
-    public void pidHandler() {
+    private void updatePIDReference() {
         pidController.setReference(currentTargetRotations, CANSparkMax.ControlType.kSmartMotion);
-    }
-
-    public void consumeElevatorInput(double leftStickY) {
-        if (Math.abs(leftStickY) > 0.1) {
-            elevatorMotorOne.set(leftStickY * Math.abs(leftStickY));
-        } else {
-            elevatorMotorOne.set(0);
-        }
     }
 
     public boolean elevatorAtAngle() {

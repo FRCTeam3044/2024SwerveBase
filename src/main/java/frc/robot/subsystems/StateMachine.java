@@ -11,12 +11,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.DriverShootCommand;
-import frc.robot.commands.ElevatorSetAngleForIntakeCommand;
 import frc.robot.commands.ShooterSlowCommand;
 import frc.robot.commands.SpeakerShooterCommand;
-import frc.robot.commands.IntakeCommands.IntakeCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
@@ -28,8 +25,6 @@ public class StateMachine extends SubsystemBase {
     private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
             "Intake Current Threshold");
     private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
-    private ConfigurableParameter<Double> kTeleTransitRuntime = new ConfigurableParameter<Double>(0.5,
-            "Transit Teleop Runtime");
 
     public enum State {
         /**
@@ -303,9 +298,7 @@ public class StateMachine extends SubsystemBase {
     public Command getPickupNoteCommand() {
         GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
                 RobotContainer.m_noteDetection, false);
-        ElevatorSetAngleForIntakeCommand setAngleCommand = new ElevatorSetAngleForIntakeCommand(m_elevatorSubsystem);
-        IntakeCommand intakeRunMotorsCommand = new IntakeCommand(m_intakeSubsystem);
-        return Commands.parallel(goToNoteCommand, intakeRunMotorsCommand, setAngleCommand);
+        return Commands.parallel(goToNoteCommand, m_intakeSubsystem.run(), m_elevatorSubsystem.intake());
     }
 
     // private Command getLockinNoteCommand() {
@@ -323,11 +316,11 @@ public class StateMachine extends SubsystemBase {
         if (getToPoint == null) {
             return null;
         }
-        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
-        Command runIntake = Commands.waitSeconds(1).deadlineWith(new IntakeCommand(m_intakeSubsystem));
+        Command runIntake = Commands.waitSeconds(1).deadlineWith(m_intakeSubsystem.run());
 
-        return Commands.parallel(getToPoint, autoAimCommand, speakerShooterCommand, runIntake);
+        return Commands.parallel(getToPoint, m_elevatorSubsystem.autoAim(m_driveSubsystem), speakerShooterCommand,
+                runIntake);
     }
 
     public Command goToShootingZoneCommand(boolean forceMove) {
@@ -357,12 +350,11 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getShootCommand() {
-        AutoAimCommand autoAimCommand = new AutoAimCommand(m_elevatorSubsystem, m_driveSubsystem);
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
                 AutoTargetUtils.getShootingTarget(), true);
         DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
                 RobotContainer.m_operatorController);
-        return Commands.parallel(autoAimCommand, trackPointCommand, driverShootCommand);
+        return Commands.parallel(m_elevatorSubsystem.autoAim(m_driveSubsystem), trackPointCommand, driverShootCommand);
     }
 
     @SuppressWarnings("unused")
