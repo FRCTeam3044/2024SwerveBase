@@ -7,15 +7,19 @@ package frc.robot.commands.auto;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
@@ -84,7 +88,12 @@ public final class AutoCommandFactory {
     }
 
     public static Command spinupShooterIfInRange(JSONObject parameters) {
-        return new SpinupShooterIfInRange(RobotContainer.shooter, RobotContainer.m_robotDrive);
+        BooleanSupplier inZone = () -> {
+            Translation2d target = AutoTargetUtils.getShootingTarget().getTranslation();
+            double distance = RobotContainer.m_robotDrive.getPose().getTranslation().getDistance(target);
+            return distance < ShooterConstants.kShooterSpinupRange.get();
+        };
+        return Commands.either(RobotContainer.shooter.speaker(), RobotContainer.shooter.stop(), inZone);
     }
 
     public static Command autoAimShooter(JSONObject parameters) {

@@ -111,48 +111,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
-    public Command intake() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kIntakeAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Intake Position");
-    }
-
-    public Command amp() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kAmpAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Amp Position");
-    }
-
-    public Command subwoofer() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kSubwooferAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Subwoofer Position");
-    }
-
-    public Command toAngle(DoubleSupplier angle) {
-        return Commands.run(() -> {
-            setAngle(angle.getAsDouble());
-            updatePIDReference();
-        }, this).withName("Elevator To Angle");
-    }
-
-    public Command autoAim(DriveSubsystem drive) {
-        DoubleSupplier aimTarget = () -> RobotContainer.m_autoAiming.getAngle(drive.distanceToShootingTarget);
-        return toAngle(aimTarget).withName("Elevator Auto Aim");
-    }
-
-    public Command test(DoubleSupplier input) {
-        return Commands.run(() -> {
-            double inputVal = MathUtil.applyDeadband(input.getAsDouble(), OIConstants.kDriveDeadband.get())
-                    * ElevatorConstants.kElevatorManualSpeed
-                            .get();
-            elevatorMotorOne.set(inputVal * Math.abs(inputVal));
-        }, this).withName("Elevator Test");
-    }
-
     private void setAngle(double setAngle) {
         currentTargetRotations = angleToRotations(setAngle);
     }
@@ -209,5 +167,48 @@ public class ElevatorSubsystem extends SubsystemBase {
                 }
             }
         }
+    }
+
+    // Command Factories
+    public Command intake() {
+        return Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kIntakeAngle.get());
+            updatePIDReference();
+        }, this).withName("Elevator Intake Position");
+    }
+
+    public Command amp() {
+        return Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kAmpAngle.get());
+            updatePIDReference();
+        }, this).withName("Elevator Amp Position");
+    }
+
+    public Command subwoofer() {
+        return Commands.runOnce(() -> {
+            setAngle(ElevatorConstants.kSubwooferAngle.get());
+            updatePIDReference();
+        }, this).withName("Elevator Subwoofer Position");
+    }
+
+    public Command toAngle(DoubleSupplier angle) {
+        return Commands.run(() -> {
+            setAngle(angle.getAsDouble());
+            updatePIDReference();
+        }, this).withName("Elevator To Angle");
+    }
+
+    public Command autoAim(DriveSubsystem drive) {
+        DoubleSupplier aimTarget = () -> RobotContainer.m_autoAiming.getAngle(drive.distanceToShootingTarget);
+        return toAngle(aimTarget).withName("Elevator Auto Aim");
+    }
+
+    public Command test(DoubleSupplier input) {
+        return Commands.run(() -> {
+            double inputVal = MathUtil.applyDeadband(input.getAsDouble(), OIConstants.kDriveDeadband.get())
+                    * ElevatorConstants.kElevatorManualSpeed
+                            .get();
+            elevatorMotorOne.set(inputVal * Math.abs(inputVal));
+        }, this).withName("Elevator Test");
     }
 }

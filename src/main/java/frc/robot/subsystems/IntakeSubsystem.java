@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -86,24 +85,6 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -output);
     }
 
-    public Command run() {
-        return run(false);
-    }
-
-    public Command run(boolean reverse) {
-        return new FunctionalCommand(
-                /* Initialize */ () -> {
-                    timeSinceStart.restart();
-                    isIntakeRunning = true;
-                }, /* Execute */ () -> {
-                    double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
-                            IntakeConstants.kIntakeManualSpeed.get());
-                    runIntake(reverse ? -output : output);
-                },
-                /* End */ (interrupted) -> runIntake(0), /* IsFinished */ () -> false, this)
-                .withName("runIntake");
-    }
-
     /**
      * Reads the intake limit switch
      * 
@@ -117,4 +98,54 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             return false;
         }
     }
+
+    // Command Factories
+
+    public Command run() {
+        return run(false);
+    }
+
+    public class IntakeRunCommand extends Command {
+        boolean reverse;
+
+        public IntakeRunCommand(boolean reverse) {
+            addRequirements(IntakeSubsystem.this);
+        }
+
+        @Override
+        public void execute() {
+            double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                    IntakeConstants.kIntakeManualSpeed.get());
+            runIntake(reverse ? -output : output);
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            runIntake(0);
+        }
+
+        @Override
+        public boolean isFinished() {
+            return false;
+        }
+    }
+
+    public Command run(boolean reverse) {
+        return new IntakeRunCommand(reverse);
+    }
+
+    // Functional Command Variation
+    // public Command run(boolean reverse) {
+    // return new FunctionalCommand(
+    // /* Initialize */ () -> {
+    // timeSinceStart.restart();
+    // isIntakeRunning = true;
+    // }, /* Execute */ () -> {
+    // double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+    // IntakeConstants.kIntakeManualSpeed.get());
+    // runIntake(reverse ? -output : output);
+    // },
+    // /* End */ (interrupted) -> runIntake(0), /* IsFinished */ () -> false, this)
+    // .withName("runIntake");
+    // }
 }

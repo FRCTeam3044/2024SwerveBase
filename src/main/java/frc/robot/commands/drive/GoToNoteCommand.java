@@ -11,7 +11,6 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.utils.TargetRotationController;
-import me.nabdev.pathfinding.structures.ImpossiblePathException;
 
 /**
  * Goes to a point while looking at it

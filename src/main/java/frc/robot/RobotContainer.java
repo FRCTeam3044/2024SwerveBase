@@ -5,10 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AmpShooterCommand;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ManualLobCommand;
-import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
@@ -138,10 +135,10 @@ public class RobotContainer {
 
         m_operatorTeleController.x().whileTrue(intake.run());
         m_operatorTeleController.y().whileTrue(new TransitCommand(transit).alongWith(intake.run()));
-        m_operatorTeleController.leftTrigger().whileTrue(new ManualShooterCommand(shooter, transit));
+        m_operatorTeleController.leftTrigger().whileTrue(shooter.speaker());
         m_operatorTeleController.leftBumper().whileTrue(elevator.amp());
-        m_operatorTeleController.rightBumper().whileTrue(new AmpShooterCommand(shooter, transit));
-        m_operatorTeleController.rightTrigger().whileTrue(new ManualLobCommand(shooter, transit));
+        m_operatorTeleController.rightBumper().whileTrue(shooter.amp());
+        m_operatorTeleController.rightTrigger().whileTrue(shooter.lob());
         m_operatorTeleController.a().whileTrue(elevator.intake());
         m_operatorTeleController.povDown().whileTrue(intake.run(true));
         m_operatorTeleController.b()
@@ -152,6 +149,8 @@ public class RobotContainer {
         m_testController.b().whileTrue(intake.run());
         m_testController.y().whileTrue(elevator.toAngle(kElevatorPIDControlTarget::get));
         m_testController.a().whileTrue(elevator.test(() -> -m_testController.controller.getRightY()));
+        m_testController.povDown().whileTrue(shooter.slow());
+        m_testController.povUp().whileTrue(shooter.shoot());
     }
 
     /**

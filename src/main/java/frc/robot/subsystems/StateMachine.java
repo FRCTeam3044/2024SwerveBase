@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -11,13 +13,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.DriverShootCommand;
-import frc.robot.commands.ShooterSlowCommand;
-import frc.robot.commands.SpeakerShooterCommand;
 import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
+import frc.robot.utils.ControllerRumble;
+import frc.robot.utils.ExtraCommands;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Vertex;
 
@@ -240,8 +241,7 @@ public class StateMachine extends SubsystemBase {
         currentState = State.NO_NOTE;
 
         Command ejectNoteCommand = Commands.deadline(new WaitCommand(StateMachineConstants.kEjectTime.get()),
-                new ShooterSlowCommand(m_shooterSubsystem),
-                new TransitCommand(m_transitSubsystem));
+                m_shooterSubsystem.slow(), new TransitCommand(m_transitSubsystem));
         ejectNoteCommand.schedule();
         updateDesiredCommand();
     }
@@ -316,11 +316,10 @@ public class StateMachine extends SubsystemBase {
         if (getToPoint == null) {
             return null;
         }
-        SpeakerShooterCommand speakerShooterCommand = new SpeakerShooterCommand(m_shooterSubsystem);
         Command runIntake = Commands.waitSeconds(1).deadlineWith(m_intakeSubsystem.run());
 
-        return Commands.parallel(getToPoint, m_elevatorSubsystem.autoAim(m_driveSubsystem), speakerShooterCommand,
-                runIntake);
+        return Commands.parallel(getToPoint, m_elevatorSubsystem.autoAim(m_driveSubsystem),
+                m_shooterSubsystem.speaker(), runIntake);
     }
 
     public Command goToShootingZoneCommand(boolean forceMove) {
@@ -352,8 +351,24 @@ public class StateMachine extends SubsystemBase {
     private Command getShootCommand() {
         TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
                 AutoTargetUtils.getShootingTarget(), true);
-        DriverShootCommand driverShootCommand = new DriverShootCommand(m_shooterSubsystem, m_transitSubsystem,
-                RobotContainer.m_operatorController);
+
+        AtomicBoolean hasShot = new AtomicBoolean(false);
+        // Yes this is disgusting, I will brainstorm better ways to do the state machine
+        // but this is a quick workaround until we have a more concrete plan.
+        Command driverShootCommand = Commands.race(m_shooterSubsystem.speaker(), ExtraCommands.runUntil(() -> {
+            if (RobotContainer.m_operatorController.getRightTriggerAxis() > 0.5 && !hasShot.get()) {
+                hasShot.set(true);
+                ControllerRumble.driverSmallShort();
+                ControllerRumble.opSmallShort();
+                m_shooterSubsystem.saveShotData();
+            }
+            if (hasShot.get()) {
+                if (m_shooterSubsystem.shooterAtSpeed()) {
+                    m_transitSubsystem.runTransit();
+                }
+            }
+        }, () -> !m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch()) && hasShot.get(),
+                m_transitSubsystem));
         return Commands.parallel(m_elevatorSubsystem.autoAim(m_driveSubsystem), trackPointCommand, driverShootCommand);
     }
 

@@ -31,7 +31,6 @@ import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
 import frc.robot.commands.test.ClimberTestCommand;
 import frc.robot.commands.test.DriveTestCommand;
-import frc.robot.commands.test.ShooterTestCommand;
 import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.StateMachine.State;
@@ -241,9 +240,6 @@ public class Robot extends LoggedRobot {
         Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
                 RobotContainer.m_driverController);
         driveTestCommand.schedule();
-        Command shooterTestCommand = new ShooterTestCommand(RobotContainer.shooter,
-                RobotContainer.m_driverController.getHID());
-        shooterTestCommand.schedule();
 
     }
 
@@ -260,6 +256,7 @@ public class Robot extends LoggedRobot {
     /** This function is called once when the robot is first started up. */
     @Override
     public void simulationInit() {
+
     }
 
     /** This function is called periodically whilst in simulation. */

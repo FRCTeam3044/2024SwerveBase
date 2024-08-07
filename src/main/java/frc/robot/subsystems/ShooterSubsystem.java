@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
@@ -31,12 +33,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder topShooterMoterEncoder = topMotor.getAlternateEncoder(8192);
     private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getAlternateEncoder(8192);
 
-    // TODO: Get values
     public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
-    public double ampRPM = 0;
     public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(600.0, "Amp Top Shooter RPM");
     public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0,
             "Amp Bottom Shooter RPM");
+    public ConfigurableParameter<Double> lobRPM = new ConfigurableParameter<Double>(
+            2000.0, "Lob Speed");
 
     public ConfigurableParameter<Double> shooterSpinupTime = new ConfigurableParameter<Double>(1.25,
             "Shooter Spinup Time");
@@ -78,27 +80,27 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomMotor.set(0);
     }
 
-    public void consumeShooterInput(boolean shoot, boolean slow) {
-        double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
-                : ShooterConstants.kShooterManualSpeed.get();
-        if (shoot) {
-            if (!isShooting) {
-                isShooting = true;
-                timeSinceShooting.reset();
-                timeSinceShooting.start();
-            }
-            if (!slow) {
-                topMotor.set(output);
-                bottomMotor.set(-output);
-            } else {
-                topMotor.set(output);
-                bottomMotor.set(-output);
-            }
-        } else {
-            stopShooter();
-        }
+    // public void consumeShooterInput(boolean shoot, boolean slow) {
+    // double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
+    // : ShooterConstants.kShooterManualSpeed.get();
+    // if (shoot) {
+    // if (!isShooting) {
+    // isShooting = true;
+    // timeSinceShooting.reset();
+    // timeSinceShooting.start();
+    // }
+    // if (!slow) {
+    // topMotor.set(output);
+    // bottomMotor.set(-output);
+    // } else {
+    // topMotor.set(output);
+    // bottomMotor.set(-output);
+    // }
+    // } else {
+    // stopShooter();
+    // }
 
-    }
+    // }
 
     public ShooterSubsystem() {
         topMotor.restoreFactoryDefaults();
@@ -130,8 +132,6 @@ public class ShooterSubsystem extends SubsystemBase {
         topPidController.setSmartMotionMaxVelocity(maxVel, 0);
         topPidController.setSmartMotionMaxAccel(maxAccel.get(), 0);
 
-        // topPidController.setFeedbackDevice(m_topAlternateEncoder);
-        // ----------------------------------------------------------------------------------
         bottomPidController.setP(kP);
         bottomPidController.setI(kI);
         bottomPidController.setD(kD);
@@ -145,11 +145,9 @@ public class ShooterSubsystem extends SubsystemBase {
                 "Shooter bottom pid");
         new ConfigurableSparkPIDController(topPidController,
                 "Shooter top pid");
-
-        // bottomPidController.setFeedbackDevice(m_bottomAlternateEncoder);
     }
 
-    public void handlePID() {
+    private void handlePID() {
         if ((currentTopTargetRPM > 10 || currentBottomTargetRPM > 10)) {
             if (!isShooting) {
                 isShooting = true;
@@ -161,16 +159,6 @@ public class ShooterSubsystem extends SubsystemBase {
         }
         topPidController.setReference(currentTopTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
         bottomPidController.setReference(-currentBottomTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
-    }
-
-    public void speakerSpeed() {
-        // if (!isShooting) {
-        // isShooting = true;
-        // timeSinceShooting.reset();
-        // timeSinceShooting.start();
-        // }
-        currentTopTargetRPM = speakerRPM.get();
-        currentBottomTargetRPM = speakerRPM.get();
     }
 
     public double getTopMotorRPM() {
@@ -190,14 +178,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return (isShooting && timeSinceShooting.hasElapsed(shooterSpinupTime.get()));
     }
 
-    public void ampSpeed() {
-        // if (!isShooting) {
-        // isShooting = true;
-        // timeSinceShooting.reset();
-        // timeSinceShooting.start();
-        // }
-        currentTopTargetRPM = ampTopRPM.get();
-        currentBottomTargetRPM = ampBottomRPM.get();
+    private void setTargetSpeed(double topRPM, double bottomRPM) {
+        currentTopTargetRPM = topRPM;
+        currentBottomTargetRPM = bottomRPM;
     }
 
     public void saveShotData() {
@@ -207,5 +190,53 @@ public class ShooterSubsystem extends SubsystemBase {
 
         RobotContainer.m_autoAiming.addData(dist, RobotContainer.elevator.getAngle(), getTopMotorRPM(),
                 getBottomMotorRPM(), speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+    }
+
+    public Command shoot(double topRPM, double bottomRPM) {
+        return Commands.runEnd(() -> {
+            setTargetSpeed(topRPM, bottomRPM);
+            handlePID();
+        }, this::stopShooter, this).withName("Shooter");
+    }
+
+    public Command shoot(double rpm) {
+        return shoot(rpm, rpm);
+    }
+
+    public Command speaker() {
+        return shoot(speakerRPM.get()).withName("Speaker Shooter");
+    }
+
+    public Command amp() {
+        return shoot(ampTopRPM.get(), ampBottomRPM.get()).withName("Amp Shooter");
+    }
+
+    public Command lob() {
+        return shoot(lobRPM.get()).withName("Lob Shooter");
+    }
+
+    public Command shootPercentage(double top, double bottom) {
+        return Commands.runEnd(() -> {
+            topMotor.set(top);
+            bottomMotor.set(bottom);
+        }, this::stopShooter, this).withName("Shoot Percentage");
+    }
+
+    public Command shootPercentage(double percentage) {
+        return shootPercentage(percentage, -percentage);
+    }
+
+    public Command slow() {
+        double speed = ShooterConstants.kShooterManualSlowSpeed.get();
+        return shootPercentage(speed).withName("Slow Shooter (Percentage)");
+    }
+
+    public Command shoot() {
+        double speed = ShooterConstants.kShooterManualSpeed.get();
+        return shootPercentage(speed).withName("Normal Shooter (Percentage)");
+    }
+
+    public Command stop() {
+        return Commands.runOnce(this::stopShooter, this).withName("Stop Shooter");
     }
 }

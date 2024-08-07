@@ -61,18 +61,12 @@ public class GoToAndTrackPointCommand extends Command {
     @Override
     public void initialize() {
         try {
-            long startTime = System.currentTimeMillis();
-            long lastTime = startTime;
             Trajectory myPath;
             if (noObstacles) {
                 myPath = m_robotDrive.generateTrajectoryNoAvoidance(m_robotDrive.getPose(), target.get(0));
             } else {
                 myPath = m_robotDrive.generateTrajectory(target);
             }
-            // System.out.println(
-            // "Generate path " + ((double) (System.currentTimeMillis() - lastTime)) /
-            // 1000);
-            lastTime = System.currentTimeMillis();
             m_robotDrive.field.getObject("Path").setTrajectory(myPath);
 
             HolonomicDriveController controller = new HolonomicDriveController(
@@ -86,9 +80,6 @@ public class GoToAndTrackPointCommand extends Command {
                     m_robotDrive, m_robotDrive);
             m_followTrajectoryCommand.schedule();
             failed = false;
-            // System.out.println(
-            // "Get To and track point took " + ((double) (System.currentTimeMillis() -
-            // startTime)) / 1000);
         } catch (ImpossiblePathException e) {
             System.out.println("Impossible path, aborting");
             failed = true;

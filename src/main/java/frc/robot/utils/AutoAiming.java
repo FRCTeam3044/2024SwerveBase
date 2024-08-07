@@ -66,11 +66,10 @@ public class AutoAiming {
         FileInputStream fis = new FileInputStream(new File(getPath()));
         JSONTokener tokener = new JSONTokener(fis);
         data = new JSONArray(tokener);
-        // TODO: Remove after testing
+
         if (usingLerp) {
             linearInterpolation = new LinearInterpolation(distances, angles);
         }
-        // updateDataFromJSON();
     }
 
     public AutoAiming(boolean lerp) throws FileNotFoundException {
@@ -81,7 +80,6 @@ public class AutoAiming {
         if (usingLerp) {
             linearInterpolation = new LinearInterpolation(distances, angles);
         }
-        // updateDataFromJSON();
     }
 
     public double getAngle(double distance) {
