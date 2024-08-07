@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToAndTrackPointCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
@@ -151,8 +150,8 @@ public final class AutoCommandFactory {
         }
     }
 
-    public static TransitCommand transitCommand(JSONObject parameters) {
-        return new TransitCommand(RobotContainer.transit);
+    public static Command transitCommand(JSONObject parameters) {
+        return RobotContainer.transit.run();
     }
 
     public static GoToNoteCommand goToNote(JSONObject parameters) {

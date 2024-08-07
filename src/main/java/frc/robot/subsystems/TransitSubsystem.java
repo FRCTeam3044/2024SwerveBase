@@ -7,6 +7,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
@@ -40,21 +42,6 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
         transitMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
         transitMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
         transitMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
-    }
-
-    // Use this to get the note from the intake system
-    public void getNoteFromIntake() {
-
-    }
-
-    // Use this to send the note to the shooter
-    public void sendNoteToShooter() {
-
-    }
-
-    @Override
-    public void periodic() {
-        // SmartDashboard.putNumber("Transit Ultrasonic", transitUltrasonic.getValue());
     }
 
     /**
@@ -94,21 +81,15 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
         transitMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 
-    public void consumeTransitInput(boolean run) {
-        if (run) {
+    public Command run() {
+        return Commands.runEnd(() -> {
             runTransit();
-        } else {
+        }, () -> {
             stopTransit();
-        }
+        }, this).withName("Run Transit");
     }
 
-    public void consumeTransitInput(boolean run, boolean reverse) {
-        if (run) {
-            runTransit();
-        } else if (reverse) {
-            runTransitReverse();
-        } else {
-            stopTransit();
-        }
+    public Command runUntilSwitch() {
+        return run().until(this::readLimitSwitch);
     }
 }

@@ -4,10 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.StateMachineCommand;
-import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
@@ -22,6 +21,8 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -104,7 +105,8 @@ public class RobotContainer {
         }
 
         m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
-        climber.setDefaultCommand(new ClimberCommand(climber, m_operatorController.getHID()));
+        climber.setDefaultCommand(
+                climber.moveClimberJoysticks(m_operatorController::getLeftY, m_operatorController::getRightY));
         // elevator.setDefaultCommand(new ElevatorTestCommand(elevator,
         // m_operatorController.getHID()));
     }
@@ -134,7 +136,7 @@ public class RobotContainer {
         m_driverTeleController.x().whileTrue(new XModeCommand(m_robotDrive));
 
         m_operatorTeleController.x().whileTrue(intake.run());
-        m_operatorTeleController.y().whileTrue(new TransitCommand(transit).alongWith(intake.run()));
+        m_operatorTeleController.y().whileTrue(transit.run().alongWith(intake.run()));
         m_operatorTeleController.leftTrigger().whileTrue(shooter.speaker());
         m_operatorTeleController.leftBumper().whileTrue(elevator.amp());
         m_operatorTeleController.rightBumper().whileTrue(shooter.amp());
@@ -151,6 +153,18 @@ public class RobotContainer {
         m_testController.a().whileTrue(elevator.test(() -> -m_testController.controller.getRightY()));
         m_testController.povDown().whileTrue(shooter.slow());
         m_testController.povUp().whileTrue(shooter.shoot());
+
+        // If one trigger is pressed, move the climber. If both are pressed, don't move
+        BooleanSupplier onlyOneTrigger = () -> m_testController.controller.getLeftTriggerAxis() > 0
+                ^ m_testController.controller.getRightTriggerAxis() > 0;
+        DoubleSupplier climberOutput = () -> onlyOneTrigger.getAsBoolean()
+                ? (m_testController.controller.getRightTriggerAxis()
+                        - m_testController.controller.getLeftTriggerAxis()) * ClimberConstants.kClimberManualSpeed.get()
+                : 0;
+        m_testController.leftBumper().whileTrue(climber.moveLeftClimber(climberOutput));
+        m_testController.rightBumper().whileTrue(climber.moveRightClimber(climberOutput));
+
+        m_testController.x().whileTrue(transit.run());
     }
 
     /**

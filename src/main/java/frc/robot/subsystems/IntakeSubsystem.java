@@ -105,33 +105,25 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         return run(false);
     }
 
-    public class IntakeRunCommand extends Command {
-        boolean reverse;
-
-        public IntakeRunCommand(boolean reverse) {
-            addRequirements(IntakeSubsystem.this);
-        }
-
-        @Override
-        public void execute() {
-            double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
-                    IntakeConstants.kIntakeManualSpeed.get());
-            runIntake(reverse ? -output : output);
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            runIntake(0);
-        }
-
-        @Override
-        public boolean isFinished() {
-            return false;
-        }
-    }
-
     public Command run(boolean reverse) {
-        return new IntakeRunCommand(reverse);
+        return new Command() {
+            {
+                addRequirements(IntakeSubsystem.this);
+                setName("Intake Command");
+            }
+
+            @Override
+            public void execute() {
+                double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
+                        IntakeConstants.kIntakeManualSpeed.get());
+                runIntake(reverse ? -output : output);
+            }
+
+            @Override
+            public void end(boolean interrupted) {
+                runIntake(0);
+            }
+        };
     }
 
     // Functional Command Variation

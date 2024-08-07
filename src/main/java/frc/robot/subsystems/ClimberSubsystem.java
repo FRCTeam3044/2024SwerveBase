@@ -1,13 +1,19 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlFrame;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
     TalonSRX leftClimberMotor = new TalonSRX(CANConstants.kClimberLeftClimberMotorPort);
@@ -53,17 +59,47 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     // contorls left arm
-    public void leftArm(double moveLeftMotorPower) {
+    private void leftArm(double moveLeftMotorPower) {
         leftClimberMotor.set(TalonSRXControlMode.PercentOutput, moveLeftMotorPower);
     }
 
     // controls right arm
-    public void rightArm(double moveRightMotorPower) {
+    private void rightArm(double moveRightMotorPower) {
         rightClimberMotor.set(TalonSRXControlMode.PercentOutput, moveRightMotorPower);
     }
 
-    public void consumeClimberInput(double leftPow, double rightPow) {
-        leftArm(leftPow);
-        rightArm(rightPow);
+    public Command moveClimber(DoubleSupplier leftMotorPower, DoubleSupplier rightMotorPower) {
+        return Commands.runEnd(() -> {
+            leftArm(leftMotorPower.getAsDouble());
+            rightArm(rightMotorPower.getAsDouble());
+        }, () -> {
+            leftArm(0);
+            rightArm(0);
+        }, this).withName("Move Climber");
+    }
+
+    public Command moveLeftClimber(DoubleSupplier power) {
+        return Commands.runEnd(() -> {
+            leftArm(power.getAsDouble());
+        }, () -> {
+            leftArm(0);
+        }, this).withName("Move Left Climber");
+    }
+
+    public Command moveRightClimber(DoubleSupplier power) {
+        return Commands.runEnd(() -> {
+            rightArm(power.getAsDouble());
+        }, () -> {
+            rightArm(0);
+        }, this).withName("Move Right Climber");
+    }
+
+    public Command moveClimberJoysticks(DoubleSupplier leftJoystick, DoubleSupplier rightJoystick) {
+        DoubleSupplier rightStick = () -> -MathUtil.applyDeadband(rightJoystick.getAsDouble(),
+                ClimberConstants.kClimberControlDeadband.get()) * ClimberConstants.kClimberManualSpeed.get();
+        DoubleSupplier leftStick = () -> -MathUtil.applyDeadband(leftJoystick.getAsDouble(),
+                ClimberConstants.kClimberControlDeadband.get()) * ClimberConstants.kClimberManualSpeed.get();
+
+        return moveClimber(leftStick, rightStick);
     }
 }

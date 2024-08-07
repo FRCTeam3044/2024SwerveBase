@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.TransitCommands.TransitCommand;
 import frc.robot.commands.drive.GoToNoteCommand;
 import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
@@ -240,8 +239,8 @@ public class StateMachine extends SubsystemBase {
     public void reset() {
         currentState = State.NO_NOTE;
 
-        Command ejectNoteCommand = Commands.deadline(new WaitCommand(StateMachineConstants.kEjectTime.get()),
-                m_shooterSubsystem.slow(), new TransitCommand(m_transitSubsystem));
+        Command ejectNoteCommand = Commands.deadline(Commands.waitSeconds(StateMachineConstants.kEjectTime.get()),
+                m_shooterSubsystem.slow(), m_transitSubsystem.run());
         ejectNoteCommand.schedule();
         updateDesiredCommand();
     }

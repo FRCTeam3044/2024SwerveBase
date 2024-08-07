@@ -25,13 +25,11 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.Constants.TransitConstants;
+import frc.robot.commands.drive.DriveTestCommand;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
-import frc.robot.commands.test.ClimberTestCommand;
-import frc.robot.commands.test.DriveTestCommand;
-import frc.robot.commands.test.TransitTestCommand;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
@@ -231,12 +229,6 @@ public class Robot extends LoggedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        Command climberTestCommand = new ClimberTestCommand(RobotContainer.climber,
-                RobotContainer.m_driverController.getHID());
-        climberTestCommand.schedule();
-        Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
-                RobotContainer.m_driverController.getHID());
-        transitTestCommand.schedule();
         Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
                 RobotContainer.m_driverController);
         driveTestCommand.schedule();

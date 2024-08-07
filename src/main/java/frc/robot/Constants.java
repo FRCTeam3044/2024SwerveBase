@@ -334,6 +334,9 @@ public final class Constants {
                 public static final ConfigurableParameter<Double> kClimberManualSpeed = new ConfigurableParameter<Double>(
                                 1.0,
                                 "Climber Manual Control Speed");
+                public static final ConfigurableParameter<Double> kClimberControlDeadband = new ConfigurableParameter<Double>(
+                                0.5,
+                                "Climber Control Deadband");
         }
 
         public static final class TransitConstants {
