@@ -50,6 +50,8 @@ import me.nabdev.pathfinding.structures.Path;
 import me.nabdev.pathfinding.structures.Vector;
 import me.nabdev.pathfinding.structures.Vertex;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -526,5 +528,9 @@ public class DriveSubsystem extends SubsystemBase {
         angle.set(Math.toDegrees(m_simYaw));
 
         REVPhysicsSim.getInstance().run();
+    }
+
+    public Command setXMode() {
+        return Commands.run(this::setX, this);
     }
 }

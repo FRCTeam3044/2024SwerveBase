@@ -10,7 +10,6 @@ import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.commands.drive.DriveAndTrackPointCommand;
 import frc.robot.commands.drive.ManualDriveCommand;
-import frc.robot.commands.drive.XModeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -133,7 +132,7 @@ public class RobotContainer {
                 .whileTrue(autoAimAndAlignCommand.onlyIf(() -> (!m_operatorController.getHID().getAButton())));
         // When the menu button is pressed*
         m_driverTeleController.start().onTrue(new StateMachineResetCommand(stateMachine));
-        m_driverTeleController.x().whileTrue(new XModeCommand(m_robotDrive));
+        m_driverTeleController.x().whileTrue(m_robotDrive.setXMode());
 
         m_operatorTeleController.x().whileTrue(intake.run());
         m_operatorTeleController.y().whileTrue(transit.run().alongWith(intake.run()));
