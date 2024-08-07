@@ -111,63 +111,46 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorPivotEncoder.setPositionOffset(positionOffset.get());
     }
 
-    // Shifts the intake, shooter, and transit to the default postion that makes it
-    // easier pick up notes
     public Command intake() {
-        Command intake = Commands.runOnce(() -> {
+        return Commands.runOnce(() -> {
             setAngle(ElevatorConstants.kIntakeAngle.get());
             updatePIDReference();
-        }, this);
-        intake.setName("Elevator Intake Position");
-        return intake;
+        }, this).withName("Elevator Intake Position");
     }
 
-    // Shifts the intake, shooter, and transit to the position used for shooting
-    // into an amp
     public Command amp() {
-        Command amp = Commands.runOnce(() -> {
+        return Commands.runOnce(() -> {
             setAngle(ElevatorConstants.kAmpAngle.get());
             updatePIDReference();
-        }, this);
-        amp.setName("Elevator Amp Position");
-        return amp;
+        }, this).withName("Elevator Amp Position");
     }
 
     public Command subwoofer() {
-        Command subwoofer = Commands.runOnce(() -> {
+        return Commands.runOnce(() -> {
             setAngle(ElevatorConstants.kSubwooferAngle.get());
             updatePIDReference();
-        }, this);
-        subwoofer.setName("Elevator Subwoofer Position");
-        return subwoofer;
+        }, this).withName("Elevator Subwoofer Position");
     }
 
     public Command toAngle(DoubleSupplier angle) {
-        Command toAngle = Commands.run(() -> {
+        return Commands.run(() -> {
             setAngle(angle.getAsDouble());
             updatePIDReference();
-        }, this);
-        toAngle.setName("Elevator To Angle");
-        return toAngle;
+        }, this).withName("Elevator To Angle");
     }
 
     public Command autoAim(DriveSubsystem drive) {
         DoubleSupplier aimTarget = () -> RobotContainer.m_autoAiming.getAngle(drive.distanceToShootingTarget);
-        Command autoAim = toAngle(aimTarget);
-        autoAim.setName("Elevator Auto Aim");
-
-        return autoAim;
+        return toAngle(aimTarget).withName("Elevator Auto Aim");
     }
 
     public Command test(DoubleSupplier input) {
-        Command test = Commands.run(() -> {
+        return Commands.run(() -> {
             double inputVal = MathUtil.applyDeadband(input.getAsDouble(), OIConstants.kDriveDeadband.get())
                     * ElevatorConstants.kElevatorManualSpeed
                             .get();
             elevatorMotorOne.set(inputVal * Math.abs(inputVal));
-        }, this);
-        test.setName("Elevator Test");
-        return test;
+        }, this).withName("Elevator Test");
     }
 
     private void setAngle(double setAngle) {

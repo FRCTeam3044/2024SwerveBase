@@ -91,18 +91,17 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     }
 
     public Command run(boolean reverse) {
-        Command run = new FunctionalCommand(
-                () -> {
+        return new FunctionalCommand(
+                /* Initialize */ () -> {
                     timeSinceStart.restart();
                     isIntakeRunning = true;
-                }, () -> {
+                }, /* Execute */ () -> {
                     double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
                             IntakeConstants.kIntakeManualSpeed.get());
                     runIntake(reverse ? -output : output);
                 },
-                (interrupted) -> runIntake(0), () -> false, this);
-        run.setName("Intake");
-        return run;
+                /* End */ (interrupted) -> runIntake(0), /* IsFinished */ () -> false, this)
+                .withName("runIntake");
     }
 
     /**
