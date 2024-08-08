@@ -170,32 +170,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Command Factories
-    public Command intake() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kIntakeAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Intake Position");
-    }
-
-    public Command amp() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kAmpAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Amp Position");
-    }
-
-    public Command subwoofer() {
-        return Commands.runOnce(() -> {
-            setAngle(ElevatorConstants.kSubwooferAngle.get());
-            updatePIDReference();
-        }, this).withName("Elevator Subwoofer Position");
-    }
-
     public Command toAngle(DoubleSupplier angle) {
         return Commands.run(() -> {
             setAngle(angle.getAsDouble());
             updatePIDReference();
         }, this).withName("Elevator To Angle");
+    }
+
+    public Command intake() {
+        return toAngle(ElevatorConstants.kIntakeAngle::get).withName("Elevator Intake Position");
+    }
+
+    public Command amp() {
+        return toAngle(ElevatorConstants.kAmpAngle::get).withName("Elevator Amp Position");
+    }
+
+    public Command subwoofer() {
+        return toAngle(ElevatorConstants.kSubwooferAngle::get).withName("Elevator Subwoofer Position");
     }
 
     public Command autoAim(DriveSubsystem drive) {
