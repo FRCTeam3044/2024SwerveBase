@@ -233,7 +233,7 @@ public class Robot extends LoggedRobot {
         // The final parameter is to stop the robot from turning while other commands
         // are reading the joysticks in test mode
         RobotContainer.m_robotDrive.test(controller.controller::getLeftX, controller.controller::getLeftY,
-                controller.controller::getRightX, controller.a().or(controller.y()).negate()::getAsBoolean);
+                controller.controller::getRightX, controller.a().or(controller.y())::getAsBoolean).schedule();
 
     }
 

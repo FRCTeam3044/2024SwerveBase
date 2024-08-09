@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -113,7 +114,7 @@ public class DriveSubsystem extends SubsystemBase {
             "Slow Speed Percent");
 
     public DoubleSupplier allianceInput = () -> (DriverStation.getAlliance().isPresent()
-            && DriverStation.getAlliance().get() == Alliance.Blue) ? -1.0 : 0.0;
+            && DriverStation.getAlliance().get() == Alliance.Blue) ? -1.0 : 1.0;
 
     // Sim values
     private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -635,10 +636,11 @@ public class DriveSubsystem extends SubsystemBase {
         return driveAndTrackPoint(leftX, leftY, () -> target, flipped);
     }
 
-    private Command followTrajectory(Supplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation,
+    private Command followTrajectory(Function<Pose2d, Trajectory> trajectory, Supplier<Rotation2d> desiredRotation,
             DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
         return new Command() {
             private Timer m_timer = new Timer();
+            private Pose2d startPose;
             private HolonomicDriveController m_controller = PathfindingConstants.getDriveController();
 
             {
@@ -648,10 +650,11 @@ public class DriveSubsystem extends SubsystemBase {
 
             public void initialize() {
                 m_timer.restart();
+                startPose = getPose();
             }
 
             public void execute() {
-                Trajectory traj = trajectory.get();
+                Trajectory traj = trajectory.apply(startPose);
                 field.getObject("Path").setTrajectory(traj);
                 double curTime = m_timer.get();
                 State desiredState = traj.sample(curTime);
@@ -664,7 +667,7 @@ public class DriveSubsystem extends SubsystemBase {
             }
 
             public boolean isFinished() {
-                return m_timer.hasElapsed(trajectory.get().getTotalTimeSeconds());
+                return m_timer.hasElapsed(trajectory.apply(startPose).getTotalTimeSeconds());
             }
 
             public void end(boolean interrupted) {
@@ -674,7 +677,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private Command followTrajectory(Supplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation) {
-        return followTrajectory(trajectory, desiredRotation, () -> 0, false);
+        return followTrajectory((p) -> trajectory.get(), desiredRotation, () -> 0, false);
     }
 
     public Command followTrajectory(Trajectory trajectory, Supplier<Rotation2d> desiredRotation) {
@@ -682,11 +685,15 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command followTrajectory(Supplier<Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
-        return followTrajectory(trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+        return followTrajectory((p) -> trajectory.get(), () -> new Rotation2d(), desiredRotationSpeed, true);
     }
 
     public Command followTrajectory(Trajectory trajectory, DoubleSupplier desiredRotationSpeed) {
-        return followTrajectory(() -> trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+        return followTrajectory((p) -> trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+    }
+
+    private Command followTrajectory(Function<Pose2d, Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
+        return followTrajectory(trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
     }
 
     public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Supplier<Rotation2d> rotation, boolean noAvoidance) {
@@ -793,10 +800,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command goToNote(NoteDetection noteDetection, boolean cancelIfNone) {
-        Pose2d originalRobotPose = getPose();
         Supplier<Pose2d> notePose = noteDetection::getClosestNote;
         TargetRotationController controller = new TargetRotationController(notePose, false);
-        Supplier<Trajectory> trajSupplier = () -> this.generateTrajectoryNoAvoidance(originalRobotPose, notePose.get());
+        Function<Pose2d, Trajectory> trajSupplier = (p) -> this.generateTrajectoryNoAvoidance(p, notePose.get());
 
         Command followCommand = followTrajectory(trajSupplier,
                 () -> controller.calculate(getPose(), getChassisSpeeds()));
