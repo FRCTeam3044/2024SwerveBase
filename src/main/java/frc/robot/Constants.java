@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -220,6 +221,12 @@ public final class Constants {
                                 "Rotation FF Timestep");
                 public static final ConfigurableParameter<Double> kRotationFF = new ConfigurableParameter<Double>(1.0,
                                 "Rotation FF");
+
+                public static final HolonomicDriveController getDriveController() {
+                        return new HolonomicDriveController(PathfindingConstants.kPathfindingXController,
+                                        PathfindingConstants.kPathfindingYController,
+                                        PathfindingConstants.kPathfindingThetaController);
+                }
 
         }
 

@@ -3,8 +3,6 @@ package frc.robot.commands.auto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.drive.GoToAndTrackPointCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
@@ -40,14 +38,13 @@ public class GoToShootingZone extends Command {
         Vertex robotPos = new Vertex(m_driveSubsystem.getPose());
         Pose2d trackPoint = AutoTargetUtils.getShootingTarget();
         if (m_target == null && shootingZone.isInside(robotPos)) {
-            next = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
+            next = m_driveSubsystem.trackPoint(trackPoint, true);
         } else {
             if (m_target == null) {
                 m_target = shootingZone.calculateNearestPoint(robotPos).asPose2d();
             }
-            GoToAndTrackPointCommand travelToPoint = new GoToAndTrackPointCommand(m_target, trackPoint,
-                    m_driveSubsystem, true, true);
-            TrackPointCommand trackPointCmd = new TrackPointCommand(m_driveSubsystem, trackPoint, true);
+            Command travelToPoint = m_driveSubsystem.goToAndTrackPoint(m_target, trackPoint, true, true);
+            Command trackPointCmd = m_driveSubsystem.trackPoint(trackPoint, true);
             next = Commands.sequence(travelToPoint, trackPointCmd);
         }
 

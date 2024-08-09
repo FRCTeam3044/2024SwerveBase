@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -16,6 +19,7 @@ import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -32,15 +36,22 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
+import frc.robot.utils.TargetRotationController;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
@@ -100,6 +111,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final ConfigurableParameter<Double> slowPercent = new ConfigurableParameter<Double>(0.7,
             "Slow Speed Percent");
+
+    public DoubleSupplier allianceInput = () -> (DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Blue) ? -1.0 : 0.0;
 
     // Sim values
     private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -260,7 +274,7 @@ public class DriveSubsystem extends SubsystemBase {
      *                      field.
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+    private void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
         drive(xSpeed, ySpeed, rot, fieldRelative, rateLimit, false, false);
     }
 
@@ -277,7 +291,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @param absoluteRotSpeed If true, rot is interpreted directly as omega radians
      *                         per second.
      */
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
+    private void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
             boolean absoluteRotSpeed, boolean slow) {
         double xSpeedCommanded;
         double ySpeedCommanded;
@@ -351,7 +365,7 @@ public class DriveSubsystem extends SubsystemBase {
     /**
      * Sets the wheels into an X formation to prevent movement.
      */
-    public void setX() {
+    private void setX() {
         m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
         m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
         m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
@@ -363,7 +377,7 @@ public class DriveSubsystem extends SubsystemBase {
      * 
      * @param speeds The desired chassis speeds, ROBOT RELATIVE.
      */
-    public void setDesiredChassisSpeeds(ChassisSpeeds speeds) {
+    private void setDesiredChassisSpeeds(ChassisSpeeds speeds) {
         var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
@@ -375,7 +389,7 @@ public class DriveSubsystem extends SubsystemBase {
      *
      * @param desiredStates The desired SwerveModule states.
      */
-    public void setModuleStates(SwerveModuleState[] desiredStates) {
+    private void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 desiredStates, DriveConstants.kMaxSpeedMetersPerSecond.get());
         m_frontLeft.setDesiredState(desiredStates[0]);
@@ -521,6 +535,20 @@ public class DriveSubsystem extends SubsystemBase {
         return config;
     }
 
+    // Maybe these should be moved to a utility class somewhere?
+    private double sqInput(double input) {
+        return Math.copySign(input * input, input);
+    }
+
+    private DoubleSupplier joystickToSpeed(DoubleSupplier joystick, boolean alliance) {
+        return () -> sqInput(MathUtil.applyDeadband(joystick.getAsDouble(), OIConstants.kDriveDeadband.get()))
+                * (alliance ? allianceInput.getAsDouble() : 1);
+    }
+
+    private DoubleSupplier negate(DoubleSupplier supplier) {
+        return () -> -supplier.getAsDouble();
+    }
+
     @Override
     public void simulationPeriodic() {
         ChassisSpeeds chassisSpeed = DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
@@ -531,6 +559,250 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command setXMode() {
-        return Commands.run(this::setX, this);
+        return Commands.run(this::setX, this).withName("X Mode");
+    }
+
+    public Command drive(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier rot, boolean fieldRelative,
+            boolean rateLimit, boolean absoluteRotSpeed, BooleanSupplier slow) {
+        return Commands.run(() -> drive(xSpeed.getAsDouble(), ySpeed.getAsDouble(), rot.getAsDouble(), fieldRelative,
+                rateLimit, absoluteRotSpeed, slow.getAsBoolean()), this).withName("Drive");
+    }
+
+    public Command drive(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier rot, boolean fieldRelative,
+            boolean rateLimit) {
+        return Commands.run(() -> drive(xSpeed.getAsDouble(), ySpeed.getAsDouble(), rot.getAsDouble(), fieldRelative,
+                rateLimit), this).withName("Drive");
+    }
+
+    public Command manualDrive(DoubleSupplier leftX, DoubleSupplier leftY, DoubleSupplier rightX,
+            BooleanSupplier slow) {
+        DoubleSupplier inputX = joystickToSpeed(leftX, true);
+        DoubleSupplier inputY = joystickToSpeed(leftY, true);
+        DoubleSupplier inputRot = negate(joystickToSpeed(rightX, true));
+
+        if (RobotBase.isSimulation()) {
+            return drive(inputX, negate(inputY), inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get(), false, slow).withName("Manual Drive");
+        } else {
+            return drive(inputY, inputX, inputRot, DriveConstants.kFieldRelative.get(),
+                    DriveConstants.kRateLimit.get(), false, slow).withName("Manual Drive");
+        }
+    }
+
+    public Command test(DoubleSupplier leftX, DoubleSupplier leftY, DoubleSupplier rightX,
+            BooleanSupplier cancelInput) {
+        DoubleSupplier inputX = negate(joystickToSpeed(leftX, false));
+        DoubleSupplier inputY = negate(joystickToSpeed(leftY, false));
+        DoubleSupplier inputRot = () -> cancelInput.getAsBoolean() ? 0
+                : negate(joystickToSpeed(rightX, false)).getAsDouble();
+
+        return drive(inputY, inputX, inputRot, false, DriveConstants.kRateLimit.get());
+    }
+
+    public Command trackPoint(DoubleSupplier xSpeed, DoubleSupplier ySpeed, Supplier<Pose2d> target, boolean flipped) {
+        TargetRotationController controller = new TargetRotationController(target, flipped);
+
+        DoubleSupplier inputRot = () -> controller.calculate(getPose(), getChassisSpeeds());
+        return drive(xSpeed, ySpeed, inputRot, DriveConstants.kFieldRelative.get(), DriveConstants.kRateLimit.get(),
+                true, () -> false).withName("Track Point");
+    }
+
+    public Command trackPoint(DoubleSupplier xSpeed, DoubleSupplier ySpeed, Pose2d target, boolean flipped) {
+        return trackPoint(xSpeed, ySpeed, () -> target, flipped);
+    }
+
+    public Command trackPoint(Supplier<Pose2d> target, boolean flipped) {
+        return trackPoint(() -> 0, () -> 0, target, flipped);
+    }
+
+    public Command trackPoint(Pose2d target, boolean flipped) {
+        return trackPoint(() -> 0, () -> 0, target, flipped);
+    }
+
+    public Command driveAndTrackPoint(DoubleSupplier leftX, DoubleSupplier leftY, Supplier<Pose2d> target,
+            boolean flipped) {
+        DoubleSupplier inputX = joystickToSpeed(leftX, true);
+        DoubleSupplier inputY = joystickToSpeed(leftY, true);
+
+        if (RobotBase.isSimulation()) {
+            return trackPoint(inputX, negate(inputY), target, flipped).withName("Drive and Track Point");
+        } else {
+            return trackPoint(inputY, inputX, target, flipped).withName("Drive and Track Point");
+        }
+    }
+
+    public Command driveAndTrackPoint(DoubleSupplier leftX, DoubleSupplier leftY, Pose2d target, boolean flipped) {
+        return driveAndTrackPoint(leftX, leftY, () -> target, flipped);
+    }
+
+    private Command followTrajectory(Supplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation,
+            DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
+        return new Command() {
+            private Timer m_timer = new Timer();
+            private HolonomicDriveController m_controller = PathfindingConstants.getDriveController();
+
+            {
+                addRequirements(DriveSubsystem.this);
+                setName("Follow Trajectory");
+            }
+
+            public void initialize() {
+                m_timer.restart();
+            }
+
+            public void execute() {
+                Trajectory traj = trajectory.get();
+                field.getObject("Path").setTrajectory(traj);
+                double curTime = m_timer.get();
+                State desiredState = traj.sample(curTime);
+                ChassisSpeeds targetChassisSpeeds = m_controller.calculate(getPose(), desiredState,
+                        desiredRotation.get());
+                if (useRotSpeed) {
+                    targetChassisSpeeds.omegaRadiansPerSecond = desiredRotationSpeed.getAsDouble();
+                }
+                setDesiredChassisSpeeds(targetChassisSpeeds);
+            }
+
+            public boolean isFinished() {
+                return m_timer.hasElapsed(trajectory.get().getTotalTimeSeconds());
+            }
+
+            public void end(boolean interrupted) {
+                m_timer.stop();
+            }
+        };
+    }
+
+    private Command followTrajectory(Supplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation) {
+        return followTrajectory(trajectory, desiredRotation, () -> 0, false);
+    }
+
+    public Command followTrajectory(Trajectory trajectory, Supplier<Rotation2d> desiredRotation) {
+        return followTrajectory(() -> trajectory, desiredRotation);
+    }
+
+    public Command followTrajectory(Supplier<Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
+        return followTrajectory(trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+    }
+
+    public Command followTrajectory(Trajectory trajectory, DoubleSupplier desiredRotationSpeed) {
+        return followTrajectory(() -> trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+    }
+
+    public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Supplier<Rotation2d> rotation, boolean noAvoidance) {
+        try {
+            Trajectory trajectory;
+            if (noAvoidance) {
+                trajectory = generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
+            } else {
+                trajectory = generateTrajectory(waypoints);
+            }
+            return followTrajectory(trajectory, rotation).withName("Go To Point W/ Rot");
+        } catch (ImpossiblePathException e) {
+            DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                    + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
+                    + " waypoints.", e.getStackTrace());
+            return Commands.none().withName("Failed Go To Point W/ Rot");
+        }
+    }
+
+    public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Supplier<Rotation2d> rotation) {
+        return goToPointWithRot(waypoints, rotation, false);
+    }
+
+    public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Rotation2d rotation) {
+        return goToPointWithRot(waypoints, () -> rotation);
+    }
+
+    public Command goToPointWithRot(Pose2d target, Supplier<Rotation2d> rotation) {
+        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        waypoints.add(target);
+        return goToPointWithRot(waypoints, rotation);
+    }
+
+    public Command goToPointWithRot(Pose2d target, Rotation2d rotation) {
+        return goToPointWithRot(target, () -> rotation);
+    }
+
+    public Command goToPointWithRotSpeed(ArrayList<Pose2d> waypoints, DoubleSupplier rotationSpeed,
+            boolean noAvoidance) {
+        try {
+            Trajectory trajectory;
+            if (noAvoidance) {
+                trajectory = generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
+            } else {
+                trajectory = generateTrajectory(waypoints);
+            }
+            return followTrajectory(trajectory, rotationSpeed).withName("Go To Point W/ Rot Speed");
+        } catch (ImpossiblePathException e) {
+            DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                    + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
+                    + " waypoints.", e.getStackTrace());
+            return Commands.none().withName("Failed Go To Point W/ Rot Speed");
+        }
+    }
+
+    public Command goToPointWithRotSpeed(ArrayList<Pose2d> waypoints, DoubleSupplier rotationSpeed) {
+        return goToPointWithRotSpeed(waypoints, rotationSpeed, false);
+    }
+
+    public Command goToAndTrackPoint(ArrayList<Pose2d> waypoints, Supplier<Pose2d> track, boolean flipped,
+            boolean noAvoidance) {
+        TargetRotationController controller = new TargetRotationController(track, flipped);
+
+        DoubleSupplier inputRot = () -> controller.calculate(getPose(), getChassisSpeeds());
+
+        return goToPointWithRotSpeed(waypoints, inputRot).withName("Go To and Track Point");
+    }
+
+    public Command goToAndTrackPoint(ArrayList<Pose2d> waypoints, Pose2d track, boolean flipped, boolean noAvoidance) {
+        return goToAndTrackPoint(waypoints, () -> track, flipped, noAvoidance);
+    }
+
+    public Command goToAndTrackPoint(Pose2d target, Pose2d track, boolean flipped, boolean noAvoidance) {
+        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        waypoints.add(target);
+        return goToAndTrackPoint(waypoints, () -> track, flipped, noAvoidance);
+    }
+
+    public Command goToAndTrackPoint(ArrayList<Pose2d> waypoints, Supplier<Pose2d> track, boolean flipped) {
+        return goToAndTrackPoint(waypoints, track, flipped, false);
+    }
+
+    public Command goToPointDriverRot(DoubleSupplier joystick) {
+        DoubleSupplier targetRotSpeedSupplier = () -> rotSpeedFromJoystick(
+                joystickToSpeed(joystick, true).getAsDouble(), true);
+        return goToPointWithRotSpeed(new ArrayList<Pose2d>(), targetRotSpeedSupplier)
+                .withName("Go To Point Driver Rot");
+    }
+
+    public Command goToNote(NoteDetection noteDetection, Pose2d targetRegion, double regionRadius,
+            boolean cancelIfNone) {
+        Pose2d originalRobotPose = getPose();
+        Supplier<Pose2d> notePose = noteDetection::getClosestNoteToRegion;
+        TargetRotationController controller = new TargetRotationController(notePose, false);
+        Supplier<Trajectory> trajSupplier = () -> this.generateTrajectoryNoAvoidance(originalRobotPose, notePose.get());
+
+        Command followCommand = Commands.runOnce(() -> noteDetection.setRegion(targetRegion, regionRadius))
+                .andThen(followTrajectory(trajSupplier,
+                        () -> controller.calculate(getPose(), getChassisSpeeds())));
+        if (cancelIfNone) {
+            return followCommand.onlyIf(() -> noteDetection.hasNoteInRegion);
+        }
+        return followCommand;
+    }
+
+    public Command goToNote(NoteDetection noteDetection, boolean cancelIfNone) {
+        Pose2d originalRobotPose = getPose();
+        Supplier<Pose2d> notePose = noteDetection::getClosestNote;
+        TargetRotationController controller = new TargetRotationController(notePose, false);
+        Supplier<Trajectory> trajSupplier = () -> this.generateTrajectoryNoAvoidance(originalRobotPose, notePose.get());
+
+        Command followCommand = followTrajectory(trajSupplier,
+                () -> controller.calculate(getPose(), getChassisSpeeds()));
+        if (cancelIfNone) {
+            return followCommand.onlyIf(() -> noteDetection.hasNote);
+        }
+        return followCommand;
     }
 }

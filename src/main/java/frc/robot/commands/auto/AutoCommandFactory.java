@@ -20,10 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.drive.GoToAndTrackPointCommand;
-import frc.robot.commands.drive.GoToNoteCommand;
-import frc.robot.commands.drive.GoToPointSuppliedRotCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.autos.AutoBoolean;
 import me.nabdev.pathfinding.autos.AutoParser;
@@ -111,9 +107,7 @@ public final class AutoCommandFactory {
     }
 
     public static Command alignRobotToShoot(JSONObject parameters) {
-        TrackPointCommand trackPointCmd = new TrackPointCommand(RobotContainer.m_robotDrive,
-                AutoTargetUtils.getShootingTarget(), true);
-        return trackPointCmd;
+        return RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils.getShootingTarget(), true);
     }
 
     public static AutoBoolean robotInRadius(JSONObject parameters) {
@@ -154,15 +148,14 @@ public final class AutoCommandFactory {
         return RobotContainer.transit.run();
     }
 
-    public static GoToNoteCommand goToNote(JSONObject parameters) {
-        return new GoToNoteCommand(RobotContainer.m_robotDrive, RobotContainer.m_noteDetection, true);
+    public static Command goToNote(JSONObject parameters) {
+        return RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection, true);
     }
 
-    public static GoToNoteCommand goToNoteInArea(JSONObject parameters) {
+    public static Command goToNoteInArea(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("regionX"), parameters.getDouble("regionY"));
         double targetRadius = parameters.getDouble("regionRadius");
-        return new GoToNoteCommand(RobotContainer.m_robotDrive, RobotContainer.m_noteDetection, target, targetRadius,
-                false);
+        return RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection, target, targetRadius, false);
     }
 
     public static WaitForNoteCommand waitForNote(JSONObject parameters) {
@@ -179,13 +172,13 @@ public final class AutoCommandFactory {
         return new WaitForNoteCommand(RobotContainer.m_noteDetection, target, targetRadius, false);
     }
 
-    public static GoToPointSuppliedRotCommand goToPointConstantRot(JSONObject parameters) {
+    public static Command goToPointConstantRot(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("targetX"), parameters.getDouble("targetY"));
-        return new GoToPointSuppliedRotCommand(target, RobotContainer.m_robotDrive,
+        return RobotContainer.m_robotDrive.goToPointWithRot(target,
                 Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
     }
 
-    public static GoToPointSuppliedRotCommand goToPointsConstantRot(JSONObject parameters) {
+    public static Command goToPointsConstantRot(JSONObject parameters) {
         JSONArray waypoints = parameters.getJSONArray("waypoints");
         ArrayList<Pose2d> targets = new ArrayList<Pose2d>();
         for (int i = 0; i < waypoints.length(); i++) {
@@ -193,11 +186,11 @@ public final class AutoCommandFactory {
             Pose2d waypointPose = getAllianceLocation(waypoint.getDouble("x"), waypoint.getDouble("y"));
             targets.add(waypointPose);
         }
-        return new GoToPointSuppliedRotCommand(targets, RobotContainer.m_robotDrive,
+        return RobotContainer.m_robotDrive.goToPointWithRot(targets,
                 Rotation2d.fromDegrees(parameters.getDouble("rotDegrees")));
     }
 
-    public static GoToAndTrackPointCommand goToPointsAndTrack(JSONObject parameters) {
+    public static Command goToPointsAndTrack(JSONObject parameters) {
         JSONArray waypoints = parameters.getJSONArray("waypoints");
         ArrayList<Pose2d> targets = new ArrayList<Pose2d>();
         for (int i = 0; i < waypoints.length(); i++) {
@@ -208,14 +201,14 @@ public final class AutoCommandFactory {
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
         boolean flipped = parameters.getBoolean("flipped");
         SmartDashboard.putNumberArray("track target", new double[] { trackTarget.getX(), trackTarget.getY() });
-        return new GoToAndTrackPointCommand(targets, trackTarget, RobotContainer.m_robotDrive, flipped, true);
+        return RobotContainer.m_robotDrive.goToAndTrackPoint(targets, trackTarget, flipped, true);
     }
 
-    public static GoToAndTrackPointCommand goToAndTrackPoint(JSONObject parameters) {
+    public static Command goToAndTrackPoint(JSONObject parameters) {
         Pose2d target = getAllianceLocation(parameters.getDouble("targetX"), parameters.getDouble("targetY"));
         Pose2d trackTarget = getAllianceLocation(parameters.getDouble("trackX"), parameters.getDouble("trackY"));
         boolean flipped = parameters.getBoolean("flipped");
-        return new GoToAndTrackPointCommand(target, trackTarget, RobotContainer.m_robotDrive, flipped, true);
+        return RobotContainer.m_robotDrive.goToAndTrackPoint(target, trackTarget, flipped, true);
     }
 
     public static Command elevatorSetAngleForIntakeCommand(JSONObject parameters) {

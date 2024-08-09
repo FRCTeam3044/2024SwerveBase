@@ -8,13 +8,12 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.StateMachineCommand;
 import frc.robot.commands.auto.AutoCommandFactory;
-import frc.robot.commands.drive.DriveAndTrackPointCommand;
-import frc.robot.commands.drive.ManualDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.sim.SimStateMachine;
 import frc.robot.utils.AutoAiming;
+import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ConditionalXboxController;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.autos.AutoParser;
@@ -33,7 +32,6 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static edu.wpi.first.wpilibj2.command.button.RobotModeTriggers.test;
@@ -103,11 +101,11 @@ public class RobotContainer {
             throw new RuntimeException(e);
         }
 
-        m_robotDrive.setDefaultCommand(new ManualDriveCommand(this, m_robotDrive, m_driverController));
+        m_robotDrive
+                .setDefaultCommand(m_robotDrive.manualDrive(m_driverController::getLeftX, m_driverController::getLeftY,
+                        m_driverController::getRightX, m_driverController.rightTrigger()::getAsBoolean));
         climber.setDefaultCommand(
                 climber.moveClimberJoysticks(m_operatorController::getLeftY, m_operatorController::getRightY));
-        // elevator.setDefaultCommand(new ElevatorTestCommand(elevator,
-        // m_operatorController.getHID()));
     }
 
     /**
@@ -126,8 +124,9 @@ public class RobotContainer {
      */
     private void configureTeleopBindings() {
         // Driver 1
-        Command autoAimAndAlignCommand = Commands.parallel(elevator.autoAim(m_robotDrive),
-                new DriveAndTrackPointCommand(m_robotDrive, m_driverController, true));
+        Command autoAimAndAlignCommand = elevator.autoAim(m_robotDrive).alongWith(m_robotDrive.driveAndTrackPoint(
+                m_driverController::getLeftX, m_driverController::getLeftY, AutoTargetUtils.getShootingTarget(), true));
+
         m_driverTeleController.leftTrigger()
                 .whileTrue(autoAimAndAlignCommand.onlyIf(() -> (!m_operatorController.getHID().getAButton())));
         // When the menu button is pressed*
@@ -164,6 +163,7 @@ public class RobotContainer {
         m_testController.rightBumper().whileTrue(climber.moveRightClimber(climberOutput));
 
         m_testController.x().whileTrue(transit.run());
+
     }
 
     /**

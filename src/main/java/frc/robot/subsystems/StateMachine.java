@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
-import frc.robot.commands.drive.GoToNoteCommand;
-import frc.robot.commands.drive.TrackPointCommand;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.ExtraCommands;
@@ -295,9 +293,8 @@ public class StateMachine extends SubsystemBase {
     }
 
     public Command getPickupNoteCommand() {
-        GoToNoteCommand goToNoteCommand = new GoToNoteCommand(RobotContainer.m_robotDrive,
-                RobotContainer.m_noteDetection, false);
-        return Commands.parallel(goToNoteCommand, m_intakeSubsystem.run(), m_elevatorSubsystem.intake());
+        return Commands.parallel(RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection, false),
+                m_intakeSubsystem.run(), m_elevatorSubsystem.intake());
     }
 
     // private Command getLockinNoteCommand() {
@@ -348,8 +345,6 @@ public class StateMachine extends SubsystemBase {
     }
 
     private Command getShootCommand() {
-        TrackPointCommand trackPointCommand = new TrackPointCommand(m_driveSubsystem,
-                AutoTargetUtils.getShootingTarget(), true);
 
         AtomicBoolean hasShot = new AtomicBoolean(false);
         // Yes this is disgusting, I will brainstorm better ways to do the state machine
@@ -368,7 +363,8 @@ public class StateMachine extends SubsystemBase {
             }
         }, () -> !m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch()) && hasShot.get(),
                 m_transitSubsystem));
-        return Commands.parallel(m_elevatorSubsystem.autoAim(m_driveSubsystem), trackPointCommand, driverShootCommand);
+        return Commands.parallel(m_elevatorSubsystem.autoAim(m_driveSubsystem),
+                m_driveSubsystem.trackPoint(AutoTargetUtils.getShootingTarget(), true), driverShootCommand);
     }
 
     @SuppressWarnings("unused")

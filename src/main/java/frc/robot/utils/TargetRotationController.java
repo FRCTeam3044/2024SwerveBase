@@ -1,5 +1,8 @@
 package frc.robot.utils;
 
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -8,8 +11,8 @@ import frc.robot.Constants.PathfindingConstants;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class TargetRotationController {
-    private double targetX;
-    private double targetY;
+    private DoubleSupplier targetX;
+    private DoubleSupplier targetY;
     private boolean flipped;
 
     private static ConfigurableParameter<Double> minSpeed = new ConfigurableParameter<Double>(0.01,
@@ -18,13 +21,17 @@ public class TargetRotationController {
             "Rot Controller Max Speed Rad/sec");
     private static ConfigurableParameter<Double> minError = new ConfigurableParameter<Double>(0.01,
             "Rot Controller Min Error Radians");
-    private double[] targetPose;
 
-    public TargetRotationController(double targetX, double targetY, boolean flipped) {
+    public TargetRotationController(DoubleSupplier targetX, DoubleSupplier targetY, boolean flipped) {
         this.targetX = targetX;
         this.targetY = targetY;
         this.flipped = flipped;
-        this.targetPose = new double[] { targetX, targetY, 0 };
+    }
+
+    public TargetRotationController(Supplier<Pose2d> target, boolean flipped) {
+        this.targetX = () -> target.get().getX();
+        this.targetY = () -> target.get().getY();
+        this.flipped = flipped;
     }
 
     /*
@@ -51,7 +58,8 @@ public class TargetRotationController {
         double currentRot = position.getRotation().getRadians();
 
         double timestep = PathfindingConstants.kRotationTimestep.get();
-        double targetAngle = Math.atan2(targetY - position.getY(), targetX - position.getX());
+        double targetAngle = Math.atan2(targetY.getAsDouble() - position.getY(),
+                targetX.getAsDouble() - position.getX());
         if (flipped) {
             targetAngle = targetAngle + Math.PI;
             targetAngle = MathUtil.angleModulus(targetAngle);
@@ -65,7 +73,7 @@ public class TargetRotationController {
         currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, position.getRotation());
         double predictedX = position.getX() + (currentSpeeds.vxMetersPerSecond * timestep);
         double predictedY = position.getY() + (currentSpeeds.vyMetersPerSecond * timestep);
-        double predictedRot = Math.atan2(targetY - predictedY, targetX - predictedX);
+        double predictedRot = Math.atan2(targetY.getAsDouble() - predictedY, targetX.getAsDouble() - predictedX);
         if (flipped) {
             predictedRot = predictedRot + Math.PI;
             predictedRot = MathUtil.angleModulus(predictedRot);
@@ -109,25 +117,5 @@ public class TargetRotationController {
             error += 2 * Math.PI;
         }
         return MathUtil.angleModulus(error);
-    }
-
-    /**
-     * Set the target position
-     * 
-     * @param targetX The target X position
-     */
-    public void setTargetX(double targetX) {
-        this.targetX = targetX;
-        this.targetPose[0] = targetX;
-    }
-
-    /**
-     * Set the target position
-     * 
-     * @param targetY The target Y position
-     */
-    public void setTargetY(double targetY) {
-        this.targetY = targetY;
-        this.targetPose[1] = targetY;
     }
 }
