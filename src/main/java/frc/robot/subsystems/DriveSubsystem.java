@@ -749,6 +749,20 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
+    public Command goToPointWithRotSpeed(Supplier<Pose2d> target, DoubleSupplier rotationSpeed) {
+        Supplier<Trajectory> trajectory = () -> {
+            try {
+                return generateTrajectory(target.get());
+            } catch (ImpossiblePathException e) {
+                DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                        + target.get().getTranslation() + ".", e.getStackTrace());
+                e.printStackTrace();
+                return null;
+            }
+        };
+        return followTrajectory(trajectory, rotationSpeed).withName("Go To Point W/ Rot Speed");
+    }
+
     public Command goToPointWithRotSpeed(ArrayList<Pose2d> waypoints, DoubleSupplier rotationSpeed) {
         return goToPointWithRotSpeed(waypoints, rotationSpeed, false);
     }
@@ -774,6 +788,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command goToAndTrackPoint(ArrayList<Pose2d> waypoints, Supplier<Pose2d> track, boolean flipped) {
         return goToAndTrackPoint(waypoints, track, flipped, false);
+    }
+
+    public Command goToAndTrackPoint(Supplier<Pose2d> waypoints, Supplier<Pose2d> track, boolean flipped) {
+        TargetRotationController controller = new TargetRotationController(track, flipped);
+
+        DoubleSupplier inputRot = () -> controller.calculate(getPose(), getChassisSpeeds());
+
+        return goToPointWithRotSpeed(waypoints, inputRot).withName("Go To and Track Point");
     }
 
     public Command goToPointDriverRot(DoubleSupplier joystick) {

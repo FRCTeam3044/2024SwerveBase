@@ -6,8 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.commands.StateMachineCommand;
-import frc.robot.commands.auto.AutoCommandFactory;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -16,7 +16,6 @@ import frc.robot.utils.AutoAiming;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ConditionalXboxController;
 import me.nabdev.oxconfig.ConfigurableParameter;
-import me.nabdev.pathfinding.autos.AutoParser;
 
 import java.io.FileNotFoundException;
 import java.util.function.BooleanSupplier;
@@ -140,6 +139,7 @@ public class RobotContainer {
                 // When the menu button is pressed*
                 m_driverTeleController.start().onTrue(new StateMachineResetCommand(stateMachine));
                 m_driverTeleController.x().whileTrue(m_robotDrive.setXMode());
+                m_driverTeleController.rightTrigger().whileTrue(stateMachineCommand);
 
                 m_operatorTeleController.x().whileTrue(intake.run());
                 m_operatorTeleController.y().whileTrue(transit.run().alongWith(intake.run()));
@@ -181,25 +181,7 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand(String autoName) {
-                // ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-                // waypoints.add(new Pose2d(0, 1, new Rotation2d()));
-                // waypoints.add(new Pose2d(1, 1, new Rotation2d()));
-                // waypoints.add(new Pose2d(1, 0, new Rotation2d()));
-                // waypoints.add(new Pose2d(0, 0, new Rotation2d()));
-                // return new GoToAndTrackPointCommand(new Pose2d(4, 3, new Rotation2d()),
-                // m_robotDrive);
-                try {
-                        AutoCommandFactory.registerCommands();
-                        Command auto = AutoParser.loadAuto(autoName);
-
-                        return auto;
-                } catch (FileNotFoundException e) {
-                        System.out.println("Couldn't find file");
-                        return null;
-                } catch (Exception e) {
-                        e.printStackTrace();
-                        return null;
-                }
+                return AutoFactory.testAuto();
         }
 
 }
