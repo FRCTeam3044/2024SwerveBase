@@ -18,20 +18,22 @@ public class AutoSegments {
         AtomicBoolean hasShot = new AtomicBoolean(false);
 
         triggers.hasNote().whileTrue(AutoCommands.driveToShootingZone()
-                .andThen(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget, true)));
+                .andThen(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget, true))
+                .withName("Get To Shooting Zone and Aim"));
 
         triggers.hasNote().and(triggers.nearLocation(() -> {
             return AutoTargetUtils.getShootingTarget().getTranslation();
-        }, ShooterConstants.kShooterSpinupRange.get())).whileTrue(RobotContainer.shooter.speaker());
+        }, ShooterConstants.kShooterSpinupRange.get()))
+                .whileTrue(RobotContainer.shooter.speaker().withName("Spin Up Shooter"));
 
         triggers.hasNote().and(triggers.readyToShoot())
                 .onTrue(RobotContainer.transit.run().alongWith(Commands.runOnce(() -> {
                     hasShot.set(true);
-                })));
+                })).withName("Auto Shoot"));
 
         triggers.noNote().and(hasShot::get).whileTrue(triggers.end());
 
-        return triggers;
+        return triggers.withName("Shoot Note");
     }
 
     public static Command scoreNote(Translation2d notePos) {
@@ -43,7 +45,8 @@ public class AutoSegments {
                 .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
 
         canPickupNote
-                .onTrue(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate()));
+                .onTrue(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate())
+                        .withName("Auto Pickup Note At"));
 
         triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
                 .whileTrue(triggers.endAfter(0.2));

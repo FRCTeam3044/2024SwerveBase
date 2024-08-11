@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Function;
@@ -667,7 +668,10 @@ public class DriveSubsystem extends SubsystemBase {
             }
 
             public boolean isFinished() {
-                return m_timer.hasElapsed(trajectory.apply(startPose).getTotalTimeSeconds());
+                Trajectory test = trajectory.apply(startPose);
+                double duration = test.getTotalTimeSeconds();
+                System.out.println(m_timer.get() + " / " + duration);
+                return m_timer.hasElapsed(duration);
             }
 
             public void end(boolean interrupted) {
@@ -750,14 +754,21 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command goToPointWithRotSpeed(Supplier<Pose2d> target, DoubleSupplier rotationSpeed) {
+        AtomicReference<Trajectory> cachedTrajectory = new AtomicReference<Trajectory>();
         Supplier<Trajectory> trajectory = () -> {
-            try {
-                return generateTrajectory(target.get());
-            } catch (ImpossiblePathException e) {
-                DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
-                        + target.get().getTranslation() + ".", e.getStackTrace());
-                e.printStackTrace();
-                return null;
+            if (cachedTrajectory.get() == null) {
+                try {
+                    Trajectory test = generateTrajectory(target.get());
+                    cachedTrajectory.set(test);
+                    return test;
+                } catch (ImpossiblePathException e) {
+                    DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                            + target.get().getTranslation() + ".", e.getStackTrace());
+                    e.printStackTrace();
+                    return null;
+                }
+            } else {
+                return cachedTrajectory.get();
             }
         };
         return followTrajectory(trajectory, rotationSpeed).withName("Go To Point W/ Rot Speed");
