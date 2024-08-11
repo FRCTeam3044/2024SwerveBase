@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -14,17 +15,18 @@ import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class AutoTriggers extends AutoSegment {
-    public Trigger nearLocation(Translation2d location, double threshold) {
+    public Trigger nearLocation(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
-        return new Trigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location) < threshold);
+        return new Trigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
     }
 
     public Trigger nearLocation(Translation2d location) {
-        return nearLocation(location, 1);
+        return nearLocation(() -> location, 1);
     }
 
+    // TODO: MAKE THIS REAL!
     public Trigger noteDetectedNear(Translation2d location) {
-        return null;
+        return nearLocation(location);
     }
 
     public Trigger hasNote() {
@@ -33,6 +35,16 @@ public class AutoTriggers extends AutoSegment {
             return curState == State.NOTE_LOADED || curState == State.READY_TO_SHOOT;
         };
         return new Trigger(this.loop, hasNote);
+    }
+
+    public Trigger readyToShoot() {
+        BooleanSupplier readyToShoot = () -> RobotContainer.stateMachine.getState() == State.READY_TO_SHOOT;
+        return new Trigger(this.loop, readyToShoot);
+    }
+
+    public Trigger noNote() {
+        BooleanSupplier readyToShoot = () -> RobotContainer.stateMachine.getState() == State.NO_NOTE;
+        return new Trigger(this.loop, readyToShoot);
     }
 
     public Trigger inShootingZone() {

@@ -3,6 +3,7 @@ package frc.robot.autos;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,11 +31,9 @@ public class AutoCommands {
         return drive.goToAndTrackPoint(targetSupplier, trackPoint, true);
     }
 
-    public static Command aimAndShoot() {
-        return null;
-    }
-
     public static Command pickupNoteAt(Translation2d location) {
-        return null;
+        Command driveToNote = RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection,
+                new Pose2d(location, new Rotation2d()), 0.5, false);
+        return driveToNote.alongWith(RobotContainer.intake.run()).alongWith(RobotContainer.elevator.intake());
     }
 }

@@ -12,7 +12,7 @@ public class AutoFactory {
      * @param filePath The path to the file
      * @return The list of event loops
      */
-    public Command loadAuto(String filePath) {
+    public static Command loadAuto(String filePath) {
         // Loads the file as a json array
 
         // For each element converts it to an AutoSegment (a command)
