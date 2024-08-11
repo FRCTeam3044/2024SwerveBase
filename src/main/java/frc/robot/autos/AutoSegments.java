@@ -14,7 +14,7 @@ import frc.robot.utils.AutoTargetUtils;
 
 public class AutoSegments {
     public static Command shootNote() {
-        AutoTriggers triggers = new AutoTriggers();
+        AutoTriggers triggers = new AutoTriggers("Shoot Note");
         AtomicBoolean hasShot = new AtomicBoolean(false);
 
         triggers.hasNote().whileTrue(AutoCommands.driveToShootingZone()
@@ -29,18 +29,20 @@ public class AutoSegments {
         triggers.hasNote().and(triggers.readyToShoot())
                 .onTrue(RobotContainer.transit.run().alongWith(Commands.runOnce(() -> {
                     hasShot.set(true);
-                })).withName("Auto Shoot"));
+                })).onlyWhile(triggers.hasNote()).withName("Auto Shoot"));
 
         triggers.noNote().and(hasShot::get).whileTrue(triggers.end());
 
-        return triggers.withName("Shoot Note");
+        return triggers;
     }
 
     public static Command scoreNote(Translation2d notePos) {
         Pose2d notePose = new Pose2d(notePos, new Rotation2d());
-        AutoTriggers triggers = new AutoTriggers();
+        AutoTriggers triggers = new AutoTriggers("Score Note");
 
         Trigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
+        canPickupNote.whileTrue(Commands.run(() -> System.out.println("Can pickup note")));
+        canPickupNote.whileFalse(Commands.run(() -> System.out.println("Can't pickup note")));
         triggers.autoEnabled().and(canPickupNote.negate()).and(triggers.hasNote().negate())
                 .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
 
@@ -51,6 +53,6 @@ public class AutoSegments {
         triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
                 .whileTrue(triggers.endAfter(0.2));
 
-        return triggers.raceWith(shootNote()).withName("Score Note");
+        return triggers.raceWith(shootNote());
     }
 }

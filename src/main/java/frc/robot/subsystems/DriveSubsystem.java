@@ -641,6 +641,7 @@ public class DriveSubsystem extends SubsystemBase {
             DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
         return new Command() {
             private Timer m_timer = new Timer();
+            private boolean failed = false;
             private Pose2d startPose;
             private HolonomicDriveController m_controller = PathfindingConstants.getDriveController();
 
@@ -650,12 +651,17 @@ public class DriveSubsystem extends SubsystemBase {
             }
 
             public void initialize() {
+                failed = false;
                 m_timer.restart();
                 startPose = getPose();
             }
 
             public void execute() {
                 Trajectory traj = trajectory.apply(startPose);
+                if (traj == null) {
+                    failed = true;
+                    return;
+                }
                 field.getObject("Path").setTrajectory(traj);
                 double curTime = m_timer.get();
                 State desiredState = traj.sample(curTime);
@@ -668,10 +674,15 @@ public class DriveSubsystem extends SubsystemBase {
             }
 
             public boolean isFinished() {
-                Trajectory test = trajectory.apply(startPose);
-                double duration = test.getTotalTimeSeconds();
-                System.out.println(m_timer.get() + " / " + duration);
-                return m_timer.hasElapsed(duration);
+                if (failed) {
+                    return true;
+                }
+                Trajectory traj = trajectory.apply(startPose);
+                if (traj == null) {
+                    failed = true;
+                    return true;
+                }
+                return m_timer.hasElapsed(traj.getTotalTimeSeconds());
             }
 
             public void end(boolean interrupted) {

@@ -11,8 +11,9 @@ public class AutoSegment extends Command {
     protected EventLoop loop;
     private boolean isFinished = false;
 
-    public AutoSegment() {
+    public AutoSegment(String name) {
         this.loop = new EventLoop();
+        this.setName(name);
     }
 
     @Override

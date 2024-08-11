@@ -1,7 +1,11 @@
 package frc.robot.utils;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
 import me.nabdev.pathfinding.structures.Obstacle;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
@@ -70,7 +74,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SHOOTING_TARGET;
         // }
-        if (Robot.redAlliance) {
+        if (redAlliance()) {
             return RED_SHOOTING_TARGET;
         } else {
             return BLUE_SHOOTING_TARGET;
@@ -90,7 +94,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SHOOTING_ZONE;
         // }
-        if (Robot.redAlliance) {
+        if (redAlliance()) {
             return RED_SHOOTING_ZONE;
         } else {
             return BLUE_SHOOTING_ZONE;
@@ -115,7 +119,7 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SOURCE;
         // }
-        if (Robot.redAlliance) {
+        if (redAlliance()) {
             return RED_SOURCE;
         } else {
             return BLUE_SOURCE;
@@ -140,10 +144,19 @@ public class AutoTargetUtils {
         // } else {
         // return BLUE_SOURCE;
         // }
-        if (Robot.redAlliance) {
+        if (redAlliance()) {
             return RED_SOURCE;
         } else {
             return BLUE_SOURCE;
         }
+    }
+
+    public static boolean redAlliance() {
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+        if (!alliance.isPresent()) {
+            DriverStation.reportWarning("Unkown alliance! Assuming red alliance!", false);
+            return true;
+        }
+        return alliance.get() == Alliance.Red;
     }
 }
