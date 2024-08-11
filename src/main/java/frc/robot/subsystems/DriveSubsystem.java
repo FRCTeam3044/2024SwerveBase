@@ -807,10 +807,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command goToNote(NoteDetection noteDetection, Pose2d targetRegion, double regionRadius,
             boolean cancelIfNone) {
-        Pose2d originalRobotPose = getPose();
         Supplier<Pose2d> notePose = noteDetection::getClosestNoteToRegion;
         TargetRotationController controller = new TargetRotationController(notePose, false);
-        Supplier<Trajectory> trajSupplier = () -> this.generateTrajectoryNoAvoidance(originalRobotPose, notePose.get());
+        Function<Pose2d, Trajectory> trajSupplier = (p) -> this.generateTrajectoryNoAvoidance(p, notePose.get());
 
         Command followCommand = Commands.runOnce(() -> noteDetection.setRegion(targetRegion, regionRadius))
                 .andThen(followTrajectory(trajSupplier,

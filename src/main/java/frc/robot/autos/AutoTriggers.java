@@ -11,13 +11,14 @@ import frc.robot.autos.reusable.AutoSegment;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.StateMachine.State;
 import frc.robot.utils.AutoTargetUtils;
+import frc.robot.utils.BTrigger;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class AutoTriggers extends AutoSegment {
     public Trigger nearLocation(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
-        return new Trigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
+        return new BTrigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
     }
 
     public Trigger nearLocation(Translation2d location) {
@@ -34,17 +35,17 @@ public class AutoTriggers extends AutoSegment {
             State curState = RobotContainer.stateMachine.getState();
             return curState == State.NOTE_LOADED || curState == State.READY_TO_SHOOT;
         };
-        return new Trigger(this.loop, hasNote);
+        return new BTrigger(this.loop, hasNote);
     }
 
     public Trigger readyToShoot() {
         BooleanSupplier readyToShoot = () -> RobotContainer.stateMachine.getState() == State.READY_TO_SHOOT;
-        return new Trigger(this.loop, readyToShoot);
+        return new BTrigger(this.loop, readyToShoot);
     }
 
     public Trigger noNote() {
         BooleanSupplier readyToShoot = () -> RobotContainer.stateMachine.getState() == State.NO_NOTE;
-        return new Trigger(this.loop, readyToShoot);
+        return new BTrigger(this.loop, readyToShoot);
     }
 
     public Trigger inShootingZone() {
@@ -57,6 +58,6 @@ public class AutoTriggers extends AutoSegment {
             }
             return shootingZone.isInside(robotPos);
         };
-        return new Trigger(this.loop, inShootingZone);
+        return new BTrigger(this.loop, inShootingZone);
     }
 }

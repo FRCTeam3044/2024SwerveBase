@@ -42,11 +42,12 @@ public class AutoSegments {
         triggers.autoEnabled().and(canPickupNote.negate()).and(triggers.hasNote().negate())
                 .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
 
-        canPickupNote.onTrue(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate()));
+        canPickupNote
+                .onTrue(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate()));
 
         triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
                 .whileTrue(triggers.endAfter(0.2));
 
-        return triggers.raceWith(shootNote());
+        return triggers.raceWith(shootNote()).withName("Score Note");
     }
 }

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.utils.BTrigger;
 
 public class AutoSegment extends Command {
     protected EventLoop loop;
@@ -33,6 +34,6 @@ public class AutoSegment extends Command {
     }
 
     public Trigger autoEnabled() {
-        return new Trigger(this.loop, DriverStation::isAutonomousEnabled);
+        return new BTrigger(this.loop, DriverStation::isAutonomousEnabled);
     }
 }

@@ -294,7 +294,7 @@ public class StateMachine extends SubsystemBase {
 
     public Command getPickupNoteCommand() {
         return Commands.parallel(RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection, false),
-                m_intakeSubsystem.run(), m_elevatorSubsystem.intake());
+                m_intakeSubsystem.run(), m_elevatorSubsystem.intake()).withName("SM Pickup Note");
     }
 
     // private Command getLockinNoteCommand() {
@@ -362,7 +362,7 @@ public class StateMachine extends SubsystemBase {
                 }
             }
         }, () -> !m_transitLimitDebouncer.calculate(m_transitSubsystem.readLimitSwitch()) && hasShot.get(),
-                m_transitSubsystem));
+                m_transitSubsystem)).withName("SM Shoot");
         return Commands.parallel(m_elevatorSubsystem.autoAim(m_driveSubsystem),
                 m_driveSubsystem.trackPoint(AutoTargetUtils.getShootingTarget(), true), driverShootCommand);
     }

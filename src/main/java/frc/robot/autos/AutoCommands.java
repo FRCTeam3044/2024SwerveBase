@@ -33,7 +33,7 @@ public class AutoCommands {
 
     public static Command pickupNoteAt(Translation2d location) {
         Command driveToNote = RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection,
-                new Pose2d(location, new Rotation2d()), 0.5, false);
+                new Pose2d(location, new Rotation2d()), 0.5, false).withName("Pickup Note At");
         return driveToNote.alongWith(RobotContainer.intake.run()).alongWith(RobotContainer.elevator.intake());
     }
 }
