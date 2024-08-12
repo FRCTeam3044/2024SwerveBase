@@ -13,12 +13,25 @@ public class AutoSegment extends Command {
     protected EventLoop loop;
     private boolean isFinished = false;
     private boolean running = false;
+    private boolean debug;
 
     private HashMap<String, Trigger> debugTriggers = new HashMap<>();
 
-    public AutoSegment(String name) {
+    public AutoSegment(String name, boolean debug) {
         this.loop = new EventLoop();
+        this.debug = debug;
         this.setName(name);
+    }
+
+    public AutoSegment(String name) {
+        this(name, false);
+    }
+
+    @Override
+    public void initialize() {
+        if (debug) {
+            System.out.println("Starting AutoSegment %s".formatted(this.getName()));
+        }
     }
 
     @Override
@@ -39,6 +52,9 @@ public class AutoSegment extends Command {
     @Override
     public void end(boolean interrupted) {
         running = false;
+        if (debug) {
+            System.out.println("Ending AutoSegment %s".formatted(this.getName()));
+        }
     }
 
     public Command end() {

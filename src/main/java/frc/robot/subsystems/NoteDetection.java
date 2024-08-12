@@ -115,14 +115,26 @@ public class NoteDetection extends SubsystemBase {
             notePoses.clear();
             cameraMidpoints.clear();
             if (RobotBase.isSimulation()) {
-                hasNote = true;
-                hasNoteInRegion = true;
-                closestPose = new Pose2d(8.25, 0.76, new Rotation2d());
-                closestPoseToRegion = new Pose2d(8.25, 0.76, new Rotation2d());
+                closestPose = new Pose2d(2.87, 5.55, new Rotation2d());
+                closestPoseToRegion = new Pose2d(2.87, 5.55, new Rotation2d());
                 if (closestPose.getTranslation()
-                        .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
-                    notePoses.add(closestPose);
+                        .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 3) {
+                    hasNote = true;
                     SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
+                } else {
+                    hasNote = false;
+                    SmartDashboard.putNumberArray("Closest note", new double[] {});
+                }
+                if (regionPose != null) {
+                    double d = closestPoseToRegion.getTranslation().getDistance(regionPose.getTranslation());
+                    if (d < regionRadius) {
+                        hasNoteInRegion = true;
+                        SmartDashboard.putNumberArray("Closest note to region", poseToDouble(getClosestNoteToRegion()));
+                    } else {
+                        hasNoteInRegion = false;
+                        SmartDashboard.putNumberArray("Closest note to region", new double[] {});
+                    }
+
                 }
                 return;
             } else {

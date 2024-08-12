@@ -22,7 +22,9 @@ public class AutoFactory {
     }
 
     public static Command testAuto() {
-        return Commands.sequence(AutoSegments.shootNote(), AutoSegments.scoreNote(new Translation2d(2.87, 4.1)))
+        return Commands
+                .sequence(AutoSegments.shootNote(), AutoSegments.scoreNote(new Translation2d(2.87, 4.1)),
+                        AutoSegments.scoreNote(new Translation2d(2.87, 5.55)))
                 .withName("Test Auto");
     }
 }

@@ -3,6 +3,8 @@ package frc.robot.autos;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotContainer;
@@ -19,18 +21,26 @@ public class AutoTriggers extends AutoSegment {
         super(name);
     }
 
+    public AutoTriggers(String name, boolean debug) {
+        super(name, debug);
+    }
+
     public BTrigger nearLocation(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
         return new BTrigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
     }
 
     public BTrigger nearLocation(Translation2d location) {
-        return nearLocation(() -> location, 1);
+        return nearLocation(() -> location, 1.5);
     }
 
     // TODO: MAKE THIS REAL!
     public BTrigger noteDetectedNear(Translation2d location) {
-        return nearLocation(location);
+
+        return new BTrigger(() -> {
+            RobotContainer.m_noteDetection.setRegion(new Pose2d(location, new Rotation2d()), 0.5);
+            return RobotContainer.m_noteDetection.hasNoteInRegion;
+        });
     }
 
     public BTrigger hasNote() {

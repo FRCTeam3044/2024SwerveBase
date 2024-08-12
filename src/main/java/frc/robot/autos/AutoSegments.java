@@ -14,7 +14,7 @@ import frc.robot.utils.BTrigger;
 
 public class AutoSegments {
     public static Command shootNote() {
-        AutoTriggers triggers = new AutoTriggers("Shoot Note");
+        AutoTriggers triggers = new AutoTriggers("Shoot Note", true);
         AtomicBoolean hasShot = new AtomicBoolean(false);
 
         triggers.hasNote().whileTrue(AutoCommands.driveToShootingZone()
@@ -38,7 +38,7 @@ public class AutoSegments {
 
     public static Command scoreNote(Translation2d notePos) {
         Pose2d notePose = new Pose2d(notePos, new Rotation2d());
-        AutoTriggers triggers = new AutoTriggers("Score Note");
+        AutoTriggers triggers = new AutoTriggers("Score Note", true);
 
         BTrigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
         AtomicBoolean targetingNote = new AtomicBoolean(false);

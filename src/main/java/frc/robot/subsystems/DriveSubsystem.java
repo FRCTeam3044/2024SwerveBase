@@ -486,8 +486,6 @@ public class DriveSubsystem extends SubsystemBase {
         // TrajectoryConfig(PathfindingConstants.kMaxSpeedMetersPerSecond.get(),
         // PathfindingConstants.kMaxAccelerationMetersPerSecondSquared.get());
         // return pathfinder.generateTrajectory(start, end, config);
-        long startTime = System.currentTimeMillis();
-        long lastTime = startTime;
         ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
 
         Vertex startV = new Vertex(start);
@@ -501,11 +499,7 @@ public class DriveSubsystem extends SubsystemBase {
         waypoints.add(startTarget);
         waypoints.add(endTarget);
         TrajectoryConfig config = getTrajectoryConfig(end);
-        lastTime = System.currentTimeMillis();
         Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config);
-        System.out.println(
-                "Generate traectory " + ((double) (System.currentTimeMillis() - lastTime)) /
-                        1000);
         return traj;
     }
 
