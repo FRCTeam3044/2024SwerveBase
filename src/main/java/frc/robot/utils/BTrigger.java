@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class BTrigger extends Trigger {
-    private Field m_loopField;
+    public Field m_loopField;
     private Field m_conditionField;
 
     /**
@@ -54,18 +54,11 @@ public class BTrigger extends Trigger {
      * @param trigger the condition to compose with
      * @return A trigger which is active when both component triggers are active.
      */
-    public Trigger and(BooleanSupplier trigger) {
+    public BTrigger and(BooleanSupplier trigger) {
         try {
+            BooleanSupplier thisSupplier = (BooleanSupplier) m_conditionField.get(this);
             return new BTrigger((EventLoop) m_loopField.get(this),
-                    () -> {
-                        try {
-                            return ((BooleanSupplier) m_conditionField.get(this)).getAsBoolean()
-                                    && trigger.getAsBoolean();
-                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                    });
+                    () -> thisSupplier.getAsBoolean() && trigger.getAsBoolean());
         } catch (IllegalAccessException e) {
             System.out.println("Wpilib is terrible.");
             e.printStackTrace();
@@ -79,18 +72,11 @@ public class BTrigger extends Trigger {
      * @param trigger the condition to compose with
      * @return A trigger which is active when either component trigger is active.
      */
-    public Trigger or(BooleanSupplier trigger) {
+    public BTrigger or(BooleanSupplier trigger) {
         try {
+            BooleanSupplier thisSupplier = (BooleanSupplier) m_conditionField.get(this);
             return new BTrigger((EventLoop) m_loopField.get(this),
-                    () -> {
-                        try {
-                            return ((BooleanSupplier) m_conditionField.get(this)).getAsBoolean()
-                                    || trigger.getAsBoolean();
-                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                    });
+                    () -> thisSupplier.getAsBoolean() || trigger.getAsBoolean());
         } catch (IllegalAccessException e) {
             System.out.println("Wpilib is terrible.");
             e.printStackTrace();
@@ -105,17 +91,10 @@ public class BTrigger extends Trigger {
      *
      * @return the negated trigger
      */
-    public Trigger negate() {
+    public BTrigger negate() {
         try {
-            return new BTrigger((EventLoop) m_loopField.get(this),
-                    () -> {
-                        try {
-                            return !((BooleanSupplier) m_conditionField.get(this)).getAsBoolean();
-                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                    });
+            BooleanSupplier thisSupplier = (BooleanSupplier) m_conditionField.get(this);
+            return new BTrigger((EventLoop) m_loopField.get(this), () -> !thisSupplier.getAsBoolean());
         } catch (IllegalAccessException e) {
             System.out.println("Wpilib is terrible.");
             e.printStackTrace();

@@ -7,10 +7,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;
 import frc.robot.utils.AutoTargetUtils;
+import frc.robot.utils.BTrigger;
 
 public class AutoSegments {
     public static Command shootNote() {
@@ -40,10 +40,11 @@ public class AutoSegments {
         Pose2d notePose = new Pose2d(notePos, new Rotation2d());
         AutoTriggers triggers = new AutoTriggers("Score Note");
 
-        Trigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
-        canPickupNote.whileTrue(Commands.run(() -> System.out.println("Can pickup note")));
-        canPickupNote.whileFalse(Commands.run(() -> System.out.println("Can't pickup note")));
-        triggers.autoEnabled().and(canPickupNote.negate()).and(triggers.hasNote().negate())
+        BTrigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
+        triggers.debug("Can Pickup Note", canPickupNote, false);
+        triggers.debug("Started", triggers.started(), false);
+        triggers.debug("Can Pick Up & Started", canPickupNote.and(triggers.started()), false);
+        triggers.started().and(canPickupNote.negate()).and(triggers.noNote())
                 .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
 
         canPickupNote

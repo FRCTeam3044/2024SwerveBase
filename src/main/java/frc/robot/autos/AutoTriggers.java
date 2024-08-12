@@ -47,8 +47,11 @@ public class AutoTriggers extends AutoSegment {
     }
 
     public BTrigger noNote() {
-        BooleanSupplier readyToShoot = () -> RobotContainer.stateMachine.getState() == State.NO_NOTE;
-        return new BTrigger(this.loop, readyToShoot);
+        BooleanSupplier noNote = () -> {
+            State curState = RobotContainer.stateMachine.getState();
+            return curState == State.NO_NOTE || curState == State.TARGETING_NOTE;
+        };
+        return new BTrigger(this.loop, noNote);
     }
 
     public BTrigger inShootingZone() {
