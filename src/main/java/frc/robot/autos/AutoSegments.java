@@ -41,14 +41,13 @@ public class AutoSegments {
         AutoTriggers triggers = new AutoTriggers("Score Note");
 
         BTrigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
-        triggers.debug("Can Pickup Note", canPickupNote, false);
-        triggers.debug("Started", triggers.started(), false);
-        triggers.debug("Can Pick Up & Started", canPickupNote.and(triggers.started()), false);
-        triggers.started().and(canPickupNote.negate()).and(triggers.noNote())
+        AtomicBoolean targetingNote = new AtomicBoolean(false);
+        triggers.started().and(canPickupNote.negate()).and(triggers.noNote()).and(() -> !targetingNote.get())
                 .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
 
         canPickupNote
-                .onTrue(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate())
+                .onTrue(Commands.runOnce(() -> targetingNote.set(true))
+                        .alongWith(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate()))
                         .withName("Auto Pickup Note At"));
 
         triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())

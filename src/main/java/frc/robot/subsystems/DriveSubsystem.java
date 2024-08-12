@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Function;
@@ -51,6 +50,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.AutoTargetUtils;
+import frc.robot.utils.ExtraCommands;
+import frc.robot.utils.MemoizedSupplier;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.TargetRotationController;
@@ -114,8 +115,12 @@ public class DriveSubsystem extends SubsystemBase {
     private final ConfigurableParameter<Double> slowPercent = new ConfigurableParameter<Double>(0.7,
             "Slow Speed Percent");
 
-    public DoubleSupplier allianceInput = () -> (DriverStation.getAlliance().isPresent()
-            && DriverStation.getAlliance().get() == Alliance.Blue) ? -1.0 : 1.0;
+    public DoubleSupplier allianceInput = () -> {
+        if (RobotBase.isSimulation())
+            return 1.0;
+        return (DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == Alliance.Blue) ? -1.0 : 1.0;
+    };
 
     // Sim values
     private int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -188,10 +193,11 @@ public class DriveSubsystem extends SubsystemBase {
 
         SmartDashboard.putData("Field", field);
         SmartDashboard.putNumber("Gyro Raw", getGyroAngleDegrees());
-        if (AutoTargetUtils.getShootingTarget() != null) {
-            Translation2d shootingTarget = AutoTargetUtils.getShootingTarget().getTranslation();
+        Pose2d shootingTarget = AutoTargetUtils.getShootingTarget();
+        if (shootingTarget != null) {
+            Translation2d shootingTargetT = shootingTarget.getTranslation();
             distanceToShootingTarget = distanceToShootingTargetFilter
-                    .calculate(shootingTarget.getDistance(getPose().getTranslation()));
+                    .calculate(shootingTargetT.getDistance(getPose().getTranslation()));
             SmartDashboard.putNumber("Dist To Speaker", distanceToShootingTarget);
         }
 
@@ -637,7 +643,8 @@ public class DriveSubsystem extends SubsystemBase {
         return driveAndTrackPoint(leftX, leftY, () -> target, flipped);
     }
 
-    private Command followTrajectory(Function<Pose2d, Trajectory> trajectory, Supplier<Rotation2d> desiredRotation,
+    private Command followTrajectory(Function<Pose2d, Trajectory> dynamicTrajectory,
+            MemoizedSupplier<Trajectory> trajectory, boolean useDynamic, Supplier<Rotation2d> desiredRotation,
             DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
         return new Command() {
             private Timer m_timer = new Timer();
@@ -654,10 +661,13 @@ public class DriveSubsystem extends SubsystemBase {
                 failed = false;
                 m_timer.restart();
                 startPose = getPose();
+                if (!useDynamic) {
+                    trajectory.clear();
+                }
             }
 
             public void execute() {
-                Trajectory traj = trajectory.apply(startPose);
+                Trajectory traj = getTrajectory();
                 if (traj == null) {
                     failed = true;
                     return;
@@ -677,7 +687,7 @@ public class DriveSubsystem extends SubsystemBase {
                 if (failed) {
                     return true;
                 }
-                Trajectory traj = trajectory.apply(startPose);
+                Trajectory traj = getTrajectory();
                 if (traj == null) {
                     failed = true;
                     return true;
@@ -688,23 +698,44 @@ public class DriveSubsystem extends SubsystemBase {
             public void end(boolean interrupted) {
                 m_timer.stop();
             }
+
+            private Trajectory getTrajectory() {
+                if (useDynamic) {
+                    return dynamicTrajectory.apply(startPose);
+                } else {
+                    return trajectory.get();
+                }
+            }
         };
     }
 
-    private Command followTrajectory(Supplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation) {
-        return followTrajectory((p) -> trajectory.get(), desiredRotation, () -> 0, false);
+    private Command followTrajectory(Function<Pose2d, Trajectory> dynamicTrajectory,
+            Supplier<Rotation2d> desiredRotation,
+            DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
+        return followTrajectory(dynamicTrajectory, MemoizedSupplier.memoize(() -> null), true, desiredRotation,
+                desiredRotationSpeed, useRotSpeed);
+    }
+
+    private Command followTrajectory(MemoizedSupplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation,
+            DoubleSupplier desiredRotationSpeed, boolean useRotSpeed) {
+        return followTrajectory((p) -> null, trajectory, false, desiredRotation, desiredRotationSpeed, useRotSpeed);
+    }
+
+    private Command followTrajectory(MemoizedSupplier<Trajectory> trajectory, Supplier<Rotation2d> desiredRotation) {
+        return followTrajectory(trajectory, desiredRotation, () -> 0, false);
     }
 
     public Command followTrajectory(Trajectory trajectory, Supplier<Rotation2d> desiredRotation) {
-        return followTrajectory(() -> trajectory, desiredRotation);
+        return followTrajectory(MemoizedSupplier.memoize(() -> trajectory), desiredRotation);
     }
 
-    public Command followTrajectory(Supplier<Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
-        return followTrajectory((p) -> trajectory.get(), () -> new Rotation2d(), desiredRotationSpeed, true);
+    public Command followTrajectory(MemoizedSupplier<Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
+        return followTrajectory(trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
     }
 
     public Command followTrajectory(Trajectory trajectory, DoubleSupplier desiredRotationSpeed) {
-        return followTrajectory((p) -> trajectory, () -> new Rotation2d(), desiredRotationSpeed, true);
+        return followTrajectory(MemoizedSupplier.memoize(() -> trajectory), () -> new Rotation2d(),
+                desiredRotationSpeed, true);
     }
 
     private Command followTrajectory(Function<Pose2d, Trajectory> trajectory, DoubleSupplier desiredRotationSpeed) {
@@ -712,20 +743,21 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Supplier<Rotation2d> rotation, boolean noAvoidance) {
-        try {
-            Trajectory trajectory;
-            if (noAvoidance) {
-                trajectory = generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
-            } else {
-                trajectory = generateTrajectory(waypoints);
+        Supplier<Trajectory> trajectory = () -> {
+            try {
+                if (noAvoidance) {
+                    return generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
+                } else {
+                    return generateTrajectory(waypoints);
+                }
+            } catch (ImpossiblePathException e) {
+                DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                        + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
+                        + " waypoints.", e.getStackTrace());
+                return null;
             }
-            return followTrajectory(trajectory, rotation).withName("Go To Point W/ Rot");
-        } catch (ImpossiblePathException e) {
-            DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
-                    + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
-                    + " waypoints.", e.getStackTrace());
-            return Commands.none().withName("Failed Go To Point W/ Rot");
-        }
+        };
+        return followTrajectory(MemoizedSupplier.memoize(trajectory), rotation).withName("Go To Point W/ Rot");
     }
 
     public Command goToPointWithRot(ArrayList<Pose2d> waypoints, Supplier<Rotation2d> rotation) {
@@ -748,41 +780,38 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command goToPointWithRotSpeed(ArrayList<Pose2d> waypoints, DoubleSupplier rotationSpeed,
             boolean noAvoidance) {
-        try {
-            Trajectory trajectory;
-            if (noAvoidance) {
-                trajectory = generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
-            } else {
-                trajectory = generateTrajectory(waypoints);
+        Supplier<Trajectory> trajectory = () -> {
+            try {
+                if (noAvoidance) {
+                    return generateTrajectoryNoAvoidance(getPose(), waypoints.get(waypoints.size() - 1));
+                } else {
+                    return generateTrajectory(waypoints);
+                }
+            } catch (ImpossiblePathException e) {
+                DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                        + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
+                        + " waypoints.", e.getStackTrace());
+                return null;
             }
-            return followTrajectory(trajectory, rotationSpeed).withName("Go To Point W/ Rot Speed");
-        } catch (ImpossiblePathException e) {
-            DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
-                    + waypoints.get(waypoints.size() - 1).getTranslation() + " with " + (waypoints.size() - 1)
-                    + " waypoints.", e.getStackTrace());
-            return Commands.none().withName("Failed Go To Point W/ Rot Speed");
-        }
+        };
+        return followTrajectory(MemoizedSupplier.memoize(trajectory), rotationSpeed)
+                .withName("Go To Point W/ Rot Speed");
     }
 
     public Command goToPointWithRotSpeed(Supplier<Pose2d> target, DoubleSupplier rotationSpeed) {
-        AtomicReference<Trajectory> cachedTrajectory = new AtomicReference<Trajectory>();
         Supplier<Trajectory> trajectory = () -> {
-            if (cachedTrajectory.get() == null) {
-                try {
-                    Trajectory test = generateTrajectory(target.get());
-                    cachedTrajectory.set(test);
-                    return test;
-                } catch (ImpossiblePathException e) {
-                    DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
-                            + target.get().getTranslation() + ".", e.getStackTrace());
-                    e.printStackTrace();
-                    return null;
-                }
-            } else {
-                return cachedTrajectory.get();
+            try {
+                Trajectory test = generateTrajectory(target.get());
+                return test;
+            } catch (ImpossiblePathException e) {
+                DriverStation.reportWarning("Failed to generate path from " + getPose().getTranslation() + " to "
+                        + target.get().getTranslation() + ".", e.getStackTrace());
+                e.printStackTrace();
+                return null;
             }
         };
-        return followTrajectory(trajectory, rotationSpeed).withName("Go To Point W/ Rot Speed");
+        return followTrajectory(MemoizedSupplier.memoize(trajectory), rotationSpeed)
+                .withName("Go To Point W/ Rot Speed");
     }
 
     public Command goToPointWithRotSpeed(ArrayList<Pose2d> waypoints, DoubleSupplier rotationSpeed) {

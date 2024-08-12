@@ -23,6 +23,9 @@ public class AutoCommands {
                 return null;
             }
             Vertex robotPos = new Vertex(drive.getPose());
+            if (shootingZone.isInside(robotPos)) {
+                return robotPos.asPose2d();
+            }
             return shootingZone.calculateNearestPoint(robotPos).asPose2d();
         };
 
