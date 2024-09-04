@@ -13,46 +13,52 @@ import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.BTrigger;
 
 public class AutoSegments {
-    public static Command shootNote() {
-        AutoTriggers triggers = new AutoTriggers("Shoot Note", true);
-        AtomicBoolean hasShot = new AtomicBoolean(false);
+        public static Command shootNote() {
+                AutoTriggers triggers = new AutoTriggers("Shoot Note", true);
+                AtomicBoolean hasShot = new AtomicBoolean(false);
 
-        triggers.hasNote().whileTrue(AutoCommands.driveToShootingZone()
-                .andThen(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget, true))
-                .withName("Get To Shooting Zone and Aim"));
+                // triggers.hasNote().whileTrue(AutoCommands.driveToShootingZone()
+                // .andThen(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
+                // true))
+                // .withName("Get To Shooting Zone and Aim"));
 
-        triggers.hasNote().and(triggers.nearLocation(() -> {
-            return AutoTargetUtils.getShootingTarget().getTranslation();
-        }, ShooterConstants.kShooterSpinupRange.get()))
-                .whileTrue(RobotContainer.shooter.speaker().withName("Spin Up Shooter"));
+                // triggers.hasNote().and(triggers.nearLocation(() -> {
+                // return AutoTargetUtils.getShootingTarget().getTranslation();
+                // }, ShooterConstants.kShooterSpinupRange.get()))
+                // .whileTrue(RobotContainer.shooter.speaker().withName("Spin Up Shooter"));
 
-        triggers.hasNote().and(triggers.readyToShoot())
-                .onTrue(RobotContainer.transit.run().alongWith(Commands.runOnce(() -> {
-                    hasShot.set(true);
-                })).onlyWhile(triggers.hasNote()).withName("Auto Shoot"));
+                // triggers.hasNote().and(triggers.readyToShoot())
+                // .onTrue(RobotContainer.transit.run().alongWith(Commands.runOnce(() -> {
+                // hasShot.set(true);
+                // })).onlyWhile(triggers.hasNote()).withName("Auto Shoot"));
 
-        triggers.noNote().and(hasShot::get).whileTrue(triggers.end());
+                // triggers.noNote().and(hasShot::get).whileTrue(triggers.end());
 
-        return triggers;
-    }
+                return triggers;
+        }
 
-    public static Command scoreNote(Translation2d notePos) {
-        Pose2d notePose = new Pose2d(notePos, new Rotation2d());
-        AutoTriggers triggers = new AutoTriggers("Score Note", true);
+        public static Command scoreNote(Translation2d notePos) {
+                Pose2d notePose = new Pose2d(notePos, new Rotation2d());
+                AutoTriggers triggers = new AutoTriggers("Score Note", true);
 
-        BTrigger canPickupNote = triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
-        AtomicBoolean targetingNote = new AtomicBoolean(false);
-        triggers.started().and(canPickupNote.negate()).and(triggers.noNote()).and(() -> !targetingNote.get())
-                .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose, false, false));
+                // BTrigger canPickupNote =
+                // triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
+                // AtomicBoolean targetingNote = new AtomicBoolean(false);
+                // triggers.started().and(canPickupNote.negate()).and(triggers.noNote()).and(()
+                // -> !targetingNote.get())
+                // .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose,
+                // false,
+                // false));
 
-        canPickupNote
-                .onTrue(Commands.runOnce(() -> targetingNote.set(true))
-                        .alongWith(AutoCommands.pickupNoteAt(notePos).onlyWhile(triggers.hasNote().negate()))
-                        .withName("Auto Pickup Note At"));
+                // canPickupNote
+                // .onTrue(Commands.runOnce(() -> targetingNote.set(true))
+                // .alongWith(AutoCommands.pickupNoteAt(notePos)
+                // .onlyWhile(triggers.hasNote().negate()))
+                // .withName("Auto Pickup Note At"));
 
-        triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
-                .whileTrue(triggers.endAfter(0.2));
+                // triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
+                // .whileTrue(triggers.endAfter(0.2));
 
-        return triggers.raceWith(shootNote());
-    }
+                return triggers.raceWith(shootNote());
+        }
 }

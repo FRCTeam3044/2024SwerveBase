@@ -8,6 +8,7 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.commands.StateMachineCommand;
+import frc.robot.statemachine.CrescendoStateMachine;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -128,6 +129,7 @@ public class RobotContainer {
          * joysticks}.
          */
         private void configureTeleopBindings() {
+                CrescendoStateMachine.getInstance();
                 // Driver 1
                 Command autoAimAndAlignCommand = elevator.autoAim(m_robotDrive)
                                 .alongWith(m_robotDrive.driveAndTrackPoint(
@@ -140,6 +142,7 @@ public class RobotContainer {
                 m_driverTeleController.start().onTrue(new StateMachineResetCommand(stateMachine));
                 m_driverTeleController.x().whileTrue(m_robotDrive.setXMode());
                 m_driverTeleController.rightTrigger().whileTrue(stateMachineCommand);
+                m_driverTeleController.b().whileTrue(AutoFactory.testAuto());
 
                 m_operatorTeleController.x().whileTrue(intake.run());
                 m_operatorTeleController.y().whileTrue(transit.run().alongWith(intake.run()));

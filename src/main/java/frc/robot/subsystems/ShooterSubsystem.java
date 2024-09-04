@@ -80,28 +80,6 @@ public class ShooterSubsystem extends SubsystemBase {
         bottomMotor.set(0);
     }
 
-    // public void consumeShooterInput(boolean shoot, boolean slow) {
-    // double output = slow ? ShooterConstants.kShooterManualSlowSpeed.get()
-    // : ShooterConstants.kShooterManualSpeed.get();
-    // if (shoot) {
-    // if (!isShooting) {
-    // isShooting = true;
-    // timeSinceShooting.reset();
-    // timeSinceShooting.start();
-    // }
-    // if (!slow) {
-    // topMotor.set(output);
-    // bottomMotor.set(-output);
-    // } else {
-    // topMotor.set(output);
-    // bottomMotor.set(-output);
-    // }
-    // } else {
-    // stopShooter();
-    // }
-
-    // }
-
     public ShooterSubsystem() {
         topMotor.restoreFactoryDefaults();
         bottomMotor.restoreFactoryDefaults();

@@ -11,6 +11,8 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -276,6 +278,12 @@ public final class Constants {
                                 3.0, "Note Detection Distance");
                 public static final ConfigurableParameter<Double> kEjectTime = new ConfigurableParameter<Double>(
                                 1.5, "State Reset Eject Time");
+                public static final ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(
+                                -16.0,
+                                "Intake Current Threshold");
+
+                public static final Debouncer kHasNoteDebouncer = new Debouncer(
+                                StateMachineConstants.kDebounce.get() * 2, DebounceType.kBoth);
         }
 
         public static final class NeoMotorConstants {

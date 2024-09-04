@@ -20,8 +20,6 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
-    private ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
-            "Intake Current Threshold");
     private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
 
     public enum State {
@@ -136,12 +134,6 @@ public class StateMachine extends SubsystemBase {
                 // return;
                 // }
 
-                if (noteIn()) {
-                    // System.out.println("Moving to Note loaded from no note");
-                    currentState = State.NOTE_LOADED;
-                    updateDesiredCommand();
-                    return;
-                }
                 if (m_hasNoteDebouncer.calculate(m_noteDetection.hasNote)) {
                     double distance = m_noteDetection.getClosestNoteDistance();
                     if (distance < StateMachineConstants.kNoteDetectionDistance.get()) {
@@ -159,12 +151,6 @@ public class StateMachine extends SubsystemBase {
                  * to a note to pickup. Rumble the controller to let the driver know that the
                  * robot is no longer targeting a note.
                  */
-                if (noteIn()) {
-                    // System.out.println("Moving to Note loaded from targeting note");
-                    currentState = State.NOTE_LOADED;
-                    updateDesiredCommand();
-                    return;
-                }
                 if (!m_hasNoteDebouncer.calculate(m_noteDetection.hasNote) || m_noteDetection
                         .getClosestNoteDistance() > StateMachineConstants.kNoteDetectionDistance.get()) {
                     // System.out.println("Moving back to no note");
@@ -221,17 +207,6 @@ public class StateMachine extends SubsystemBase {
         }
 
         SmartDashboard.putString("State", currentState.toString());
-    }
-
-    protected boolean noteIn() {
-        // boolean currentSpiked = m_intakeCurrentDebouncer
-        // .calculate(m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get());
-
-        boolean spike = m_intakeSubsystem.getCurrent() < kIntakeCurrentThreshold.get();
-
-        SmartDashboard.putBoolean("Current Has Spiked", spike);
-
-        return spike;
     }
 
     public void reset() {
