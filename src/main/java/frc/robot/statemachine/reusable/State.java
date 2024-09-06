@@ -75,7 +75,7 @@ public abstract class State {
         return name == state || (parentState != null && parentState.is(state));
     }
 
-    public void onExit(boolean interupted) {
+    public void onExit() {
         for (BTrigger trigger : triggers) {
             trigger.stopCommands();
         }
