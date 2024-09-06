@@ -29,7 +29,5 @@ public class CrescendoStateMachine extends StateMachine {
         }
         configureState(new NoNoteState(this, States.NO_NOTE));
         configureState(new TargetingState(this, States.TARGETING_NOTE)).substateOf(States.NO_NOTE);
-
-        start();
     }
 }

@@ -26,7 +26,7 @@ public class SimStateMachine extends StateMachine {
         super(shooterSubsystem, elevatorSubsystem, transitSubsystem, intakeSubsystem, noteDetection, driveSubsystem);
     }
 
-    @Override
+    //@Override
     protected boolean noteIn() {
         return RobotContainer.m_driverController.getHID().getBButton();
     }
