@@ -10,7 +10,7 @@ import frc.robot.utils.BTrigger;
 /**
  * A state in a state machine.
  */
-public abstract class State extends Command {
+public abstract class State {
     public final Enum<?> name;
 
     private final StateMachine stateMachine;
@@ -75,15 +75,13 @@ public abstract class State extends Command {
         return name == state || (parentState != null && parentState.is(state));
     }
 
-    @Override
-    public void end(boolean interupted) {
+    public void onEnd(boolean interupted) {
         for (BTrigger trigger : triggers) {
             trigger.stopCommands();
         }
     }
 
-    @Override
-    public void execute() {
+    public void run() {
         loop.poll();
     }
 
@@ -106,4 +104,9 @@ public abstract class State extends Command {
      * Register all commands to run while in this state. Use the running() trigger.
      */
     public abstract void configureCommands();
+
+    /**
+     * On enter state
+     */
+    public void onEnter(){}
 }

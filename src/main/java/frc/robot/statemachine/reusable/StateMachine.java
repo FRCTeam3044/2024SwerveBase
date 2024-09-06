@@ -15,16 +15,16 @@ public class StateMachine {
     }
 
     public void transitionToState(State state) {
-        currentState.cancel();
+        currentState.onExit();
         currentState = state;
-        currentState.schedule();
+        currentState.onEnter();
     }
 
     public boolean is(Enum<?> state) {
         return currentState.is(state);
     }
 
-    public void start() {
-        currentState.schedule();
+    public void periodic(){
+        currentState.run();
     }
 }
