@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.statemachine;
 
 import java.util.function.Supplier;
 

@@ -5,12 +5,12 @@ import java.util.function.BooleanSupplier;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.statemachine.StateCommands;
-import frc.robot.statemachine.StateTriggers;
 import frc.robot.statemachine.CrescendoStateMachine.States;
+import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachine;
 import frc.robot.utils.BTrigger;
 
-public class NoNoteState extends StateTriggers {
+public class NoNoteState extends State {
     public NoNoteState(StateMachine stateMachine, Enum<?> name) {
         super(stateMachine, name);
     }
@@ -33,7 +33,7 @@ public class NoNoteState extends StateTriggers {
 
     @Override
     public void configureCommands() {
-        running().whileTrue(StateCommands.goToSource());
+        runningTrg().whileTrue(StateCommands.goToSource());
     }
 
 }

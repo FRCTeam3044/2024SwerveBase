@@ -9,8 +9,7 @@ public class StateMachine {
 
     public State configureState(State state) {
         states.put(state.name, state);
-        state.configureTransitions();
-        state.configureCommands();
+        state.configure();
         return state;
     }
 
@@ -24,7 +23,7 @@ public class StateMachine {
         return currentState.is(state);
     }
 
-    public void periodic(){
+    public void periodic() {
         currentState.run();
     }
 }

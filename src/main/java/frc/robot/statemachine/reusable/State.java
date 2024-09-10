@@ -3,7 +3,6 @@ package frc.robot.statemachine.reusable;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.utils.BTrigger;
 
@@ -91,22 +90,18 @@ public abstract class State {
      * 
      * @return The trigger
      */
-    public BTrigger running() {
+    public BTrigger runningTrg() {
         return new BTrigger(loop, () -> stateMachine.isRunning);
     }
 
     /**
-     * Register all transitons to other states.
+     * Configure the triggers on this state.
      */
-    public abstract void configureTransitions();
-
-    /**
-     * Register all commands to run while in this state. Use the running() trigger.
-     */
-    public abstract void configureCommands();
+    public abstract void configure();
 
     /**
      * On enter state
      */
-    public void onEnter(){}
+    public void onEnter() {
+    }
 }

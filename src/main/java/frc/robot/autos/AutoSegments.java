@@ -38,26 +38,8 @@ public class AutoSegments {
         }
 
         public static Command scoreNote(Translation2d notePos) {
-                Pose2d notePose = new Pose2d(notePos, new Rotation2d());
+
                 AutoTriggers triggers = new AutoTriggers("Score Note", true);
-
-                // BTrigger canPickupNote =
-                // triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos));
-                // AtomicBoolean targetingNote = new AtomicBoolean(false);
-                // triggers.started().and(canPickupNote.negate()).and(triggers.noNote()).and(()
-                // -> !targetingNote.get())
-                // .whileTrue(RobotContainer.m_robotDrive.goToAndTrackPoint(notePose, notePose,
-                // false,
-                // false));
-
-                // canPickupNote
-                // .onTrue(Commands.runOnce(() -> targetingNote.set(true))
-                // .alongWith(AutoCommands.pickupNoteAt(notePos)
-                // .onlyWhile(triggers.hasNote().negate()))
-                // .withName("Auto Pickup Note At"));
-
-                // triggers.nearLocation(notePos).and(triggers.noteDetectedNear(notePos).negate())
-                // .whileTrue(triggers.endAfter(0.2));
 
                 return triggers.raceWith(shootNote());
         }
