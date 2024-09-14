@@ -9,8 +9,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import frc.robot.RobotContainer;
-import frc.robot.statemachine.CrescendoStateMachine.States;
-import frc.robot.statemachine.reusable.StateMachine;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.BTrigger;
@@ -41,25 +39,21 @@ public class Triggers {
         });
     }
 
+    // TODO: Make this real!
     public BTrigger hasNoteTrg() {
-        BooleanSupplier hasNote = () -> {
-            StateMachine sm = CrescendoStateMachine.getInstance();
-            return sm.is(States.HAS_NOTE) || sm.is(States.READY_TO_SHOOT) || sm.is(States.SHOOTING);
-        };
+        BooleanSupplier hasNote = () -> true;
         return new BTrigger(this.loop, hasNote);
     }
 
+    // TODO: Make this real!
     public BTrigger readyToShootTrg() {
-        BooleanSupplier readyToShoot = () -> CrescendoStateMachine
-                .getInstance().currentState.name == States.READY_TO_SHOOT;
+        BooleanSupplier readyToShoot = () -> true;
         return new BTrigger(this.loop, readyToShoot);
     }
 
+    // TODO: Make this real!
     public BTrigger noNoteTrg() {
-        BooleanSupplier noNote = () -> {
-            StateMachine sm = CrescendoStateMachine.getInstance();
-            return sm.is(States.NO_NOTE);
-        };
+        BooleanSupplier noNote = () -> true;
         return new BTrigger(this.loop, noNote);
     }
 

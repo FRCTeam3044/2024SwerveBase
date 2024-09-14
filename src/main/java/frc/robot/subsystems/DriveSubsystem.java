@@ -50,7 +50,6 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PathfindingConstants;
 import frc.robot.utils.AutoTargetUtils;
-import frc.robot.utils.ExtraCommands;
 import frc.robot.utils.MemoizedSupplier;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.SwerveUtils;

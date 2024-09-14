@@ -3,8 +3,11 @@ package frc.robot.statemachine.reusable;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
+import org.json.JSONObject;
+
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.BTrigger;
 
 /**
@@ -17,9 +20,22 @@ public abstract class State {
     public State parentState;
     public final ArrayList<ChildSelectionInfo> children = new ArrayList<>();
 
+    protected final EventLoop loop = new EventLoop();
+    protected final JSONObject parameters;
+
     private final StateMachine stateMachine;
     private final ArrayList<BTrigger> triggers = new ArrayList<>();
-    protected final EventLoop loop = new EventLoop();
+    private boolean hasDefaultChild = false;
+
+    /**
+     * Create a new state under the given state machine.
+     * 
+     * @param stateMachine The state machine this state belongs to
+     */
+    public State(StateMachine stateMachine) {
+        this.stateMachine = stateMachine;
+        this.parameters = new JSONObject();
+    }
 
     /**
      * Create a new state under the given state machine.
@@ -28,6 +44,7 @@ public abstract class State {
      */
     public State(StateMachine stateMachine, JSONObject parameters) {
         this.stateMachine = stateMachine;
+        this.parameters = parameters;
     }
 
     /**
@@ -37,10 +54,10 @@ public abstract class State {
      * @param trigger The trigger to transition on (event loop will be overwritten)
      * @return This state
      */
-    protected State addTransition(State state, BTrigger trigger) {
+    protected State addTransition(State state, Trigger trigger) {
         BTrigger eventTrigger = new BTrigger(loop, trigger);
         eventTrigger.onTrue(Commands.run(() -> {
-            stateMachine.transitionToState(state);
+            stateMachine.transitionTo(state);
         }));
         return this;
     }
@@ -56,36 +73,53 @@ public abstract class State {
     }
 
     /**
-     * A trigger that is true when the state machine should be controlling the
-     * robot.
-     * 
-     * @return The trigger
-     */
-    public BTrigger runningTrg() {
-        return new BTrigger(loop, () -> stateMachine.isRunning);
-    }
-
-    /**
-     * Configure the triggers on this state.
-     */
-    public abstract void configure();
-
-    /**
      * On enter state
      */
-    public abstract void onEnter();
+    public void onEnter() {
+    };
 
-    public State evaluateEntranceState(){
-        if(children.isEmpty()) return this;
-        ChildSelectionInfo best;
-        for(ChildSelectionInfo i : children){
-            if((best == null || best.priority > i.priority) && i.condition.getAsBoolean()){
+    private void addChild(State child, BooleanSupplier condition, int priority, boolean isDefault) {
+        if (isDefault) {
+            if (hasDefaultChild)
+                throw new RuntimeException("A state can only have one default child");
+            hasDefaultChild = true;
+        }
+        children.add(new ChildSelectionInfo(child, condition, priority));
+    }
+
+    State evaluateEntranceState() {
+        if (children.isEmpty())
+            return this;
+        ChildSelectionInfo best = null;
+        for (ChildSelectionInfo i : children) {
+            if ((best == null || best.priority > i.priority) && i.condition.getAsBoolean()) {
                 best = i;
             }
         }
-        if(best == null){
-            throw new RuntimeException("A state was unable to determine which child to transition to. Consider adding a default state.");
+        if (best == null) {
+            throw new RuntimeException(
+                    "A state was unable to determine which child to transition to. Consider adding a default state.");
         }
-        return best.evaluateEntranceState();
+        return best.state.evaluateEntranceState();
+    }
+
+    /**
+     * Add a child state to this state.
+     * 
+     * @param child     The child state
+     * @param condition The condition to transition to this state
+     * @param priority  The priority of this state
+     */
+    public void addChild(State child, BooleanSupplier condition, int priority) {
+        addChild(child, condition, priority, false);
+    }
+
+    /**
+     * Add a default child state to this state.
+     * 
+     * @param child The child state
+     */
+    public void setDefaultChild(State child) {
+        addChild(child, () -> true, Integer.MAX_VALUE, true);
     }
 }

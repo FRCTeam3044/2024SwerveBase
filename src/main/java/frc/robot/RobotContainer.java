@@ -129,7 +129,6 @@ public class RobotContainer {
          * joysticks}.
          */
         private void configureTeleopBindings() {
-                CrescendoStateMachine.getInstance();
                 // Driver 1
                 Command autoAimAndAlignCommand = elevator.autoAim(m_robotDrive)
                                 .alongWith(m_robotDrive.driveAndTrackPoint(
