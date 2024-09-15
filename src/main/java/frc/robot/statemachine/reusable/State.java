@@ -26,7 +26,7 @@ public abstract class State {
     private final ArrayList<BTrigger> triggers = new ArrayList<>();
     private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
     private boolean hasDefaultChild = false;
-    private String name = null;
+    private String name = this.getClass().getSimpleName();
 
     /**
      * Create a new state under the given state machine.
@@ -145,9 +145,6 @@ public abstract class State {
      * @return The name of this state
      */
     public String getName() {
-        if (name == null) {
-            name = this.getClass().getSimpleName();
-        }
         return name;
     }
 
