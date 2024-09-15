@@ -84,7 +84,6 @@ public class RobotContainer {
          */
         public RobotContainer() {
                 // Configure the trigger bindings
-                configureTeleopBindings();
                 configureTestBindings();
                 try {
                         m_autoAiming = new AutoAiming(true);
@@ -94,53 +93,9 @@ public class RobotContainer {
                         throw new RuntimeException(e);
                 }
 
-                m_robotDrive.setDefaultCommand(
-                                m_robotDrive.manualDrive(m_driverController::getLeftX, m_driverController::getLeftY,
-                                                m_driverController::getRightX,
-                                                m_driverController.rightTrigger()::getAsBoolean));
                 climber.setDefaultCommand(climber
                                 .moveClimberJoysticks(m_operatorController::getLeftY, m_operatorController::getRightY)
                                 .onlyWhile(teleop()).withName("Move Climber"));
-        }
-
-        /**
-         * Use this method to define your trigger->command mappings. Triggers can be
-         * created via the
-         * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-         * an arbitrary
-         * predicate, or via the named factories in {@link
-         * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-         * {@link
-         * CommandXboxController
-         * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-         * PS4} controllers or
-         * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-         * joysticks}.
-         */
-        private void configureTeleopBindings() {
-                // Driver 1
-                Command autoAimAndAlignCommand = elevator.autoAim(m_robotDrive)
-                                .alongWith(m_robotDrive.driveAndTrackPoint(
-                                                m_driverController::getLeftX, m_driverController::getLeftY,
-                                                AutoTargetUtils.getShootingTarget(), true));
-
-                m_driverTeleController.leftTrigger().whileTrue(
-                                autoAimAndAlignCommand.onlyIf(() -> (!m_operatorController.getHID().getAButton())));
-                // When the menu button is pressed*
-                m_driverTeleController.x().whileTrue(m_robotDrive.setXMode());
-                m_driverTeleController.b().whileTrue(AutoFactory.testAuto());
-
-                m_operatorTeleController.x().whileTrue(intake.run());
-                m_operatorTeleController.y().whileTrue(transit.run().alongWith(intake.run()));
-                m_operatorTeleController.leftTrigger().whileTrue(shooter.speaker());
-                m_operatorTeleController.leftBumper().whileTrue(elevator.amp());
-                m_operatorTeleController.rightBumper().whileTrue(shooter.amp());
-                m_operatorTeleController.rightTrigger().whileTrue(shooter.lob());
-                m_operatorTeleController.a().whileTrue(elevator.intake());
-                m_operatorTeleController.povDown().whileTrue(intake.run(true));
-                // m_operatorTeleController.b()
-                // .whileTrue(AutoCommands.pickupNoteCmd().getPickupNoteCommand().onlyIf(() ->
-                // m_noteDetection.hasNote));
         }
 
         private void configureTestBindings() {

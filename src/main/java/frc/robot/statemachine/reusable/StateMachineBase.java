@@ -1,6 +1,7 @@
 package frc.robot.statemachine.reusable;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class StateMachineBase {
     public State currentState;
@@ -28,6 +29,6 @@ public abstract class StateMachineBase {
         }
         currentState.checkTransitions();
         currentState.run();
-        System.out.println(currentState.getName());
+        SmartDashboard.putString("State", currentState.getName());
     }
 }

@@ -23,7 +23,7 @@ public class StateMachine extends StateMachineBase {
         currentState = disabled;
 
         // Teleop
-        ManualState manual = new ManualState(this);
+        ManualState manual = new ManualState(this, driverController, operatorController);
         DriverAssistState driverAssist = new DriverAssistState(this);
 
         teleop.withModeTransitions(disabled, teleop, auto, test)

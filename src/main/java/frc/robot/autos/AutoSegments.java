@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.statemachine.reusable.BTrigger;
 import frc.robot.RobotContainer;
 import frc.robot.utils.AutoTargetUtils;
-import frc.robot.utils.BTrigger;
 
 public class AutoSegments {
         public static Command shootNote() {

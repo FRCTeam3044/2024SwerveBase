@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.event.EventLoop;
-import frc.robot.utils.BTrigger;
 
 /**
  * A state in a state machine.
@@ -149,6 +148,20 @@ public abstract class State {
     }
 
     /**
+     * Get the parameters of this state.
+     */
+    public boolean is(State state) {
+        System.out.println("Checking if " + state.getName() + " is " + this.getName());
+        if (state == this)
+            return true;
+
+        if (parentState == null)
+            return false;
+
+        return parentState.is(state);
+    }
+
+    /**
      * Fires when the state is exited
      */
     public void onExit() {
@@ -162,6 +175,10 @@ public abstract class State {
      */
     public void onEnter() {
     };
+
+    protected BTrigger active() {
+        return new BTrigger(loop, () -> stateMachine.currentState.is(this));
+    }
 
     void run() {
         if (parentState != null)
