@@ -11,6 +11,7 @@ public class StateMachine {
     }
 
     public void periodic() {
+        currentState.checkTransitions();
         currentState.run();
     }
 }

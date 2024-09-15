@@ -12,15 +12,17 @@ import frc.robot.statemachine.states.tele.ManualState;
 public class CrescendoStateMachine extends StateMachine {
     public static CrescendoStateMachine INSTANCE = new CrescendoStateMachine();
 
+    // Robot Control states
+    State teleop = new TeleState(this);
+    State auto = new AutoState(this);
+    State test = new TestState(this);
+    State disabled = new DisabledState(this);
+
     public CrescendoStateMachine() {
         super();
         if (INSTANCE != null) {
             throw new IllegalStateException("Cannot create another instance of singleton class");
         }
-        State teleop = new TeleState(this);
-        State auto = new AutoState(this);
-        State test = new TestState(this);
-        State disabled = new DisabledState(this);
 
         teleop.setDefaultChild(new ManualState(this));
         teleop.addChild(new DriverAssistState(this), null, 0);
