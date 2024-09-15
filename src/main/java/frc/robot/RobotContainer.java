@@ -8,7 +8,6 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.commands.StateMachineCommand;
-import frc.robot.statemachine.CrescendoStateMachine;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;

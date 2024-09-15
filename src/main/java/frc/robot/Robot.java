@@ -25,6 +25,7 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.Constants.TransitConstants;
+import frc.robot.statemachine.StateMachine;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ConditionalXboxController;
 import frc.robot.utils.ControllerRumble;
@@ -141,6 +142,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
+        StateMachine.INSTANCE.periodic();
         // Runs the Scheduler. This is responsible for polling buttons, adding
         // newly-scheduled commands, running already-scheduled commands, removing
         // finished or interrupted commands, and running subsystem periodic() methods.

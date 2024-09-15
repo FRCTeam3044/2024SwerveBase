@@ -1,10 +1,10 @@
 package frc.robot.statemachine.states;
 
 import frc.robot.statemachine.reusable.State;
-import frc.robot.statemachine.reusable.StateMachine;
+import frc.robot.statemachine.reusable.StateMachineBase;
 
 public class DisabledState extends State {
-    public DisabledState(StateMachine stateMachine) {
+    public DisabledState(StateMachineBase stateMachine) {
         super(stateMachine);
     }
 }
