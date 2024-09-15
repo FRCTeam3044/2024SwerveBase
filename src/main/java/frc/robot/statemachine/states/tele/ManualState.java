@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.statemachine.Triggers;
+import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.utils.AutoTargetUtils;
@@ -13,33 +14,34 @@ import frc.robot.utils.AutoTargetUtils;
 public class ManualState extends State {
     Triggers triggers = new Triggers(loop);
 
-    public ManualState(StateMachineBase stateMachine, CommandXboxController driverController,
-            CommandXboxController operatorController) {
+    public ManualState(StateMachineBase stateMachine, CommandXboxController driverControllerRaw,
+            CommandXboxController operatorControllerRaw) {
         super(stateMachine);
 
-        Command autoAimAndAlignCommand = RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive)
-                .alongWith(RobotContainer.m_robotDrive.driveAndTrackPoint(driverController::getLeftX,
-                        driverController::getLeftY, AutoTargetUtils.getShootingTarget(), true));
+        SmartXboxController driverController = new SmartXboxController(driverControllerRaw, loop);
+        SmartXboxController operatorController = new SmartXboxController(operatorControllerRaw, loop);
 
-        driverController.leftTrigger(0.5, loop)
+        Command autoAimAndAlignCommand = RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive)
+                .alongWith(RobotContainer.m_robotDrive.driveAndTrackPoint(driverControllerRaw::getLeftX,
+                        driverControllerRaw::getLeftY, AutoTargetUtils.getShootingTarget(), true));
+
+        driverController.leftTrigger()
                 .whileTrue(autoAimAndAlignCommand.onlyIf(() -> (!operatorController.getHID().getAButton())));
         // When the menu button is pressed*
-        driverController.x(loop).whileTrue(RobotContainer.m_robotDrive.setXMode());
-        driverController.b(loop).whileTrue(AutoFactory.testAuto());
+        driverController.x().whileTrue(RobotContainer.m_robotDrive.setXMode());
+        driverController.b().whileTrue(AutoFactory.testAuto());
 
-        operatorController.x(loop).whileTrue(RobotContainer.intake.run());
-        operatorController.y(loop).whileTrue(RobotContainer.transit.run().alongWith(RobotContainer.intake.run()));
-        operatorController.leftTrigger(0.5, loop).whileTrue(RobotContainer.shooter.speaker());
-        operatorController.leftBumper(loop).whileTrue(RobotContainer.elevator.amp());
-        operatorController.rightBumper(loop).whileTrue(RobotContainer.shooter.amp());
-        operatorController.rightTrigger(0.5, loop).whileTrue(RobotContainer.shooter.lob());
-        operatorController.a(loop).whileTrue(RobotContainer.elevator.intake());
-        operatorController.pov(0, 180, loop).whileTrue(RobotContainer.intake.run(true));
-        // operatorController.b()
-        // .whileTrue(AutoCommands.pickupNoteCmd().getPickupNoteCommand().onlyIf(() ->
-        // m_noteDetection.hasNote));
-        active().whileTrue(
-                RobotContainer.m_robotDrive.manualDrive(driverController::getLeftX, driverController::getLeftY,
-                        driverController::getRightX, driverController.rightTrigger()::getAsBoolean));
+        operatorController.x().whileTrue(RobotContainer.intake.run());
+        operatorController.y().whileTrue(RobotContainer.transit.run().alongWith(RobotContainer.intake.run()));
+        operatorController.leftTrigger().whileTrue(RobotContainer.shooter.speaker());
+        operatorController.leftBumper().whileTrue(RobotContainer.elevator.amp());
+        operatorController.rightBumper().whileTrue(RobotContainer.shooter.amp());
+        operatorController.rightTrigger().whileTrue(RobotContainer.shooter.lob());
+        operatorController.a().whileTrue(RobotContainer.elevator.intake());
+        operatorController.povDown().whileTrue(RobotContainer.intake.run(true));
+
+        active().and(driverController.leftTrigger().negate()).whileTrue(
+                RobotContainer.m_robotDrive.manualDrive(driverControllerRaw::getLeftX, driverControllerRaw::getLeftY,
+                        driverControllerRaw::getRightX, driverController.rightTrigger()::getAsBoolean));
     }
 }

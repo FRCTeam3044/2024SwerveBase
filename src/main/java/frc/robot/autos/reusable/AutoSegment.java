@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.statemachine.reusable.BTrigger;
+import frc.robot.statemachine.reusable.SmartTrigger;
 
 public class AutoSegment extends Command {
     protected EventLoop loop;
@@ -68,27 +68,29 @@ public class AutoSegment extends Command {
         return Commands.waitSeconds(seconds).andThen(end());
     }
 
-    public BTrigger autoEnabled() {
-        return new BTrigger(this.loop, DriverStation::isAutonomousEnabled);
-    }
+    // public SmartTrigger autoEnabled() {
+    // return new SmartTrigger(this.loop, DriverStation::isAutonomousEnabled);
+    // }
 
-    public BTrigger started() {
-        return new BTrigger(this.loop, () -> running);
-    }
+    // public SmartTrigger started() {
+    // return new SmartTrigger(this.loop, () -> running);
+    // }
 
-    public void debug(String name, BTrigger t, boolean logEveryCycle) {
-        if (logEveryCycle)
-            debugTriggers.put(name, t);
-        try {
-            if (t.m_loopField.get(t) != this.loop) {
-                System.out.println("Trigger %s is not in the correct loop!".formatted(name));
-            }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        t.onTrue(Commands
-                .runOnce(() -> System.out.println("[%s] Trigger %s switched to true".formatted(this.getName(), name))));
-        t.onFalse(Commands.runOnce(
-                () -> System.out.println("[%s] Trigger %s switched to false".formatted(this.getName(), name))));
-    }
+    // public void debug(String name, SmartTrigger t, boolean logEveryCycle) {
+    // if (logEveryCycle)
+    // debugTriggers.put(name, t);
+    // try {
+    // if (t.m_loopField.get(t) != this.loop) {
+    // System.out.println("Trigger %s is not in the correct loop!".formatted(name));
+    // }
+    // } catch (IllegalArgumentException | IllegalAccessException e) {
+    // e.printStackTrace();
+    // }
+    // t.onTrue(Commands
+    // .runOnce(() -> System.out.println("[%s] Trigger %s switched to
+    // true".formatted(this.getName(), name))));
+    // t.onFalse(Commands.runOnce(
+    // () -> System.out.println("[%s] Trigger %s switched to
+    // false".formatted(this.getName(), name))));
+    // }
 }

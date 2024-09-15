@@ -6,7 +6,6 @@ import java.util.function.BooleanSupplier;
 import org.json.JSONObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.event.EventLoop;
 
 /**
  * A state in a state machine.
@@ -18,11 +17,10 @@ public abstract class State {
     public State parentState;
     public final ArrayList<TransitionInfo> children = new ArrayList<>();
 
-    protected final EventLoop loop = new EventLoop();
+    protected final SmartEventLoop loop = new SmartEventLoop();
     protected final JSONObject parameters;
 
     private final StateMachineBase stateMachine;
-    private final ArrayList<BTrigger> triggers = new ArrayList<>();
     private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
     private boolean hasDefaultChild = false;
     private String name = this.getClass().getSimpleName();
@@ -151,7 +149,6 @@ public abstract class State {
      * Get the parameters of this state.
      */
     public boolean is(State state) {
-        System.out.println("Checking if " + state.getName() + " is " + this.getName());
         if (state == this)
             return true;
 
@@ -165,9 +162,7 @@ public abstract class State {
      * Fires when the state is exited
      */
     public void onExit() {
-        for (BTrigger trigger : triggers) {
-            trigger.stopCommands();
-        }
+        loop.stop();
     }
 
     /**
@@ -176,8 +171,8 @@ public abstract class State {
     public void onEnter() {
     };
 
-    protected BTrigger active() {
-        return new BTrigger(loop, () -> stateMachine.currentState.is(this));
+    protected SmartTrigger active() {
+        return new SmartTrigger(loop, () -> stateMachine.currentState.is(this));
     }
 
     void run() {

@@ -7,58 +7,58 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import frc.robot.RobotContainer;
-import frc.robot.statemachine.reusable.BTrigger;
+import frc.robot.statemachine.reusable.SmartEventLoop;
+import frc.robot.statemachine.reusable.SmartTrigger;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class Triggers {
-    private EventLoop loop = new EventLoop();
+    private SmartEventLoop loop = new SmartEventLoop();
 
-    public Triggers(EventLoop loop) {
+    public Triggers(SmartEventLoop loop) {
         this.loop = loop;
     }
 
-    public BTrigger nearLocationTrg(Supplier<Translation2d> location, double threshold) {
+    public SmartTrigger nearLocationTrg(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
-        return new BTrigger(this.loop, () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
+        return new SmartTrigger(this.loop,
+                () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
     }
 
-    public BTrigger nearLocationTrg(Translation2d location) {
+    public SmartTrigger nearLocationTrg(Translation2d location) {
         return nearLocationTrg(() -> location, 1.5);
     }
 
     // TODO: MAKE THIS REAL!
-    public BTrigger noteDetectedNearTrg(Translation2d location) {
-        return new BTrigger(() -> {
+    public SmartTrigger noteDetectedNearTrg(Translation2d location) {
+        return new SmartTrigger(this.loop, () -> {
             RobotContainer.m_noteDetection.setRegion(new Pose2d(location, new Rotation2d()), 0.5);
             return RobotContainer.m_noteDetection.hasNoteInRegion;
         });
     }
 
     // TODO: Make this real!
-    public BTrigger hasNoteTrg() {
+    public SmartTrigger hasNoteTrg() {
         BooleanSupplier hasNote = () -> true;
-        return new BTrigger(this.loop, hasNote);
+        return new SmartTrigger(this.loop, hasNote);
     }
 
     // TODO: Make this real!
-    public BTrigger readyToShootTrg() {
+    public SmartTrigger readyToShootTrg() {
         BooleanSupplier readyToShoot = () -> true;
-        return new BTrigger(this.loop, readyToShoot);
+        return new SmartTrigger(this.loop, readyToShoot);
     }
 
     // TODO: Make this real!
-    public BTrigger noNoteTrg() {
+    public SmartTrigger noNoteTrg() {
         BooleanSupplier noNote = () -> true;
-        return new BTrigger(this.loop, noNote);
+        return new SmartTrigger(this.loop, noNote);
     }
 
-    public BTrigger inShootingZoneTrg() {
+    public SmartTrigger inShootingZoneTrg() {
         BooleanSupplier inShootingZone = () -> {
             Vertex robotPos = new Vertex(RobotContainer.m_robotDrive.getPose());
             ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
@@ -68,6 +68,6 @@ public class Triggers {
             }
             return shootingZone.isInside(robotPos);
         };
-        return new BTrigger(this.loop, inShootingZone);
+        return new SmartTrigger(this.loop, inShootingZone);
     }
 }
