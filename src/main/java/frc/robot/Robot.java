@@ -142,7 +142,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
-        StateMachine.INSTANCE.periodic();
+        m_robotContainer.stateMachine.periodic();
         // Runs the Scheduler. This is responsible for polling buttons, adding
         // newly-scheduled commands, running already-scheduled commands, removing
         // finished or interrupted commands, and running subsystem periodic() methods.
@@ -176,7 +176,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
+        // RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {

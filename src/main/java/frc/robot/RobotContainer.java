@@ -8,6 +8,8 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.commands.StateMachineCommand;
+import frc.robot.statemachine.AutoCommands;
+import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
 import frc.robot.subsystems.VisionSubsystem;
@@ -27,7 +29,6 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachineResetCommand;
 import frc.robot.subsystems.TransitSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,28 +73,17 @@ public class RobotContainer {
         public static final TransitSubsystem transit = new TransitSubsystem();
         public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
         public static final ShooterSubsystem shooter = new ShooterSubsystem();
-        public static final StateMachine stateMachine;
-        public final StateMachineCommand stateMachineCommand;
+
+        public StateMachine stateMachine = new StateMachine(m_driverController, m_operatorController);
 
         private static ConfigurableParameter<Double> kElevatorPIDControlTarget = new ConfigurableParameter<Double>(
                         0.0, "Elevator Test PID Target");
-
-        static {
-                if (RobotBase.isSimulation()) {
-                        stateMachine = new SimStateMachine(shooter, elevator, transit, intake, m_noteDetection,
-                                        m_robotDrive);
-                } else {
-                        stateMachine = new StateMachine(shooter, elevator, transit, intake, m_noteDetection,
-                                        m_robotDrive);
-                }
-        }
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
                 // Configure the trigger bindings
-                stateMachineCommand = new StateMachineCommand(stateMachine);
                 configureTeleopBindings();
                 configureTestBindings();
                 try {
@@ -137,9 +127,7 @@ public class RobotContainer {
                 m_driverTeleController.leftTrigger().whileTrue(
                                 autoAimAndAlignCommand.onlyIf(() -> (!m_operatorController.getHID().getAButton())));
                 // When the menu button is pressed*
-                m_driverTeleController.start().onTrue(new StateMachineResetCommand(stateMachine));
                 m_driverTeleController.x().whileTrue(m_robotDrive.setXMode());
-                m_driverTeleController.rightTrigger().whileTrue(stateMachineCommand);
                 m_driverTeleController.b().whileTrue(AutoFactory.testAuto());
 
                 m_operatorTeleController.x().whileTrue(intake.run());
@@ -150,8 +138,9 @@ public class RobotContainer {
                 m_operatorTeleController.rightTrigger().whileTrue(shooter.lob());
                 m_operatorTeleController.a().whileTrue(elevator.intake());
                 m_operatorTeleController.povDown().whileTrue(intake.run(true));
-                m_operatorTeleController.b()
-                                .whileTrue(stateMachine.getPickupNoteCommand().onlyIf(() -> m_noteDetection.hasNote));
+                // m_operatorTeleController.b()
+                // .whileTrue(AutoCommands.pickupNoteCmd().getPickupNoteCommand().onlyIf(() ->
+                // m_noteDetection.hasNote));
         }
 
         private void configureTestBindings() {

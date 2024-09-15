@@ -1,5 +1,7 @@
 package frc.robot.statemachine.reusable;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public abstract class StateMachineBase {
     public State currentState;
 
@@ -19,6 +21,11 @@ public abstract class StateMachineBase {
      * Execute the state machine
      */
     public void periodic() {
+        if (currentState == null) {
+            DriverStation.reportWarning("The state machine has not been given an initial state, so it is useless!",
+                    null);
+            return;
+        }
         currentState.checkTransitions();
         currentState.run();
         System.out.println(currentState.getName());

@@ -134,7 +134,8 @@ public class LEDSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (DriverStation.isEnabled() || (LEDConstants.bypassEnabled.get() && !DriverStation.isFMSAttached())) {
-            State currentState = RobotContainer.stateMachine.currentState;
+            // TODO Add the state machine here
+            State currentState = State.NOTE_LOADED;
             boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
             boolean allowedToBlink = (DriverStation.isAutonomous() || (!DriverStation.isAutonomous()
                     && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5));
