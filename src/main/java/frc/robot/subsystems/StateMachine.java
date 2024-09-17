@@ -224,7 +224,8 @@ public class StateMachine extends SubsystemBase {
     }
 
     protected boolean getIntakeLimitSwitch() {
-        return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readLimitSwitch());
+        return false;
+        //return m_intakeLimitDebouncer.calculate(m_intakeSubsystem.readLimitSwitch());
     }
 
     protected boolean getTransitLimitSwitch() {

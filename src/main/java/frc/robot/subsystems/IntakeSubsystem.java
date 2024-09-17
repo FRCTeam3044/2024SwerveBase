@@ -12,10 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.utils.LimitSwitchSubsystem;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
-public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsystem {
+public class IntakeSubsystem extends SubsystemBase {
     // Defines the motor
     TalonSRX intakeTopMotor = new TalonSRX(CANConstants.kIntakeTopMotorPort);
     TalonSRX intakeBottomMotor = new TalonSRX(CANConstants.kIntakeBottomMotorPort);
@@ -24,11 +23,15 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
             "Intake Ultrasonic Threshold");
     ConfigurableParameter<Double> intakeSpinupSpeed = new ConfigurableParameter<Double>(0.4,
             "Intake Spinup Speed");
+    ConfigurableParameter<Double> kIntakeCurrentThreshold = new ConfigurableParameter<Double>(-16.0,
+            "Intake Current Threshold");
 
     // This will be set to true if the intake is running
     public boolean isIntakeRunning = false;
 
     public Timer timeSinceStart = new Timer();
+
+    private boolean hasNote = false;
 
     public IntakeSubsystem() {
         intakeTopMotor.configFactoryDefault();
@@ -73,7 +76,11 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
         // intakeBottomMotor.getStatorCurrent());
         SmartDashboard.putNumber("Intake Top Current", -intakeTopMotor.getStatorCurrent());
 
+        if (getCurrent() < kIntakeCurrentThreshold.get()) {
+            hasNote = true;
+        }
     }
+
 
     public double getCurrent() {
         return -intakeTopMotor.getStatorCurrent();
@@ -83,20 +90,6 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     private void runIntake(double output) {
         intakeTopMotor.set(TalonSRXControlMode.PercentOutput, output);
         intakeBottomMotor.set(TalonSRXControlMode.PercentOutput, -output);
-    }
-
-    /**
-     * Reads the intake limit switch
-     * 
-     * @return true if the intake limit switch is pressed
-     */
-    @Override
-    public boolean readLimitSwitch() {
-        if (intakeUltrasonic.getValue() <= intakeUltrasonicThreshold.get()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     // Command Factories
@@ -140,4 +133,12 @@ public class IntakeSubsystem extends SubsystemBase implements LimitSwitchSubsyst
     // /* End */ (interrupted) -> runIntake(0), /* IsFinished */ () -> false, this)
     // .withName("runIntake");
     // }
+
+    public void setNoteDropped() {
+        hasNote = false;
+    }
+
+    public boolean hasNote() {
+        return hasNote;
+    }
 }

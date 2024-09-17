@@ -43,11 +43,13 @@ public class StateMachine extends StateMachineBase {
         driverAssist.withTransition(manual, driverController.rightTrigger().negate(), 0)
                 .withDefaultChild(getToSource)
                 .withChild(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 2)
-                // TODO: Has Note?
-                .withChild(getToShootingZone, () -> false, 1)
-                // TODO: Has note and in zone?
-                .withChild(shoot, () -> false, 0);
-                
+                .withChild(getToShootingZone, RobotContainer.intake::hasNote, 1)
+                .withChild(shoot, () -> RobotContainer.intake.hasNote() && Triggers.inShootingZone().getAsBoolean(), 0);
+        getToSource.withTransition(pickupNote, () -> RobotContainer.m_noteDetection.hasNote);
+        pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0);
+        pickupNote.withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
+        getToShootingZone.withTransition(shoot, Triggers.inShootingZone());
+        shoot.withTransition(getToSource, () -> !RobotContainer.intake.hasNote());
 
         // Auto
         auto.withModeTransitions(disabled, teleop, auto, test);

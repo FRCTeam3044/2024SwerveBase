@@ -59,7 +59,13 @@ public class Triggers {
     }
 
     public SmartTrigger inShootingZoneTrg() {
-        BooleanSupplier inShootingZone = () -> {
+        return new SmartTrigger(this.loop, inShootingZone());
+    }
+
+    // Thinking about making this a pattern, where conditions are static and triggers are instance methods
+    // To use for state entrance conditions
+    public static BooleanSupplier inShootingZone() {
+        return () -> {
             Vertex robotPos = new Vertex(RobotContainer.m_robotDrive.getPose());
             ObstacleGroup shootingZone = AutoTargetUtils.getShootingZone();
             if (shootingZone == null) {
@@ -68,6 +74,5 @@ public class Triggers {
             }
             return shootingZone.isInside(robotPos);
         };
-        return new SmartTrigger(this.loop, inShootingZone);
     }
 }
