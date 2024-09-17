@@ -25,14 +25,11 @@ import frc.robot.Constants.PathfindingConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.StateMachineConstants;
 import frc.robot.Constants.TransitConstants;
-import frc.robot.statemachine.StateMachine;
 import frc.robot.utils.AutoTargetUtils;
-import frc.robot.utils.ConditionalXboxController;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -229,14 +226,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void testInit() {
-        // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
-        ConditionalXboxController controller = RobotContainer.m_testController;
-        // The final parameter is to stop the robot from turning while other commands
-        // are reading the joysticks in test mode
-        RobotContainer.m_robotDrive.test(controller.controller::getLeftX, controller.controller::getLeftY,
-                controller.controller::getRightX, controller.a().or(controller.y())::getAsBoolean).schedule();
-
     }
 
     /** This function is called periodically during test mode. */

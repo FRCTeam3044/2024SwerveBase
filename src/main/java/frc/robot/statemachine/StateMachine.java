@@ -21,7 +21,7 @@ public class StateMachine extends StateMachineBase {
 
         State teleop = new TeleState(this);
         State auto = new AutoState(this);
-        State test = new TestState(this);
+        State test = new TestState(this, driverController);
         State disabled = new DisabledState(this);
 
         // Set the initial state
