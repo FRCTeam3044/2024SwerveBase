@@ -16,12 +16,10 @@ import frc.robot.Constants.StateMachineConstants;
 import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.ExtraCommands;
-import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class StateMachine extends SubsystemBase {
-    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
-
+    
     public enum State {
         /**
          * Close enough to a note to pickup
@@ -370,8 +368,7 @@ public class StateMachine extends SubsystemBase {
         // } else {
         // return kTransitRuntime.get();
         // }
-        double runtime = kTransitRuntime.get();
         // System.out.println("transit runtime " + runtime);
-        return runtime;
+        return -1.0;
     }
 }

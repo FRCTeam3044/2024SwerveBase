@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.TransitConstants;
 import frc.robot.utils.LimitSwitchSubsystem;
@@ -22,6 +23,7 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     AnalogInput transitUltrasonic = new AnalogInput(CANConstants.kTransitSensorPort);
     ConfigurableParameter<Integer> transitUltrasonicThreshold = new ConfigurableParameter<Integer>(250,
             "Transit Ultrasonic Threshold");
+    private ConfigurableParameter<Double> kTransitRuntime = new ConfigurableParameter<Double>(0.8, "Transit Runtime");
 
     public Timer timeSinceTransit = new Timer();
     public boolean runningTransit = false;
@@ -42,6 +44,13 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
         transitMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
         transitMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 5000);
         transitMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 5000);
+    }
+
+    @Override
+    public void periodic(){
+        if(runningTransit && timeSinceTransit.hasElapsed(kTransitRuntime.get())){
+            RobotContainer.intake.setNoteDropped();
+        }
     }
 
     /**
