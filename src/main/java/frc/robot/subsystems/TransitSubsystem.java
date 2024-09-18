@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -47,8 +48,11 @@ public class TransitSubsystem extends SubsystemBase implements LimitSwitchSubsys
     }
 
     @Override
-    public void periodic(){
-        if(runningTransit && timeSinceTransit.hasElapsed(kTransitRuntime.get())){
+    public void periodic() {
+        if (runningTransit && timeSinceTransit.hasElapsed(kTransitRuntime.get())) {
+            RobotContainer.intake.setNoteDropped();
+        }
+        if (RobotBase.isSimulation() && RobotContainer.m_driverController.getHID().getYButtonPressed()) {
             RobotContainer.intake.setNoteDropped();
         }
     }

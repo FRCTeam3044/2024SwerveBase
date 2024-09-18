@@ -47,11 +47,10 @@ public abstract class State {
     }
 
     /**
-     * Add a transition to a different state on a trigger.
+     * Add a transition to a different state on a condition.
      * 
      * @param state     The state to transition to
-     * @param condition The trigger to transition on (event loop will be
-     *                  overwritten)
+     * @param condition The condition to transition on
      * @return This state
      */
     public State withTransition(State state, BooleanSupplier condition) {
@@ -59,11 +58,10 @@ public abstract class State {
     }
 
     /**
-     * Add a transition to a different state on a trigger.
+     * Add a transition to a different state on a condition.
      * 
      * @param state     The state to transition to
-     * @param condition The trigger to transition on (event loop will be
-     *                  overwritten)
+     * @param condition The condition to transition on
      * @param priority  The priority of this transition
      * @return This state
      */
@@ -72,7 +70,7 @@ public abstract class State {
     }
 
     /**
-     * Add a transition to a different state on a trigger.
+     * Add a transition to a different state on a condition.
      * 
      * @param transition The transition info to add
      * @return This state
@@ -182,6 +180,10 @@ public abstract class State {
             parentState.run();
 
         loop.poll();
+        // Yes, this is intentional. We want to "activate" the state after the first
+        // poll. This is done so that the active() triggers actually fire (since
+        // otherwise, the event loop would only be polled when active is true, so the
+        // trigger would never fire)
         active = true;
     }
 

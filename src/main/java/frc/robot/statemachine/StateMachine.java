@@ -39,6 +39,7 @@ public class StateMachine extends StateMachineBase {
                 .withChild(driverAssist, driverController.rightTrigger(), 0);
 
         manual.withTransition(driverAssist, driverController.rightTrigger(), 0);
+        // Driver assistance
         driverAssist.withTransition(manual, driverController.rightTrigger().negate(), 0)
                 .withDefaultChild(getToSource)
                 .withChild(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 2)

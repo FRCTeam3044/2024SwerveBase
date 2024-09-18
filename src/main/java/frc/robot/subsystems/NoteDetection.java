@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
@@ -115,7 +116,8 @@ public class NoteDetection extends SubsystemBase {
             notePoses.clear();
             cameraMidpoints.clear();
             if (RobotBase.isSimulation()) {
-                closestPose = new Pose2d(2.87, 5.55, new Rotation2d());
+                // closestPose = new Pose2d(2.87, 5.55, new Rotation2d());
+                closestPose = AutoTargetUtils.getSourceTrackTarget();
                 closestPoseToRegion = new Pose2d(2.87, 5.55, new Rotation2d());
                 if (closestPose.getTranslation()
                         .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 3) {

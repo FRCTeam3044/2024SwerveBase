@@ -6,10 +6,12 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.IntakeConstants;
 import me.nabdev.oxconfig.ConfigurableParameter;
@@ -79,8 +81,10 @@ public class IntakeSubsystem extends SubsystemBase {
         if (getCurrent() < kIntakeCurrentThreshold.get()) {
             hasNote = true;
         }
+        if (RobotBase.isSimulation() && RobotContainer.m_driverController.getHID().getAButtonPressed()) {
+            hasNote = true;
+        }
     }
-
 
     public double getCurrent() {
         return -intakeTopMotor.getStatorCurrent();
