@@ -13,7 +13,8 @@ public abstract class StateMachineBase {
      */
     public void transitionTo(State state) {
         State targetState = state.evaluateEntranceState();
-        currentState.onExit();
+        if (currentState != null)
+            currentState.onExit();
         currentState = targetState;
         currentState.onEnter();
     }

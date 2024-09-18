@@ -24,7 +24,7 @@ public abstract class State {
     private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
     private boolean hasDefaultChild = false;
     private String name = this.getClass().getSimpleName();
-    private boolean active = false;
+    private boolean onEnter = false;
 
     /**
      * Create a new state under the given state machine.
@@ -162,17 +162,18 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
-        active = false;
+        onEnter = false;
     }
 
     /**
      * Fires when the state is entered
      */
     public void onEnter() {
+        onEnter = true;
     };
 
-    protected SmartTrigger active() {
-        return new SmartTrigger(loop, () -> active);
+    protected SmartTrigger onEnterTrg() {
+        return new SmartTrigger(loop, () -> onEnter);
     }
 
     void run() {
@@ -184,7 +185,7 @@ public abstract class State {
         // poll. This is done so that the active() triggers actually fire (since
         // otherwise, the event loop would only be polled when active is true, so the
         // trigger would never fire)
-        active = true;
+        onEnter = false;
     }
 
     void checkTransitions() {

@@ -20,7 +20,7 @@ public class StateMachine extends StateMachineBase {
         super();
         State disabled = new DisabledState(this);
         // Set the initial state
-        currentState = disabled;
+        transitionTo(disabled);
 
         State teleop = new TeleState(this);
         State auto = new AutoState(this);
@@ -45,9 +45,10 @@ public class StateMachine extends StateMachineBase {
                 .withChild(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 2)
                 .withChild(getToShootingZone, RobotContainer.intake::hasNote, 1)
                 .withChild(shoot, () -> RobotContainer.intake.hasNote() && Triggers.inShootingZone().getAsBoolean(), 0);
-        getToSource.withTransition(pickupNote, () -> RobotContainer.m_noteDetection.hasNote);
-        pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0);
-        pickupNote.withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
+        getToSource.withTransition(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 1)
+                .withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0);
+        pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0)
+                .withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
         getToShootingZone.withTransition(shoot, Triggers.inShootingZone());
         shoot.withTransition(getToSource, () -> !RobotContainer.intake.hasNote());
 

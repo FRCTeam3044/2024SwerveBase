@@ -7,6 +7,6 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 public class GetToSourceState extends State {
     public GetToSourceState(StateMachineBase stateMachine) {
         super(stateMachine);
-        active().whileTrue(StateCommands.goToSource());
+        onEnterTrg().onTrue(StateCommands.goToSource());
     }
 }

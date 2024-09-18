@@ -13,7 +13,7 @@ public class GetToShootingZoneState extends State {
 
     public GetToShootingZoneState(StateMachineBase stateMachine) {
         super(stateMachine);
-        active().whileTrue(StateCommands.driveToShootingZone());
+        onEnterTrg().onTrue(StateCommands.driveToShootingZone());
 
         triggers.hasNoteTrg().and(triggers.nearLocationTrg(() -> {
             return AutoTargetUtils.getShootingTarget().getTranslation();

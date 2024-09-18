@@ -7,6 +7,6 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 public class PickupNoteState extends State {
     public PickupNoteState(StateMachineBase stateMachine) {
         super(stateMachine);
-        active().whileTrue(StateCommands.pickupNote());
+        onEnterTrg().onTrue(StateCommands.pickupNote());
     }
 }

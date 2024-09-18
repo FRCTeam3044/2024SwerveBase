@@ -8,12 +8,13 @@ import frc.robot.utils.AutoTargetUtils;
 
 public class ShootState extends State {
     private Triggers triggers = new Triggers(loop);
+
     public ShootState(StateMachineBase stateMachine) {
         super(stateMachine);
-        active().whileTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
-        true));
+        onEnterTrg().onTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
+                true));
 
-        active().whileTrue(RobotContainer.shooter.speaker());
+        onEnterTrg().onTrue(RobotContainer.shooter.speaker());
 
         triggers.readyToShootTrg().onTrue(RobotContainer.transit.run());
     }
