@@ -18,14 +18,13 @@ import frc.robot.statemachine.states.tele.ShootState;
 public class StateMachine extends StateMachineBase {
     public StateMachine(CommandXboxController driverController, CommandXboxController operatorController) {
         super();
+        State disabled = new DisabledState(this);
+        // Set the initial state
+        currentState = disabled;
 
         State teleop = new TeleState(this);
         State auto = new AutoState(this);
         State test = new TestState(this, driverController);
-        State disabled = new DisabledState(this);
-
-        // Set the initial state
-        currentState = disabled;
 
         // Teleop
         ManualState manual = new ManualState(this, driverController, operatorController);

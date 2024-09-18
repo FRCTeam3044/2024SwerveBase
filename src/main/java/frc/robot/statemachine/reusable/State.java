@@ -24,6 +24,7 @@ public abstract class State {
     private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
     private boolean hasDefaultChild = false;
     private String name = this.getClass().getSimpleName();
+    private boolean active = false;
 
     /**
      * Create a new state under the given state machine.
@@ -163,6 +164,7 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
+        active = false;
     }
 
     /**
@@ -172,13 +174,15 @@ public abstract class State {
     };
 
     protected SmartTrigger active() {
-        return new SmartTrigger(loop, () -> stateMachine.currentState.is(this));
+        return new SmartTrigger(loop, () -> active);
     }
 
     void run() {
         if (parentState != null)
             parentState.run();
+
         loop.poll();
+        active = true;
     }
 
     void checkTransitions() {
