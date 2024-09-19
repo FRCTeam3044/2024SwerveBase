@@ -17,7 +17,7 @@ public class SmartTrigger implements BooleanSupplier {
     /**
      * Creates a new trigger based on the given condition.
      *
-     * @param loop      The loop instance that polls this trigger.
+     * @param loop      The loop instance that polls this trigger
      * @param condition the condition represented by this trigger
      */
     public SmartTrigger(SmartEventLoop loop, BooleanSupplier condition) {
@@ -25,6 +25,12 @@ public class SmartTrigger implements BooleanSupplier {
         m_condition = requireNonNullParam(condition, "condition", "StateTrigger");
     }
 
+    /**
+     * Constructs a new SmartTrigger from a loop and condition.
+     * 
+     * @param loop      The loop instance that polls this trigger
+     * @param condition the condition represented by this trigger
+     */
     public static SmartTrigger from(SmartEventLoop loop, BooleanSupplier condition) {
         return new SmartTrigger(loop, condition);
     }
@@ -84,9 +90,58 @@ public class SmartTrigger implements BooleanSupplier {
     }
 
     /**
+     * Starts the given command when the condition is `true` and keeps it running
+     * until the condition is `false`.
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
+    public SmartTrigger runWhileTrue(Command command) {
+        requireNonNullParam(command, "command", "whileTrue");
+        m_loop.bind(command,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean pressed = m_condition.getAsBoolean();
+
+                        if (!command.isScheduled() && pressed) {
+                            command.schedule();
+                        } else if (command.isScheduled() && !pressed) {
+                            command.cancel();
+                        }
+                    }
+                });
+        return this;
+    }
+
+    /**
+     * Starts the given command when the condition is `false` and keeps it running
+     * until the condition is `true`.
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
+    public SmartTrigger runWhileFalse(Command command) {
+        requireNonNullParam(command, "command", "whileFalse");
+        m_loop.bind(command,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean pressed = m_condition.getAsBoolean();
+
+                        if (!command.isScheduled() && !pressed) {
+                            command.schedule();
+                        } else if (command.isScheduled() && pressed) {
+                            command.cancel();
+                        }
+                    }
+                });
+        return this;
+    }
+
+    /**
      * Starts the given command when the condition changes to `true` and cancels it
-     * when the condition
-     * changes to `false`.
+     * when the condition changes to `false`.
      *
      * <p>
      * Doesn't re-start the command if it ends while the condition is still `true`.
@@ -120,8 +175,7 @@ public class SmartTrigger implements BooleanSupplier {
 
     /**
      * Starts the given command when the condition changes to `false` and cancels it
-     * when the
-     * condition changes to `true`.
+     * when the condition changes to `true`.
      *
      * <p>
      * Doesn't re-start the command if it ends while the condition is still `false`.

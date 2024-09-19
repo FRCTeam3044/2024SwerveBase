@@ -176,6 +176,16 @@ public abstract class State {
         return new SmartTrigger(loop, () -> onEnter);
     }
 
+    /**
+     * WARNING - activeTrg does not experience a rising edge, so it will not fire!
+     * Use only with runWhileTrue and runWhileFalse, or compositions.
+     * 
+     * @return
+     */
+    protected SmartTrigger activeTrg() {
+        return new SmartTrigger(loop, () -> stateMachine.currentState.is(this));
+    }
+
     void run() {
         if (parentState != null)
             parentState.run();

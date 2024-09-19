@@ -26,9 +26,6 @@ public class ManualState extends State {
                                                 driverControllerRaw::getLeftY, AutoTargetUtils.getShootingTarget(),
                                                 true));
 
-                driverController.leftTrigger()
-                                .whileTrue(autoAimAndAlignCommand
-                                                .onlyIf(() -> (!operatorController.getHID().getAButton())));
                 // When the menu button is pressed*
                 driverController.x().whileTrue(RobotContainer.m_robotDrive.setXMode());
                 driverController.b().whileTrue(AutoFactory.testAuto());
@@ -43,10 +40,11 @@ public class ManualState extends State {
                 operatorController.povDown().whileTrue(RobotContainer.intake.run(true));
 
                 Command manualDrive = RobotContainer.m_robotDrive.manualDrive(driverControllerRaw::getLeftX,
-                                driverControllerRaw::getLeftY,
-                                driverControllerRaw::getRightX,
+                                driverControllerRaw::getLeftY, driverControllerRaw::getRightX,
                                 driverController.rightTrigger()::getAsBoolean);
-                onEnterTrg().and(driverController.leftTrigger().negate()).onTrue(manualDrive);
-                driverController.leftTrigger().negate().whileTrue(manualDrive);
+
+                driverController.leftTrigger().and(operatorController.a().negate())
+                                .runWhileTrue(autoAimAndAlignCommand)
+                                .runWhileFalse(manualDrive);
         }
 }
