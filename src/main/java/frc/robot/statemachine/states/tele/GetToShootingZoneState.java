@@ -18,6 +18,6 @@ public class GetToShootingZoneState extends State {
         triggers.hasNoteTrg().and(triggers.nearLocationTrg(() -> {
             return AutoTargetUtils.getShootingTarget().getTranslation();
         }, ShooterConstants.kShooterSpinupRange.get()))
-                .whileTrue(RobotContainer.shooter.speaker());
+                .whileTrue(RobotContainer.shooter.shootPercentage(0.8));
     }
 }

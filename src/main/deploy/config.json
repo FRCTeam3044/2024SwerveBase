@@ -832,7 +832,7 @@
             "comment": "Auto-Generated",
             "value": "0.65"
         },
-        "Shooter bottom pid/P": "0.0",
+        "Shooter bottom pid/P": "0.10000000149011612",
         "Transit Manual Control Speed": {
             "comment": "Auto-Generated",
             "value": "0.6"
@@ -863,7 +863,7 @@
             "value": "1.5"
         },
         "Shooter bottom pid/D": "0.0",
-        "Shooter top pid/FF": "0.00018",
+        "Shooter top pid/FF": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "rearLeftModule/driving/Min": "-1.0",
         "Pathfinding Theta Controller/P": "4.0",
@@ -970,7 +970,7 @@
             "comment": "Auto-Generated",
             "value": "4.8"
         },
-        "Shooter top pid/P": "0.0",
+        "Shooter top pid/P": "0.10000000149011612",
         "frontRightModule/turning/D": "0.0",
         "rearRightModule/driving/I": "0.0",
         "frontLeftModule/driving/D": "0.0",
@@ -1092,7 +1092,7 @@
             "value": "0.5"
         },
         "Elevator Angle PID/IZone": "0.0",
-        "Shooter bottom pid/FF": "0.00018",
+        "Shooter bottom pid/FF": "0.0",
         "Shooter bottom pid/IZone": "0.0",
         "frontLeftModule/turning/Min": "-1.0",
         "State Reset Eject Time": {

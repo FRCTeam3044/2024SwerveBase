@@ -110,6 +110,11 @@ public class IntakeSubsystem extends SubsystemBase {
             }
 
             @Override
+            public void initialize() {
+                timeSinceStart.restart();
+            }
+
+            @Override
             public void execute() {
                 double output = Math.min(timeSinceStart.get() * intakeSpinupSpeed.get(),
                         IntakeConstants.kIntakeManualSpeed.get());
@@ -119,6 +124,7 @@ public class IntakeSubsystem extends SubsystemBase {
             @Override
             public void end(boolean interrupted) {
                 runIntake(0);
+                timeSinceStart.stop();
             }
         };
     }

@@ -43,12 +43,16 @@ public final class SmartEventLoop {
             throw new ConcurrentModificationException("Cannot clear SmartEventLoop while it is running");
         }
         m_bindings.clear();
+        m_commands.clear();
     }
 
     /** Stops the event loop and cancels all associated commands. */
     public void stop() {
         m_running = false;
-        m_commands.forEach(Command::cancel);
+        for (Command c : m_commands) {
+            c.cancel();
+            // System.out.println("SmartEventLoop attempting to cancel " + c.getName());
+        }
     }
 
 }
