@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.smart;
 
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;

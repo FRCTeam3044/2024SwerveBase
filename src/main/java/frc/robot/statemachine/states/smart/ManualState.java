@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.smart;
 
 import edu.wpi.first.wpilibj2.command.Command;
 

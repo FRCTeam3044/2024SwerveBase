@@ -23,9 +23,16 @@ public class Triggers {
     }
 
     public SmartTrigger nearLocationTrg(Supplier<Translation2d> location, double threshold) {
+        return new SmartTrigger(this.loop, nearLocation(location, threshold));
+    }
+
+    public static BooleanSupplier nearLocation(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
-        return new SmartTrigger(this.loop,
-                () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold);
+        return () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold;
+    }
+
+    public static BooleanSupplier nearLocation(Translation2d location, double threshold) {
+        return nearLocation(() -> location, threshold);
     }
 
     public SmartTrigger nearLocationTrg(Translation2d location) {
@@ -62,7 +69,8 @@ public class Triggers {
         return new SmartTrigger(this.loop, inShootingZone());
     }
 
-    // Thinking about making this a pattern, where conditions are static and triggers are instance methods
+    // Thinking about making this a pattern, where conditions are static and
+    // triggers are instance methods
     // To use for state entrance conditions
     public static BooleanSupplier inShootingZone() {
         return () -> {

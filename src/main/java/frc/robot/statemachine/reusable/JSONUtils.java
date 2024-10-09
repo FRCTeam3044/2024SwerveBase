@@ -21,4 +21,18 @@ public class JSONUtils {
 
         return new Translation2d(obj.getDouble("x"), obj.getDouble("y"));
     }
+
+    public static JSONObject fromTranslation2d(Translation2d translation) {
+        JSONObject obj = new JSONObject();
+        obj.put("x", translation.getX());
+        obj.put("y", translation.getY());
+        return obj;
+    }
+
+    public static JSONObject fromCoords(double x, double y) {
+        JSONObject obj = new JSONObject();
+        obj.put("x", x);
+        obj.put("y", y);
+        return obj;
+    }
 }

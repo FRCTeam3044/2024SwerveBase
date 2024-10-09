@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.smart;
 
 import frc.robot.RobotContainer;
 import frc.robot.statemachine.Triggers;

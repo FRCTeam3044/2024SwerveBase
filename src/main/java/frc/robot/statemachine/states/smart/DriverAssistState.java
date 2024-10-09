@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.smart;
 
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;

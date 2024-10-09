@@ -126,6 +126,16 @@ public abstract class State {
     }
 
     /**
+     * Remove all children from this state.
+     * 
+     * @return
+     */
+    public State withNoChildren() {
+        children.clear();
+        return this;
+    }
+
+    /**
      * Set the name of this state.
      * 
      * @return This state
