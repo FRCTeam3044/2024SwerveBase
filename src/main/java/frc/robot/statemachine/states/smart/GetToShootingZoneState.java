@@ -9,13 +9,12 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.utils.AutoTargetUtils;
 
 public class GetToShootingZoneState extends State {
-    private Triggers triggers = new Triggers(loop);
 
     public GetToShootingZoneState(StateMachineBase stateMachine) {
         super(stateMachine);
         onEnterTrg().onTrue(StateCommands.driveToShootingZone());
 
-        triggers.hasNoteTrg().and(triggers.nearLocationTrg(() -> {
+        t(Triggers.hasNote()).and(Triggers.nearLocation(() -> {
             return AutoTargetUtils.getShootingTarget().getTranslation();
         }, ShooterConstants.kShooterSpinupRange.get()))
                 .whileTrue(RobotContainer.shooter.shootPercentage(0.8));

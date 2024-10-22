@@ -71,6 +71,9 @@
           "open": true
         }
       },
+      "OxConfig": {
+        "open": true
+      },
       "SmartDashboard": {
         "Arm": {
           "open": true
@@ -87,6 +90,24 @@
       "open": true
     },
     "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
+    "ShrinkWrap-1729182874170@1": {
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "ShrinkWrap-1729183246800@1": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true

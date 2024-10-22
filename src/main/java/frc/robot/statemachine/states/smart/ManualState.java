@@ -5,15 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.autos.reusable.AutoFactory;
-import frc.robot.statemachine.Triggers;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.utils.AutoTargetUtils;
 
 public class ManualState extends State {
-        Triggers triggers = new Triggers(loop);
-
         public ManualState(StateMachineBase stateMachine, CommandXboxController driverControllerRaw,
                         CommandXboxController operatorControllerRaw) {
                 super(stateMachine);

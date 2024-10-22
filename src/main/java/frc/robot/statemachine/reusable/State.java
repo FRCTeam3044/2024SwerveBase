@@ -182,6 +182,10 @@ public abstract class State {
         onEnter = true;
     };
 
+    public SmartTrigger t(BooleanSupplier condition) {
+        return new SmartTrigger(loop, condition);
+    }
+
     protected SmartTrigger onEnterTrg() {
         return new SmartTrigger(loop, () -> onEnter);
     }

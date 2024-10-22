@@ -8,24 +8,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotContainer;
-import frc.robot.statemachine.reusable.SmartEventLoop;
-import frc.robot.statemachine.reusable.SmartTrigger;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.pathfinding.structures.ObstacleGroup;
 import me.nabdev.pathfinding.structures.Vertex;
 
 public class Triggers {
-    private SmartEventLoop loop = new SmartEventLoop();
-
-    public Triggers(SmartEventLoop loop) {
-        this.loop = loop;
-    }
-
-    public SmartTrigger nearLocationTrg(Supplier<Translation2d> location, double threshold) {
-        return new SmartTrigger(this.loop, nearLocation(location, threshold));
-    }
-
     public static BooleanSupplier nearLocation(Supplier<Translation2d> location, double threshold) {
         DriveSubsystem drive = RobotContainer.m_robotDrive;
         return () -> drive.getPose().getTranslation().getDistance(location.get()) < threshold;
@@ -35,38 +23,30 @@ public class Triggers {
         return nearLocation(() -> location, threshold);
     }
 
-    public SmartTrigger nearLocationTrg(Translation2d location) {
-        return nearLocationTrg(() -> location, 1.5);
-    }
-
     // TODO: MAKE THIS REAL!
-    public SmartTrigger noteDetectedNearTrg(Translation2d location) {
-        return new SmartTrigger(this.loop, () -> {
+    public static BooleanSupplier noteDetectedNear(Translation2d location) {
+        return () -> {
             RobotContainer.m_noteDetection.setRegion(new Pose2d(location, new Rotation2d()), 0.5);
             return RobotContainer.m_noteDetection.hasNoteInRegion;
-        });
+        };
     }
 
     // TODO: Make this real!
-    public SmartTrigger hasNoteTrg() {
+    public static BooleanSupplier hasNote() {
         BooleanSupplier hasNote = () -> true;
-        return new SmartTrigger(this.loop, hasNote);
+        return hasNote;
     }
 
     // TODO: Make this real!
-    public SmartTrigger readyToShootTrg() {
+    public static BooleanSupplier readyToShoot() {
         BooleanSupplier readyToShoot = () -> true;
-        return new SmartTrigger(this.loop, readyToShoot);
+        return readyToShoot;
     }
 
     // TODO: Make this real!
-    public SmartTrigger noNoteTrg() {
+    public static BooleanSupplier noNoteTrg() {
         BooleanSupplier noNote = () -> true;
-        return new SmartTrigger(this.loop, noNote);
-    }
-
-    public SmartTrigger inShootingZoneTrg() {
-        return new SmartTrigger(this.loop, inShootingZone());
+        return noNote;
     }
 
     // Thinking about making this a pattern, where conditions are static and

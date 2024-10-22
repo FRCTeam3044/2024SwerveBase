@@ -7,8 +7,6 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.utils.AutoTargetUtils;
 
 public class ShootState extends State {
-    private Triggers triggers = new Triggers(loop);
-
     public ShootState(StateMachineBase stateMachine) {
         super(stateMachine);
         onEnterTrg().onTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
@@ -16,6 +14,6 @@ public class ShootState extends State {
 
         onEnterTrg().onTrue(RobotContainer.shooter.shootPercentage(0.8));
 
-        triggers.readyToShootTrg().onTrue(RobotContainer.transit.run());
+        t(Triggers.readyToShoot()).onTrue(RobotContainer.transit.run());
     }
 }
