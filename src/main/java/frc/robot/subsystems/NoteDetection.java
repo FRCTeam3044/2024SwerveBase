@@ -296,6 +296,8 @@ public class NoteDetection extends SubsystemBase {
                         + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
+                
+        res.release();
         // Translate the note pose to the field (rotate by the robot's rotation)
         double robotRotationRad = currentPose.getRotation().getRadians();
         double noteX = robotRelativeNotePose.getX();
