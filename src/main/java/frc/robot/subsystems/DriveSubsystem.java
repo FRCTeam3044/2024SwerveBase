@@ -830,6 +830,13 @@ public class DriveSubsystem extends SubsystemBase {
         return goToAndTrackPoint(waypoints, () -> track, flipped, noAvoidance);
     }
 
+    public Command goToAndTrackPoint(Translation2d target, Translation2d track, boolean flipped, boolean noAvoidance) {
+        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
+        waypoints.add(new Pose2d(target, new Rotation2d(0)));
+        Pose2d trackPose = new Pose2d(track, new Rotation2d(0));
+        return goToAndTrackPoint(waypoints, () -> trackPose, flipped, noAvoidance);
+    }
+
     public Command goToAndTrackPoint(ArrayList<Pose2d> waypoints, Supplier<Pose2d> track, boolean flipped) {
         return goToAndTrackPoint(waypoints, track, flipped, false);
     }
@@ -853,7 +860,15 @@ public class DriveSubsystem extends SubsystemBase {
             boolean cancelIfNone) {
         Supplier<Pose2d> notePose = noteDetection::getClosestNoteToRegion;
         TargetRotationController controller = new TargetRotationController(notePose, false);
-        Function<Pose2d, Trajectory> trajSupplier = (p) -> this.generateTrajectoryNoAvoidance(p, notePose.get());
+        // TODO: Handling for this? Memoized Supplier nightmare
+        Function<Pose2d, Trajectory> trajSupplier = (p) -> {
+            try {
+                return this.generateTrajectory(p, notePose.get());
+            } catch (ImpossiblePathException e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
 
         Command followCommand = Commands.runOnce(() -> noteDetection.setRegion(targetRegion, regionRadius))
                 .andThen(followTrajectory(trajSupplier,
@@ -861,7 +876,8 @@ public class DriveSubsystem extends SubsystemBase {
         if (cancelIfNone) {
             return followCommand.onlyIf(() -> noteDetection.hasNoteInRegion);
         }
-        return followCommand;
+        return goToAndTrackPoint(targetRegion, targetRegion, false, false).until(() -> noteDetection.hasNoteInRegion)
+                .andThen(followCommand);
     }
 
     public Command goToNote(NoteDetection noteDetection, boolean cancelIfNone) {
