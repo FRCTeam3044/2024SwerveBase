@@ -10,6 +10,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
@@ -22,17 +23,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
-import frc.robot.utils.AutoTargetUtils;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class NoteDetection extends SubsystemBase {
     public static final ConfigurableParameter<Integer> filterTaps = new ConfigurableParameter<Integer>(3,
             "Filter taps");
-
     private final ConfigurableParameter<Double> differentNoteThreshold = new ConfigurableParameter<Double>(1.0,
             "Different Note Threshold (meters)");
     private final ConfigurableParameter<Integer> lostFrameThreshold = new ConfigurableParameter<Integer>(50,
             "Lost Note Threshold (Frames)");
+
     LinearFilter filterNoteX = LinearFilter.movingAverage(filterTaps.get());
     LinearFilter filterNoteY = LinearFilter.movingAverage(filterTaps.get());
     LinearFilter filterRegionNoteX = LinearFilter.movingAverage(filterTaps.get());
@@ -67,35 +67,13 @@ public class NoteDetection extends SubsystemBase {
                 new Point(601, 566),
                 new Point(289, 568),
                 new Point(358, 398),
-                new Point(601, 397)
-        // new Point(910, 562),
-        // new Point(745, 156),
-        // new Point(94, 215),
-        // new Point(1113, 109),
-        // new Point(986, 109),
-        // new Point(1118, 48),
-        // new Point(1077, 26),
-        // new Point(912, 565),
-        // new Point(1221, 563),
-        // new Point(1196, 283)
-        );
+                new Point(601, 397));
 
         MatOfPoint2f fieldPoints = new MatOfPoint2f(
                 new Point(0.9144, 0),
                 new Point(0.9144, 0.3048),
                 new Point(1.2192, 0.3048),
-                new Point(1.2192, 0)
-        // new Point(0.9144, -0.3048),
-        // new Point(2.1336, -0.3048),
-        // new Point(1.8288, 0.9144),
-        // new Point(2.7432, 1.2192),
-        // new Point(2.7432, 0.9144),
-        // new Point(3.3528, 1.524),
-        // new Point(3.6576, 1.524),
-        // new Point(0.9144, -0.3048),
-        // new Point(0.9144, -0.6096),
-        // new Point(1.524, -0.9144)
-        );
+                new Point(1.2192, 0));
 
         homography = new Mat();
         homography = Calib3d.findHomography(cameraPoints, fieldPoints, Calib3d.RANSAC);
@@ -116,31 +94,18 @@ public class NoteDetection extends SubsystemBase {
             notePoses.clear();
             cameraMidpoints.clear();
             if (RobotBase.isSimulation()) {
-                // closestPose = new Pose2d(2.87, 5.55, new Rotation2d());
-                closestPose = AutoTargetUtils.getSourceTrackTarget();
-                closestPoseToRegion = new Pose2d(2.87, 5.55, new Rotation2d());
+                hasNote = true;
+                hasNoteInRegion = true;
+                closestPose = new Pose2d(8.25, 0.76, new Rotation2d());
+                closestPoseToRegion = new Pose2d(8.25, 0.76, new Rotation2d());
                 if (closestPose.getTranslation()
-                        .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 3) {
-                    hasNote = true;
+                        .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
+                    notePoses.add(closestPose);
                     SmartDashboard.putNumberArray("Closest note", poseToDouble(getClosestNote()));
-                } else {
-                    hasNote = false;
-                    SmartDashboard.putNumberArray("Closest note", new double[] {});
-                }
-                if (regionPose != null) {
-                    double d = closestPoseToRegion.getTranslation().getDistance(regionPose.getTranslation());
-                    if (d < regionRadius) {
-                        hasNoteInRegion = true;
-                        SmartDashboard.putNumberArray("Closest note to region", poseToDouble(getClosestNoteToRegion()));
-                    } else {
-                        hasNoteInRegion = false;
-                        SmartDashboard.putNumberArray("Closest note to region", new double[] {});
-                    }
-
                 }
                 return;
             } else {
-                var result = detector.getLatestResult();
+                PhotonPipelineResult result = detector.getLatestResult();
                 if (!result.hasTargets()) {
                     if (framesSinceRegion > lostFrameThreshold.get()) {
                         hasNoteInRegion = false;
@@ -292,11 +257,9 @@ public class NoteDetection extends SubsystemBase {
 
         Pose2d currentPose = RobotContainer.m_robotDrive.getPose();
         Pose2d robotRelativeNotePose = new Pose2d(
-                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] /* + 0.3937 TODO: Move camera offset to constants */
-                        + 0.1778 /* Note center dist */,
+                (1.0 / res.get(2, 0)[0]) * res.get(0, 0)[0] + 0.1778 /* Note center dist */,
                 (1.0 / res.get(2, 0)[0]) * res.get(1, 0)[0],
                 new Rotation2d());
-                
         res.release();
         // Translate the note pose to the field (rotate by the robot's rotation)
         double robotRotationRad = currentPose.getRotation().getRadians();
