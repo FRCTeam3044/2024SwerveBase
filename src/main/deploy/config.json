@@ -1358,7 +1358,7 @@
         "frontLeftModule/driving/I": "0.0",
         "Elevator Test PID Target": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "0.5"
         },
         "frontRightModule/turning/I": "0.0",
         "rearRightModule/driving/D": "0.0",
@@ -1374,7 +1374,7 @@
         },
         "Intake Ultrasonic Threshold": {
             "comment": "Auto-Generated",
-            "value": "250"
+            "value": "25"
         },
         "Lob Speed": {
             "comment": "Auto-Generated",

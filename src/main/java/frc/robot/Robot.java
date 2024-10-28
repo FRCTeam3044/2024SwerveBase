@@ -47,8 +47,6 @@ public class Robot extends LoggedRobot {
     public LEDSubsystem m_led;
     public static boolean redAlliance = false;
     private SendableChooser<Boolean> redAllianceChooser;
-    private SendableChooser<String> autoChooser;
-    private String lastAuto;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -114,12 +112,14 @@ public class Robot extends LoggedRobot {
         redAllianceChooser.setDefaultOption("Red Alliance", true);
         redAllianceChooser.addOption("Blue Alliance", false);
         SmartDashboard.putData(redAllianceChooser);
-        autoChooser = new SendableChooser<String>();
-        autoChooser.setDefaultOption("4 Note Amp Start", "GetThreeAmpStart.json");
-        autoChooser.addOption("4 Note Source Start", "GetThreeSourceStart.json");
-        autoChooser.addOption("Midfield Pickup Amp Start", "ShootMidfieldAmpSide.json");
-        autoChooser.addOption("Midfield Pickup Source Start", "ShootMidfieldSourceSide.json");
-        SmartDashboard.putData(autoChooser);
+        // autoChooser = new SendableChooser<String>();
+        // autoChooser.setDefaultOption("4 Note Amp Start", "GetThreeAmpStart.json");
+        // autoChooser.addOption("4 Note Source Start", "GetThreeSourceStart.json");
+        // autoChooser.addOption("Midfield Pickup Amp Start",
+        // "ShootMidfieldAmpSide.json");
+        // autoChooser.addOption("Midfield Pickup Source Start",
+        // "ShootMidfieldSourceSide.json");
+        // SmartDashboard.putData(autoChooser);
         // for (int i = 0; i < 3; i++) {
         // RobotContainer.m_robotDrive.generateTrajectoryNoAvoidance(new Pose2d(0, 0,
         // new Rotation2d()),
@@ -150,11 +150,8 @@ public class Robot extends LoggedRobot {
         RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
-        if (redAllianceChooser.getSelected() != redAlliance || lastAuto != autoChooser.getSelected()) {
-            lastAuto = autoChooser.getSelected();
+        if (redAllianceChooser.getSelected() != redAlliance) {
             redAlliance = redAllianceChooser.getSelected();
-            m_autonomousCommand = m_robotContainer.getAutonomousCommand(lastAuto);
-
         }
     }
 
@@ -173,12 +170,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        // RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
-
-        // schedule the autonomous command (example)
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
-        }
     }
 
     /** This function is called periodically during autonomous. */

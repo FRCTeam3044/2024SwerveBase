@@ -14,7 +14,7 @@ public class GetToShootingZoneState extends State {
         super(stateMachine);
         onEnterTrg().onTrue(StateCommands.driveToShootingZone());
 
-        t(Triggers.hasNote()).and(Triggers.nearLocation(() -> {
+        t(RobotContainer.intake::hasNote).and(Triggers.nearLocation(() -> {
             return AutoTargetUtils.getShootingTarget().getTranslation();
         }, ShooterConstants.kShooterSpinupRange.get()))
                 .whileTrue(RobotContainer.shooter.shootPercentage(0.8));

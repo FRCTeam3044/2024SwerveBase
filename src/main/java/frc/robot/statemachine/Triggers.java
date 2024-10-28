@@ -32,21 +32,9 @@ public class Triggers {
     }
 
     // TODO: Make this real!
-    public static BooleanSupplier hasNote() {
-        BooleanSupplier hasNote = () -> true;
-        return hasNote;
-    }
-
-    // TODO: Make this real!
     public static BooleanSupplier readyToShoot() {
         BooleanSupplier readyToShoot = () -> true;
         return readyToShoot;
-    }
-
-    // TODO: Make this real!
-    public static BooleanSupplier noNoteTrg() {
-        BooleanSupplier noNote = () -> true;
-        return noNote;
     }
 
     // Thinking about making this a pattern, where conditions are static and

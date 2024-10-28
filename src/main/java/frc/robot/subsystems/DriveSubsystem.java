@@ -870,13 +870,15 @@ public class DriveSubsystem extends SubsystemBase {
             }
         };
 
-        Command followCommand = Commands.runOnce(() -> noteDetection.setRegion(targetRegion, regionRadius))
-                .andThen(followTrajectory(trajSupplier,
-                        () -> controller.calculate(getPose(), getChassisSpeeds())));
+        Command followCommand = followTrajectory(trajSupplier,
+                () -> controller.calculate(getPose(), getChassisSpeeds()));
         if (cancelIfNone) {
             return followCommand.onlyIf(() -> noteDetection.hasNoteInRegion);
         }
-        return goToAndTrackPoint(targetRegion, targetRegion, false, false).until(() -> noteDetection.hasNoteInRegion)
+        return Commands
+                .parallel(Commands.run(() -> noteDetection.setRegion(targetRegion, regionRadius)),
+                        goToAndTrackPoint(targetRegion, targetRegion, false, false))
+                .until(() -> noteDetection.hasNoteInRegion)
                 .andThen(followCommand);
     }
 
