@@ -23,7 +23,6 @@ public class Triggers {
         return nearLocation(() -> location, threshold);
     }
 
-    // TODO: MAKE THIS REAL!
     public static BooleanSupplier noteDetectedNear(Translation2d location) {
         return () -> {
             RobotContainer.m_noteDetection.setRegion(new Pose2d(location, new Rotation2d()), 0.5);
@@ -33,7 +32,7 @@ public class Triggers {
 
     // TODO: Make this real!
     public static BooleanSupplier readyToShoot() {
-        BooleanSupplier readyToShoot = () -> true;
+        BooleanSupplier readyToShoot = () -> RobotContainer.shooter.shooterAtSpeed() && RobotContainer.intake.hasNote();
         return readyToShoot;
     }
 
