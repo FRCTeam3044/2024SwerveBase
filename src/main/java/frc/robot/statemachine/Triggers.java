@@ -47,7 +47,7 @@ public class Triggers {
                 DriverStation.reportError("Unable to retrieve Shooting Zone", null);
                 return false;
             }
-            return shootingZone.isInside(robotPos);
+            return shootingZone.calculateNearestPoint(robotPos).distance(robotPos) < 0.2;
         };
     }
 }

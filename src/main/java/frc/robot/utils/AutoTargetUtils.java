@@ -32,10 +32,15 @@ public class AutoTargetUtils {
             new Rotation2d());
 
     static {
+        // Obstacle blueShootingZoneOne = Obstacle.createObstacle(
+        // new Vertex(0, 3),
+        // new Vertex(4, 3),
+        // new Vertex(4, 7),
+        // new Vertex(0, 7));
         Obstacle blueShootingZoneOne = Obstacle.createObstacle(
-                new Vertex(0, 3),
-                new Vertex(4, 3),
-                new Vertex(4, 7),
+                new Vertex(0, 4),
+                new Vertex(1.9, 4),
+                new Vertex(1.9, 7),
                 new Vertex(0, 7));
         // Obstacle blueShootingZoneTwo = Obstacle.createObstacle(
         // new Vertex(3, 7),
@@ -44,11 +49,16 @@ public class AutoTargetUtils {
         // new Vertex(5, 7));
         BLUE_SHOOTING_ZONE = new ObstacleGroup(blueShootingZoneOne/* , blueShootingZoneTwo */);
 
+        // Obstacle redShootingZoneOne = Obstacle.createObstacle(
+        // new Vertex(12.55, 3),
+        // new Vertex(12.55, 7),
+        // new Vertex(16.55, 7),
+        // new Vertex(16.55, 3));
         Obstacle redShootingZoneOne = Obstacle.createObstacle(
-                new Vertex(12.55, 3),
-                new Vertex(12.55, 7),
+                new Vertex(14.65, 4),
+                new Vertex(14.65, 7),
                 new Vertex(16.55, 7),
-                new Vertex(16.55, 3));
+                new Vertex(16.55, 4));
         // Obstacle redShootingZoneTwo = Obstacle.createObstacle(
         // new Vertex(11.55, 7),
         // new Vertex(13.55, 7),

@@ -95,9 +95,9 @@ public class NoteDetection extends SubsystemBase {
             cameraMidpoints.clear();
             if (RobotBase.isSimulation()) {
                 hasNote = true;
-                hasNoteInRegion = true;
+                hasNoteInRegion = regionPose != null;
                 closestPose = new Pose2d(8.25, 0.76, new Rotation2d());
-                closestPoseToRegion = new Pose2d(8.25, 0.76, new Rotation2d());
+                closestPoseToRegion = regionPose;
                 if (closestPose.getTranslation()
                         .getDistance(RobotContainer.m_robotDrive.getPose().getTranslation()) < 1) {
                     notePoses.add(closestPose);

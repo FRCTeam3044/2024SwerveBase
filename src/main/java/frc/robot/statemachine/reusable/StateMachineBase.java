@@ -30,6 +30,6 @@ public abstract class StateMachineBase {
         }
         currentState.checkTransitions();
         currentState.run();
-        SmartDashboard.putString("State", currentState.getName());
+        SmartDashboard.putString("State", currentState.getDeepName());
     }
 }

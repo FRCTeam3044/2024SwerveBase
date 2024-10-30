@@ -115,6 +115,14 @@ public abstract class State {
     }
 
     /**
+     * Add a child state to this state (will never be entered by default)
+     */
+    public State withChild(State child) {
+        addChild(child, () -> false, Integer.MAX_VALUE, false);
+        return this;
+    }
+
+    /**
      * Add a default child state to this state.
      *
      * @param child The child state
@@ -152,6 +160,17 @@ public abstract class State {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Get the name of this state, including the names of all parent states.
+     * 
+     * @return The recurisive name of this state
+     */
+    public String getDeepName() {
+        if (parentState == null)
+            return getName();
+        return parentState.getDeepName() + "/" + getName();
     }
 
     /**

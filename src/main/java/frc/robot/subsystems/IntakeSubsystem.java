@@ -76,7 +76,8 @@ public class IntakeSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Intake Ultrasonic", intakeUltrasonic.getValue());
         // SmartDashboard.putNumber("Intake Current",
         // intakeBottomMotor.getStatorCurrent());
-        SmartDashboard.putNumber("Intake Top Current", -intakeTopMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Intake Top Current",
+        // -intakeTopMotor.getStatorCurrent());
 
         if (getCurrent() < kIntakeCurrentThreshold.get()) {
             hasNote = true;
@@ -84,6 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
         if (RobotBase.isSimulation() && RobotContainer.m_driverController.getHID().getAButtonPressed()) {
             hasNote = true;
         }
+        SmartDashboard.putBoolean("Intake Has Note", hasNote);
     }
 
     public double getCurrent() {
