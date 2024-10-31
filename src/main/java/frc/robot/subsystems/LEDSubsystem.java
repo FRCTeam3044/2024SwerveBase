@@ -134,37 +134,24 @@ public class LEDSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (DriverStation.isEnabled() || (LEDConstants.bypassEnabled.get() && !DriverStation.isFMSAttached())) {
-            // TODO Add the state machine here
-            State currentState = State.NOTE_LOADED;
+            boolean hasNote = RobotContainer.intake.hasNote();
             boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
             boolean allowedToBlink = (DriverStation.isAutonomous() || (!DriverStation.isAutonomous()
                     && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5));
-            SmartDashboard.putBoolean("Elevator Aligned", shooterAligned);
-            switch (currentState) {
 
-                case TARGETING_NOTE:
-                    setCompass(RobotContainer.m_noteDetection.midpoint);
-                    break;
-                case NOTE_LOADED:
-                    // TEmporary hack :D
-                    if (RobotContainer.shooter.shooterAtSpeed()
-                            && allowedToBlink && shooterAligned) {
-                        blinkColor(0, 50, 0, 0.2);
-                    } else {
-                        setColor(254, 222, 0);
-                    }
-                    break;
-                case READY_TO_SHOOT:
-                    if (RobotContainer.shooter.shooterAtSpeed() && allowedToBlink && shooterAligned) {
-                        blinkColor(0, 50, 0, 0.2);
-                    } else {
-                        setColor(254, 222, 0);
-                    }
-                    break;
-                case NO_NOTE:
-                    setPurpleGold(false);
-                    break;
-            }
+            if (hasNote) {
+                // TEmporary hack :D
+                if (RobotContainer.shooter.shooterAtSpeed()
+                        && allowedToBlink && shooterAligned) {
+                    blinkColor(0, 50, 0, 0.2);
+                } else {
+                    setColor(254, 222, 0);
+                }
+            } else if (RobotContainer.m_noteDetection.hasNote) {
+                setCompass(RobotContainer.m_noteDetection.midpoint);
+            } else
+                setPurpleGold(false);
+
         } else {
             if (m_detectionDebouncer.calculate(m_robotContainer.m_visionSubsystem.hasTargets())) {
                 setColor(0, 50, 0);
