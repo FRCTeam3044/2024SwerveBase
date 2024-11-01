@@ -50,7 +50,23 @@ public class AutoBuilder {
                                 () -> RobotContainer.intake.hasNote() && Triggers.inShootingZone().getAsBoolean(), 0);
 
                 shoot1.withTransition(pickupNote2, () -> !RobotContainer.intake.hasNote(), 0);
-                shoot2.withTransition(new AutoIdleState(machine), () -> !RobotContainer.intake.hasNote(), 0);
+
+                Translation2d note3 = new Translation2d(2.87, 7.00);
+                JSONObject pickNote3Params = new JSONObject();
+                pickNote3Params.put("notePos", JSONUtils.fromTranslation2d(note3));
+                State pickupNote3 = (new PickupNoteAuto(machine, pickNote3Params)).withName("PickupNote3");
+                pickupNote2.withTransition(pickupNote3,
+                                () -> !RobotContainer.m_noteDetection.hasNote
+                                                && Triggers.nearLocation(note2, 0.1).getAsBoolean());
+                GetToShootingZoneState getToZone3 = new GetToShootingZoneState(machine);
+                ShootState shoot3 = new ShootState(machine);
+                auto.withChild(shoot3).withChild(pickupNote3).withChild(getToZone3);
+                pickupNote3.withTransition(getToZone3, RobotContainer.intake::hasNote, 0);
+                getToZone3.withTransition(shoot3,
+                                () -> RobotContainer.intake.hasNote() && Triggers.inShootingZone().getAsBoolean(), 0);
+
+                shoot2.withTransition(pickupNote3, () -> !RobotContainer.intake.hasNote(), 0);
+                shoot3.withTransition(new AutoIdleState(machine), () -> !RobotContainer.intake.hasNote(), 0);
 
         }
 

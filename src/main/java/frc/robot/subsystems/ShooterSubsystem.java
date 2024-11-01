@@ -135,6 +135,7 @@ public class ShooterSubsystem extends SubsystemBase {
         } else if (isShooting) {
             isShooting = false;
         }
+        SmartDashboard.putNumber("Shooter top target RPM", currentTopTargetRPM);
         topPidController.setReference(currentTopTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
         bottomPidController.setReference(-currentBottomTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
     }

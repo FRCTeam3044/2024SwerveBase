@@ -12,7 +12,7 @@ public class ShootState extends State {
         onEnterTrg().onTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
                 true));
 
-        onEnterTrg().onTrue(RobotContainer.shooter.shootPercentage(0.8));
+        onEnterTrg().onTrue(RobotContainer.shooter.speaker());
 
         t(Triggers.readyToShoot()).onTrue(RobotContainer.transit.run());
     }

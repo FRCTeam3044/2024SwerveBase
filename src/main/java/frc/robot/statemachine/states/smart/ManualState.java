@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
-import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
@@ -25,7 +24,6 @@ public class ManualState extends State {
 
                 // When the menu button is pressed*
                 driverController.x().whileTrue(RobotContainer.m_robotDrive.setXMode());
-                driverController.b().whileTrue(AutoFactory.testAuto());
 
                 operatorController.x().whileTrue(RobotContainer.intake.run());
                 operatorController.y().whileTrue(RobotContainer.transit.run().alongWith(RobotContainer.intake.run()));

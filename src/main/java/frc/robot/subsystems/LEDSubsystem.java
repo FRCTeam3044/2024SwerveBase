@@ -5,11 +5,9 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LEDConstants;
-import frc.robot.subsystems.StateMachine.State;
 
 public class LEDSubsystem extends SubsystemBase {
     private AddressableLED m_led;
@@ -150,7 +148,7 @@ public class LEDSubsystem extends SubsystemBase {
             } else if (RobotContainer.m_noteDetection.hasNote) {
                 setCompass(RobotContainer.m_noteDetection.midpoint);
             } else
-                setPurpleGold(false);
+                setPurpleGold(!DriverStation.isEnabled());
 
         } else {
             if (m_detectionDebouncer.calculate(m_robotContainer.m_visionSubsystem.hasTargets())) {

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.autos.reusable.AutoFactory;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteDetection;
@@ -84,7 +83,7 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand(String autoName) {
-                return AutoFactory.testAuto();
+                return null;
         }
 
 }
