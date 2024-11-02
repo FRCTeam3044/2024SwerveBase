@@ -7,4 +7,9 @@ public class AutoState extends State {
     public AutoState(StateMachineBase stateMachine) {
         super(stateMachine);
     }
+
+    @Override
+    public void onEnter() {
+        super.onEnter();
+    }
 }

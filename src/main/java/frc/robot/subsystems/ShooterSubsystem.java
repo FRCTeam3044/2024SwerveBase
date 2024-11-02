@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder topShooterMoterEncoder = topMotor.getAlternateEncoder(8192);
     private RelativeEncoder bottomShooterMotorEncoder = bottomMotor.getAlternateEncoder(8192);
 
-    public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(100.0, "Speaker Shooter RPM");
+    public ConfigurableParameter<Double> speakerRPM = new ConfigurableParameter<Double>(4300.0, "Shooter Speaker RPM");
     public ConfigurableParameter<Double> ampTopRPM = new ConfigurableParameter<Double>(600.0, "Amp Top Shooter RPM");
     public ConfigurableParameter<Double> ampBottomRPM = new ConfigurableParameter<Double>(1600.0,
             "Amp Bottom Shooter RPM");
@@ -135,7 +135,6 @@ public class ShooterSubsystem extends SubsystemBase {
         } else if (isShooting) {
             isShooting = false;
         }
-        SmartDashboard.putNumber("Shooter top target RPM", currentTopTargetRPM);
         topPidController.setReference(currentTopTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
         bottomPidController.setReference(-currentBottomTargetRPM, CANSparkMax.ControlType.kSmartVelocity);
     }
@@ -182,8 +181,23 @@ public class ShooterSubsystem extends SubsystemBase {
         return shoot(rpm, rpm);
     }
 
+    public Command shootNoStop(double topRPM, double bottomRPM) {
+        return Commands.run(() -> {
+            setTargetSpeed(topRPM, bottomRPM);
+            handlePID();
+        }, this).withName("Shooter");
+    }
+
+    public Command shootNoStop(double rpm) {
+        return shootNoStop(rpm, rpm);
+    }
+
     public Command speaker() {
-        return shoot(speakerRPM.get()).withName("Speaker Shooter");
+        return Commands.deferredProxy(() -> shoot(speakerRPM.get())).withName("Speaker Shooter");
+    }
+
+    public Command speakerNoStop() {
+        return Commands.deferredProxy(() -> shootNoStop(speakerRPM.get())).withName("Speaker Shooter");
     }
 
     public Command amp() {

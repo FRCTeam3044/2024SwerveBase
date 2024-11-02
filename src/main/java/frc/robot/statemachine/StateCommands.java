@@ -71,7 +71,7 @@ public class StateCommands {
     public static Command pickupNote(Translation2d note) {
         return Commands.parallel(
                 RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection, new Pose2d(note, new Rotation2d()),
-                        0.5, false),
+                        0.6, false),
                 RobotContainer.intake.run(), RobotContainer.elevator.intake()).withName("SM Pickup Note");
     }
 }

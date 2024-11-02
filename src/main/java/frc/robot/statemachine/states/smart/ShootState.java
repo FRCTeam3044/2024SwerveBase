@@ -12,6 +12,20 @@ public class ShootState extends State {
         onEnterTrg().onTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
                 true));
 
+        onEnterTrg().onTrue(RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive));
+
+        onEnterTrg().onTrue(RobotContainer.shooter.speaker());
+
+        t(Triggers.readyToShoot()).onTrue(RobotContainer.transit.run());
+    }
+
+    public ShootState(StateMachineBase stateMachine, boolean forceHasNote) {
+        super(stateMachine);
+        onEnterTrg().onTrue(RobotContainer.m_robotDrive.trackPoint(AutoTargetUtils::getShootingTarget,
+                true));
+
+        onEnterTrg().onTrue(RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive));
+
         onEnterTrg().onTrue(RobotContainer.shooter.speaker());
 
         t(Triggers.readyToShoot()).onTrue(RobotContainer.transit.run());

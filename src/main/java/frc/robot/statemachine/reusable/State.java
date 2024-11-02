@@ -24,7 +24,7 @@ public abstract class State {
     private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
     private boolean hasDefaultChild = false;
     private String name = this.getClass().getSimpleName();
-    private boolean onEnter = false;
+    protected boolean onEnter = false;
 
     /**
      * Create a new state under the given state machine.
@@ -199,6 +199,8 @@ public abstract class State {
      */
     public void onEnter() {
         onEnter = true;
+        if (parentState != null)
+            parentState.onEnter();
     };
 
     public SmartTrigger t(BooleanSupplier condition) {

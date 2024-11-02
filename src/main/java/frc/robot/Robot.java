@@ -170,6 +170,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
+        RobotContainer.intake.forceNote();
     }
 
     /** This function is called periodically during autonomous. */

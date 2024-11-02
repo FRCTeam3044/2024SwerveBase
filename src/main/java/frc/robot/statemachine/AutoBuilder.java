@@ -23,13 +23,17 @@ public class AutoBuilder {
         public static void congigureAutoOne(StateMachineBase machine, State auto) {
                 auto.withNoChildren();
 
+                ShootState shootPreload = new ShootState(machine);
+
                 JSONObject pickNote1Params = new JSONObject();
-                Translation2d note1 = new Translation2d(2.87, 4.11);
+                Translation2d note1 = new Translation2d(2.87, 7);
                 pickNote1Params.put("notePos", JSONUtils.fromTranslation2d(note1));
                 State pickupNote1 = (new PickupNoteAuto(machine, pickNote1Params)).withName("PickupNote1");
                 GetToShootingZoneState getToZone1 = new GetToShootingZoneState(machine);
                 ShootState shoot1 = new ShootState(machine);
-                auto.withDefaultChild(pickupNote1).withChild(getToZone1).withChild(shoot1);
+
+                auto.withDefaultChild(shootPreload).withChild(pickupNote1).withChild(getToZone1).withChild(shoot1);
+                shootPreload.withTransition(pickupNote1, () -> !RobotContainer.intake.hasNote(), 0);
                 pickupNote1.withTransition(getToZone1, RobotContainer.intake::hasNote, 0);
                 getToZone1.withTransition(shoot1,
                                 () -> RobotContainer.intake.hasNote() && Triggers.inShootingZone().getAsBoolean(), 0);
@@ -51,7 +55,7 @@ public class AutoBuilder {
 
                 shoot1.withTransition(pickupNote2, () -> !RobotContainer.intake.hasNote(), 0);
 
-                Translation2d note3 = new Translation2d(2.87, 7.00);
+                Translation2d note3 = new Translation2d(2.87, 4.11);
                 JSONObject pickNote3Params = new JSONObject();
                 pickNote3Params.put("notePos", JSONUtils.fromTranslation2d(note3));
                 State pickupNote3 = (new PickupNoteAuto(machine, pickNote3Params)).withName("PickupNote3");

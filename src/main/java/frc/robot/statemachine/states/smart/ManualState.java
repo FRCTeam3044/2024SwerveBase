@@ -1,7 +1,7 @@
 package frc.robot.statemachine.states.smart;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.statemachine.reusable.SmartXboxController;
@@ -24,6 +24,8 @@ public class ManualState extends State {
 
                 // When the menu button is pressed*
                 driverController.x().whileTrue(RobotContainer.m_robotDrive.setXMode());
+                driverController.start().whileTrue(Commands.parallel(RobotContainer.shooter.shootPercentage(0.175),
+                                Commands.waitSeconds(0.15).andThen(RobotContainer.transit.run())));
 
                 operatorController.x().whileTrue(RobotContainer.intake.run());
                 operatorController.y().whileTrue(RobotContainer.transit.run().alongWith(RobotContainer.intake.run()));
@@ -32,13 +34,16 @@ public class ManualState extends State {
                 operatorController.rightBumper().whileTrue(RobotContainer.shooter.amp());
                 operatorController.rightTrigger().whileTrue(RobotContainer.shooter.lob());
                 operatorController.a().whileTrue(RobotContainer.elevator.intake());
+                // operatorController.b()
+                // .whileTrue(RobotContainer.m_robotDrive.goToNote(RobotContainer.m_noteDetection,
+                // true));
                 operatorController.povDown().whileTrue(RobotContainer.intake.run(true));
 
                 Command manualDrive = RobotContainer.m_robotDrive.manualDrive(driverControllerRaw::getLeftX,
                                 driverControllerRaw::getLeftY, driverControllerRaw::getRightX,
-                                driverController.rightTrigger()::getAsBoolean);
+                                driverController.leftTrigger()::getAsBoolean);
 
-                driverController.leftTrigger().and(operatorController.a().negate())
+                driverController.rightTrigger().and(operatorController.a().negate())
                                 .runWhileTrue(autoAimAndAlignCommand)
                                 .runWhileFalse(manualDrive);
         }

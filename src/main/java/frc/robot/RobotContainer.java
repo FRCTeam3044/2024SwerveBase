@@ -69,7 +69,8 @@ public class RobotContainer {
                 }
 
                 climber.setDefaultCommand(climber
-                                .moveClimberJoysticks(m_operatorController::getLeftY, m_operatorController::getRightY)
+                                .moveClimberJoysticks(() -> -m_operatorController.getLeftY(),
+                                                m_operatorController::getRightY)
                                 .onlyWhile(teleop()).withName("Move Climber"));
         }
 

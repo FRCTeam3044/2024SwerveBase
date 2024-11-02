@@ -135,7 +135,7 @@ public class LEDSubsystem extends SubsystemBase {
             boolean hasNote = RobotContainer.intake.hasNote();
             boolean shooterAligned = RobotContainer.elevator.elevatorAtAngle();
             boolean allowedToBlink = (DriverStation.isAutonomous() || (!DriverStation.isAutonomous()
-                    && RobotContainer.m_driverController.getLeftTriggerAxis() > 0.5));
+                    && RobotContainer.m_driverController.getRightTriggerAxis() > 0.5));
 
             if (hasNote) {
                 // TEmporary hack :D

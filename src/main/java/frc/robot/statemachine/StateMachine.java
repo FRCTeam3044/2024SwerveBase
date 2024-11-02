@@ -38,18 +38,22 @@ public class StateMachine extends StateMachineBase {
                                 .withDefaultChild(manual)
                                 .withChild(driverAssist, driverController.rightTrigger(), 0);
 
-                manual.withTransition(driverAssist, driverController.rightTrigger(), 0);
+                // manual.withTransition(driverAssist, driverController.rightBumper(), 0);
+                manual.withTransition(pickupNote, operatorController.b(), 10);
+                pickupNote.withTransition(manual, operatorController.b().negate(), 0);
                 // Driver assistance
-                driverAssist.withTransition(manual, driverController.rightTrigger().negate(), 0)
-                                .withDefaultChild(getToSource)
-                                .withChild(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 2)
-                                .withChild(getToShootingZone, RobotContainer.intake::hasNote, 1)
-                                .withChild(shoot, () -> RobotContainer.intake.hasNote()
-                                                && Triggers.inShootingZone().getAsBoolean(), 0);
+                // driverAssist.withTransition(manual, driverController.rightTrigger().negate(),
+                // 0)
+                // .withDefaultChild(getToSource)
+                // .withChild(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 2)
+                // .withChild(getToShootingZone, RobotContainer.intake::hasNote, 1)
+                // .withChild(shoot, () -> RobotContainer.intake.hasNote()
+                // && Triggers.inShootingZone().getAsBoolean(), 0);
                 getToSource.withTransition(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 1)
                                 .withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0);
-                pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0)
-                                .withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
+                // pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote,
+                // 0)
+                // .withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
                 getToShootingZone.withTransition(shoot, Triggers.inShootingZone());
                 shoot.withTransition(getToSource, () -> !RobotContainer.intake.hasNote());
 

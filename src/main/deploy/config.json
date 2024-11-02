@@ -301,6 +301,10 @@
             "value": "0.1"
         },
         "rearLeftModule/turning/I": "0.0",
+        "Shooter Speaker RPM": {
+            "comment": "Auto-Generated",
+            "value": "4300.0"
+        },
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -682,6 +686,10 @@
             "value": "0.1"
         },
         "rearLeftModule/turning/I": "0.0",
+        "Shooter Speaker RPM": {
+            "comment": "Auto-Generated",
+            "value": "4300.0"
+        },
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -797,7 +805,7 @@
         },
         "Transit Runtime": {
             "comment": "Auto-Generated",
-            "value": "1.2"
+            "value": "1.0"
         },
         "rearRightModule/turning/FF": "0.0",
         "Climber Manual Control Speed": {
@@ -1062,6 +1070,10 @@
             "value": "0.1"
         },
         "rearLeftModule/turning/I": "0.0",
+        "Shooter Speaker RPM": {
+            "comment": "Auto-Generated",
+            "value": "4300.0"
+        },
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -1442,6 +1454,10 @@
             "value": "0.1"
         },
         "rearLeftModule/turning/I": "0.0",
+        "Shooter Speaker RPM": {
+            "comment": "Auto-Generated",
+            "value": "4300.0"
+        },
         "Rotation FF": {
             "comment": "Auto-Generated",
             "value": "1.0"

@@ -153,4 +153,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean hasNote() {
         return hasNote;
     }
+
+    public void forceNote() {
+        hasNote = true;
+    }
 }

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Function;
@@ -860,11 +861,16 @@ public class DriveSubsystem extends SubsystemBase {
             boolean cancelIfNone) {
         Supplier<Pose2d> notePose = noteDetection::getClosestNoteToRegion;
         TargetRotationController controller = new TargetRotationController(notePose, false);
+        AtomicReference<Trajectory> lastTraj = new AtomicReference<>();
         // TODO: Handling for this? Memoized Supplier nightmare
         Function<Pose2d, Trajectory> trajSupplier = (p) -> {
+            if (!noteDetection.hasNote && lastTraj.get() != null)
+                return lastTraj.get();
             try {
-                return this.generateTrajectory(p, notePose.get());
-            } catch (ImpossiblePathException e) {
+                Trajectory newTraj = this.generateTrajectoryNoAvoidance(p, notePose.get());
+                lastTraj.set(newTraj);
+                return newTraj;
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
