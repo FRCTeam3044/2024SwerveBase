@@ -233,13 +233,19 @@ public abstract class State {
         onEnter = false;
     }
 
-    void checkTransitions() {
-        if (parentState != null)
-            parentState.checkTransitions();
+    boolean checkTransitions() {
+        if (parentState != null) {
+            boolean didParentTransition = parentState.checkTransitions();
+            if (didParentTransition)
+                return true;
+        }
+
         TransitionInfo next = evaluateTransition(transitions);
         if (next != null) {
             stateMachine.transitionTo(next.state);
+            return true;
         }
+        return false;
     }
 
     private TransitionInfo evaluateTransition(ArrayList<TransitionInfo> transitions) {
