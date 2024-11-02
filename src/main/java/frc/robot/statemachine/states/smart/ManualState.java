@@ -19,7 +19,7 @@ public class ManualState extends State {
 
                 Command autoAimAndAlignCommand = RobotContainer.elevator.autoAim(RobotContainer.m_robotDrive)
                                 .alongWith(RobotContainer.m_robotDrive.driveAndTrackPoint(driverControllerRaw::getLeftX,
-                                                driverControllerRaw::getLeftY, AutoTargetUtils.getShootingTarget(),
+                                                driverControllerRaw::getLeftY, AutoTargetUtils::getShootingTarget,
                                                 true));
 
                 // When the menu button is pressed*

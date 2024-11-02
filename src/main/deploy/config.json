@@ -838,7 +838,7 @@
         "rearRightModule/turning/Min": "-1.0",
         "Intake Manual Control Speed": {
             "comment": "Auto-Generated",
-            "value": "0.65"
+            "value": "0.9"
         },
         "Shooter bottom pid/P": "0.0",
         "Transit Manual Control Speed": {
