@@ -29,14 +29,6 @@ import frc.robot.utils.AutoTargetUtils;
 import frc.robot.utils.ControllerRumble;
 import frc.robot.utils.PathfindingDebugUtils;
 import frc.robot.utils.USBLocator;
-import frc.robot.commands.test.ClimberTestCommand;
-import frc.robot.commands.test.DriveTestCommand;
-import frc.robot.commands.test.ElevatorTestCommand;
-import frc.robot.commands.test.IntakeTestCommand;
-import frc.robot.commands.test.ShooterTestCommand;
-import frc.robot.commands.test.TransitTestCommand;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.StateMachine.State;
 import me.nabdev.oxconfig.OxConfig;
 
 /**
@@ -51,7 +43,6 @@ import me.nabdev.oxconfig.OxConfig;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     public RobotContainer m_robotContainer;
-    public LEDSubsystem m_led;
     public static boolean redAlliance = false;
     private SendableChooser<Boolean> redAllianceChooser;
     private SendableChooser<String> autoChooser;
@@ -109,7 +100,6 @@ public class Robot extends LoggedRobot {
         IntakeConstants.initialize();
         ClimberConstants.initialize();
         m_robotContainer = new RobotContainer();
-        m_led = new LEDSubsystem(LEDConstants.LEDPort, 143, m_robotContainer);
         PhotonCamera.setVersionCheckEnabled(false);
         // RobotContainer.m_noteDetection.setRegion(new Pose2d(1, 0, new Rotation2d()),
         // 2);
@@ -152,8 +142,6 @@ public class Robot extends LoggedRobot {
         // This must be called from the robot's periodic block in order for anything in
         // the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        m_robotContainer.m_visionSubsystem.periodic();
-        RobotContainer.m_noteDetection.periodic();
         ControllerRumble.updatePeriodic();
         SmartDashboard.putData(CommandScheduler.getInstance());
         if (redAllianceChooser.getSelected() != redAlliance || lastAuto != autoChooser.getSelected()) {
@@ -179,7 +167,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        RobotContainer.stateMachine.forceState(State.NOTE_LOADED);
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -234,35 +221,12 @@ public class Robot extends LoggedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        Command climberTestCommand = new ClimberTestCommand(RobotContainer.climber,
-                RobotContainer.m_driverController.getHID());
-        climberTestCommand.schedule();
-        Command intakeTestCommand = new IntakeTestCommand(RobotContainer.intake,
-                RobotContainer.m_driverController.getHID());
-        intakeTestCommand.schedule();
-        Command transitTestCommand = new TransitTestCommand(RobotContainer.transit,
-                RobotContainer.m_driverController.getHID());
-        transitTestCommand.schedule();
-        Command driveTestCommand = new DriveTestCommand(m_robotContainer, RobotContainer.m_robotDrive,
-                RobotContainer.m_driverController);
-        driveTestCommand.schedule();
-        Command elevatorTestCommand = new ElevatorTestCommand(RobotContainer.elevator,
-                RobotContainer.m_driverController.getHID());
-        elevatorTestCommand.schedule();
-        Command shooterTestCommand = new ShooterTestCommand(RobotContainer.shooter,
-                RobotContainer.m_driverController.getHID());
-        shooterTestCommand.schedule();
 
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (RobotContainer.m_driverController.getHID().getAButton()) {
-            RobotContainer.elevator.calibrationModeEnabled = true;
-        } else {
-            RobotContainer.elevator.calibrationModeEnabled = false;
-        }
     }
 
     /** This function is called once when the robot is first started up. */
