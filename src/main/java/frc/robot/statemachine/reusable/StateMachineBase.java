@@ -44,8 +44,12 @@ public abstract class StateMachineBase {
                 after.pop();
             }
 
+            Stack<State> exitStack = new Stack<>();
             while (!before.isEmpty()) {
-                before.pop().onExit();
+                exitStack.push(before.pop());
+            }
+            while (!exitStack.isEmpty()) {
+                exitStack.pop().onExit();
             }
 
             while (!after.isEmpty()) {
