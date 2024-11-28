@@ -19,8 +19,7 @@ public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController) {
                 super();
                 State disabled = new DisabledState(this);
-                // Set the initial state
-                transitionTo(disabled);
+                currentState = disabled;
 
                 State teleop = new TeleState(this);
                 State auto = new AutoState(this);

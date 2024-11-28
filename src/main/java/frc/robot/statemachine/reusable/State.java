@@ -1,6 +1,10 @@
 package frc.robot.statemachine.reusable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.function.BooleanSupplier;
 
 import org.json.JSONObject;
@@ -15,13 +19,15 @@ public abstract class State {
     }
 
     public State parentState;
-    public final ArrayList<TransitionInfo> children = new ArrayList<>();
 
     protected final SmartEventLoop loop = new SmartEventLoop();
     protected final JSONObject parameters;
 
+    Map<State, List<TransitionInfo>> transitions = new HashMap<>();
+    List<TransitionInfo> entranceConditions = new ArrayList<>();
+
     private final StateMachineBase stateMachine;
-    private final ArrayList<TransitionInfo> transitions = new ArrayList<>();
+
     private boolean hasDefaultChild = false;
     private String name = this.getClass().getSimpleName();
     protected boolean onEnter = false;
@@ -70,13 +76,42 @@ public abstract class State {
     }
 
     /**
-     * Add a transition to a different state on a condition.
+     * Add a transition to a different state on a condition. (Handled by parent
+     * state)
      * 
      * @param transition The transition info to add
      * @return This state
      */
     public State withTransition(TransitionInfo transition) {
-        transitions.add(transition);
+        if (this == stateMachine.rootState)
+            throw new RuntimeException("You cannot add a transition to the root state");
+
+        if (parentState != null)
+            parentState.addTransition(this, transition);
+        else {
+            // TODO: Maybe this shouldn't be implicit, might lead to stupid errors
+            stateMachine.rootState.addTransition(this, transition);
+            setParentState(stateMachine.rootState);
+        }
+
+        return this;
+    }
+
+    /**
+     * Add a transition between a child state and another state.
+     * 
+     * @param before     The child state to transition from
+     * @param transition The transition info to add
+     * @return This state
+     */
+    public State addTransition(State before, TransitionInfo transition) {
+        if (transitions.containsKey(before)) {
+            transitions.get(before).add(transition);
+        } else {
+            List<TransitionInfo> list = new ArrayList<>();
+            list.add(transition);
+            transitions.put(before, list);
+        }
         return this;
     }
 
@@ -139,7 +174,7 @@ public abstract class State {
      * @return
      */
     public State withNoChildren() {
-        children.clear();
+        transitions.clear();
         return this;
     }
 
@@ -191,6 +226,7 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
+        System.out.println("Exiting " + getDeepName());
         onEnter = false;
     }
 
@@ -198,9 +234,8 @@ public abstract class State {
      * Fires when the state is entered
      */
     public void onEnter() {
+        System.out.println("Entering " + getDeepName());
         onEnter = true;
-        if (parentState != null)
-            parentState.onEnter();
     };
 
     public SmartTrigger t(BooleanSupplier condition) {
@@ -233,22 +268,37 @@ public abstract class State {
         onEnter = false;
     }
 
-    boolean checkTransitions() {
-        if (parentState != null) {
-            boolean didParentTransition = parentState.checkTransitions();
-            if (didParentTransition)
-                return true;
-        }
+    // boolean checkTransitions() {
+    // if (parentState != null) {
+    // boolean didParentTransition = parentState.checkTransitions();
+    // if (didParentTransition)
+    // return true;
+    // }
 
-        TransitionInfo next = evaluateTransition(transitions);
-        if (next != null) {
-            stateMachine.transitionTo(next.state);
-            return true;
-        }
-        return false;
+    // TransitionInfo next = evaluateTransition(transitions);
+    // if (next != null) {
+    // stateMachine.transitionTo(next.state);
+    // return true;
+    // }
+    // return false;
+    // }
+
+    State evalTransitions(Stack<State> nodesToSearch) {
+        State next = nodesToSearch.pop();
+        if (next == this)
+            return this;
+
+        TransitionInfo transition = evaluateBestTransition(transitions.get(next));
+        if (transition != null)
+            return stateMachine.traverseTransitions(transition.state);
+
+        if (nodesToSearch.isEmpty())
+            nodesToSearch.push(next.evaluateEntranceState());
+
+        return next.evalTransitions(nodesToSearch);
     }
 
-    private TransitionInfo evaluateTransition(ArrayList<TransitionInfo> transitions) {
+    static TransitionInfo evaluateBestTransition(List<TransitionInfo> transitions) {
         TransitionInfo best = null;
         for (TransitionInfo i : transitions) {
             if ((best == null || best.priority > i.priority) && i.condition.getAsBoolean()) {
@@ -259,16 +309,16 @@ public abstract class State {
     }
 
     State evaluateEntranceState() {
-        if (children.isEmpty())
+        if (entranceConditions.isEmpty())
             return this;
-        TransitionInfo next = evaluateTransition(children);
+        TransitionInfo next = evaluateBestTransition(entranceConditions);
         if (next == null || next.state == null)
             throw new RuntimeException(
                     "A state was unable to determine which child to transition to. Consider adding a default state.");
         return next.state.evaluateEntranceState();
     }
 
-    void setParentState(State parentState) {
+    private void setParentState(State parentState) {
         if (this.parentState != null)
             throw new RuntimeException("A state can only have one parent state");
         this.parentState = parentState;
@@ -281,6 +331,6 @@ public abstract class State {
             hasDefaultChild = true;
         }
         child.setParentState(this);
-        children.add(new TransitionInfo(child, condition, priority));
+        entranceConditions.add(new TransitionInfo(child, condition, priority));
     }
 }
