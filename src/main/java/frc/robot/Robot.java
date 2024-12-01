@@ -106,6 +106,7 @@ public class Robot extends LoggedRobot {
         // 2);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand("ShootMidfieldSourceAmp.json");
         PathfindingDebugUtils.drawObstacle("Shooting Zone", AutoTargetUtils.getShootingZone());
+        OxConfig.setModeList("competition", "presentation");
         OxConfig.initialize();
         DriverStation.silenceJoystickConnectionWarning(true);
         redAllianceChooser = new SendableChooser<Boolean>();

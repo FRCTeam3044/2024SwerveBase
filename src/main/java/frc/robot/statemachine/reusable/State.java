@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  * A state in a state machine.
  */
 public abstract class State {
-    public record TransitionInfo(State state, BooleanSupplier condition, int priority) {
+    public record TransitionInfo(State state, BooleanSupplier condition, int priority, String name) {
     }
 
     public State parentState;
@@ -25,11 +25,12 @@ public abstract class State {
 
     Map<State, List<TransitionInfo>> transitions = new HashMap<>();
     List<TransitionInfo> entranceConditions = new ArrayList<>();
+    List<State> children = new ArrayList<>();
 
     private final StateMachineBase stateMachine;
 
     private boolean hasDefaultChild = false;
-    private String name = this.getClass().getSimpleName();
+    String name = this.getClass().getSimpleName();
     protected boolean onEnter = false;
 
     /**
@@ -59,8 +60,8 @@ public abstract class State {
      * @param condition The condition to transition on
      * @return This state
      */
-    public State withTransition(State state, BooleanSupplier condition) {
-        return withTransition(state, condition, Integer.MAX_VALUE);
+    public State withTransition(State state, BooleanSupplier condition, String name) {
+        return withTransition(state, condition, Integer.MAX_VALUE, name);
     }
 
     /**
@@ -71,8 +72,8 @@ public abstract class State {
      * @param priority  The priority of this transition
      * @return This state
      */
-    public State withTransition(State state, BooleanSupplier condition, int priority) {
-        return withTransition(new TransitionInfo(state, condition, priority));
+    public State withTransition(State state, BooleanSupplier condition, int priority, String name) {
+        return withTransition(new TransitionInfo(state, condition, priority, name));
     }
 
     /**
@@ -89,9 +90,9 @@ public abstract class State {
         if (parentState != null)
             parentState.addTransition(this, transition);
         else {
-            // TODO: Maybe this shouldn't be implicit, might lead to stupid errors
-            stateMachine.rootState.addTransition(this, transition);
-            setParentState(stateMachine.rootState);
+            throw new RuntimeException(
+                    "You cannot add a transition to a state that is not a child of another state. Did you forget to add this state as a child of the root? Transition added to: "
+                            + getDeepName());
         }
 
         return this;
@@ -125,13 +126,13 @@ public abstract class State {
      */
     public State withModeTransitions(State disabled, State teleop, State auto, State test) {
         if (disabled != this)
-            withTransition(disabled, DriverStation::isDisabled);
+            withTransition(disabled, DriverStation::isDisabled, "Robot Disabled");
         if (teleop != this)
-            withTransition(teleop, DriverStation::isTeleopEnabled);
+            withTransition(teleop, DriverStation::isTeleopEnabled, "Teleop Enabled");
         if (auto != this)
-            withTransition(auto, DriverStation::isAutonomousEnabled);
+            withTransition(auto, DriverStation::isAutonomousEnabled, "Auto Enabled");
         if (test != this)
-            withTransition(test, DriverStation::isTestEnabled);
+            withTransition(test, DriverStation::isTestEnabled, "Test Enabled");
         return this;
     }
 
@@ -318,7 +319,7 @@ public abstract class State {
         return next.state.evaluateEntranceState();
     }
 
-    private void setParentState(State parentState) {
+    void setParentState(State parentState) {
         if (this.parentState != null)
             throw new RuntimeException("A state can only have one parent state");
         this.parentState = parentState;
@@ -331,6 +332,7 @@ public abstract class State {
             hasDefaultChild = true;
         }
         child.setParentState(this);
-        entranceConditions.add(new TransitionInfo(child, condition, priority));
+        children.add(child);
+        entranceConditions.add(new TransitionInfo(child, condition, priority, null));
     }
 }

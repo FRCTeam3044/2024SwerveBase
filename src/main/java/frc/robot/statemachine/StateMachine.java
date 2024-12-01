@@ -25,9 +25,11 @@ public class StateMachine extends StateMachineBase {
                 State auto = new AutoState(this);
                 State test = new TestState(this, driverController);
 
+                this.registerToRootState(test, auto, teleop, disabled);
+
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController);
-                DriverAssistState driverAssist = new DriverAssistState(this);
+                // DriverAssistState driverAssist = new DriverAssistState(this);
                 GetToSourceState getToSource = new GetToSourceState(this);
                 PickupNoteState pickupNote = new PickupNoteState(this);
                 GetToShootingZoneState getToShootingZone = new GetToShootingZoneState(this);
@@ -35,11 +37,12 @@ public class StateMachine extends StateMachineBase {
 
                 teleop.withModeTransitions(disabled, teleop, auto, test)
                                 .withDefaultChild(manual)
-                                .withChild(driverAssist, driverController.rightTrigger(), 0);
+                                // .withChild(driverAssist, driverController.rightTrigger(), 0);
+                                .withChild(pickupNote, operatorController.b(), 0);
 
                 // manual.withTransition(driverAssist, driverController.rightBumper(), 0);
-                manual.withTransition(pickupNote, operatorController.b(), 10);
-                pickupNote.withTransition(manual, operatorController.b().negate(), 0);
+                manual.withTransition(pickupNote, operatorController.b(), 10, "Operator B pressed");
+                pickupNote.withTransition(manual, operatorController.b().negate(), 0, "Operator B released");
                 // Driver assistance
                 // driverAssist.withTransition(manual, driverController.rightTrigger().negate(),
                 // 0)
@@ -48,13 +51,17 @@ public class StateMachine extends StateMachineBase {
                 // .withChild(getToShootingZone, RobotContainer.intake::hasNote, 1)
                 // .withChild(shoot, () -> RobotContainer.intake.hasNote()
                 // && Triggers.inShootingZone().getAsBoolean(), 0);
-                getToSource.withTransition(pickupNote, () -> RobotContainer.m_noteDetection.hasNote, 1)
-                                .withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0);
+                // getToSource.withTransition(pickupNote, () ->
+                // RobotContainer.m_noteDetection.hasNote, 1, "Note detected")
+                // .withTransition(getToShootingZone, RobotContainer.intake::hasNote, 0, "Has
+                // note");
                 // pickupNote.withTransition(getToShootingZone, RobotContainer.intake::hasNote,
                 // 0)
                 // .withTransition(getToSource, () -> !RobotContainer.m_noteDetection.hasNote);
-                getToShootingZone.withTransition(shoot, Triggers.inShootingZone());
-                shoot.withTransition(getToSource, () -> !RobotContainer.intake.hasNote());
+                // getToShootingZone.withTransition(shoot, Triggers.inShootingZone(), "In
+                // shooting zone");
+                // shoot.withTransition(getToSource, () -> !RobotContainer.intake.hasNote(), "No
+                // note");
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);
